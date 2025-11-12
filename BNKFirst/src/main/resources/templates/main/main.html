@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BNK 메인페이지</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+      padding-top: 50px;
+      background: #F6F6F8;
+      margin: 0;
+      color: #222;
+    }
+
+    /*-------- 배너 --------*/
+    .banner {
+      position: relative;
+      width: 80%;
+      margin: 80px auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .banner-content img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .mascot-img img {
+      position: absolute;
+      right: 40px;
+      bottom: 0;
+      width: 200px;
+      z-index: 2;
+      filter: drop-shadow(8px 10px 12px rgba(0, 0, 0, 0.15));
+      transition: transform 0.3s ease;
+    }
+
+    .mascot-img img:hover {
+      transform: translateY(-8px);
+    }
+
+    /*--------- 검색 --------*/
+    .search-box {
+      text-align: center;
+      background: #fff;
+      border-radius: 20px;
+      width: 60%;
+      margin: 60px auto;
+      padding: 40px 0;
+    }
+
+    .search-box h2{
+      font-size: 20px;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 25px;
+    }
+
+    /* 검색 컨테이너 */
+    .search-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      width: 60%;
+      margin: 0 auto;
+      overflow: hidden;
+      transition: 0.3s ease;
+    }
+
+    /* 왼쪽 셀렉트박스 */
+    .category-select {
+      border: 1.5px solid #ddd;
+      border-radius: 12px;
+      background: #fff;
+      padding: 14px 40px 14px 18px;
+      font-size: 16px;
+      color: #333;
+      appearance: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='14' viewBox='0 0 20 20' width='14' xmlns='http://www.w3.org/2000/svg'><path d='M5.516 7.548l4.484 4.484 4.484-4.484L15.516 9l-6 6-6-6z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 14px;
+      transition: border-color 0.2s ease;
+    }
+
+    .category-select:hover,
+    .category-select:focus {
+      border-color: #D91A1A;
+      outline: none;
+    }
+
+    /* 오른쪽 검색 박스 */
+    .search-inner {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      border: 1.5px solid #ddd;
+      border-radius: 12px;
+      background: #fff;
+      overflow: hidden;
+      transition: 0.3s ease;
+    }
+
+    .search-inner:focus-within {
+      border-color: #D91A1A;
+      box-shadow: 0 0 5px rgba(217, 26, 26, 0.3);
+    }
+
+    /* 인풋박스 */
+    .search-container input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      padding: 14px 18px;
+      color: #333;
+    }
+
+    /* 인풋 */
+    .search-inner input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      padding: 14px 18px;
+      color: #333;
+    }
+
+    /* 검색 버튼 */
+    .search-btn {
+      background: transparent;
+      border: none;
+      color: #D91A1A;
+      padding: 14px 18px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    /* 추천 검색어 */
+    .tag-container {
+      margin-top: 15px;
+      color: #777;
+      font-size: 14px;
+    }
+
+    .tag-container span {
+      margin-right: 5px;
+    }
+
+    .tag-container a {
+      color: #D91A1A;
+      text-decoration: none;
+      margin-right: 8px;
+      transition: color 0.2s ease;
+    }
+
+    .tag-container a:hover {
+      color: #a31212;
+      text-decoration: underline;
+    }
+
+    /*------ 카테고리 --------*/
+
+    .category {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: 30px;
+      width: 80%;
+      margin: 60px auto;
+    }
+
+    .category-item {
+      flex: 1;
+      text-align: center;
+      background: #fff;
+      border-radius: 20px;
+      padding: 35px 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .category-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    .icon-wrap {
+      pointer-events: auto; /* 혹시 none이면 제거! */
+      overflow: visible;    /* hover 인식 막는 hidden 방지 */
+    }
+
+    .icon-wrap img{
+      width: 50px;
+      height: 50px;
+    }
+
+    .category-item:hover .icon-wrap img{
+      filter: brightness(0) saturate(80%) invert(10%) sepia(80%) saturate(7345%) hue-rotate(348deg) brightness(80%) contrast(116%);
+    }
+
+    .category-item h3{
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #222;
+    }
+
+    .category-item p{
+      font-size: 14px;
+      color: #666;
+    }
+
+    /*------------ 공지 / 이벤트 -------------*/
+    .notice-event {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+      margin: 60px auto;
+      gap: 30px;
+    }
+
+    .notice, .event {
+      flex: 1;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 25px 30px;
+    }
+
+    .notice-header,
+    .event-header{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .notice-header h3,
+    .event-header h3{
+      font-size: 18px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .notice-header a,
+    .event-header a{
+      color: #555;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .notice ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .notice li {
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .notice li:last-child{
+      border-bottom: none;
+    }
+
+    .notice .date {
+      display: block;
+      font-size: 13px;
+      color: #999;
+      margin-bottom: 5px;
+    }
+
+    .notice .title {
+      font-weight: 600;
+      color: #333;
+      margin-right: 5px;
+    }
+
+    .notice p {
+      color: #666;
+      font-size: 14px;
+      margin-top: 3px;
+    }
+
+    .badge {
+      background: #D91A1A;
+      color: #fff;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .event-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff4e;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+      /*border: 1px solid #b0b0b0;*/
+      border-radius: 10px;
+      padding: 5px 20px;
+      margin-bottom: 12px;
+      transition: 0.3s;
+    }
+
+    .event-item:hover {
+      background: #d91a1a4f;
+      transform: translateY(-3px);
+    }
+
+    .event-info h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .event-info p {
+      font-size: 13px;
+      color: #555;
+      margin-top: 3px;
+    }
+
+    .join-btn {
+      background: #D91A1A;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 18px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: 0.2s;
+    }
+
+    .join-btn:hover {
+      background: #b91515;
+    }
+
+    /*---------------- 하단 바로가기 ----------------*/
+    .bottom-icons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 80px;
+      margin: 70px 0;
+    }
+
+    .icon-item {
+      text-align: center;
+      font-family: "Pretendard", sans-serif;
+    }
+
+    .icon-item:hover .circle img{
+      filter: brightness(0) saturate(80%) invert(10%) sepia(80%) saturate(7345%) hue-rotate(348deg) brightness(80%) contrast(116%);
+    }
+
+    .circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      transition: 0.3s;
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .circle img {
+      width: 38px;
+      height: 38px;
+    }
+
+    .circle p {
+      padding-top: 10px;
+      font-size: 15px;
+      color: #676767;
+      margin: 0;
+    }
+
+
+    /* hover 효과 */
+    .icon-item:hover .circle {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+
+  </style>
+</head>
+<body>
+  <!-- 헤더  -->
+  <div th:replace="~{layouts/header}"></div>
+
+
+  <!-- 배너 -->
+  <section class="banner">
+    <div class="banner-content">
+      <img th:src="@{/images/sample_main_banner_image.png}" alt="샘플배너이미지">
+    </div>
+    <div class="mascot-img">
+      <img th:src="@{/images/mascot_character.png}" alt="BNK 캐릭터">
+    </div>
+  </section>
+
+  <!-- 검색 -->
+  <section class="search-box">
+    <h2>원하는 금융상품을 빠르게 찾아보세요</h2>
+
+    <div class="search-container">
+      <select class="category-select">
+        <option>전체상품</option>
+        <option>적금</option>
+        <option>주택대출</option>
+        <option>신용카드</option>
+      </select>
+       
+      <div class="search-inner">
+        <input type="text" placeholder="찾으시는 금융상품을 입력하세요">
+        <button class="search-btn">
+            <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>  
+
+    <div class="tag-container">
+      <span>추천 검색어:</span>
+      <a href="#">적금</a>
+      <a href="#">주택대출</a>
+      <a href="#">신용카드</a>
+    </div>
+  </section>
+
+  <!-- 카테고리 -->
+  <section class="category">
+    <div class="category-item">
+      <div class="icon-wrap">
+        <img th:src="@{/images/main_best_seller.png}" alt="">
+      </div>
+      <h3>베스트 상품</h3>
+      <p>인기 높은 추천상품</p>
+    </div>
+    <div class="category-item">
+      <div class="icon-wrap">
+        <img th:src="@{/images/main_target.png}" alt="">
+      </div>
+      <h3>목적별 상품</h3>
+      <p>목적에 맞는 상품</p>
+    </div>
+    <div class="category-item">
+      <div class="icon-wrap">
+        <img th:src="@{/images/main_customer_age.png}" alt="">
+      </div>
+      <h3>생애주기별 상품</h3>
+      <p>연령대별 맞춤상품</p>
+    </div>
+    <div class="category-item">
+      <div class="icon-wrap">
+        <img th:src="@{/images/main_each_customer.png}" alt="">
+      </div>
+      <h3>고객별 상품</h3>
+      <p>고객 유형별 상품</p>
+    </div>
+    <div class="category-item">
+      <div class="icon-wrap">
+        <img th:src="@{/images/main_new.png}" alt="">
+      </div>
+      <h3>신규상품</h3>
+      <p>새로 출시된 상품</p>
+    </div>
+  </section>
+
+  <!-- 공지사항 + 이벤트 -->
+  <section class="notice-event">
+    <div class="notice">
+      <div class="notice-header">
+        <h3>공지 / 새 소식</h3>
+        <a href="#">전체보기</a>
+      </div>
+      <ul>
+        <li>
+          <span class="date">2024.11.03</span>
+          <span class="title">금리 변동 안내</span>
+          <span class="badge">중요</span>
+          <p>예금 및 대출 금리 변동사항을 안내드립니다.</p>
+        </li>
+        <li>
+          <span class="date">2024.11.02</span>
+          <span class="title">시스템 점검 안내</span>
+          <p>인터넷뱅킹 시스템 점검 일정을 안내드립니다.</p>
+        </li>
+        <li>
+          <span class="date">2024.11.01</span>
+          <span class="title">신규 지점 개점 안내</span>
+          <p>해운대구 신규 지점 개점을 안내드립니다.</p>
+        </li>
+        <li>
+          <span class="date">2024.11.01</span>
+          <span class="title">신규 지점 개점 안내</span>
+          <p>해운대구 신규 지점 개점을 안내드립니다.</p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="event">
+      <div class="event-header">
+        <h3>이벤트 / 혜택</h3>
+        <a href="#">전체보기</a>
+      </div>
+      <div class="event-item">
+        <div>
+          <h4>신규고객 환영 이벤트</h4>
+          <p>최대 10만원 캐시백</p>
+        </div>
+        <button class="join-btn">신청하기</button>
+      </div>
+
+      <div class="event-item">
+        <div>
+          <h4>적금 특별금리 이벤트</h4>
+          <p>연 4.5% 우대금리</p>
+        </div>
+        <button class="join-btn">신청하기</button>
+      </div>
+
+      <div class="event-item">
+        <div>
+          <h4>적금 특별금리 이벤트</h4>
+          <p>연 4.5% 우대금리</p>
+        </div>
+        <button class="join-btn">신청하기</button>
+      </div>
+
+      <div class="event-item">
+        <div>
+          <h4>적금 특별금리 이벤트</h4>
+          <p>연 4.5% 우대금리</p>
+        </div>
+        <button class="join-btn">신청하기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 하단 바로가기 -->
+<section class="bottom-icons">
+    <a th:href="@{/member/main}" style="text-decoration: none;">
+      <div class="icon-item red">
+        <div class="circle">
+          <img th:src="@{/images/main_login.png}" alt="로그인">
+          <p>로그인</p>
+        </div>
+      </div>
+    </a>
+
+  <div class="icon-item blue">
+    <div class="circle">
+      <img th:src="@{/images/main_card.png}" alt="카드신청">
+      <p>카드신청</p>
+    </div>
+  </div>
+
+  <div class="icon-item green">
+    <div class="circle">
+      <img th:src="@{/images/main_calculator.png}" alt="금리계산">
+      <p>금리계산</p>
+    </div>
+  </div>
+
+  <div class="icon-item purple">
+    <div class="circle">
+      <img th:src="@{/images/main_operator.png}" alt="고객센터">
+      <p>고객센터</p>
+    </div>
+  </div>
+</section>
+
+  <!--푸터-->
+  <div th:replace="~{layouts/footer}"></div>
+</body>
+</html>
+<script>
+  // header 불러오기
+  fetch(`/layouts/header.html`)
+          .then(response => response.text())
+          .then(data => {
+            document.getElementById('header').innerHTML = data;
+          })
+          .catch(err => console.error('[Header load failed]', err));
+
+  // chatbot import 기능
+  async function importHtmlWithAssets(url, mountSelector) {
+    try {
+      const res = await fetch(url, { credentials: 'same-origin' });
+      if (!res.ok) throw new Error(`Failed to load ${url}`);
+      const html = await res.text();
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+
+      doc.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+        const href = link.getAttribute('href');
+        const exists = [...document.head.querySelectorAll('link[rel="stylesheet"]')]
+                .some(l => l.getAttribute('href') === href);
+        if (!exists && href) document.head.appendChild(link.cloneNode(true));
+      });
+
+      doc.querySelectorAll('style').forEach(styleEl => {
+        const clone = document.createElement('style');
+        clone.textContent = styleEl.textContent;
+        [...styleEl.attributes].forEach(a => clone.setAttribute(a.name, a.value));
+        document.head.appendChild(clone);
+      });
+
+      const mount = document.querySelector(mountSelector);
+      const frag = document.createDocumentFragment();
+      [...doc.body.children].forEach(node => {
+        if (node.tagName.toLowerCase() !== 'script') frag.appendChild(node.cloneNode(true));
+      });
+      mount.appendChild(frag);
+
+      const scripts = [...doc.querySelectorAll('script')];
+      for (const oldScript of scripts) {
+        const newScript = document.createElement('script');
+        [...oldScript.attributes].forEach(attr => newScript.setAttribute(attr.name, attr.value));
+        if (oldScript.th:src) {
+          await new Promise(resolve => {
+            newScript.onload = resolve;
+            newScript.onerror = resolve;
+            document.body.appendChild(newScript);
+          });
+        } else {
+          newScript.textContent = oldScript.textContent || '';
+          document.body.appendChild(newScript);
+        }
+      }
+    } catch (err) {
+      console.error('[Chatbot load failed]', err);
+    }
+  }
+
+  // chatbot 불러오기
+  importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot');
+
+  // footer 불러오기
+  fetch(`/layouts/footer.html`)
+          .then(response => response.text())
+          .then(data => {
+            document.getElementById('footer').innerHTML = data;
+          })
+          .catch(err => console.error('[Footer load failed]', err));
+
+</script>

@@ -1,0 +1,344 @@
+<div style="margin-top:10px;"></div>
+<div id="header"></div>
+
+<script>
+    // header.html 파일을 불러와서 #header에 삽입
+    fetch('_header.html')
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        });
+    fetch('/layouts/footer.html')
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+</script>
+
+
+<main>
+    <div class="container">
+
+        <!-- 보도자료 -->
+        <section class="news">
+            <div class="press-section">
+                <div class="press-header">
+                    <h2>보도자료</h2>
+                    <a href="#" class="more-link">더보기 ▷</a>
+                </div>
+
+                <div class="press-content">
+                    <!-- 대표 기사 -->
+                    <div class="press-main">
+                        <img src="28549c84-c274-44a3-8fa8-0c3477e31b62.png" alt="보도자료 대표 이미지">
+                        <div class="press-meta">
+                            <span class="view">View 5</span>
+                            <span class="date">2025-11-05</span>
+                        </div>
+                        <p class="press-title">
+                            <strong>BNK부산은행</strong>, ‘동백일터클리닝’ 운영 지원으로 근로환경 개선 앞장 – 11/5(수), 부산 미음산단서 지원식 열려
+                        </p>
+                    </div>
+
+                    <!-- 썸네일 목록 -->
+                    <div class="press-thumbs">
+                        <div class="thumb-item">
+                            <img src="28549c84-c274-44a3-8fa8-0c3477e31b62.png" alt="썸네일1">
+                            <span>BNK부산은행,<br>‘동백일터클리닝’ 지원식</span>
+                        </div>
+                        <div class="thumb-item">
+                            <img src="https://via.placeholder.com/120x80?text=보도자료2" alt="썸네일2">
+                            <span>BNK부산은행,<br>부산시 업무협약 체결</span>
+                        </div>
+                        <div class="thumb-item">
+                            <img src="https://via.placeholder.com/120x80?text=보도자료3" alt="썸네일3">
+                            <span>BNK썸농구단,<br>우승기원적금 출시</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 공지사항 -->
+        <section class="notice">
+            
+            <div class="press-section">
+                <div class="press-header">
+                    <h2>공지사항</h2>
+                    <a href="#" class="more-link">더보기 ▷</a>
+                </div>
+
+                <div class="press-content">
+            <ul>
+                <li>공동대출 약관 및 약정서(추가약정서) 개정 안내</li>
+                <li>본인확인서비스, 비대면 실명확인 등록 안내</li>
+                <li>비대면 채무조정 프로세스 구축 제공 안내</li>
+            </ul>
+            </div>
+
+        </section>
+
+        <!-- 하단 4단 구조 -->
+        <div class="grid">
+            <div class="event">
+                <h2>이벤트</h2>
+                <img src="a5d8d3ae-b317-4e67-8c2a-6be4026a7508.png" alt="이벤트 이미지">
+                <p>스타벅스 커피받고 예금 가입 어땀? (2025.11.05 ~ 2025.11.28)</p>
+            </div>
+
+            <div class="newsletter">
+                <h2>소식지(행보)</h2>
+                <p><strong>2025.07 월호</strong></p>
+                <img src="https://via.placeholder.com/200x250?text=행보+월호" alt="행보 표지">
+            </div>
+
+            <div class="video">
+                <h2>홍보동영상</h2>
+                <iframe src="https://www.youtube.com/embed/ZvLsmHULU9E" title="BNK 홍보영상"></iframe>
+                <p>2022년 부산은행 홍보영상</p>
+            </div>
+
+            <div class="photo">
+                <h2>포토앨범</h2>
+                <div>
+                    <img src="https://via.placeholder.com/90" alt="">
+                    <img src="https://via.placeholder.com/90" alt="">
+                    <img src="https://via.placeholder.com/90" alt="">
+                    <img src="https://via.placeholder.com/90" alt="">
+                    <img src="https://via.placeholder.com/90" alt="">
+                    <img src="https://via.placeholder.com/90" alt="">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+
+
+<div id="footer"></div>
+<meta name="theme-color" content="#E60012" />
+<link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23E60012'/%3E%3Ctext x='50' y='58' font-size='56' text-anchor='middle' fill='white' font-family='Arial, Helvetica, sans-serif'%3EB%3C/text%3E%3C/svg%3E" />
+<style>
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background-color: #F6F6F8;
+        margin: 0;
+        padding: 0;
+        color: #222;
+        line-height: 1.7;
+    }
+
+    header {
+        background-color: #fff;
+        border-bottom: 2px solid #d91a1a;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    header h1 {
+        color: #d91a1a;
+        font-size: 20px;
+    }
+
+    nav a {
+        text-decoration: none;
+        color: #333;
+        margin-right: 10px;
+        font-size: 14px;
+    }
+
+    .container {
+        width: 1000px;
+        margin: 30px auto;
+        background: #fff;
+        padding: 30px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        border-left: 5px solid #d91a1a;
+        padding-left: 10px;
+        color: #333;
+    }
+
+    /* 보도자료 */
+    .news {
+        margin-top: 20px;
+    }
+
+    .news .main img {
+        width: 100%;
+        border: 1px solid #ccc;
+    }
+
+    .news .thumb img {
+        width: 80px;
+        height: 60px;
+        object-fit: cover;
+    }
+
+    /* 공지사항 */
+    .notice {
+        margin-top: 40px;
+        background-color: #f2f2f2;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .notice ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .notice li {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    /* 하단 4단 그리드 */
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-top: 40px;
+    }
+
+    .event,
+    .newsletter,
+    .video,
+    .photo {
+        background: #fff;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .event img {
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+    .video iframe {
+        width: 100%;
+        height: 250px;
+        border: none;
+    }
+
+    .photo img {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        margin: 3px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+    }
+
+    footer {
+        background-color: #222;
+        color: #aaa;
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+        font-size: 13px;
+    }
+</style>
+
+<style>
+    .press-section {
+        border: 1px solid #ddd;
+        background: #fff;
+        padding: 20px;
+        width: 900px;
+        margin: 0 auto;
+    }
+
+    .press-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .press-header h2 {
+        font-size: 20px;
+        color: #222;
+        border-left: 5px solid #d91a1a;
+        padding-left: 10px;
+        margin: 0;
+    }
+
+    .more-link {
+        font-size: 14px;
+        color: #666;
+        text-decoration: none;
+    }
+
+    .press-content {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    /* 대표기사 */
+    .press-main {
+        flex: 3;
+        border: 1px solid #ddd;
+        padding: 10px;
+        background: #fff;
+    }
+
+    .press-main img {
+        width: 100%;
+        border: 1px solid #ccc;
+    }
+
+    .press-meta {
+        margin-top: 8px;
+        font-size: 13px;
+        color: #333;
+    }
+
+    .press-meta .view {
+        color: #0077cc;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .press-title {
+        margin-top: 10px;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    /* 썸네일 */
+    .press-thumbs {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .thumb-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid #ddd;
+        background: #fafafa;
+        padding: 5px;
+    }
+
+    .thumb-item img {
+        width: 90px;
+        height: 65px;
+        object-fit: cover;
+    }
+
+    .thumb-item span {
+        font-size: 13px;
+        color: #333;
+    }
+</style>
