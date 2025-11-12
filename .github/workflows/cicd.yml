@@ -16,6 +16,16 @@ jobs:
           java-version: "17"
           distribution: temurin
 
+      - name: Debug locate gradlew
+        run: |
+          pwd
+          ls -la
+          echo "--- search gradlew ---"
+          git ls-files | grep -E '(^|/)gradlew$' || true
+          echo "--- wrapper files ---"
+          git ls-files gradle/wrapper/* || true
+
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
