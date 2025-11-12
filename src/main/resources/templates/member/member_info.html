@@ -18,238 +18,14 @@
     <div class="stepper">
       <div class="step"><span class="dot">1</span>약관동의</div>
       <div class="sep"></div>
-<<<<<<< HEAD
-      <div class="step"><span class="dot">2</span>본인인증</div>
-      <div class="sep"></div>
-      <div class="step  active"><span class="dot">3</span>정보입력</div>
-=======
       <div class="step active"><span class="dot">2</span>정보입력</div>
       <div class="sep"></div>
       <div class="step"><span class="dot">3</span>본인인증</div>
->>>>>>> d6d9909d342a3630477264745a927fb931c7bce1
       <div class="sep"></div>
       <div class="step"><span class="dot">4</span>가입완료</div>
     </div>
     <!-- 제목/설명 -->
     <h2 style="margin: 18px 130px 0; font-size: 28px;">정보입력</h2>    
-<<<<<<< HEAD
-    <p style="color: #6b7280; margin: 5px 130px 10px;">기본정보를 입력해주세요.</p>
-
-    <!-- 감싸기 -->
-    <div class="form-card">
-    <form>
-      <table class="form-table">
-        <tbody>
-            <!-- 아이디 -->
-            <tr class="field">
-                <th><label for="idInput">아이디<span class="reqdot">*</span></label></th>
-                <td>
-                    <div class="field-row">
-                        <input id="idInput" name="mid" type="text" class="input" placeholder="아이디를 입력해주세요">
-                        <button id="idCheckBtn" type="button" class="btn-register">중복확인</button>
-                    </div>
-                    <div class="hint">영문, 숫자 조합 4~10자</div>
-                </td>
-            </tr>
-            <!-- 비밀번호 & 비밀번호 확인 -->
-            <tr class="field">
-                <th><label for="pwInput">비밀번호<span class="reqdot">*</span></label></th>
-                <td style="display:flex; align-items:center; gap:12px;">
-                    <div style="flex:1;">
-                        <input id="pwInput" name="mpw" type="password" class="input" placeholder="비밀번호를 입력해주세요">
-                        <div class="hint">영문, 숫자, 특수문자 조합 8~16자</div>
-                    </div>
-
-                    <div style="flex:1;">
-                        <input id="pw2Input" type="password" class="input" placeholder="비밀번호를 다시 입력해주세요">
-                        <div class="hint">비밀번호가 일치해야 합니다</div>
-                    </div>
-                </td>
-            </tr>
-            <!-- 이름 & 성별 -->
-            <tr class="field">
-                <th scope="row">
-                    <label class="field-label" for="nameInput">이름<span class="reqdot">*</span></label>
-                </th>
-                <td style="display:flex; align-items:center; gap:12px;">
-                    <input id="nameInput" type="text" class="input" placeholder="실명을 입력해주세요" style="flex:1;">
-
-                    <label for="genderSelect" class="field-label" style="margin-left:10px;">성별<span class="reqdot">*</span></label>
-                    <select id="genderSelect" class="input" style="width:150px;">
-                        <option value="">선택</option>
-                        <option value="M">남성</option>
-                        <option value="F">여성</option>
-                    </select>
-                </td>
-            </tr>
-            <!-- 주민등록번호 -->
-            <tr class="field">
-                <th scope="row">
-                    <label class="field-label" for="rrnInput">주민등록번호<span class="reqdot">*</span></label>
-                </th>
-                <td>
-                    <input id="rrnInput" type="text" class="input" placeholder="예) 900101-1234567" maxlength="14" pattern="\d{6}-\d{7}">
-                </td>
-            </tr>
-            <!-- 휴대폰번호 & 통신사 -->
-            <tr class="field">
-                <th scope="row">
-                    <label class="field-label" for="phoneInput">휴대전화<span class="reqdot">*</span></label>
-                </th>
-                <td style="display:flex; align-items:center; gap:12px;">
-                    <input id="phoneInput" name="phone" type="text" class="input"
-                           placeholder="예) 010-1234-5678"
-                           maxlength="13"
-                           oninput="this.value=this.value.replace(/[^0-9-]/g,'')"
-                           style="flex:1;">
-
-                    <label for="carrierSelect" class="field-label" style="margin-left:10px;">통신사<span class="reqdot">*</span></label>
-                    <select id="carrierSelect" name="carrier" class="input" style="width:150px;">
-                        <option value="">선택</option>
-                        <option value="SKT">SKT</option>
-                        <option value="KT">KT</option>
-                        <option value="LGU+">LG</option>
-                    </select>
-                </td>
-            </tr>
-            <!-- 생년월일 -->
-            <tr class="field">
-                <th scope="row">
-                    <label for="birthInput" class="field-label">
-                        생년월일<span class="reqdot">*</span>
-                    </label>
-                </th>
-                <td style="display:flex; align-items:center; gap:12px;">
-                    <input id="birthInput" name="mbirth" type="text" class="input" placeholder="YYYY-MM-DD">
-                </td>
-            </tr>
-            <!-- 이메일 & 인증번호 -->
-            <tr class="field">
-                <th scope="row"><label class="field-label" for="emailInput">이메일<span class="reqdot">*</span></label></th>
-                <td style="display:flex; align-items:center; gap:12px;">
-                    <input id="emailInput" name="memail" type="text" class="input" placeholder="example@email.com" style="flex:1;">
-                    <button id="emailReqBtn" type="button" class="btn-register" style="width:90px;">인증요청</button>
-                    <input id="emailCodeInput" type="text" class="input" placeholder="6자리 입력" maxlength="6" style="width:100px;">
-                    <button id="emailChkBtn" type="button" class="btn-register" style="width:80px;">확인</button>
-                </td>
-            </tr>
-            <!-- 주소 정보 -->
-            <tr class="field">
-                <th scope="row">
-                    <label class="field-label" for="zipInput">주소 정보<span class="reqdot">*</span></label>
-                </th>
-                <td>
-                    <div class="field-row">
-                        <input id="zipInput" type="text" class="input" placeholder="우편번호" readonly>
-                        <button id="addrSearchBtn" class="btn-pressable"
-                                style="box-sizing: border-box; width: 90px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
-                            주소검색
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            <!-- 기본주소 -->
-            <tr class="field">
-                <th scope="row">
-                    <label class="field-label" for="baseAddrInput">기본주소<span class="reqdot">*</span></label>
-                </th>
-                <td>
-                    <div class="field-row">
-                        <input id="baseAddrInput" type="text" class="input" placeholder="기본주소" readonly>
-                    </div>
-                </td>
-            </tr>
-            <!-- 상세주소 -->
-            <tr class="field">
-                <th scope="row">
-                    <label class="field-label" for="detailAddrInput">상세주소<span class="reqdot">*</span></label>
-                </th>
-                <td>
-                    <div class="field-row">
-                        <input id="detailAddrInput" type="text" class="input" placeholder="상세주소를 입력해주세요">
-                    </div>
-                </td>
-            </tr>
-            <!-- 버튼 -->
-            <tr>
-                <td colspan="2">
-                    <div class="btns" style="display:flex; justify-content:space-between; gap:8px;">
-                        <a th:href="@{/member/main}" class="btn-pressable"
-                           style="flex:1; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background:#fff; text-align:center;">취소</a>
-                        <button type="submit" class="btn-register"
-                                style="flex:1; height:42px; border-radius:8px;">다음</button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-      </table>
-    </form>
-    </div>
-  </div>
-</main>
-<!-- 현재 백엔드 진행시 다시 수정
-<script>
-    // 비밀번호 일치 검사
-    document.getElementById('memberForm').addEventListener('submit', (e) => {
-        const pw  = document.getElementById('pwInput').value.trim();
-        const pw2 = document.getElementById('pw2Input').value.trim();
-        if (pw !== pw2) {
-            e.preventDefault();
-            alert('비밀번호가 일치하지 않습니다.');
-        }
-    });
-
-    // 아이디 중복확인 (예: /member/id-check?mid=xxx)
-    document.getElementById('idCheckBtn').addEventListener('click', async () => {
-        const mid = document.getElementById('idInput').value.trim();
-        if (!mid) return alert('아이디를 입력하세요.');
-        const res = await fetch(`/member/id-check?mid=${encodeURIComponent(mid)}`);
-        const data = await res.json();
-        if (data.duplicated) alert('이미 사용 중인 아이디입니다.');
-        else alert('사용 가능한 아이디입니다.');
-    });
-</script>
--->
-<script>
-    // 주소검색 버튼 클릭 시
-    document.getElementById("addrSearchBtn").addEventListener("click", function () {
-        new daum.Postcode({
-            oncomplete: function (data) {
-                // 주소 선택 완료 후 실행되는 부분
-                let addr = ''; // 최종 주소
-                let extraAddr = ''; // 참고항목 (법정동, 건물명 등)
-
-                // 도로명 주소 또는 지번 주소 중 선택된 것
-                if (data.userSelectedType === 'R') {
-                    addr = data.roadAddress;
-                } else {
-                    addr = data.jibunAddress;
-                }
-
-                // 참고항목이 있을 경우 추가 (법정동, 건물명 등)
-                if (data.userSelectedType === 'R') {
-                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-                        extraAddr += data.bname;
-                    }
-                    if (data.buildingName !== '' && data.apartment === 'Y') {
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-                    if (extraAddr !== '') {
-                        addr += ' (' + extraAddr + ')';
-                    }
-                }
-
-                // 값 입력
-                document.getElementById('zipInput').value = data.zonecode; // 우편번호
-                document.getElementById("baseAddrInput").value = addr; // 기본주소
-
-                // 상세주소로 포커스 이동
-                document.getElementById("detailAddrInput").focus();
-            }
-        }).open();
-    });
-</script>
-=======
     <p style="color: #6b7280; margin: 5px 130px 10px;">
     기본정보를 입력해주세요.
     </p>
@@ -535,7 +311,6 @@ window.addEventListener('load', () => {
 });
 </script>
 -->
->>>>>>> d6d9909d342a3630477264745a927fb931c7bce1
 
     <footer><div th:replace="~{layouts/footer.html}"></div></footer>
 </body>
@@ -596,10 +371,6 @@ window.addEventListener('load', () => {
   /* 버튼 */
   .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> d6d9909d342a3630477264745a927fb931c7bce1
   a { text-decoration: none; color: inherit; }
 
   /* 카드 */
@@ -608,22 +379,14 @@ window.addEventListener('load', () => {
     border: 1px solid #e5e7eb;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(2,6,23,.06);
-<<<<<<< HEAD
-    padding: 28px 20px;
-=======
     padding: 28px 25px;
->>>>>>> d6d9909d342a3630477264745a927fb931c7bce1
     max-width: 700px;
     margin: 0 auto;
   }
 
   /* 테이블 레이아웃 */
   .form-table { width: 650px; border-collapse: separate; border-spacing: 0 12px; margin: 0 auto;}
-<<<<<<< HEAD
-  .form-table th { width: 110px; text-align: left; vertical-align: top;}
-=======
   .form-table th { width: 130px; text-align: left; vertical-align: top;}
->>>>>>> d6d9909d342a3630477264745a927fb931c7bce1
   .form-table td { vertical-align: top; }
 </style>
 </html>

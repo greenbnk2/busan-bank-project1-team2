@@ -7,10 +7,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-<<<<<<< HEAD
-import org.springframework.test.context.ActiveProfiles;
-=======
->>>>>>> d6d9909d342a3630477264745a927fb931c7bce1
 
 import java.util.Optional;
 
@@ -24,9 +20,6 @@ class ProductServiceTest {
 
     @Autowired
     ProductService productService;
-
-    @MockitoBean
-    BranchMapper branchMapper;
 
     @Test
     void findProductByPid() {
