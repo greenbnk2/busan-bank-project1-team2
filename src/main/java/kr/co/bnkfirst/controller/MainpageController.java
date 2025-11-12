@@ -10,7 +10,7 @@ public class MainpageController {
 
     @GetMapping({"/main/main", "/"})
     public String mainpage() {
-        return "/main/main";
+        return "main/main";
     }
 
 }
