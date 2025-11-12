@@ -1,9 +1,11 @@
 package kr.co.bnkfirst.service;
 
 import kr.co.bnkfirst.dto.product.ProductDTO;
+import kr.co.bnkfirst.mapper.BranchMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Optional;
 
@@ -14,6 +16,9 @@ class ProductServiceTest {
 
     @Autowired
     ProductService productService;
+
+    @MockitoBean
+    BranchMapper branchMapper;
 
     @Test
     void findProductByPid() {
