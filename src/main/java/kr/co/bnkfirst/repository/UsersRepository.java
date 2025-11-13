@@ -1,6 +1,7 @@
 package kr.co.bnkfirst.repository;
 
 import kr.co.bnkfirst.entity.Users;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

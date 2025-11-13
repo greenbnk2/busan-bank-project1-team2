@@ -124,7 +124,7 @@
         const titles = document.querySelectorAll(".menu-title");
         titles.forEach(title => {
             title.addEventListener("click", () => {
-                const isActive = title.clWassList.contains("active");
+                const isActive = title.classList.contains("active");
                 titles.forEach(t => {
                     t.classList.remove("active");
                     const next = t.nextElementSibling;
@@ -350,12 +350,12 @@
 
     <script>
         // header.html 파일을 불러와서 #header에 삽입
-        fetch('../../_header.html')
+        fetch('/BNK/layouts/info/_header.html')
             .then(res => res.text())
             .then(data => {
                 document.getElementById('header').innerHTML = data;
             });
-        fetch('/layouts/footer.html')
+        fetch('/BNK/layouts/info/_footer.html')
             .then(res => res.text())
             .then(data => {
                 document.getElementById('footer').innerHTML = data;

@@ -20,6 +20,14 @@ public interface AdminMapper {
     public List<UsersDTO> selectAllUsers(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
     public int selectCountTotalUsers(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
 
+    // 전체회원 수 출력
+    public int countAllUsers();
+    // 신규가입 수 출력(현재 시간으로부터 6개월까지)
+    public int countSixMonthUsers();
+    // 상태가 휴면인 회원 수 출력
+    public int countWait();
+    // 상태가 탈퇴인 회원 수 출력
+    public int countWithdrawal();
 
     // 상품 삭제
     public void deleteByProduct(String pid);

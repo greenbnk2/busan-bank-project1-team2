@@ -48,18 +48,14 @@
 <!--유저 목록 출력-->
     <sql id="searchWhereUsers">
         <where>
-            <if test="pageRequestDTO.searchType != null and pageRequestDTO.keyword != ''">
-                <choose>
-                    <when test="pageRequestDTO.searchType == 'title'">
-                        AND mname LIKE '%' || #{pageRequestDTO.keyword} || '%'
-                    </when>
-                    <when test="pageRequestDTO.searchType == 'content'">
-                        AND memail LIKE '%' || #{pageRequestDTO.keyword} || '%'
-                    </when>
-                    <when test="pageRequestDTO.searchType == 'writer'">
-                        AND mcond LIKE '%' || #{pageRequestDTO.keyword} || '%'
-                    </when>
-                </choose>
+            <if test="pageRequestDTO.mname != null and pageRequestDTO.mname != ''">
+                AND mname LIKE '%' || #{pageRequestDTO.mname} || '%'
+            </if>
+            <if test="pageRequestDTO.memail != null and pageRequestDTO.memail != ''">
+                AND memail LIKE '%' || #{pageRequestDTO.memail} || '%'
+            </if>
+            <if test="pageRequestDTO.mcond != null and pageRequestDTO.mcond != 'all' and pageRequestDTO.mcond != ''">
+                AND mcond LIKE '%' || #{pageRequestDTO.mcond} || '%'
             </if>
         </where>
     </sql>
@@ -80,4 +76,23 @@
         <include refid="searchWhereUsers"/>
     </select>
 
+<!--    전체회원 수 출력-->
+    <select id="countAllUsers" resultType="int">
+        SELECT count(*) FROM users
+    </select>
+
+<!--    신규가입 수 출력(현재 시간으로부터 6개월까지)-->
+    <select id="countSixMonthUsers" resultType="int">
+        SELECT count(*) FROM USERS WHERE mdate > ADD_MONTHS(sysdate, -6)
+    </select>
+
+<!--    상태가 휴면인 회원 수 출력-->
+    <select id="countWait" resultType="int">
+        SELECT count(*) FROM users WHERE mcond = '휴면'
+    </select>
+
+<!--    상태가 탈퇴인 회원 수 출력-->
+    <select id="countWithdrawal" resultType="int">
+        SELECT count(*) FROM users WHERE mcond = '탈퇴'
+    </select>
 </mapper>

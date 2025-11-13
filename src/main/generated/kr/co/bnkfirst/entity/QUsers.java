@@ -21,7 +21,9 @@ public class QUsers extends EntityPathBase<Users> {
 
     public final DateTimePath<java.time.LocalDateTime> maccess = createDateTime("maccess", java.time.LocalDateTime.class);
 
-    public final DateTimePath<java.time.LocalDateTime> mbirth = createDateTime("mbirth", java.time.LocalDateTime.class);
+    public final StringPath maddress = createString("maddress");
+
+    public final DatePath<java.time.LocalDate> mbirth = createDate("mbirth", java.time.LocalDate.class);
 
     public final StringPath mcarrier = createString("mcarrier");
 

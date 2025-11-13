@@ -6,6 +6,7 @@ import kr.co.bnkfirst.entity.Users;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,12 +20,12 @@ public class UsersDTO {
     private String mid;
     private String mpw;
     private String mname;
-    @CreationTimestamp
-    private LocalDateTime mbirth;
+    private LocalDate mbirth;
     private String mgender;
     private String mcarrier;
     private String memail;
     private String mphone;
+    private String maddress;
     @CreationTimestamp
     private LocalDateTime mdate;
     private String mgrade;
@@ -35,11 +36,7 @@ public class UsersDTO {
     private LocalDateTime maccess;
     private String mlimit;
 
-    /*
-        시간 남으면 DB 추가 후 출력 예정
-        진행시 패널 형식x → 각 약관을 버튼으로 바꾼 후 누르면 모달창 형식으로 변경
-        ↓ 원래 하드 코딩으로 예정
-     */
+    // ↓ 사용x
     private String mtitle;
     private String mcontent;
 
@@ -54,6 +51,7 @@ public class UsersDTO {
                 .mcarrier(mcarrier)
                 .memail(memail)
                 .mphone(mphone)
+                .maddress(maddress)
                 .mdate(mdate)
                 .mgrade(mgrade)
                 .mjumin(mjumin)
