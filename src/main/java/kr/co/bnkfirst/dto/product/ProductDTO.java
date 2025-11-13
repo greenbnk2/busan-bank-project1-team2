@@ -20,10 +20,11 @@ public class ProductDTO {
     private String prmthd;
     private String pprfcrt;
     private String pirinfo;
-    private String pttitle;
-    private String ptlink;
     private String pcond;
     private String pupdate;
+    private String pjnfee;
+    private String pterms;
+    private String pdirate;
 
     public Product toEntity(){
         return Product.builder()
@@ -37,9 +38,10 @@ public class ProductDTO {
                 .pelgbl(pelgbl)
                 .pprfcrt(pprfcrt)
                 .pirinfo(pirinfo)
-                .pttitle(pttitle)
-                .ptlink(ptlink)
                 .pcond(pcond)
+                .pjnfee(pjnfee)
+                .pterms(pterms)
+                .pdirate(pdirate)
                 .build();
     }
 }

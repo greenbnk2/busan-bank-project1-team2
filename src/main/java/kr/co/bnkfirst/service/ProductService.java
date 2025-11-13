@@ -1,7 +1,9 @@
 package kr.co.bnkfirst.service;
 
+import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.entity.product.Product;
+import kr.co.bnkfirst.mapper.ProductMapper;
 import kr.co.bnkfirst.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
     private static final List<String> ORDER_JOIN   = List.of("인터넷", "영업점", "스마트폰");
     private static final Set<String>  ALLOWED_JOIN = Set.copyOf(ORDER_JOIN);
 
@@ -81,4 +84,21 @@ public class ProductService {
         if (pid == null || pid.isBlank()) return Optional.empty();
         return productRepository.findByPid(pid).map(Product::toDTO);
     }
+
+    public PcontractDTO resultPcontract(String mid, String pcpid){
+        return productMapper.resultPcontract(mid, pcpid);
+    }
+    @Transactional(readOnly = true)
+    public List<ProductDTO> searchProducts(String keyword) {
+        List<Product> products = productRepository
+                .findByPnameContainingIgnoreCaseOrPtypeContainingIgnoreCase(keyword, keyword);
+
+        // 콘솔 로그로 확인
+        log.info("[DB 조회 완료] keyword='{}', 결과 {}건", keyword, products.size());
+
+        return products.stream()
+                .map(Product::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }

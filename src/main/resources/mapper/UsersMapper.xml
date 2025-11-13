@@ -5,13 +5,36 @@
 
 <mapper namespace="kr.co.bnkfirst.mapper.UsersMapper">
 
-    <!-- 아이디로 회원 조회 -->
+    <!-- member_main 로그인 -->
     <select id="findUserById" parameterType="string" resultType="kr.co.bnkfirst.dto.UsersDTO">
         SELECT
             MID AS mid,
             MPW AS mpw
         FROM USERS
         WHERE MID = #{mid}
+    </select>
+
+    <!-- member_info 정보입력 -->
+    <insert id="insertUser" parameterType="kr.co.bnkfirst.entity.Users">
+        INSERT INTO USERS (
+            "uId", MID, MPW, MNAME, MGENDER, MJUMIN,
+            MPHONE, MCARRIER, MBIRTH, MEMAIL, MADDRESS,
+            MDATE, MGRADE, MCOND
+        )
+        VALUES (
+                   SEQ_USERS.NEXTVAL,
+                   #{mid}, #{mpw}, #{mname}, #{mgender}, #{mjumin},
+                   #{mphone}, #{mcarrier}, #{mbirth, jdbcType=DATE},
+                   #{memail, jdbcType=VARCHAR}, #{maddress, jdbcType=VARCHAR},
+                   SYSDATE, 'Family', '활동중'
+               )
+    </insert>
+
+    <!-- member_info 아이디 중복확인 -->
+    <select id="existsByMid" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+        FROM USERS
+        WHERE "MID" = #{mid}
     </select>
 
 </mapper>

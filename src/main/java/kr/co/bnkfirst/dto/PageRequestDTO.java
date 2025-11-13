@@ -49,4 +49,9 @@ public class PageRequestDTO {
     public Pageable getPageable(String sort){
         return PageRequest.of(this.pg - 1, this.size, Sort.by(sort).descending());
     }
+
+    // 관리자 검색 필터
+    private String mname;
+    private String memail;
+    private String mcond;
 }
