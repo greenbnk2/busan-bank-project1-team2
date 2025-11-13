@@ -172,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(qs.toString());
             if (!res.ok) throw new Error('Server Error');
             const data = await res.json(); // { items, total, page, pageSize }
+            console.log(data);
 
             // 총 개수
             const total = data.totalElements ?? 0;

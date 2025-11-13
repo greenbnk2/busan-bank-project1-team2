@@ -2,7 +2,7 @@
 <div class="nav-root" style="border-bottom:5px solid #DE0000;">
     <div class="nav-wrap" style="display:flex; padding-top:10px; padding-bottom: 8px; padding-left: 30px; padding-right: 10px;">
         <a th:href="@{/main/main}">
-            <img th:src="@{/images/bnk_logo.svg}"
+            <img th:src="@{/upload/images/bnk_logo.svg}"
             alt=""
             style="width:161px; height:43px;">
         </a>
@@ -222,7 +222,8 @@
                         </div>
                         <div style="width: 115px;">
                             <button class="auth-btn"
-                            style="cursor: pointer;border-radius: 6px; border:1px solid #E5E7EB; width:85px; height:38px;">인증센터</button>
+                                    th:onclick="|location.href='@{/cs/main}'|"
+                            style="cursor: pointer;border-radius: 6px; border:1px solid #E5E7EB; width:85px; height:38px;">고객센터</button>
                         </div>
                         <div style="width: 60px;">
                             <a th:href="@{/mypage/main}">

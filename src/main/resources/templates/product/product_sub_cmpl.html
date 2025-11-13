@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>가입 완료</title>
-    <link rel="stylesheet" href="../../static/css/product/product_sub_cmpl.css">
+    <link rel="stylesheet" th:href="@{/css/product/product_sub_cmpl.css}">
+    <script id="script" th:data-mid="${mid}" th:data-pcpid="${pcpid}" th:src="@{/js/product/product_subCmpl.js}"></script>
     <style>
 
     </style>
@@ -13,7 +14,7 @@
 
 <body>
     <header>
-        <div id="header"></div>
+        <div id="header" th:replace="~{layouts/header.html}"></div>
     </header>
     <main class="container">
 
@@ -30,9 +31,9 @@
             <h1 id="doneTitle">가입이 완료되었습니다</h1>
             <p class="desc">신청이 정상적으로 접수·개설되었어요. 아래 요약과 다음 단계를 확인하세요.</p>
 
-            <div class="meta" role="list">
-                <span class="pill" role="listitem">접수번호 <b>BNK20241031001</b></span>
-                <span class="pill" role="listitem">완료 일시 <b>2024.10.31 15:42</b></span>
+            <div class="meta" role="list" style="display: flex; justify-content: center">
+                <div class="pill" role="listitem" style="display: flex">접수번호 <div style="margin-left: 4px;"><b >BNK<span id="getNowDateTimeV2" style="margin-top: 1px;"></span></b></div></div>
+                <span class="pill" role="listitem">완료 일시 <b><span id="getNowDateTimeV1"></span></b></span>
             </div>
         </div>
 
@@ -45,11 +46,9 @@
                         <h3>가입자 확인</h3>
                         <div class="kv">
                             <div class="k">고객명</div>
-                            <div class="v">홍길동</div>
-                            <div class="k">수령방법</div>
-                            <div class="v">SMS</div>
+                            <div class="v" id="mname">홍길동</div>
                             <div class="k">수령 연락처</div>
-                            <div class="v">010-****-1234</div>
+                            <div class="v" id="mphone">010-****-1234</div>
                         </div>
                     </article>
 
@@ -59,27 +58,30 @@
                         <div class="tableish">
                             <div class="row">
                                 <div class="cell k">상품명</div>
-                                <div class="cell">BNK 정기예금</div>
+                                <div class="cell" id="pname">BNK 정기예금</div>
                             </div>
                             <div class="row">
                                 <div class="cell k">이자지급구분</div>
-                                <div class="cell">만기일시지급</div>
+                                <div class="cell" id="pwtpi">만기일시지급</div>
                             </div>
                             <div class="row">
                                 <div class="cell k">계약기간</div>
-                                <div class="cell">2024.10.31 ~ 2025.10.31 (12개월)</div>
+                                <div class="cell">
+                                    <div style="display: flex;">
+                                        <div id="pnew">2024.10.31</div>
+                                        <div>&nbsp;~&nbsp;</div>
+                                        <div id="pend">2025.10.31</div>
+                                        <div>&nbsp;(<span id="pccprd">12</span>개월)</div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="cell k">과세구분</div>
-                                <div class="cell">일반과세</div>
-                            </div>
-                            <div class="row">
-                                <div class="cell k">출금계좌</div>
-                                <div class="cell">123-****-**45</div>
+                                <div class="cell" id="pcntcs">일반과세</div>
                             </div>
                             <div class="row">
                                 <div class="cell k">신규계좌</div>
-                                <div class="cell">987-****-**21</div>
+                                <div class="cell" id="pacc">987-****-**21</div>
                             </div>
                         </div>
                     </article>
@@ -113,13 +115,13 @@
                         <h3>자동이체/알림</h3>
                         <div class="kv">
                             <div class="k">자동이체 신청</div>
-                            <div class="v"><a href="#" class="link-green">신청완료</a></div>
+                            <div class="v"><a href="#" class="link-green" id="pcatapp">신청완료</a></div>
                             <div class="k">이체일자</div>
-                            <div class="v">매월 31일</div>
+                            <div class="v">매월 <span id="pcatdt">31</span>일</div>
                             <div class="k">이체계좌</div>
-                            <div class="v">123-****-**45</div>
+                            <div class="v" id="pcatac">123-****-**45</div>
                             <div class="k">만기 알림</div>
-                            <div class="v">(PUSH/SMS) <span class="tag">설정/미설정</span></div>
+                            <div class="v" id="pccns">(PUSH/SMS) <span class="tag">설정/미설정</span></div>
                         </div>
                         <div class="chip-rows">
                             <button type="button" class="btn-pill">만기 알림 설정</button>
@@ -199,7 +201,8 @@
             <aside style="display:flex;flex-direction:column;gap:14px">
                 <article class="card next">
                     <h3 class="sr-only" style="position:absolute;left:-9999px">다음 단계</h3>
-                    <button class="cta btn-red">내 계좌로 가기</button>
+                    <button class="cta btn-red"
+                    th:onclick="|location.href='@{/mypage/prod}'|">내 계좌로 가기</button>
                     <div class="tile-grid">
                         <button class="tile"><svg width="20" height="17" viewBox="0 0 20 17" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -226,7 +229,7 @@
                                     d="M1.875 0C0.839844 0 0 0.839844 0 1.875C0 2.46484 0.277344 3.01953 0.75 3.375L9.25 9.75C9.69531 10.082 10.3047 10.082 10.75 9.75L19.25 3.375C19.7227 3.01953 20 2.46484 20 1.875C20 0.839844 19.1602 0 18.125 0H1.875ZM0 4.375V12.5C0 13.8789 1.12109 15 2.5 15H17.5C18.8789 15 20 13.8789 20 12.5V4.375L11.5 10.75C10.6094 11.418 9.39062 11.418 8.5 10.75L0 4.375Z"
                                     fill="#2B2F36" />
                             </svg>이메일</button>
-                        <button class="tile btn-white"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                        <button class="tile btn-white" onclick="window.print()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M4 0C2.89687 0 2 0.896875 2 2V5H4V2H11.0844L12 2.91563V5H14V2.91563C14 2.38438 13.7906 1.875 13.4156 1.5L12.5 0.584375C12.125 0.209375 11.6156 0 11.0844 0H4ZM12 11V12V14H4V12V11.5V11H12ZM14 12H15C15.5531 12 16 11.5531 16 11V8C16 6.89687 15.1031 6 14 6H2C0.896875 6 0 6.89687 0 8V11C0 11.5531 0.446875 12 1 12H2V14C2 15.1031 2.89687 16 4 16H12C13.1031 16 14 15.1031 14 14V12ZM13.5 7.75C13.6989 7.75 13.8897 7.82902 14.0303 7.96967C14.171 8.11032 14.25 8.30109 14.25 8.5C14.25 8.69891 14.171 8.88968 14.0303 9.03033C13.8897 9.17098 13.6989 9.25 13.5 9.25C13.3011 9.25 13.1103 9.17098 12.9697 9.03033C12.829 8.88968 12.75 8.69891 12.75 8.5C12.75 8.30109 12.829 8.11032 12.9697 7.96967C13.1103 7.82902 13.3011 7.75 13.5 7.75Z"
@@ -261,12 +264,8 @@
         </div>
     </main>
     <footer>
-        <div id="footer"></div>
+        <div id="footer" th:replace="~{layouts/footer.html}"></div>
     </footer>
-    <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
-        <div id="bnk-chatbot-slot"></div>
-    </div>
 </body>
 
 </html>
-<script src="../../static/js/product.js"></script>

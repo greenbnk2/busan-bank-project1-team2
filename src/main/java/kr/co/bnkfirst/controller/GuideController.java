@@ -40,8 +40,7 @@ public class GuideController {
 
     @GetMapping("")
     public String guideIndex() {
-        return "redirect:/info/guide/info_ceoGreeting"; // templates/info/guide/index.html
+        return "redirect:info/guide/info_ceoGreeting"; // templates/info/guide/index.html
     }
-
 
 }
