@@ -167,6 +167,50 @@
       text-decoration: underline;
     }
 
+    /* 검색 결과 박스 */
+    .search-results {
+      margin-top: 20px;
+      width: 60%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+    }
+
+    .search-results h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .search-results ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .search-results li {
+      padding: 12px 10px;
+      border-radius: 10px;
+      background: #fafafa;
+      border: 1px solid #eee;
+      margin-bottom: 8px;
+    }
+
+    .search-results li strong {
+      font-weight: 600;
+      color: #222;
+    }
+
+    .search-results li small {
+      color: #666;
+    }
+
+    .no-result {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #777;
+    }
+
     /*------ 카테고리 --------*/
 
     .category {
@@ -439,6 +483,8 @@
       <a href="#">주택대출</a>
       <a href="#">신용카드</a>
     </div>
+
+    <div id="search-result-area"></div>
   </section>
 
   <!-- 카테고리 -->
@@ -659,4 +705,75 @@
           })
           .catch(err => console.error('[Footer load failed]', err));
 
+</script>
+
+<script>
+  async function searchProducts(){
+    const input = document.querySelector('.search-inner input');
+    const keyword = input.value.trim();
+    if(!keyword) {
+      alert('검색어를 입력하세요');
+      input.focus();
+      return;
+    }
+
+    let res;
+
+    try{
+      res = await fetch(`/BNK/main/search?keyword=${encodeURIComponent(keyword)}`);
+    } catch (e){
+      console.error(e);
+      alert('검색 중 오류가 발생했습니다.');
+      return;
+    }
+
+    if(!res.ok){
+      alert('검색 요청에 실패했습니다');
+      return;
+    }
+
+    const data = await res.json();
+
+    const resultArea = document.querySelector('#search-result-area');
+    resultArea.innerHTML='';
+
+    if(!data || data.length === 0){
+      resultArea.innerHTML = `<p class="no-result">검색 결과가 없습니다.</p>`;
+      return;
+    }
+
+    const resultHtml = `
+    <div class="search-results">
+      <h3>검색 결과 (${data.length}개)</h3>
+      <ul>
+        ${data.map(p => `
+          <li>
+            <strong>${p.pname}</strong> (${p.ptype})<br>
+            <small>기본금리: ${p.pbirate}% / 최고금리: ${p.phirate}%</small>
+          </li>
+        `).join('')}
+      </ul>
+    </div>
+`;
+    resultArea.innerHTML = resultHtml;
+  }
+
+  // 버튼 클릭 시 검색
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.querySelector('.search-btn');
+    const input = document.querySelector('.search-inner input');
+
+    if (btn) {
+      btn.addEventListener('click', searchProducts);
+    }
+
+    // 인풋에서 Enter 치면 검색
+    if (input) {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          searchProducts();
+        }
+      });
+    }
+  });
 </script>

@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상품보기</title>
     <link rel="stylesheet" th:href="@{/css/product/product_view_style.css}">
-    <script th:src="@{/js/product/product_view.js}"></script>
+    <script id="script" th:attr="data-pid=${pid}" th:src="@{/js/product/product_view.js}"></script>
 </head>
 
 <body>
     <header>
-        <div id="header"></div>
+        <div id="header" th:replace="~{/layouts/header.html}"></div>
     </header>
     <main>
         <section class="page-wrap" id="depositDetail">
@@ -29,65 +29,69 @@
             </div>
             <p>온라인 전용 고금리 장기예금으로 언제 어디서나 편리하게</p>
 
-            <!-- 탭 -->
-            <div class="tabs" role="tablist">
-                <button class="tab active" role="tab" aria-selected="true" data-tab="guide">상품안내</button>
-                <button class="tab" role="tab" aria-selected="false" data-tab="rate">금리우대</button>
-                <button class="tab" role="tab" aria-selected="false" data-tab="terms">상품약관</button>
-            </div>
-
             <div class="grid">
                 <!-- 메인(좌) -->
                 <div class="main">
+                    <div class="card">
+                        <div class="inner">
+                            <h3 class="small" style="font-weight:800;color:#111827;margin:0 0 10px">핵심 정보</h3>
+                            <div class="kv" id="kv">
+                                <div class="box">
+                                    <div class="label">기본금리</div>
+                                    <div class="value" id="baseRate">2.80%</div>
+                                </div>
+                                <div class="box">
+                                    <div class="label">최고금리</div>
+                                    <div class="value red" id="maxRate">3.50%</div>
+                                </div>
+                                <div class="box">
+                                    <div class="label">계약기간</div>
+                                    <div class="value" id="contractPeriod">1~36개월</div>
+                                </div>
+                                <div class="box">
+                                    <div class="label">가입가격</div>
+                                    <div class="value" id="joinFee">1만원</div>
+                                </div>
+                            </div>
+                            <div class="pills" aria-label="가입방법">
+                                <!--<span class="pill">인터넷뱅킹</span>-->
+                                <!--<span class="pill">모바일뱅킹</span>-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="inner">
+                            <h3 style="margin:0 0 8px;font-weight:800">우대금리</h3>
+                            <ul style="margin-top: 10px"></ul>
+                        </div>
+                    </div>
+                    <!-- 탭 -->
+                    <div class="tabs" role="tablist">
+                        <button class="tab active" role="tab" aria-selected="true" data-tab="guide">상품안내</button>
+                        <button class="tab" role="tab" aria-selected="false" data-tab="rate">금리안내</button>
+                        <button class="tab" role="tab" aria-selected="false" data-tab="terms">상품약관</button>
+                    </div>
                     <!-- 상품안내 패널 -->
                     <section class="panel active" id="panel-guide" role="tabpanel" aria-labelledby="tab-guide">
                         <div class="card">
                             <div class="inner">
-                                <h3 class="small" style="font-weight:800;color:#111827;margin:0 0 10px">핵심 정보</h3>
-                                <div class="kv" id="kv">
-                                    <div class="box">
-                                        <div class="label">기본금리</div>
-                                        <div class="value" id="baseRate">2.80%</div>
-                                    </div>
-                                    <div class="box">
-                                        <div class="label">최고금리</div>
-                                        <div class="value red" id="maxRate">3.50%</div>
-                                    </div>
-                                    <div class="box">
-                                        <div class="label">계약기간</div>
-                                        <div class="value">1~36개월</div>
-                                    </div>
-                                    <div class="box">
-                                        <div class="label">이자지급</div>
-                                        <div class="value">만기일시</div>
-                                    </div>
-                                </div>
-                                <div class="pills" aria-label="가입방법">
-                                    <span class="pill">인터넷뱅킹</span>
-                                    <span class="pill">모바일뱅킹</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="inner">
-                                <h3 style="margin:0 0 8px;font-weight:800">상품 장점</h3>
                                 <div class="feature-list">
                                     <div class="feature">
                                         <div class="feature-title">
-                                        <span class="dot">✔</span><h4>높은 금리</h4>
-                                    </div>
-                                    <div class="feature-content">시중 최고 수준의 경쟁력 있는 금리 제공</div>
+                                            <span class="dot">✔</span><h4>높은 금리</h4>
+                                        </div>
+                                        <div class="feature-content">시중 최고 수준의 경쟁력 있는 금리 제공</div>
                                     </div>
                                     <div class="feature">
                                         <div class="feature-title">
-                                        <span class="dot">✔</span><h4>간편한 가입</h4>
+                                            <span class="dot">✔</span><h4>간편한 가입</h4>
                                         </div>
                                         <div class="feature-content">온라인으로 언제든지 간편하게 가입 가능</div>
                                     </div>
                                     <div class="feature">
                                         <div class="feature-title">
-                                        <span class="dot">✔</span><h4>다양한 우대조건</h4>
+                                            <span class="dot">✔</span><h4>다양한 우대조건</h4>
                                         </div>
                                         <div class="feature-content">급여이체, 카드실적 등 다양한 우대금리</div>
                                     </div>
@@ -136,7 +140,6 @@
                     <section class="panel" id="panel-rate" role="tabpanel" aria-labelledby="tab-rate">
                         <div class="card">
                             <div class="inner">
-                                <h3  style="padding-left: 10px;">금리안내</h3>
                                 <div class="small" style="text-align:right;color:#6b7280">
                                     금리조회 기준일자 : <span id="rateRefDate"></span>(세전, %)
                                 </div>
@@ -261,84 +264,8 @@
         </script>
     </main>
     <footer>
-        <div id="footer"></div>
+        <div id="footer" th:replace="~{/layouts/footer.html}"></div>
     </footer>
-    <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
-        <div id="bnk-chatbot-slot"></div>
-    </div>
 </body>
 
 </html>
-<!-- 탭 전환 스크립트 -->
-<script>
-    // 기준일자(오늘) 표시
-    const now = new Date();
-    const y = now.getFullYear(), m = String(now.getMonth() + 1).padStart(2, '0'), d = String(now.getDate()).padStart(2, '0');
-    const ref = `${y}-${m}-${d}`;
-    const refEl = document.getElementById('rateRefDate');
-    if (refEl) refEl.textContent = ref;
-
-    // 탭-패널 매핑
-    const tabBtns = document.querySelectorAll('.tabs .tab');
-    const panels = {
-        guide: document.getElementById('panel-guide'),
-        rate: document.getElementById('panel-rate'),
-        terms: document.getElementById('panel-terms'),
-    };
-
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // 탭 active/aria
-            tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-            btn.classList.add('active'); btn.setAttribute('aria-selected', 'true');
-
-            // 패널 전환
-            const key = btn.dataset.tab;           // guide | rate | terms
-            Object.values(panels).forEach(p => p.classList.remove('active'));
-            panels[key].classList.add('active');
-
-            // 스크롤 보정(선택): 탭 전환 시 본문 상단으로
-            // panels[key].scrollIntoView({block:'start', behavior:'smooth'});
-        });
-    });
-</script>
-<!-- 약관 불러오기 스크립트 -->
-<script>
-    // 약관 데이터 (원하면 URL을 실제 파일로 교체)
-    const TERMS = [
-        { title: '예금거래기본약관', url: '#' },
-        { title: '적립식예금약관', url: '#' },
-        { title: '주택청약종합저축 특약', url: '#' },
-        { title: '주택청약종합저축 상품설명서', url: '#' },
-    ];
-
-    function renderTerms() {
-        const ul = document.getElementById('termsList');
-        if (!ul) return;
-        ul.innerHTML = TERMS.map(t => `
-      <li class="doc-item" tabindex="0" data-url="${t.url}">
-        <span class="title">${t.title}</span>
-        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="currentColor" d="M9 6l6 6-6 6"></path>
-        </svg>
-      </li>
-    `).join('');
-
-        // 클릭/엔터 시 열기
-        ul.querySelectorAll('.doc-item').forEach(li => {
-            const open = () => {
-                const href = li.dataset.url;
-                if (href && href !== '#') window.open(href, '_blank');
-                // 데모일 땐 알림만
-                else alert(li.querySelector('.title').textContent + ' 문서를 연결해주세요.');
-            };
-            li.addEventListener('click', open);
-            li.addEventListener('keydown', e => { if (e.key === 'Enter') open(); });
-        });
-    }
-
-    // 초기 렌더 한 번 실행
-    renderTerms();
-</script>
-<!-- 헤더 푸터 불러오기 스크립트 -->
-<script src="../../static/js/product.js"></script>

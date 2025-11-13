@@ -86,7 +86,7 @@
                 <div style="display: flex; ">
                   <div>
                     <div style="font-size: 14px; color: #6B7280;">전체회원</div>
-                    <div style="font-size: 24px; color: #2B2F36;">24567</div>
+                    <div style="font-size: 24px; color: #2B2F36;"><span th:text="${countAllUsers}"></span></div>
                   </div>
                   <div style="display: flex; align-items: center; justify-content: center; margin-left: auto;border-radius: 8px; background-color: #f8e6e6; width: 48px; height: 48px;">
                     <svg width="25" height="20" viewBox="0 0 25 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -115,7 +115,7 @@
                 <div style="display: flex; ">
                   <div>
                     <div style="font-size: 14px; color: #6B7280;">신규가입</div>
-                    <div style="font-size: 24px; color: #2B2F36;">1234</div>
+                    <div style="font-size: 24px; color: #2B2F36;"><span th:text="${countSixMonthUsers}"></span></div>
                   </div>
                   <div style="display: flex; justify-content: center; align-items: center; margin-left: auto;border-radius: 8px; background-color: #ddfced; width: 48px; height: 48px;">
                     <svg width="25" height="28" viewBox="0 0 25 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -144,7 +144,7 @@
                 <div style="display: flex; ">
                   <div>
                     <div style="font-size: 14px; color: #6B7280;">휴면</div>
-                    <div style="font-size: 24px; color: #2B2F36;">567</div>
+                    <div style="font-size: 24px; color: #2B2F36;"><span th:text="${countWait}"></span></div>
                   </div>
                   <div style="display: flex; justify-content: center; align-items: center; margin-left: auto;border-radius: 8px; background-color: #f5f6f7; width: 48px; height: 48px;">
                     <svg width="25" height="20" viewBox="0 0 25 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -173,7 +173,7 @@
                 <div style="display: flex; ">
                   <div>
                     <div style="font-size: 14px; color: #6B7280;">탈퇴</div>
-                    <div style="font-size: 24px; color: #2B2F36;">89</div>
+                    <div style="font-size: 24px; color: #2B2F36;"><span th:text="${countWithdrawal}"></span></div>
                   </div>
                   <div style="display: flex; justify-content: center; align-items: center; margin-left: auto;border-radius: 8px; background-color: #f8ebda; width: 48px; height: 48px;">
                     <svg width="25" height="28" viewBox="0 0 25 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -212,55 +212,59 @@
         </div>
       </div>
       <div style="margin-top:25px; padding:30px; padding-top: 25px; box-sizing: border-box; background-color: white; width: 100%;  border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
-        <div style="display: flex; gap: 20px;">
-          <div>
-            <div style="font-size: 16px; color: #2B2F36;">이름</div>
-            <div>
-              <input class="input--ph-gray" placeholder="이름을 입력하세요" type="text" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 14px; width: 256px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-            </div>
-          </div>
-          <div>
-            <div style="font-size: 16px; color: #2B2F36;">이메일</div>
-            <div>
-              <input class="input--ph-gray" placeholder="이메일을 입력하세요" type="text" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 14px; width: 256px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-            </div>
-          </div>
-          <div>
-            <div style="font-size: 16px; color: #2B2F36;">상태</div>
-            <div>
-              <select name="condition" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 256px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                <option value="all">전체</option>
-                <option value="active">활동중</option>
-                <option value="inactivity">휴면</option>
-                <option value="withdrawl">탈퇴</option>
-              </select>
-            </div>
-          </div>
-          <div style="display: flex; gap: 10px; margin-left: auto;">
-            <div style="margin-top: auto;">
-              <button class="btn-register" style="gap:6px; box-sizing: border-box; width: 90px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
-                <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
-                  <svg  width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_191_162)">
-                    <path d="M13 11.5C13 12.9344 12.5344 14.2594 11.75 15.3344L15.7063 19.2937C16.0969 19.6844 16.0969 20.3188 15.7063 20.7094C15.3156 21.1 14.6812 21.1 14.2906 20.7094L10.3344 16.75C9.25938 17.5375 7.93437 18 6.5 18C2.90937 18 0 15.0906 0 11.5C0 7.90937 2.90937 5 6.5 5C10.0906 5 13 7.90937 13 11.5ZM6.5 16C7.09095 16 7.67611 15.8836 8.22208 15.6575C8.76804 15.4313 9.26412 15.0998 9.68198 14.682C10.0998 14.2641 10.4313 13.768 10.6575 13.2221C10.8836 12.6761 11 12.0909 11 11.5C11 10.9091 10.8836 10.3239 10.6575 9.77792C10.4313 9.23196 10.0998 8.73588 9.68198 8.31802C9.26412 7.90016 8.76804 7.56869 8.22208 7.34254C7.67611 7.1164 7.09095 7 6.5 7C5.90905 7 5.32389 7.1164 4.77792 7.34254C4.23196 7.56869 3.73588 7.90016 3.31802 8.31802C2.90016 8.73588 2.56869 9.23196 2.34254 9.77792C2.1164 10.3239 2 10.9091 2 11.5C2 12.0909 2.1164 12.6761 2.34254 13.2221C2.56869 13.768 2.90016 14.2641 3.31802 14.682C3.73588 15.0998 4.23196 15.4313 4.77792 15.6575C5.32389 15.8836 5.90905 16 6.5 16Z" fill="white"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_191_162">
-                    <path d="M0 5H16V21H0V5Z" fill="white"/>
-                    </clipPath>
-                    </defs>
-                  </svg>
-                  <div>
-                    검색
-                  </div>
+          <form th:action="@{/admin/member/search}" method="get">
+            <div style="display: flex; gap: 20px;">
+              <div>
+                <div style="font-size: 16px; color: #2B2F36;">이름</div>
+                <div>
+                  <input class="input--ph-gray" name="mname" placeholder="이름을 입력하세요" type="text" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 14px; width: 256px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
                 </div>
-              </button>
+              </div>
+              <div>
+                <div style="font-size: 16px; color: #2B2F36;">이메일</div>
+                <div>
+                  <input class="input--ph-gray" name="memail" placeholder="이메일을 입력하세요" type="text" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 14px; width: 256px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                </div>
+              </div>
+              <div>
+                <div style="font-size: 16px; color: #2B2F36;">상태</div>
+                <div>
+                  <select name="mcond" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 256px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                    <option value="all">전체</option>
+                    <option value="활동중">활동중</option>
+                    <option value="휴면">휴면</option>
+                    <option value="탈퇴">탈퇴</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display: flex; gap: 10px; margin-left: auto;">
+                <div style="margin-top: auto;">
+                  <button type="submit" class="btn-register" style="gap:6px; box-sizing: border-box; width: 90px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
+                      <svg  width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_191_162)">
+                        <path d="M13 11.5C13 12.9344 12.5344 14.2594 11.75 15.3344L15.7063 19.2937C16.0969 19.6844 16.0969 20.3188 15.7063 20.7094C15.3156 21.1 14.6812 21.1 14.2906 20.7094L10.3344 16.75C9.25938 17.5375 7.93437 18 6.5 18C2.90937 18 0 15.0906 0 11.5C0 7.90937 2.90937 5 6.5 5C10.0906 5 13 7.90937 13 11.5ZM6.5 16C7.09095 16 7.67611 15.8836 8.22208 15.6575C8.76804 15.4313 9.26412 15.0998 9.68198 14.682C10.0998 14.2641 10.4313 13.768 10.6575 13.2221C10.8836 12.6761 11 12.0909 11 11.5C11 10.9091 10.8836 10.3239 10.6575 9.77792C10.4313 9.23196 10.0998 8.73588 9.68198 8.31802C9.26412 7.90016 8.76804 7.56869 8.22208 7.34254C7.67611 7.1164 7.09095 7 6.5 7C5.90905 7 5.32389 7.1164 4.77792 7.34254C4.23196 7.56869 3.73588 7.90016 3.31802 8.31802C2.90016 8.73588 2.56869 9.23196 2.34254 9.77792C2.1164 10.3239 2 10.9091 2 11.5C2 12.0909 2.1164 12.6761 2.34254 13.2221C2.56869 13.768 2.90016 14.2641 3.31802 14.682C3.73588 15.0998 4.23196 15.4313 4.77792 15.6575C5.32389 15.8836 5.90905 16 6.5 16Z" fill="white"/>
+                        </g>
+                        <defs>
+                        <clipPath id="clip0_191_162">
+                        <path d="M0 5H16V21H0V5Z" fill="white"/>
+                        </clipPath>
+                        </defs>
+                      </svg>
+                      <div>
+                        검색
+                      </div>
+                    </div>
+                  </button>
+                </div>
+                <div style="margin-top: auto;">
+                  <button th:onclick="|location.href='@{/admin/member}'|"
+                          type="button"
+                          class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 90px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">초기화</button>
+                </div>
+              </div>
             </div>
-            <div style="margin-top: auto;">
-              <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 90px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">초기화</button>
-            </div>
-          </div>
-        </div>
+          </form>
       </div>
       <style>
         .btn-register {
@@ -328,16 +332,17 @@
             <th style="width:200px;">등급</th>
             <th style="">상태</th>
           </tr>
-          <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-            <td>#001</td>
-            <td>김철수</td>
-            <td>kim@example.com</td>
-            <td>2024.01.15</td>
+          <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;"
+          th:each="user, stat:${pageResponseDTO.dtoList}">
+            <td><span th:text="${pageResponseDTO.total - ( (pageResponseDTO.pg - 1) * pageResponseDTO.size + stat.index )}"></span></td>
+            <td><span th:text="${user.mname}"></span></td>
+            <td><span th:text="${user.memail}"></span></td>
+            <td><span th:text="${#temporals.format(user.mdate, 'yyyy-MM-dd')}"></span></td>
             <td>
-                <div class="status-badge">Family</div>
+                <div class="status-badge"><span th:text="${user.mgrade}"></span></div>
             </td>
             <td style="vertical-align: middle; text-align: center;">
-              활동중
+                <span th:text="${user.mcond}"></span>
             </td>
           </tr>
         </table>
@@ -428,24 +433,29 @@
               });
           </script>
       </div>
-      <div class="pager" style="margin-top: 25px; display:flex; justify-content:center; align-items:center;">
-        <button class="page-btn page-prev" aria-label="이전 페이지">
-          <!-- 이전 아이콘 -->
-          <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.293701 7.29414C-0.0969238 7.68477 -0.0969238 8.31914 0.293701 8.70977L6.2937 14.7098C6.68433 15.1004 7.3187 15.1004 7.70933 14.7098C8.09995 14.3191 8.09995 13.6848 7.70933 13.2941L2.41558 8.00039L7.7062 2.70664C8.09683 2.31602 8.09683 1.68164 7.7062 1.29102C7.31558 0.900391 6.6812 0.900391 6.29058 1.29102L0.290576 7.29102L0.293701 7.29414Z" />
-          </svg>
-        </button>
+        <div class="pager" style="width: 100%;margin-top: 25px; display:grid; grid-template-columns: 1fr auto 1fr; align-items:center;">
+            <div style="display: flex; grid-column: 2; width: 100%;">
+                <a th:if="${pageResponseDTO.prev}" th:href="@{/admin/member(pg=${pageResponseDTO.pg - 1})}" class="prev page-btn page-prev" style="margin-right: 8px;">
+                    <!-- 이전 아이콘 -->
+                    <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.293701 7.29414C-0.0969238 7.68477 -0.0969238 8.31914 0.293701 8.70977L6.2937 14.7098C6.68433 15.1004 7.3187 15.1004 7.70933 14.7098C8.09995 14.3191 8.09995 13.6848 7.70933 13.2941L2.41558 8.00039L7.7062 2.70664C8.09683 2.31602 8.09683 1.68164 7.7062 1.29102C7.31558 0.900391 6.6812 0.900391 6.29058 1.29102L0.290576 7.29102L0.293701 7.29414Z" />
+                    </svg>
+                </a>
+                <span th:unless="${pageResponseDTO.prev}" class="placeholder" aria-hidden="true"></span>
 
-        <button class="page-btn is-active" aria-current="page">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
+                <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                    <a th:href="@{/admin/member(pg=${num})}" th:class="${num == pageResponseDTO.pg ? 'page-btn is-active' : 'page-btn'}" style="margin-right: 8px; text-decoration: none;">[[${num}]]</a>
+                </th:block>
 
-        <button class="page-btn page-next" aria-label="다음 페이지">
-          <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9.70615 7.29414C10.0968 7.68477 10.0968 8.31914 9.70615 8.70977L3.70615 14.7098C3.31553 15.1004 2.68115 15.1004 2.29053 14.7098C1.8999 14.3191 1.8999 13.6848 2.29053 13.2941L7.58428 8.00039L2.29365 2.70664C1.90303 2.31602 1.90303 1.68164 2.29365 1.29102C2.68428 0.900391 3.31865 0.900391 3.70928 1.29102L9.70928 7.29102L9.70615 7.29414Z" fill="#2B2F36"/>
-          </svg>
-        </button>
-      </div>
+                <a th:if="${pageResponseDTO.next}" th:href="@{/admin/member(pg=${pageResponseDTO.pg + 1})}" class="next page-btn page-next">
+                    <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.70615 7.29414C10.0968 7.68477 10.0968 8.31914 9.70615 8.70977L3.70615 14.7098C3.31553 15.1004 2.68115 15.1004 2.29053 14.7098C1.8999 14.3191 1.8999 13.6848 2.29053 13.2941L7.58428 8.00039L2.29365 2.70664C1.90303 2.31602 1.90303 1.68164 2.29365 1.29102C2.68428 0.900391 3.31865 0.900391 3.70928 1.29102L9.70928 7.29102L9.70615 7.29414Z" fill="#2B2F36"/>
+                    </svg>
+                </a>
+                <span th:unless="${pageResponseDTO.next}" class="placeholder" aria-hidden="true"></span>
+
+            </div>
+        </div>
       <style>
         .pager { gap: 8px; }
         .page-btn{
@@ -477,6 +487,17 @@
         .page-btn:hover svg path{ opacity:.9; }
         /* 비활성화가 필요할 경우 */
         .page-btn.is-disabled{ opacity:.4; pointer-events:none; }
+        /* 자리만 차지하는 placeholder (hover/클릭 불가) */
+        .placeholder{
+            width:42px; height:40px; border-radius:8px;
+            background:#F6F6F8;             /* 필요하면 투명으로 */
+            margin-right:8px;                /* 이전쪽과 동일 간격 */
+            pointer-events:none;             /* 클릭/hover 무시 */
+            cursor:default;
+            display:flex; align-items:center; justify-content:center;
+            border:1px solid transparent;    /* 정렬용 테두리 두께 맞춤 */
+            box-shadow:none;
+        }
       </style>
       <script>
         document.addEventListener('DOMContentLoaded', () => {

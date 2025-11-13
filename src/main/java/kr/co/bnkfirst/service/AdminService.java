@@ -44,7 +44,7 @@ public class AdminService {
 
     // 상품 삭제
 
-    public void deleteByProduct(String pid){
+    public void deleteByProduct(String pid) {
         adminMapper.deleteByProduct(pid);
     }
 
@@ -53,7 +53,7 @@ public class AdminService {
         // MyBatis 처리
         List<UsersDTO> dtoList = adminMapper.selectAllUsers(pageRequestDTO);
 
-        int total = adminMapper.selectCountTotal(pageRequestDTO);
+        int total = adminMapper.selectCountTotalUsers(pageRequestDTO);
 
         return PageResponseAdminUsersDTO.builder()
                 .pageRequestDTO(pageRequestDTO)
@@ -66,5 +66,25 @@ public class AdminService {
         return adminMapper.selectCountTotalUsers(pageRequestDTO);
     }
 
+
+
+
+
+    // 전체회원 수 출력
+    public int countAllUsers(){
+        return adminMapper.countAllUsers();
+    };
+    // 신규가입 수 출력(현재 시간으로부터 6개월까지)
+    public int countSixMonthUsers(){
+        return adminMapper.countSixMonthUsers();
+    };
+    // 상태가 휴면인 회원 수 출력
+    public int countWait(){
+        return adminMapper.countWait();
+    };
+    // 상태가 탈퇴인 회원 수 출력
+    public int countWithdrawal(){
+        return adminMapper.countWithdrawal();
+    };
 
 }

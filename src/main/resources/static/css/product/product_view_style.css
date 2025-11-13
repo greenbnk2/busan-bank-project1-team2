@@ -195,7 +195,8 @@ main {
     display: flex;
     gap: 18px;
     border-bottom: 2px solid #f1f5f9;
-    margin-top: 6px
+    margin-top: 6px;
+    margin-bottom: 15px;
 }
 
 .tab {
@@ -206,6 +207,7 @@ main {
     cursor: pointer;
     border: none;
     background: none;
+    font-size: larger;
 }
 
 .tab.active {
@@ -286,6 +288,10 @@ main {
 
 .kv .value.red {
     color: var(--red)
+}
+
+#joinFee {
+    text-wrap: nowrap;
 }
 
 .pills {

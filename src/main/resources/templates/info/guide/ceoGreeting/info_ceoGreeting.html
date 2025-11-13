@@ -75,8 +75,8 @@
 
                         <!-- 왼쪽 CEO 사진 -->
                         <div style="flex:0 0 300px; text-align:center;">
-                            <img src="../../assets/img/bnk_ceo_2.png" alt="부산은행 CEO 방성빈"
-                                style="width:280px; border-radius:8px;">
+                            <img src="/BNK/images/info_bnk_ceo_2.png" alt="부산은행 CEO 방성빈"
+                                 style="width:280px; border-radius:8px;">
                             <p style="font-size:18px; font-weight:700; margin-top:16px;">부산은행 CEO <span
                                     style="color:#000;"><B>방성빈</B></span></p>
                         </div>
@@ -143,7 +143,7 @@
         const titles = document.querySelectorAll(".menu-title");
         titles.forEach(title => {
             title.addEventListener("click", () => {
-                const isActive = title.clWassList.contains("active");
+                const isActive = title.classList.contains("active");
                 titles.forEach(t => {
                     t.classList.remove("active");
                     const next = t.nextElementSibling;

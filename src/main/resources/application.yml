@@ -1,7 +1,7 @@
 # ===== common (local/prod 공통) =====
 spring:
   application:
-    name: BNKFirst
+    name: BUSANBANK
   profiles:
     active: prod
 

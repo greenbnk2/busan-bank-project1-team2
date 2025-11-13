@@ -38,4 +38,9 @@ public class PcontractDTO {
     private String pname;
     private String ptype;
     private float phirate;
+
+    // 추가 컬럼 - 손진일
+    private String mname;
+    private String mphone;
+    private String pwtpi;
 }

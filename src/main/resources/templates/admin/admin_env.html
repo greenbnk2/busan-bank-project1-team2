@@ -109,11 +109,11 @@
           </div>
           <div style="margin-top: 15px;font-size: 16px; color: #2B2F36;">대표 전화</div>
           <div>
-            <input value="051-1234-5678" type="text" style="margin-top: 13px;box-sizing: border-box;outline:none; padding-left:15px; font-size: 16px; width: 100%; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+            <input value="1588-6200" type="text" style="margin-top: 13px;box-sizing: border-box;outline:none; padding-left:15px; font-size: 16px; width: 100%; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
           </div>
           <div style="margin-top: 15px;font-size: 16px; color: #2B2F36;">주소</div>
           <div>
-            <textarea name="" id="" style="margin-top: 13px;box-sizing: border-box; resize:none; padding: 20px; height: 130px; size-adjust: none; outline:none; padding-left:15px; font-size: 16px; width: 100%; border:1px solid #D1D5DB; border-radius: 6px;">부산광역시 중구 중앙대로 63 (중앙동4가)</textarea>
+            <textarea name="" id="" style="margin-top: 13px;box-sizing: border-box; resize:none; padding: 20px; height: 130px; size-adjust: none; outline:none; padding-left:15px; font-size: 16px; width: 100%; border:1px solid #D1D5DB; border-radius: 6px;">부산광역시 남구 문현금융로 30 (문현동)</textarea>
           </div>
         </div>
         <div style="margin-left:25px; padding:30px; box-sizing: border-box; background-color: white; width: 587.5px; height: 571px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
@@ -132,8 +132,9 @@
           <div style="margin-top: 13px;display: flex; justify-content: center; align-items: center; border: 2px dotted #D1D5DB; border-radius: 12px; background-color: #F9FAFB; width: 100%; height: 164px;">
             <div>
               <div>
-                <img th:src="@{/images/bnk_logo.svg}"
-                    alt=""
+                <img id="logoPreview"
+                     th:src="@{/upload/images/bnk_logo.svg}"
+                    alt="현재 로고 미리보기"
                     style="width:161px; height:43px;">
               </div>
               <div data-brand-text-exempt style="font-size: 14px; color: #6B7280; text-align: center; margin-top: 10px;">
@@ -142,26 +143,27 @@
             </div>
           </div>
           <div style="margin-top: 20px;">
-            <!-- 실제 파일 입력: 숨김 -->
-            <input id="logoFile" type="file" accept="image/*" class="visually-hidden">
+              <form th:action="@{/tologo}" method="post" enctype="multipart/form-data" id="logoForm">
+                <!-- 실제 파일 입력: 숨김 -->
+                <input id="logoFile" name="file" type="file" accept="image/*" class="visually-hidden">
 
-            <!-- 커스텀 업로드 버튼 -->
-            <label for="logoFile" class="file-cta">
-              <!-- 가운데 아이콘 -->
-              <span class="cta-icon" aria-hidden="true">
-                <!-- 너가 준 SVG (흰색) -->
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_185_661)">
-                    <path d="M9 3.41582V11.0002C9 11.5533 8.55313 12.0002 8 12.0002C7.44688 12.0002 7 11.5533 7 11.0002V3.41582L4.70625 5.70957C4.31563 6.1002 3.68125 6.1002 3.29063 5.70957C2.9 5.31895 2.9 4.68457 3.29063 4.29395L7.29063 0.293945C7.68125 -0.0966797 8.31563 -0.0966797 8.70625 0.293945L12.7063 4.29395C13.0969 4.68457 13.0969 5.31895 12.7063 5.70957C12.3156 6.1002 11.6812 6.1002 11.2906 5.70957L9 3.41582ZM2 11.0002H6C6 12.1033 6.89687 13.0002 8 13.0002C9.10312 13.0002 10 12.1033 10 11.0002H14C15.1031 11.0002 16 11.8971 16 13.0002V14.0002C16 15.1033 15.1031 16.0002 14 16.0002H2C0.896875 16.0002 0 15.1033 0 14.0002V13.0002C0 11.8971 0.896875 11.0002 2 11.0002ZM13.5 14.2502C13.6989 14.2502 13.8897 14.1712 14.0303 14.0305C14.171 13.8899 14.25 13.6991 14.25 13.5002C14.25 13.3013 14.171 13.1105 14.0303 12.9699C13.8897 12.8292 13.6989 12.7502 13.5 12.7502C13.3011 12.7502 13.1103 12.8292 12.9697 12.9699C12.829 13.1105 12.75 13.3013 12.75 13.5002C12.75 13.6991 12.829 13.8899 12.9697 14.0305C13.1103 14.1712 13.3011 14.2502 13.5 14.2502Z" fill="white"/>
-                  </g>
-                  <defs><clipPath id="clip0_185_661"><path d="M0 0H16V16H0V0Z" fill="white"/></clipPath></defs>
-                </svg>
-              </span>
+                <!-- 커스텀 업로드 버튼 -->
+                <label for="logoFile" class="file-cta">
+                  <!-- 가운데 아이콘 -->
+                  <span class="cta-icon" aria-hidden="true">
+                    <!-- 너가 준 SVG (흰색) -->
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g clip-path="url(#clip0_185_661)">
+                        <path d="M9 3.41582V11.0002C9 11.5533 8.55313 12.0002 8 12.0002C7.44688 12.0002 7 11.5533 7 11.0002V3.41582L4.70625 5.70957C4.31563 6.1002 3.68125 6.1002 3.29063 5.70957C2.9 5.31895 2.9 4.68457 3.29063 4.29395L7.29063 0.293945C7.68125 -0.0966797 8.31563 -0.0966797 8.70625 0.293945L12.7063 4.29395C13.0969 4.68457 13.0969 5.31895 12.7063 5.70957C12.3156 6.1002 11.6812 6.1002 11.2906 5.70957L9 3.41582ZM2 11.0002H6C6 12.1033 6.89687 13.0002 8 13.0002C9.10312 13.0002 10 12.1033 10 11.0002H14C15.1031 11.0002 16 11.8971 16 13.0002V14.0002C16 15.1033 15.1031 16.0002 14 16.0002H2C0.896875 16.0002 0 15.1033 0 14.0002V13.0002C0 11.8971 0.896875 11.0002 2 11.0002ZM13.5 14.2502C13.6989 14.2502 13.8897 14.1712 14.0303 14.0305C14.171 13.8899 14.25 13.6991 14.25 13.5002C14.25 13.3013 14.171 13.1105 14.0303 12.9699C13.8897 12.8292 13.6989 12.7502 13.5 12.7502C13.3011 12.7502 13.1103 12.8292 12.9697 12.9699C12.829 13.1105 12.75 13.3013 12.75 13.5002C12.75 13.6991 12.829 13.8899 12.9697 14.0305C13.1103 14.1712 13.3011 14.2502 13.5 14.2502Z" fill="white"/>
+                      </g>
+                      <defs><clipPath id="clip0_185_661"><path d="M0 0H16V16H0V0Z" fill="white"/></clipPath></defs>
+                    </svg>
+                  </span>
 
-              <!-- 오른쪽 텍스트 -->
-              <span class="cta-text">로고 변경</span>
-            </label>
-
+                  <!-- 오른쪽 텍스트 -->
+                  <span class="cta-text">로고 변경</span>
+                </label>
+              </form>
             <style>
               /* 완전 숨김(접근성 안전) */
               .visually-hidden{
@@ -383,7 +385,6 @@
                 </div>
                 <div style="margin-top: 15px; width: 387.75px; height: 12px; border-radius: 8px; background-color: #E5E7EB;"></div>
                 <div style="margin-top: 10px; width: 258.5px; height: 12px; border-radius: 8px; background-color: #E5E7EB;"></div>
-                <button class="btn-register" style="margin-top: 15px; cursor: pointer; box-sizing: border-box; width: 86px; height: 36px; background-color: #D91A1A; color: white; font-size: 14px; border-radius: 8px; border:none;">버튼 예시</button>
               </div>
             </div>
             <button class="btn-outline-brand" style="width: 100%; padding: 10px; margin-top: 10px; cursor: pointer; border:1px solid #D91A1A; box-sizing: border-box; background-color: white; border-radius: 8px; color: #D91A1A;">
@@ -859,6 +860,43 @@
   // 실제 호출: 기존 chatbot.html(또는 chatbot_test.html) 경로로 바꿔도 됩니다.
   importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
     .catch(err => console.error('[Chatbot load failed]', err));
+  </script>
+  <script>
+      (function initLogoUpload(){
+          const input   = document.getElementById('logoFile');
+          const form    = document.getElementById('logoForm');
+          const preview = document.getElementById('logoPreview');
+          if(!input || !form || !preview) return;
+
+          input.addEventListener('change', ()=>{
+              const file = input.files?.[0];
+              if(!file) return;
+
+              // 2MB 제한 & 이미지 타입 체크
+              if(!file.type.startsWith('image/')){ alert('이미지 파일만 업로드 가능합니다.'); input.value=''; return; }
+              if(file.size > 2*1024*1024){ alert('최대 2MB까지 업로드할 수 있습니다.'); input.value=''; return; }
+
+              // 즉시 미리보기
+              const url = URL.createObjectURL(file);
+              preview.src = url; preview.onload = ()=> URL.revokeObjectURL(url);
+
+              // 서버 전송(페이지 리로드 없이)
+              const fd = new FormData(form);
+              fetch(form.action, { method: 'POST', body: fd })
+                  .then(r => r.ok ? r.json() : Promise.reject())
+                  .then(({ok,version,msg})=>{
+                      if(!ok){ alert(msg || '업로드 실패'); return; }
+                      // 저장 파일 캐시 무력화(서버 저장 완료본으로 교체)
+                      const base = '/upload/images/bnk_logo.svg';
+                      preview.src = `${base}?v=${version}`;
+
+                      const to  = /*[[@{/admin/env}]]*/'';
+                      // history에 남기지 않으려면 replace, 남기려면 href/assign
+                      window.location.replace(to);
+                  })
+                  .catch(()=> alert('서버 통신 중 오류가 발생했습니다.'));
+          });
+      })();
   </script>
   <footer data-brand-exempt>
       <div th:replace="~{layouts/footer.html}"></div>

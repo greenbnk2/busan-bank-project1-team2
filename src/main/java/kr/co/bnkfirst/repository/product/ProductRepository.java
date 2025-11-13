@@ -51,4 +51,6 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
     );
 
     Optional<Product> findByPid(String pid);
+
+    List<Product> findByPnameContainingIgnoreCaseOrPtypeContainingIgnoreCase(String pname, String ptype);
 }
