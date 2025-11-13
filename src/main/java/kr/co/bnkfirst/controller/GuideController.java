@@ -43,4 +43,5 @@ public class GuideController {
         return "redirect:info/guide/info_ceoGreeting"; // templates/info/guide/index.html
     }
 
+
 }

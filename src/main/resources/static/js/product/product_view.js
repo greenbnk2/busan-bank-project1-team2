@@ -157,4 +157,86 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 초기 렌더 한 번 실행
     // renderTerms();
+
+    const DUMMY_PIRINFO = {
+        "title":"우대이율",
+        "children": [
+            {
+                "content":"개인형 우대이율 (최대 0.40%p)",
+                "type":"list",
+                "children":[
+                    {
+                        "content":"저탄소 실천 적금 보유 우대이율 : 0.10%p",
+                        "type":"list",
+                        "children":[
+                            {
+                                "content":"이 예금의 해지 시 저탄소 실천 적금 보유하고있는 경우 적용",
+                                "type":"text"
+                            },
+                            {
+                                "content":"만기일 당일 해지분은 우대이율 적용",
+                                "type":"text"
+                            }
+                        ]
+                    },
+                    {
+                        "content":"비대면 채널 가입 또는 종이통장 미발행 우대이율 : 0.10%p",
+                        "type":"list",
+                        "children":[
+                            {
+                                "content":"비대면 채널을 통해 이 예금을 가입하거나 만기일까지 종이통장을 미발행하는 경우 적용",
+                                "type":"text"
+                            },
+                            {
+                                "content":"단, 종이통장 미발행 우대이율은 개인 및 개인사업자만 적용가능(법인 불가)",
+                                "type":"text"
+                            }
+                        ]
+                    },
+                    {
+                        "content":"대중교통 이용실적 우대이율 : 0.10%p",
+                        "type":"list",
+                        "children":[
+                            {
+                                "content":[
+                                    {
+                                        "text":"부산은행 신용(체크)카드 후불교통 이용 실적 발생 월이 가입기간의 2/3개월 이상 존재하는 경우 적용"
+                                    },
+                                    {
+                                        "text":"(단, 페이형식 결제(삼성페이, 페이코 등) 및 후불 하이패스 이용실적은 제외)",
+                                        "color":"red"
+                                    },
+                                    {
+                                        "text":"※ 대중교통의 범위 : 지하철, 시내버스, 시외버스, 공항버스"
+                                    }
+                                ],
+                                "type":"text"
+                            },
+                            {
+                                "content":"만기일 전일까지 매월 말일 기준 실적 보유",
+                                "type":"text"
+                            }
+                        ]
+                    },
+                    {
+                        "content":"탄소포인트제 참여 우대이율 : 0.10%p",
+                        "type":"list",
+                        "children":[
+                            {
+                                "content":"정부(https://cpoint.or.kr)에서 시행하는 '탄소포인트제'에 참여하고 만기일 전일까지 '탄소포인트제 가입 확인서'를 은행에 제시하는 경우 적용(영업점 창구를 통한 대면 제시 또는 모바일뱅킹을 통해 사진 촬영하여 제시)",
+                                "type":"text"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+
+    function renderInfo(pirinfo) {
+        const prodInfo = document.getElementById('prodInfo');
+        const productInfo = null;
+        // try
+        // productInfo = JSON.parse(pirinfo);
+    }
 });

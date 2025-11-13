@@ -55,30 +55,30 @@
     <!-- 가입 정보 -->       
     <div class="form-card" style="margin-top: 20px;">      
       <table class="member-table">
-        <tr class="title-row">
-          <td colspan="4">가입정보</td>
-        </tr>
+          <tr class="title-row">
+              <td colspan="4">가입정보</td>
+          </tr>
+          <tr>
+              <td class="label-td">이름</td>
+              <td class="value-td wide" th:text="${member.mname}"></td>
 
-        <tr>
-          <td class="label-td">이름</td>
-          <td class="value-td wide">홍길동</td>
-          <td class="label-td">휴대폰</td>
-          <td class="value-td">010-0000-0000</td>
-        </tr>
+              <td class="label-td">휴대폰</td>
+              <td class="value-td" th:text="${member.mphone}"></td>
+          </tr>
+          <tr>
+              <td class="label-td">아이디</td>
+              <td class="value-td wide" th:text="${member.mid}"></td>
 
-        <tr>
-          <td class="label-td">아이디</td>
-          <td class="value-td wide">hong123</td>
-          <td class="label-td">가입일시</td>
-          <td class="value-td">2025.11.04 00:00</td>
-        </tr>
+              <td class="label-td">가입일시</td>
+              <td class="value-td" th:text="'SYSDATE'"></td>
+          </tr>
+          <tr>
+              <td class="label-td">이메일</td>
+              <td class="value-td wide" th:text="${member.memail}"></td>
 
-        <tr>
-          <td class="label-td">이메일</td>
-          <td class="value-td wide">hong@email.com</td>
-          <td class="label-td">회원등급</td>
-          <td class="value-td">일반회원</td>
-        </tr>
+              <td class="label-td">회원등급</td>
+              <td class="value-td" th:text="'Family'"></td>
+          </tr>
       </table>
 
       <!-- 버튼 -->

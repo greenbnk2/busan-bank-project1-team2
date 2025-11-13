@@ -450,10 +450,7 @@
   <!-- 배너 -->
   <section class="banner">
     <div class="banner-content">
-      <img th:src="@{/images/sample_main_banner_image.png}" alt="샘플배너이미지">
-    </div>
-    <div class="mascot-img">
-      <img th:src="@{/images/mascot_character.png}" alt="BNK 캐릭터">
+      <img th:src="@{/images/main_banner1.png}" alt="샘플배너이미지">
     </div>
   </section>
 
@@ -526,7 +523,7 @@
     </div>
   </section>
 
-  <!-- 공지사항 + 이벤트 -->
+  <!-- 공지사항 -->
   <section class="notice-event">
     <div class="notice">
       <div class="notice-header">
@@ -534,63 +531,44 @@
         <a href="#">전체보기</a>
       </div>
       <ul>
-        <li>
-          <span class="date">2024.11.03</span>
-          <span class="title">금리 변동 안내</span>
-          <span class="badge">중요</span>
-          <p>예금 및 대출 금리 변동사항을 안내드립니다.</p>
-        </li>
-        <li>
-          <span class="date">2024.11.02</span>
-          <span class="title">시스템 점검 안내</span>
-          <p>인터넷뱅킹 시스템 점검 일정을 안내드립니다.</p>
-        </li>
-        <li>
-          <span class="date">2024.11.01</span>
-          <span class="title">신규 지점 개점 안내</span>
-          <p>해운대구 신규 지점 개점을 안내드립니다.</p>
-        </li>
-        <li>
-          <span class="date">2024.11.01</span>
-          <span class="title">신규 지점 개점 안내</span>
-          <p>해운대구 신규 지점 개점을 안내드립니다.</p>
+        <li th:each="doc : ${latestDocs}">
+          <!-- 날짜: docupdate 사용 -->
+          <span class="date"
+                th:text="${#temporals.format(doc.docupdate, 'yyyy.MM.dd')}">
+          2025.11.13
+        </span>
+
+          <!-- 제목: doctitle 사용 -->
+          <span class="title" th:text="${doc.doctitle}">
+          문서 제목
+        </span>
+
+          <!-- 중요 여부 필드가 없으니까 뱃지는 우선 주석 처리 or 삭제 -->
+          <!--
+          <span class="badge" th:if="${doc.important}">
+            중요
+          </span>
+          -->
+
+          <!-- 내용/요약: doccontent 사용 -->
+          <p th:text="${doc.doccontent}">
+            문서 내용 요약
+          </p>
         </li>
       </ul>
     </div>
 
+    <!-- 이벤트 -->
     <div class="event">
       <div class="event-header">
         <h3>이벤트 / 혜택</h3>
         <a href="#">전체보기</a>
       </div>
-      <div class="event-item">
-        <div>
-          <h4>신규고객 환영 이벤트</h4>
-          <p>최대 10만원 캐시백</p>
-        </div>
-        <button class="join-btn">신청하기</button>
-      </div>
 
-      <div class="event-item">
-        <div>
-          <h4>적금 특별금리 이벤트</h4>
-          <p>연 4.5% 우대금리</p>
-        </div>
-        <button class="join-btn">신청하기</button>
-      </div>
-
-      <div class="event-item">
-        <div>
-          <h4>적금 특별금리 이벤트</h4>
-          <p>연 4.5% 우대금리</p>
-        </div>
-        <button class="join-btn">신청하기</button>
-      </div>
-
-      <div class="event-item">
-        <div>
-          <h4>적금 특별금리 이벤트</h4>
-          <p>연 4.5% 우대금리</p>
+      <div th:each="ev : ${events}" class="event-item">
+        <div class="event-info">
+          <h4 th:text="${ev.EVTITLE}">이벤트 제목</h4>
+          <p th:text="${ev.EVCONTENT}">이벤트 내용</p>
         </div>
         <button class="join-btn">신청하기</button>
       </div>

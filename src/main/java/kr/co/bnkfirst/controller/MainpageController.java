@@ -1,11 +1,15 @@
 package kr.co.bnkfirst.controller;
 
+import kr.co.bnkfirst.dto.DocumentDTO;
+import kr.co.bnkfirst.dto.MainEventDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
+import kr.co.bnkfirst.service.DocumentService;
 import kr.co.bnkfirst.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,8 +23,17 @@ public class MainpageController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private DocumentService documentService;
+
     @GetMapping({"/main/main","/"})
-    public String mainpage() {
+    public String mainpage(Model model) {
+        List<DocumentDTO> latestDocs = documentService.getLatestDocuments4();
+        List<MainEventDTO> eventList = documentService.getMainEvents();
+
+        model.addAttribute("latestDocs", latestDocs);
+        model.addAttribute("events", eventList);
+
         return "/main/main";
     }
 
@@ -37,6 +50,12 @@ public class MainpageController {
                     p.getPname(), p.getPtype(), p.getPbirate(), p.getPhirate());
         }
         return products;
+    }
+
+    @GetMapping("/docs/test")
+    @ResponseBody
+    public List<MainEventDTO> testLatestDocs() {
+        return documentService.getMainEvents();
     }
 
 }
