@@ -235,8 +235,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderInfo(pirinfo) {
         const prodInfo = document.getElementById('prodInfo');
-        const productInfo = null;
-        // try
-        // productInfo = JSON.parse(pirinfo);
+        let productInfo = null;
+        try {
+            productInfo = JSON.parse(pirinfo);
+        } catch (e) {
+            console.error('JSON 파싱 실패');
+        }
+        let htmls = `<h4>${pirinfo.title}</h4>`;
+        if (pirinfo.children.isArray) {
+            let featureContent = `<div class="feature-content">`;
+            for (const child of pirinfo.children) {
+                switch (child.type) {
+                    case "list":
+                        featureContent += `<ul><li>${child.content}`;
+
+                        featureContent += `</li></ul>`
+                        break;
+                    case "text":
+                }
+
+            }
+            featureContent = featureContent + `</div>`;
+        }
     }
 });

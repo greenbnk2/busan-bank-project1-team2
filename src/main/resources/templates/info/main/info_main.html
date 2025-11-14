@@ -1,19 +1,7 @@
 <div style="margin-top:10px;"></div>
-<div id="header"></div>
-
-<script>
-  // header.html 파일을 불러와서 #header에 삽입
-  fetch('../_header.html')
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById('header').innerHTML = data;
-    });
-  fetch('/layouts/footer.html')
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById('footer').innerHTML = data;
-    });
-</script>
+<header>
+    <div th:replace="~{layouts/info/_header.html}"></div>
+</header>
 
 <main>
   <!-- Hero Section -->
@@ -65,7 +53,6 @@
 </div>
 
 
-<div id="footer"></div>
 <meta name="theme-color" content="#E60012" />
 <link rel="icon"
   href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23E60012'/%3E%3Ctext x='50' y='58' font-size='56' text-anchor='middle' fill='white' font-family='Arial, Helvetica, sans-serif'%3EB%3C/text%3E%3C/svg%3E" />
@@ -248,3 +235,6 @@
     margin-left: 6px;
   }
 </style>
+<header>
+    <div th:replace="~{layouts/footer.html}"></div>
+</header>

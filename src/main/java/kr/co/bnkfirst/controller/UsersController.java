@@ -82,7 +82,9 @@ public class UsersController {
         boolean result = usersService.register(usersDTO);
 
         if (result) {
-            session.setAttribute("newUser", usersDTO);
+            UsersDTO savedUser = usersService.findByMid(usersDTO.getMid());
+
+            session.setAttribute("newUser", savedUser);
             return "redirect:active";
         } else {
             return "redirect:info";

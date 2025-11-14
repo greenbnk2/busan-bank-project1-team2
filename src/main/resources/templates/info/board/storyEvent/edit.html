@@ -8,7 +8,9 @@
 </head>
 
 <body>
-  <div id="header"></div>
+<header>
+    <div th:replace="~{layouts/info/_header.html}"></div>
+</header>
 
   <main>
     <div class="page-title">
@@ -97,4 +99,8 @@
     }
   </script>
 </body>
+
+<header>
+    <div th:replace="~{layouts/footer.html}"></div>
+</header>
 </html>

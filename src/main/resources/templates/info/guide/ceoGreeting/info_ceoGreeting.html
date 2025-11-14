@@ -9,7 +9,9 @@
 </head>
 
 <body>
-    <div id="header"></div>
+<header>
+    <div th:replace="~{layouts/info/_header.html}"></div>
+</header>
 
     <main>
         <!-- ===== 사이드바 ===== -->
@@ -18,18 +20,18 @@
 
             <div class="menu-item">
                 <div class="menu-item">
-                    <a href="#" class="menu-title">CEO인사말</a>
+                    <a th:href="@{/info/guide/ceoGreeting}" class="menu-title">CEO인사말</a>
                 </div>
             </div>
 
             <div class="menu-item">
                 <div class="menu-title">미션과 전략체계</div>
                 <div class="submenu">
-                    <a href="#">그룹 전략 체계도</a>
-                    <a href="#">그룹 미션</a>
-                    <a href="#">그룹 비전</a>
-                    <a href="#">그룹 전략 슬로건</a>
-                    <a href="#">그룹 핵심가치</a>
+                    <a th:href="@{/info/guide/missionStrategy}">그룹 전략 체계도</a>
+                    <a th:href="@{/info/guide/groupMission}">그룹 미션</a>
+                    <a th:href="@{/info/guide/groupVision}">그룹 비전</a>
+                    <a th:href="@{/info/guide/strategySlogan}">그룹 전략 슬로건</a>
+                    <a th:href="@{/info/guide/coreValues}">그룹 핵심가치</a>
                 </div>
             </div>
 
@@ -130,14 +132,6 @@
     <div id="footer"></div>
 
     <script>
-        // Header & Footer include
-        fetch('/BNK/layouts/info/_header.html')
-            .then(res => res.text())
-            .then(data => document.getElementById('header').innerHTML = data);
-
-        fetch('/BNK/layouts/info/_footer.html')
-            .then(res => res.text())
-            .then(data => document.getElementById('footer').innerHTML = data);
 
         // Sidebar toggle
         const titles = document.querySelectorAll(".menu-title");
@@ -187,9 +181,6 @@
             background-color: #fff;
         }
 
-        header img {
-            width: 160px;
-        }
 
         main {
             display: flex;
@@ -343,16 +334,6 @@
             font-weight: 700;
         }
 
-        footer {
-            background: #fff;
-            text-align: center;
-            padding: 40px 0;
-            font-size: 14px;
-            color: var(--bnk-gray);
-            border-top: 1px solid var(--bnk-border);
-            margin-top: 60px;
-        }
-
         @media (max-width: 1024px) {
             main {
                 flex-direction: column;
@@ -369,5 +350,7 @@
         }
     </style>
 </body>
-
+<footer>
+    <div th:replace="~{layouts/footer.html}"></div>
+</footer>
 </html>

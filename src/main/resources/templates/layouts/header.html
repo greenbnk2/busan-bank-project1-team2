@@ -17,72 +17,51 @@
                 ">
                 <li style="margin-bottom:15px;"></li>
                 <li class="has-mega">
-                    <a href="#" style="text-decoration: none; color: #374151;">예금</a>
+                    <!-- 상품 -->
+                    <a th:href="@{/product/main}" style="text-decoration: none; color: #374151;">상품</a>
                     <div class="mega" role="region" aria-label="예금 메뉴">
                         <div class="mega-inner">
-                        <div>
-                            <h4 style="margin-bottom:27px;">정기예금</h4>
-                            <ul>
-                            <li style="margin-bottom:15px;"><a href="#">부산은행 정기예금</a></li>
-                            <li style="margin-bottom:15px;"><a href="#">고금리 정기예금</a></li>
-                            <li><a href="#">자유적립예금</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 style="margin-bottom:27px;">자유예금</h4>
-                            <ul>
-                            <li style="margin-bottom:15px;"><a href="#">보통예금</a></li>
-                            <li style="margin-bottom:15px;"><a href="#">당좌예금</a></li>
-                            <li><a href="#">기업자유예금</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 style="margin-bottom:27px;">특수예금</h4>
-                            <ul>
-                            <li style="margin-bottom:15px;"><a href="#">외화예금</a></li>
-                            <li style="margin-bottom:15px;"><a href="#">세금우대예금</a></li>
-                            <li><a href="#">정기주택마련저축</a></li>
-                            </ul>
-                        </div>
+                            <div>
+                                <h4 style="margin-bottom:27px;">카테고리별 상품</h4>
+                                <ul>
+                                <li style="margin-bottom:15px;"><a th:href="@{/product/list}">예금상품</a></li>
+                                <li style="margin-bottom:15px;"><a th:href="@{/product/list}">적금상품</a></li>
+                                <li style="margin-bottom:15px;"><a th:href="@{/product/list}">펀드상품</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </li>
 
 
-                <!-- 펀드 -->
-                <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">펀드</a>
+                <!-- 서식/공지사항 -->
+                <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">서식/공지사항</a>
                 <div class="mega" role="region" aria-label="펀드 메뉴">
                     <div class="mega-inner">
                     <div>
-                        <h4 style="margin-bottom:27px;">주식형</h4>
+                        <h4 style="margin-bottom:27px;">자료실</h4>
                         <ul>
-                        <li style="margin-bottom:15px;"><a href="#">국내지수 추종</a></li>
-                        <li style="margin-bottom:15px;"><a href="#">배당주 펀드</a></li>
-                        <li><a href="#">친환경 테마</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/data_room/deposit}">예금</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/data_room/fund}">펀드</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/data_room/trust}">신탁</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/data_room/loan}">대출</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 style="margin-bottom:27px;">채권/혼합형</h4>
+                        <h4 style="margin-bottom:27px;">상품공시실</h4>
                         <ul>
-                        <li style="margin-bottom:15px;"><a href="#">중단기 국공채</a></li>
-                        <li style="margin-bottom:15px;"><a href="#">채권혼합 안정형</a></li>
-                        <li><a href="#">멀티에셋 밸런스</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 style="margin-bottom:27px;">해외/대체</h4>
-                        <ul>
-                        <li style="margin-bottom:15px;"><a href="#">글로벌 리츠</a></li>
-                        <li style="margin-bottom:15px;"><a href="#">미국 기술주</a></li>
-                        <li><a href="#">원자재 인덱스</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/productsRoom/bankManual}">은행상품공시이용매뉴얼</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/productsRoom/depositProduct}">예금상품</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/productsRoom/AnyProduct}">기타상품</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/productsRoom/serviceFee}">서비스이용수수료</a></li>
                         </ul>
                     </div>
                     </div>
                 </div>
                 </li>
 
-                <!-- 외환 -->
-                <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">외환</a>
+                <!-- 퇴직연금 알아보기 -->
+                <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">퇴직연금 알아보기</a>
                 <div class="mega" role="region" aria-label="외환 메뉴">
                     <div class="mega-inner">
                     <div>
@@ -113,105 +92,61 @@
                 </div>
                 </li>
 
-                <!-- 카드 -->
-                <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">카드</a>
-                <div class="mega" role="region" aria-label="카드 메뉴">
-                    <div class="mega-inner">
-                    <div>
-                        <h4 style="margin-bottom:27px;">신용카드</h4>
-                        <ul>
-                        <li style="margin-bottom:15px;"><a href="#">생활할인 카드</a></li>
-                        <li style="margin-bottom:15px;"><a href="#">항공마일리지 카드</a></li>
-                        <li><a href="#">프리미엄 카드</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 style="margin-bottom:27px;">체크카드</h4>
-                        <ul>
-                        <li style="margin-bottom:15px;"><a href="#">캐시백 체크</a></li>
-                        <li style="margin-bottom:15px;"><a href="#">교통/통신 체크</a></li>
-                        <li><a href="#">청소년 체크</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 style="margin-bottom:27px;">서비스</h4>
-                        <ul>
-                        <li style="margin-bottom:15px;"><a href="#">이벤트/혜택</a></li>
-                        <li style="margin-bottom:15px;"><a href="#">분실/도난 신고</a></li>
-                        <li><a href="#">이용대금 명세서</a></li>
-                        </ul>
-                    </div>
-                    </div>
-                </div>
-                </li>
-
-                <!-- 보험 -->
-                <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">보험</a>
+                <!-- 고객상담 -->
+                <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">고객센터</a>
                 <div class="mega" role="region" aria-label="보험 메뉴">
                     <div class="mega-inner">
-                    <div>
-                        <h4 style="margin-bottom:27px;">보장성</h4>
-                        <ul>
-                        <li style="margin-bottom:15px;"><a href="#">실손의료 보험</a></li>
-                        <li style="margin-bottom:15px;"><a href="#">암/건강 보험</a></li>
-                        <li><a href="#">운전자 보험</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 style="margin-bottom:27px;">저축성</h4>
-                        <ul>
-                        <li style="margin-bottom:15px;"><a href="#">연금저축 보험</a></li>
-                        <li style="margin-bottom:15px;"><a href="#">저축보험</a></li>
-                        <li><a href="#">변액보험</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 style="margin-bottom:27px;">고객센터</h4>
-                        <ul>
-                        <li style="margin-bottom:15px;"><a href="#">청구/서류 안내</a></li>
-                        <li style="margin-bottom:15px;"><a href="#">보험 상담 예약</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        </ul>
-                    </div>
+                        <div>
+                            <h4 style="margin-bottom:27px;">고객상담</h4>
+                            <ul>
+                                <li style="margin-bottom:15px;"><a th:href="@{/cs/consultation/FAQ}">FAQ</a></li>
+                                <li style="margin-bottom:15px;"><a th:href="@{/cs/consultation/document}">필요서류안내</a></li>
+                                <li style="margin-bottom:15px;"><a th:href="@{/cs/consultation/Q&A}">Q&A</a></li>
+                                <li style="margin-bottom:15px;"><a th:href="@{/cs/consultation/findStore}">영업점 찾기</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom:27px;">금융소비자보호</h4>
+                            <ul>
+                                <li style="margin-bottom:15px;"><a th:href="@{/cs/infoProtect/financialProtection}">금융소비자보호헌장</a></li>
+                                <li style="margin-bottom:15px;"><a th:href="@{/cs/infoProtect/complaintProcessing}">민원접수 및 처리프로세스</a></li>
+                                <li style="margin-bottom:15px;"><a th:href="@{/cs/infoProtect/protectionInformation}">소비자보호필수안내사항</a></li>
+                                <li style="margin-bottom:15px;"><a th:href="@{/cs/infoProtect/agencyGuide}">금융소비자권리행사안내</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom:27px;">이용안내</h4>
+                            <ul>
+                                <li style="margin-bottom:15px;"><a th:href="@{/cs/howUse/regProcess}">가입절차</a></li>
+                                <li style="margin-bottom:15px;"><a th:href="@{/cs/howUse/pwInfo}">비밀번호안내</a></li>
+                                <li style="margin-bottom:15px;"><a th:href="@{/cs/howUse/serviceTime}">서비스 이용시간</a></li>
+                                <li style="margin-bottom:15px;"><a th:href="@{/cs/howUse/feeInfo}">수수료안내</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 </li>
 
-                <!-- 퇴직연금 -->
-                <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">퇴직연금</a>
-                <div class="mega" role="region" aria-label="퇴직연금 메뉴">
-                    <div class="mega-inner">
-                    <div>
-                        <h4 style="margin-bottom:27px;">제도 안내</h4>
-                        <ul>
-                        <li style="margin-bottom:15px;"><a href="#">DC/IRP 안내</a></li>
-                        <li style="margin-bottom:15px;"><a href="#">수수료 체계</a></li>
-                        <li><a href="#">세제혜택</a></li>
-                        </ul>
+                <!-- 은행안내 -->
+                <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">은행안내</a>
+                    <div class="mega" role="region" aria-label="보험 메뉴">
+                        <div class="mega-inner">
+                            <div>
+                                <h4 style="margin-bottom:27px;">은행안내</h4>
+                                <ul>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/info/guide}">은행안내</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/info/story}">BNK부산은행스토리</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/info/invest}">투자자정보</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h4 style="margin-bottom:27px;">운용상품</h4>
-                        <ul>
-                        <li style="margin-bottom:15px;"><a href="#">원리금보장형</a></li>
-                        <li style="margin-bottom:15px;"><a href="#">채권형/혼합형</a></li>
-                        <li><a href="#">주식형/타깃데이트</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 style="margin-bottom:27px;">관리</h4>
-                        <ul>
-                        <li style="margin-bottom:15px;"><a href="#">자산배분 가이드</a></li>
-                        <li style="margin-bottom:15px;"><a href="#">수익률 조회</a></li>
-                        <li><a href="#">이체/이전</a></li>
-                        </ul>
-                    </div>
-                    </div>
-                </div>
                 </li>
+
                 <li style="width:300px;">
                     <div style="display: flex; align-items: center;">
                         <div style=" width: 60px;">
-                            <a href="#">
+                            <a th:href="@{/info/guide}">
                                 <img th:src="@{/images/magnifier.png}" alt="">
                             </a>
                         </div>
@@ -222,8 +157,8 @@
                         </div>
                         <div style="width: 115px;">
                             <button class="auth-btn"
-                                    th:onclick="|location.href='@{/cs/main}'|"
-                            style="cursor: pointer;border-radius: 6px; border:1px solid #E5E7EB; width:85px; height:38px;">고객센터</button>
+                                    th:onclick="|location.href='@{/cs/consultation/findStore}'|"
+                            style="cursor: pointer;border-radius: 6px; border:1px solid #E5E7EB; width:85px; height:38px;">영업점 찾기</button>
                         </div>
                         <div style="width: 60px;">
                             <a th:href="@{/mypage/main}">
@@ -566,10 +501,10 @@
     // 상단 a 클릭으로만 열고/닫기 (내부 클릭 버블링 방지)
     if (a) {
       a.addEventListener('click', e => {
-        e.preventDefault();
-        e.stopPropagation();
-        const already = li.classList.contains('active');
-        setActive(already ? null : li);
+            e.preventDefault();
+            e.stopPropagation();
+            const already = li.classList.contains('active');
+            setActive(already ? null : li);
       });
     }
 

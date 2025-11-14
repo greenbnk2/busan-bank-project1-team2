@@ -5,7 +5,11 @@
     <!-- 메인 네비게이션 -->
     <div class="nav-wrap"
         style="display:flex; padding-top:10px; padding-bottom:8px; padding-left:30px; padding-right:10px;">
-        <img src="/BNK/images/bnk_logo.svg" alt="" style="width:161px; height:43px;">
+        <a th:href="@{/main/main}">
+            <img th:src="@{/upload/images/bnk_logo.svg}"
+                 alt=""
+                 style="width:161px; height:43px;">
+        </a>
         <div style="flex-grow:1;">
             <ul class="gnb" style="
                 display:flex;
@@ -14,15 +18,16 @@
                 margin:0;
                 padding:0;
                 align-items:center;">
+                <li></li>
                 <li class="has-mega">
-                    <a href="#">은행안내</a>
+                    <a th:href="@{/info/guide}">은행안내</a>
                     <div class="mega">
                         <div class="mega-inner">
                             <div>
                                 <h4>은행안내</h4>
                                 <ul>
-                                    <li><a href="#">CEO인사말</a></li>
-                                    <li><a href="#">미션과 전략체계</a></li>
+                                    <li><a th:href="@{/info/guide/ceoGreeting}">CEO인사말</a></li>
+                                    <li><a th:href="@{/info/guide/groupMission}">미션과 전략체계</a></li>
                                     <li><a href="#">조직도</a></li>
                                     <li><a href="#">연혁</a></li>
                                     <li><a href="#">윤리경영</a></li>
@@ -33,7 +38,7 @@
                 </li>
 
                 <li class="has-mega">
-                    <a href="#">BNK부산은행스토리</a>
+                    <a th:href="@{/info/story}">BNK부산은행스토리</a>
                     <div class="mega">
                         <div class="mega-inner">
                             <div>
@@ -50,7 +55,7 @@
                 </li>
 
                 <li class="has-mega">
-                    <a href="#">투자자정보</a>
+                    <a th:href="@{/info/invest}">투자자정보</a>
                     <div class="mega">
                         <div class="mega-inner">
                             <div>
@@ -68,13 +73,13 @@
                 </li>
 
                 <li class="has-mega">
-                    <a href="#">영업점안내</a>
+                    <a th:href="@{/info/branch}">영업점안내</a>
                     <div class="mega">
                         <div class="mega-inner">
                             <div>
                                 <h4>영업점안내</h4>
                                 <ul>
-                                    <li><a href="#">영업점안내</a></li>
+                                    <li><a th:href="@{/info/branch}">영업점안내</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -82,11 +87,27 @@
                 </li>
 
                 <li style="width:300px;">
-                    <div style="display:flex; align-items:center;">
-                        <div style="width:60px;"><a href="#"><img src="/layouts/images/magnifier.png" alt=""></a></div>
-                        <div style="width:60px;"><a href="#"><img src="/layouts/images/globe.png" alt=""></a></div>
-                        <div style="width:115px;"><button class="auth-btn">인증센터</button></div>
-                        <div style="width:60px;"><a href="#"><img src="/layouts/images/human.png" alt=""></a></div>
+                    <div style="display: flex; align-items: center;">
+                        <div style=" width: 60px;">
+                            <a th:href="@{/info/guide}">
+                                <img th:src="@{/images/magnifier.png}" alt="">
+                            </a>
+                        </div>
+                        <div style="width: 60px;">
+                            <a th:href="@{/admin/main}">
+                                <img th:src="@{/images/globe.png}" alt="">
+                            </a>
+                        </div>
+                        <div style="width: 115px;">
+                            <button class="auth-btn"
+                                    th:onclick="|location.href='@{/cs/main}'|"
+                                    style="cursor: pointer;border-radius: 6px; border:1px solid #E5E7EB; width:85px; height:38px;">고객센터</button>
+                        </div>
+                        <div style="width: 60px;">
+                            <a th:href="@{/mypage/main}">
+                                <img th:src="@{/images/human.png}" alt="">
+                            </a>
+                        </div>
                     </div>
                 </li>
             </ul>

@@ -10,7 +10,9 @@
 </head>
 
 <body>
-  <div id="header"></div>
+<header>
+    <div th:replace="~{layouts/info/_header.html}"></div>
+</header>
 
   <main>
     <!-- 제목 영역 -->
@@ -74,4 +76,7 @@
 
   <script th:src="@{/js/board/board.js}" defer></script>
 </body>
+<header>
+    <div th:replace="~{layouts/footer.html}"></div>
+</header>
 </html>

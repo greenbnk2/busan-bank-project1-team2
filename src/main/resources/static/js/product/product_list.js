@@ -234,8 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                     ${(p.pprfcrt.split(",") || []).map(b => `<span class="Chip">${b}</span>`).join('')}
                                   </div>
                                   <div class="btns">
-                                    <button class="btn btn-white">자세히</button>
-                                    <button class="btn btn-red">신청하기</button>
+                                    <!--<button class="btn btn-white">자세히</button>-->
+                                    <button class="btn btn-red" onclick="window.location.href='/BNK/product/view/${p.pid}'">신청하기</button>
                                   </div>
                                 </div>
                               `).join('')}
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                   <div class="cell">최고금리</div>
                                   <div class="cell">계약기간</div>
                                   <div class="cell">가입방법</div>
-                                  <div class="cell">우대조건</div>
+                                  <div class="cell">세제혜택</div>
                                   <div class="cell">신청</div>
                                 </div>
                                 ${items.map(p => `
@@ -261,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="cell name-col">
                                       <div>
                                         <div class="title">${p.pname}</div>
+                                        <div class="new-prod"></div>
                                         <div class="subtitle">안정적인 고금리 정기예금</div>
                                       </div>
                                     </div>
@@ -284,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                       </div>
                                     </div>
                                     <div class="cell btn-apply">
-                                      <button class="btn btn-red">신청하기</button>
+                                      <button class="btn btn-red" onclick="window.location.href='/BNK/product/view/${p.pid}'">신청하기</button>
                                     </div>
                                   </div>
                                 `).join('')}

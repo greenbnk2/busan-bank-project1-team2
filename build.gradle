@@ -6,7 +6,7 @@ plugins {
 
 group = 'kr.co.bnkfirst'
 version = '0.0.1-SNAPSHOT'
-description = 'BUSANBANK'
+description = 'BNKFirst'
 
 java {
     toolchain {
