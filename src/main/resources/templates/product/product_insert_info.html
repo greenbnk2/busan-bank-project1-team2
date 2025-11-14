@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상품 정보입력</title>
-    <link rel="stylesheet" href="../../static/css/product/product_insert_info.css">
+    <link rel="stylesheet" th:href="@{/css/product/product_insert_info.css}">
 </head>
 
 <body>
     <header>
-        <div id="header"></div>
+        <div id="header" th:replace="~{layouts/header.html}"></div>
     </header>
     <main>
         <!-- 1) 스텝퍼 -->
@@ -27,7 +27,7 @@
             <h1>본인확인서(FATCA/CRS)등록</h1>
             <div class="info-box">
                 <div class="info-title">
-                    <img src="/images/product/info-blue.png" alt="" class="info-icon">
+                    <img th:src="@{/images/product/info-blue.png}" alt="본인확인서 관련 안내" class="info-icon">
                     <strong>본인확인서 관련 안내</strong>
                 </div>
                 <ul class="info-text">
@@ -39,7 +39,7 @@
                 </ul>
 
                 <div class="warn-box">
-                    <img src="/images/product/time-yellow.png" alt="" class="warn-icon">
+                    <img th:src="@{/images/product/time-yellow.png}" alt="귀속년도 안내" class="warn-icon">
                     <span>귀속년도는 고객님께서 작성하는 본인확인서 정보의 기존연도를 의미합니다. 예를 들어 2021년 12월 31일 기준으로 본인확인서 정보를 입력하실 경우, 귀속년도는
                         2021년에 해당합니다.</span>
                 </div>
@@ -47,7 +47,7 @@
             <article class="card form-section">
                 <div class="inner">
                     <h2 class="form-title">
-                        <img src="/images/product/user-red.png" alt="" class="form-icon">
+                        <img th:src="@{/images/product/user-red.png}" alt="고객 기본 정보" class="form-icon">
                         고객 기본 정보
                     </h2>
 
@@ -122,13 +122,13 @@
             </article>
             <article class="confirm-box">
                 <h2 class="confirm-title">
-                    <img src="/images/product/check-red.png" alt="확인사항" class="confirm-icon">
+                    <img th:src="@{/images/product/check-red.png}" alt="확인사항" class="confirm-icon">
                     확인사항(해당하는 항복에 모두 체크)
                 </h2>
                 <label class="confirm-item" for="isKorean">
                     <input type="checkbox" name="nation" id="isKorean">
                     조세목적상 한국 거주자에 해당합니다.
-                    <img src="/images/product/detail-grey.png" alt="세부정보">
+                    <img th:src="@{/images/product/detail-grey.png}" alt="세부정보">
                 </label>
                 <label class="confirm-item" for="isForeign">
                     <input type="checkbox" name="nation" id="isForeign">
@@ -216,7 +216,7 @@
                     <div class="info-wrapper">
                         <div class="info-card">
                             <div class="info-title">
-                                <img src="/images/product/info-red.png" alt="설명의무 관련 확인서">
+                                <img th:src="@{/images/product/info-red.png}" alt="설명의무 관련 확인서">
                                 <h3>설명의무 관련 확인서(차명거래 금지에 관한 설명)</h3>
                             </div>
                             <ul>
@@ -227,7 +227,7 @@
                         </div>
                         <div class="info-card">
                             <div class="info-title">
-                                <img src="/images/product/shield-red-circle.png" alt="예금보험관계 설명 확인">
+                                <img th:src="@{/images/product/shield-red-circle.png}" alt="예금보험관계 설명 확인">
                                 <h3>예금보험관계 설명 확인</h3>
                             </div>
                             <ul>
@@ -289,7 +289,7 @@
             <article class="b-and-p-int-rates card-white">
                 <div class="doc-title">
                     <h2>
-                        <img src="/images/product/percent-red.png" alt="기본이율과 우대이율">
+                        <img th:src="@{/images/product/percent-red.png}" alt="기본이율과 우대이율">
                         기본이율과 우대이율
                     </h2>
                     <span>
@@ -312,7 +312,7 @@
             <article class="int-pay-date card-white">
                 <div class="doc-title">
                     <h2>
-                        <img src="/images/product/calender-red.png" alt="이자지급시기">
+                        <img th:src="@{/images/product/calender-red.png}" alt="이자지급시기">
                         이자지급시기
                     </h2>
                     <span>
@@ -335,7 +335,7 @@
             <article class="int-calc-basis card-white">
                 <div class="doc-title">
                     <h2>
-                        <img src="/images/product/calculator-none-bg.png" alt="만기이자 산출근거">
+                        <img th:src="@{/images/product/calculator-none-bg.png}" alt="만기이자 산출근거">
                         만기이자 산출근거
                     </h2>
                     <span>
@@ -358,7 +358,7 @@
             <article class="dps-int-rates-note card-white">
                 <div class="doc-title">
                     <h2>
-                        <img src="/images/product/caution-red.png" alt="예금이율 유의사항">
+                        <img th:src="@{/images/product/caution-red.png}" alt="예금이율 유의사항">
                         예금이율 유의사항
                     </h2>
                     <span>
@@ -380,7 +380,7 @@
             <article class="disadvantages card-white">
                 <div class="doc-title">
                     <h2>
-                        <img src="/images/product/minus-coin.svg" alt="중도해지에 따른 불이익">
+                        <img th:src="@{/images/product/minus-coin.svg}" alt="중도해지에 따른 불이익">
                         중도해지에 따른 불이익
                     </h2>
                     <span>
@@ -403,7 +403,7 @@
             <article class="p-i-limit card-white">
                 <div class="doc-title">
                     <h2>
-                        <img src="/images/product/shield-red-none-bg.png" alt="원금 및 이자 지급제한">
+                        <img th:src="@{/images/product/shield-red-none-bg.png}" alt="원금 및 이자 지급제한">
                         원금 및 이자 지급제한
                     </h2>
                     <span>
@@ -414,15 +414,15 @@
                     </span>
                 </div>
                 <div class="card-grey">
-                    <img src="/images/product/doc-grey.png" alt="계좌 등록 사항 관련">
+                    <img th:src="@{/images/product/doc-grey.png}" alt="계좌 등록 사항 관련">
                     <p>계좌에 <span>압류, 가압류, 질권설정</span> 등이 등록될 경우 원금 및 이자 지급이 제한됩니다.</p>
                 </div>
                 <div class="card-grey">
-                    <img src="/images/product/hammer-grey.png" alt="민사집행법">
+                    <img th:src="@{/images/product/hammer-grey.png}" alt="민사집행법">
                     <p>민사집행법에 따라 최저생계비 이하 등 압류금지채권에 해당하는 경우에는 법원에 압류 금지채권 범위 변경 신청 등을 통해 압류를 취소할 수 있습니다.</p>
                 </div>
                 <div class="card-grey">
-                    <img src="/images/product/forbidden-grey.png" alt="예금잔액증명서">
+                    <img th:src="@{/images/product/forbidden-grey.png}" alt="예금잔액증명서">
                     <p><span>예금잔액증명서 발급 당일</span>에는 입금·출금 이체 등 잔액 변동이 불가하므로 지급이 제한됩니다.</p>
                 </div>
                 <p>※ 중도해지이율에 대한 자세한 내용은 상품설명서를 참조 바랍니다.</p>
@@ -633,7 +633,7 @@
                     <!-- 안내 배너들 -->
                     <div class="form-row full">
                         <div class="alert red">
-                            <img src="/images/product/caution-red.png" alt="보이스피싱 예방 안내">
+                            <img th:src="@{/images/product/caution-red.png}" alt="보이스피싱 예방 안내">
                             <div>
                                 <b>보이스피싱 예방 안내</b><br>
                                 <span class="muted">은행에서는 개인정보나 비밀번호를 요구하는 전화를 하지 않습니다. 의심스러운 전화는 즉시 신고해 주세요.</span>
@@ -643,7 +643,7 @@
 
                     <div class="form-row full">
                         <div class="alert blue">
-                            <img src="/images/product/info-blue.png" alt="중도해지 안내">
+                            <img th:src="@{/images/product/info-blue.png}" alt="중도해지 안내">
                             <div>
                                 <b>중도해지 안내</b><br>
                                 <span class="muted">계약기간 중 해지 시 약정금리보다 낮은 중도해지금리가 적용되며, 해지수수료가 부과될 수 있습니다.</span>
@@ -653,7 +653,7 @@
 
                     <div class="form-row full">
                         <div class="alert yellow">
-                            <img src="/images/product/phone-yellow.png" alt="ARS 인증 필요">
+                            <img th:src="@{/images/product/phone-yellow.png}" alt="ARS 인증 필요">
                             <div>
                                 <b>ARS 인증 필요</b><br>
                                 <span class="muted">상품 가입 완료를 위해 ARS 전화인증이 필요합니다. 신청 후 5분 이내에 고객님의 휴대폰으로 인증 전화가
@@ -806,15 +806,11 @@
 
     </main>
     <footer>
-        <div id="footer"></div>
+        <div id="footer" th:replace="~{layouts/footer.html}"></div>
     </footer>
-    <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
-        <div id="bnk-chatbot-slot"></div>
-    </div>
 </body>
 
 </html>
-<script src="../../static/js/product.js"></script>
 <!-- 스탭퍼 스크립트 -->
 <script>
     let currentStep = 1;                 // 1~5
@@ -878,6 +874,7 @@
         if (currentStep === totalSteps) {
             // 예: 서버 제출 (fetch) or 확인 모달
             alert('제출했습니다!');
+            window.location.href="/BNK/product/subCmpl/list";
             return;
         }
         showStep(currentStep + 1);

@@ -1,19 +1,7 @@
 <div style="margin-top:10px;"></div>
-<div id="header"></div>
-
-<script>
-  // header.html 파일을 불러와서 #header에 삽입
-  fetch('_header.html')
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById('header').innerHTML = data;
-    });
-  fetch('/layouts/footer.html')
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById('footer').innerHTML = data;
-    });
-</script>
+<header>
+    <div th:replace="~{layouts/info/_header.html}"></div>
+</header>
 
 <main>
   <!-- Hero Section -->
@@ -41,7 +29,7 @@
   </section>
 
   <!-- Notice + News 통합 영역 -->
-  <section class="board">
+  <section class="board" style="padding-bottom: 130px; padding-top: 80px;">
     <div class="board-column">
       <h3 class="board-section">공지사항</h3>
       <ul>
@@ -107,7 +95,7 @@
   .hero {
     height: 350px;
     /* 높이 지정 (필수) */
-    background-image: url('./assets/img/bnk_building.png');
+    background-image: url([[@{/images/assets/img/bnk_building.png}]]);
     background-size: cover;
     background-position: left center;
     background-repeat: no-repeat;
@@ -160,19 +148,19 @@
   }
 
   .info-card.social {
-    background-image: url('./assets/img/icon_social.png');
+    background-image: url([[@{/images/assets/img/icon_social.png}]]);
   }
 
   .info-card.invest {
-    background-image: url('./assets/img/icon_invest.png');
+    background-image: url([[@{/images/assets/img/icon_invest.png}]]);
   }
 
   .info-card.hr {
-    background-image: url('./assets/img/icon_hr.png');
+    background-image: url([[@{/images/assets/img/icon_hr.png}]]);
   }
 
   .info-card.family {
-    background-image: url('./assets/img/icon_family.png');
+    background-image: url([[@{/images/assets/img/icon_family.png}]]);
   }
 
   .info-card:hover {
@@ -248,3 +236,6 @@
     margin-left: 6px;
   }
 </style>
+<footer>
+    <div th:replace="~{layouts/footer.html}"></div>
+</footer>

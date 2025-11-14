@@ -66,7 +66,8 @@ public class UsersService {
         return usersMapper.existsByMid(mid) > 0;
     }
 
+    // 가입 후 사용자 다시 조회 (MDATE 가져오기)
     public UsersDTO findByMid(String mid) {
-        return usersMapper.findUserById(mid);
+        return usersMapper.findUserById(mid);  // mapper 이미 있으므로 그대로 사용
     }
 }

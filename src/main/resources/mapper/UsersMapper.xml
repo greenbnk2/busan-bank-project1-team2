@@ -8,8 +8,13 @@
     <!-- member_main 로그인 -->
     <select id="findUserById" parameterType="string" resultType="kr.co.bnkfirst.dto.UsersDTO">
         SELECT
-            MID AS mid,
-            MPW AS mpw
+            MID     AS mid,
+            MPW     AS mpw,
+            MNAME   AS mname,
+            MPHONE  AS mphone,
+            MEMAIL  AS memail,
+            MDATE   AS mdate,
+            MGRADE  AS mgrade
         FROM USERS
         WHERE MID = #{mid}
     </select>

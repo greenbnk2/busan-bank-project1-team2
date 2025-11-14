@@ -27,7 +27,6 @@ public class MainpageController {
     private DocumentService documentService;
 
     @GetMapping({"/main/main","/"})
-<<<<<<< HEAD
     public String mainpage(Model model) {
         List<DocumentDTO> latestDocs = documentService.getLatestDocuments4();
         List<MainEventDTO> eventList = documentService.getMainEvents();
@@ -36,10 +35,6 @@ public class MainpageController {
         model.addAttribute("events", eventList);
 
         return "/main/main";
-=======
-    public String mainpage() {
-        return "main/main";
->>>>>>> 48b79a7ae75ca114e9b862d2f9e83b0138dae0e8
     }
 
     @ResponseBody

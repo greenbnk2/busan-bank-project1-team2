@@ -11,7 +11,7 @@
 
 <body>
     <header>
-        <div id="header" th:replace="~{/layouts/header.html}"></div>
+        <div id="header" th:replace="~{layouts/header.html}"></div>
     </header>
     <main>
         <section class="page-wrap" id="depositDetail">
@@ -244,7 +244,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn-red" style="margin-top:8px">가입하기</button>
+                            <button class="btn-red" th:onclick="|window.location.href='@{/product/insertInfo}'|" style="margin-top:8px">가입하기</button>
                             <button class="btn-ghost btn-white" style="margin-top:8px">상담예약</button>
                             <div class="helper">약관 동의 후 가입이 가능합니다</div>
                         </div>
@@ -264,7 +264,7 @@
         </script>
     </main>
     <footer>
-        <div id="footer" th:replace="~{/layouts/footer.html}"></div>
+        <div id="footer" th:replace="~{layouts/footer.html}"></div>
     </footer>
 </body>
 

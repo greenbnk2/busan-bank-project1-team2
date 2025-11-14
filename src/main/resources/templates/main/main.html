@@ -17,42 +17,108 @@
     /*-------- 배너 --------*/
     .banner {
       position: relative;
-      width: 80%;
-      margin: 80px auto;
-      border-radius: 20px;
+      width: 100%;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      background: #ffffff;
     }
 
-    .banner-content img {
+    .banner-slider {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      max-height: 800px;
+    }
+
+    .banner-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.1s ease-in-out,
+      transform 1.1s ease-in-out;
+      pointer-events: none;
+    }
+
+    .banner-slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+      z-index: 1;
+    }
+
+    /* 이미지: 가로 100%, 세로는 비율 유지 (잘리지 않음) */
+    .banner-slide img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
       display: block;
     }
 
-    .mascot-img img {
+    /* 좌우 화살표 버튼 */
+    .banner-arrow {
       position: absolute;
-      right: 40px;
-      bottom: 0;
-      width: 200px;
-      z-index: 2;
-      filter: drop-shadow(8px 10px 12px rgba(0, 0, 0, 0.15));
-      transition: transform 0.3s ease;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      transition: background 0.2s;
     }
 
-    .mascot-img img:hover {
-      transform: translateY(-8px);
+    .banner-arrow:hover {
+      background: rgba(0,0,0,0.65);
     }
+
+    .banner-arrow.prev {
+      left: 18px;
+    }
+
+    .banner-arrow.next {
+      right: 18px;
+    }
+
+    /* 하단 도트 */
+    .banner-dots {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 5;
+    }
+
+    .banner-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .banner-dot.active {
+      width: 24px;
+      background: #D91A1A;
+    }
+
+
 
     /*--------- 검색 --------*/
     .search-box {
       text-align: center;
       background: #fff;
       border-radius: 20px;
-      width: 60%;
-      margin: 60px auto;
-      padding: 40px 0;
+      width: 100%;
+      margin: 0 auto;
+      padding: 100px 0;
     }
 
     .search-box h2{
@@ -447,12 +513,34 @@
   <div th:replace="~{layouts/header}"></div>
 
 
-  <!-- 배너 -->
+  <!-- 배너 (슬라이드) -->
   <section class="banner">
-    <div class="banner-content">
-      <img th:src="@{/images/main_banner1.png}" alt="샘플배너이미지">
+    <div class="banner-slider">
+      <!-- 1번 배너 -->
+      <div class="banner-slide active">
+        <img th:src="@{/images/main_banner1.png}" alt="BNK 메인 배너1">
+      </div>
+      <!-- 2번 배너 -->
+      <div class="banner-slide">
+        <img th:src="@{/images/main_banner2.png}" alt="BNK 메인 배너2">
+      </div>
+
+      <!-- 좌우 버튼 -->
+      <button class="banner-arrow prev" type="button">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="banner-arrow next" type="button">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+
+      <!-- 하단 도트 -->
+      <div class="banner-dots">
+        <button class="banner-dot active" type="button"></button>
+        <button class="banner-dot" type="button"></button>
+      </div>
     </div>
   </section>
+
 
   <!-- 검색 -->
   <section class="search-box">
@@ -486,7 +574,7 @@
 
   <!-- 카테고리 -->
   <section class="category">
-    <div class="category-item">
+    <div class="category-item" style="">
       <div class="icon-wrap">
         <img th:src="@{/images/main_best_seller.png}" alt="">
       </div>
@@ -600,12 +688,14 @@
     </div>
   </div>
 
-  <div class="icon-item purple">
-    <div class="circle">
-      <img th:src="@{/images/main_operator.png}" alt="고객센터">
-      <p>고객센터</p>
-    </div>
-  </div>
+    <a th:href="@{/cs/main}" style="text-decoration: none;">
+      <div class="icon-item purple">
+        <div class="circle">
+          <img th:src="@{/images/main_operator.png}" alt="고객센터">
+          <p>고객센터</p>
+        </div>
+      </div>
+    </a>
 </section>
 
   <!--푸터-->
@@ -754,4 +844,81 @@
       });
     }
   });
+</script>
+
+<script>
+const slides = document.querySelectorAll('.banner-slide');
+const dots   = document.querySelectorAll('.banner-dot');
+const prevBtn = document.querySelector('.banner-arrow.prev');
+const nextBtn = document.querySelector('.banner-arrow.next');
+const banner  = document.querySelector('.banner');
+
+let currentIndex = 0;
+let timer = null;
+
+function showSlide(index) {
+if (slides.length === 0) return;
+
+currentIndex = (index + slides.length) % slides.length;
+
+slides.forEach((slide, i) => {
+slide.classList.toggle('active', i === currentIndex);
+});
+dots.forEach((dot, i) => {
+dot.classList.toggle('active', i === currentIndex);
+});
+}
+
+function nextSlide() {
+showSlide(currentIndex + 1);
+}
+
+function prevSlide() {
+showSlide(currentIndex - 1);
+}
+
+function startAuto() {
+if (timer) clearInterval(timer);
+timer = setInterval(nextSlide, 5000); // 5초마다 자동 슬라이드
+}
+
+function stopAuto() {
+if (timer) clearInterval(timer);
+timer = null;
+}
+
+// 버튼 이벤트
+if (nextBtn) {
+nextBtn.addEventListener('click', () => {
+nextSlide();
+startAuto();
+});
+}
+
+if (prevBtn) {
+prevBtn.addEventListener('click', () => {
+prevSlide();
+startAuto();
+});
+}
+
+// 도트 클릭 이벤트
+dots.forEach((dot, idx) => {
+dot.addEventListener('click', () => {
+showSlide(idx);
+startAuto();
+});
+});
+
+// 배너 위에 마우스 올리면 자동 롤링 멈추기
+if (banner) {
+banner.addEventListener('mouseenter', stopAuto);
+banner.addEventListener('mouseleave', startAuto);
+}
+
+// 초기 실행
+if (slides.length > 0) {
+showSlide(0);
+startAuto();
+}
 </script>

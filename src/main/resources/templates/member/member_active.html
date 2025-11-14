@@ -70,12 +70,11 @@
               <td class="value-td wide" th:text="${member.mid}"></td>
 
               <td class="label-td">가입일시</td>
-              <td class="value-td" th:text="'SYSDATE'"></td>
+              <td class="value-td" th:text="${#temporals.format(member.mdate, 'yyyy.MM.dd HH:mm:ss')}"></td>
           </tr>
           <tr>
               <td class="label-td">이메일</td>
               <td class="value-td wide" th:text="${member.memail}"></td>
-
               <td class="label-td">회원등급</td>
               <td class="value-td" th:text="'Family'"></td>
           </tr>
@@ -83,10 +82,6 @@
 
       <!-- 버튼 -->
       <div class="btns">
-        <a th:href="@{/member/main}" class="btn-pressable"
-          style="display:inline-block; box-sizing:border-box; width:50%; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111; text-decoration:none;">
-          취소
-        </a>
         <a th:href="@{/member/main}" class="btn-register"
           style="display:inline-block; box-sizing:border-box; width:50%; height:42px; line-height:42px; border-radius:8px; background-color:#007BFF; color:white; text-align:center; text-decoration:none;">
           홈으로
