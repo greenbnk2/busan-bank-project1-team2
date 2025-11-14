@@ -35,6 +35,7 @@ public class MainpageController {
         model.addAttribute("events", eventList);
 
         return "main/main";
+    }
 
     @ResponseBody
     @GetMapping("/main/search")
