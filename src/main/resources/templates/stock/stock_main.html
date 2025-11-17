@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>stock_main</title>
+    <style>
+        main {
+            background-color: #F6F6F8;
+            padding: 10px 20px 80px;
+        }
+        body {
+            background-color: #F6F6F8;
+        }
+    </style>
+    <style>
+        /* 탭 공통 스타일 */
+        .tab-list {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+        .tab-list li {
+            margin-right: 20px;
+        }
+        .tab-link {
+            text-decoration: none;
+            color: #444;
+            padding-bottom: 6px; /* 밑줄과 간격 맞추기 */
+            display: inline-block;
+        }
+        /* 선택된 탭 스타일 (스크린샷처럼 밑줄) */
+        .tab-link.active {
+            color: #000;
+            font-weight: 500;
+        }
+        .tabs-wrapper {
+            position: relative;
+            border-bottom: 1px solid grey;
+        }
+        .tab-underline {
+            position: absolute;
+            bottom: 0;
+            height: 2px;
+            background-color: #000;
+            left: 0;
+            width: 0;
+            transition: left 0.2s ease, width 0.2s ease;
+        }
+
+        .stock-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            padding: 10px 0;
+            border-radius: 12px;
+            transition: background-color 0.2s ease;  /* 서서히 변하도록 */
+        }
+        .stock-row:hover {
+            background-color: #ECEFF3;  /* 원하는 회색으로 조절 */
+        }
+            /* 표 제목 영역 */
+        .stock-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            margin-top: 20px;
+        }
+        .circle-badge {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            color: white;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 17px;
+            flex-shrink: 0;
+        }
+    </style>
+    <style>
+        .rate-up {
+            color: #d60000;   /* 빨간색 */
+        }
+        .rate-down {
+            color: #0051c7;   /* 파란색 */
+        }
+        .rate-zero {
+            color: #555555;   /* 보합 */
+        }
+    </style>
+    <style>
+        .stock-table a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div th:replace="~{layouts/header.html}"></div>
+    </header>
+
+    <main>
+        <div style="">
+            <ul class="tab-list" id="marketTabs" style="list-style: none; display: flex;">
+                <li style=" margin-right: 20px;">
+                    <a href="#" class="tab-link active" style="text-decoration: none;color: black;">국내 정규장</a>
+                </li>
+                <li>
+                    <a href="#" class="tab-link" style=" text-decoration: none; color: black;">해외 데이마켓</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tabs-wrapper" style="margin-top: 50px; border-bottom: 1px solid grey;">
+            <ul class="tab-list" id="subTabs" style="list-style: none; display: flex;">
+                <li style=" margin-right: 20px;">
+                    <a href="#" class="tab-link active" style="text-decoration: none;color: black;">실시간 차트</a>
+                </li>
+                <li style="margin-right: 20px;">
+                    <a href="#" class="tab-link" style=" text-decoration: none; color: black;">지금 뜨는 카테고리</a>
+                </li>
+                <li>
+                    <a href="#" class="tab-link" style=" text-decoration: none; color: black;">국내 투자자 동향</a>
+                </li>
+            </ul>
+            <!-- 검은색 움직이는 밑줄 -->
+            <div class="tab-underline" id="subTabsUnderline"></div>
+        </div>
+        <div class="stock-table">
+<!--            컬럼-->
+            <div class="stock-header" style="margin-bottom: 10px;">
+                <div id="timeDisplay" style="font-size: 15px; padding-left: 10px;">순위·오늘 --:-- 기준</div>
+                <div style="font-size: 15px; text-align: end;">현재가</div>
+                <div style="font-size: 15px; text-align: end;">등락률</div>
+                <div style="font-size: 15px; text-align: end; padding-right:10px;">거래대금 순</div>
+            </div>
+<!--            1순위-->
+            <a th:href="@{/stock/order}">
+                <div class="stock-row">
+                    <div style=" display: flex; padding-left: 14px;">
+                        <div style="margin-right: 20px;">
+                            <div style="text-align: center; width: 20px;">1</div>
+                        </div>
+                        <div class="stock-name">SK하이닉스</div>
+                    </div>
+                    <div style=" text-align: end;"><span>595000</span>원</div>
+                    <div style=" text-align: end;"
+                    class="rate-up">+6.42%</div>
+                    <div style=" text-align: end; padding-right: 10px;">61억</div>
+                </div>
+            </a>
+<!--            2순위-->
+            <a href="#">
+                <div class="stock-row">
+                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">2</div><div class="stock-name">그린광학</div></div>
+                    <div style=" text-align: end;"><span>30950</span>원</div>
+                    <div style=" text-align: end;"
+                         class="rate-up">+93.43%</div>
+                    <div style=" text-align: end;padding-right: 10px;">24억</div>
+                </div>
+            </a>
+            <!--            3순위-->
+            <a href="#">
+                <div class="stock-row">
+                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">3</div><div class="stock-name">삼성전자</div></div>
+                    <div style=" text-align: end;"><span>100200</span>원</div>
+                    <div style=" text-align: end;"
+                         class="rate-up">+3.08%</div>
+                    <div style=" text-align: end; padding-right: 10px;">20억</div>
+                </div>
+            </a>
+            <!--            4순위-->
+            <a href="#">
+                <div class="stock-row">
+                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">4</div><div class="stock-name">KODEX 레버리지</div></div>
+                    <div style=" text-align: end;"><span>43060</span>원</div>
+                    <div style=" text-align: end;"
+                         class="rate-up">+3.21%</div>
+                    <div style=" text-align: end; padding-right: 10px;">17억</div>
+                </div>
+            </a>
+            <!--            5순위-->
+            <a href="#">
+                <div class="stock-row">
+                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">5</div><div class="stock-name">이뮨온시아</div></div>
+                    <div style=" text-align: end;"><span>7040</span>원</div>
+                    <div style=" text-align: end;"
+                         class="rate-up">+10.00%</div>
+                    <div style=" text-align: end; padding-right: 10px;">14억</div>
+                </div>
+            </a>
+            <!--            6순위-->
+            <a href="#">
+                <div class="stock-row">
+                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">6</div><div class="stock-name">두산에너빌리티</div></div>
+                    <div style=" text-align: end;"><span>78800</span>원</div>
+                    <div style=" text-align: end;"
+                         class="rate-up">+0.53%</div>
+                    <div style=" text-align: end; padding-right: 10px;">11억</div>
+                </div>
+            </a>
+            <!--            7순위-->
+            <a href="#">
+                <div class="stock-row">
+                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">7</div><div class="stock-name">한화오션</div></div>
+                    <div style=" text-align: end;"><span>131400</span>원</div>
+                    <div style=" text-align: end;"
+                         class="rate-down">-0.53%</div>
+                    <div style=" text-align: end; padding-right: 10px;">9억</div>
+                </div>
+            </a>
+            <!--            8순위-->
+            <a href="#">
+                <div class="stock-row">
+                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">8</div><div class="stock-name">에이비엘바이오</div></div>
+                    <div style=" text-align: end;"><span>179800</span>원</div>
+                    <div style=" text-align: end;"
+                         class="rate-up">+3.53%</div>
+                    <div style=" text-align: end; padding-right: 10px;">8억</div>
+                </div>
+            </a>
+            <!--            9순위-->
+            <a href="#">
+                <div class="stock-row">
+                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">9</div><div class="stock-name">큐리오시스</div></div>
+                    <div style=" text-align: end;"><span>54200</span>원</div>
+                    <div style=" text-align: end;"
+                         class="rate-down">-0.53%</div>
+                    <div style=" text-align: end; padding-right: 10px;">5억</div>
+                </div>
+            </a>
+            <!--            10순위-->
+            <a href="#">
+                <div class="stock-row">
+                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">10</div><div class="stock-name">HJ중공업</div></div>
+                    <div style=" text-align: end;"><span>23600</span>원</div>
+                    <div style=" text-align: end;"
+                         class="rate-down">-6.53%</div>
+                    <div style=" text-align: end; padding-right: 10px;">2억</div>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div th:replace="~{layouts/footer.html}"></div>
+    </footer>
+    <script>
+        // 일반 탭 active 처리 (위쪽 탭)
+        function initTabs(ulId) {
+            const tabList = document.getElementById(ulId);
+            if (!tabList) return;
+
+            const links = tabList.querySelectorAll('.tab-link');
+
+            links.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    links.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        // 밑줄이 움직이는 탭 처리 (아래쪽 탭)
+        function initMovingUnderline(ulId, underlineId) {
+            const tabList = document.getElementById(ulId);
+            const underline = document.getElementById(underlineId);
+            if (!tabList || !underline) return;
+
+            const links = tabList.querySelectorAll('.tab-link');
+
+            // li의 offset 기준으로 밑줄 이동
+            function moveUnderline(target) {
+                const li = target.parentElement;    // <li>
+                underline.style.width = li.offsetWidth + 'px';
+                underline.style.left  = li.offsetLeft + 'px';
+            }
+
+            // 초기 위치: active 되어있는 탭 기준
+            const activeLink = tabList.querySelector('.tab-link.active') || links[0];
+            if (activeLink) {
+                moveUnderline(activeLink);
+            }
+
+            links.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // active 처리
+                    links.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // 밑줄 이동
+                    moveUnderline(this);
+                });
+            });
+
+            // 리사이즈 시 위치 다시 계산
+            window.addEventListener('resize', () => {
+                const currentActive = tabList.querySelector('.tab-link.active') || links[0];
+                if (currentActive) moveUnderline(currentActive);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initTabs('marketTabs');                          // 위쪽 탭
+            initMovingUnderline('subTabs', 'subTabsUnderline'); // 아래쪽 움직이는 언더라인 탭
+        });
+    </script>
+<script>
+    function updateTime() {
+        const now = new Date();
+
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+        const text = `순위·오늘 ${hours}:${minutes} 기준`;
+
+        document.getElementById('timeDisplay').innerText = text;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        initTabs('marketTabs');
+        initMovingUnderline('subTabs', 'subTabsUnderline');
+
+        updateTime();            // 처음 실행
+        setInterval(updateTime, 60 * 1000);  // 1분마다 갱신
+    });
+</script>
+    <script>
+        function getRandomColor() {
+            const colors = ["#1E90FF", "#FF6347", "#6A5ACD", "#2E8B57", "#FF8C00", "#DC143C"];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function getColorForName(name) {
+            const key = `badgeColor_${name}`;
+
+            // 이미 저장된 색이 있다면 그대로 사용
+            const stored = localStorage.getItem(key);
+            if (stored) return stored;
+
+            // 없으면 새로 생성
+            const newColor = getRandomColor();
+            localStorage.setItem(key, newColor);
+            return newColor;
+        }
+
+        function createCircleBadge(text, color) {
+            const badge = document.createElement("div");
+            badge.className = "circle-badge";
+            badge.style.backgroundColor = color;
+            badge.textContent = text;
+            return badge;
+        }
+
+        function initCircleBadges() {
+            const names = document.querySelectorAll(".stock-name");
+
+            names.forEach(nameEl => {
+                const fullName = nameEl.innerText.trim();
+                const firstChar = fullName.charAt(0);
+
+                // 항상 동일한 색을 가져오거나 생성
+                const color = getColorForName(fullName);
+
+                const badge = createCircleBadge(firstChar, color);
+
+                const wrapper = document.createElement("div");
+                wrapper.style.display = "flex";
+                wrapper.style.alignItems = "center";
+
+                const originalText = document.createElement("span");
+                originalText.textContent = fullName;
+
+                wrapper.appendChild(badge);
+                wrapper.appendChild(originalText);
+
+                nameEl.innerHTML = "";
+                nameEl.appendChild(wrapper);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            initCircleBadges();
+        });
+    </script>
+</body>
+</html>

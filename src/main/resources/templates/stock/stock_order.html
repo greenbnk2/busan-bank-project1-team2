@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>stock_order</title>
+    <style>
+        main {
+            background-color: #F6F6F8;
+            padding: 10px 20px 80px;
+        }
+        body {
+            background-color: #F6F6F8;
+        }
+    </style>
+    <style>
+        /* 탭 공통 스타일 */
+        .tab-list {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+        .tab-list li {
+            margin-right: 20px;
+        }
+        .tab-link {
+            text-decoration: none;
+            color: #444;
+            padding-bottom: 6px; /* 밑줄과 간격 맞추기 */
+            display: inline-block;
+        }
+        /* 선택된 탭 스타일 (스크린샷처럼 밑줄) */
+        .tab-link.active {
+            color: #000;
+            font-weight: 500;
+        }
+        .tabs-wrapper {
+            position: relative;
+            border-bottom: 1px solid grey;
+        }
+        .tab-underline {
+            position: absolute;
+            bottom: 0;
+            height: 2px;
+            background-color: #000;
+            left: 0;
+            width: 0;
+            transition: left 0.2s ease, width 0.2s ease;
+        }
+
+        .stock-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            padding: 10px 0;
+            border-radius: 12px;
+            transition: background-color 0.2s ease;  /* 서서히 변하도록 */
+        }
+        .stock-row:hover {
+            background-color: #ECEFF3;  /* 원하는 회색으로 조절 */
+        }
+        /* 표 제목 영역 */
+        .stock-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            margin-top: 20px;
+        }
+        .circle-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            color: white;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+    </style>
+    <style>
+        .rate-up {
+            color: #d60000;   /* 빨간색 */
+        }
+        .rate-down {
+            color: #0051c7;   /* 파란색 */
+        }
+        .rate-zero {
+            color: #555555;   /* 보합 */
+        }
+    </style>
+    <style>
+        .stock-table a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div th:replace="~{layouts/header.html}"></div>
+</header>
+
+<main>
+    <div>
+        <div class="stock-name">
+            <div style="">
+                <div style="font-size: 15px; font-weight: 500;">SK하이닉스</div>
+                <div style="display: flex; align-items: center;">
+                    <div style="font-size: 20px; font-weight: 500; ">604,000원</div>
+                    <div style="margin-left: 10px;">어제보다<span style="color: #de0000;">&nbsp;+46,000원&nbsp;(+8.21%)</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tabs-wrapper" style="margin-top: 50px; border-bottom: 1px solid grey;">
+        <ul class="tab-list" id="subTabs" style="list-style: none; display: flex;">
+            <li style=" margin-right: 20px;">
+                <a href="#" class="tab-link active" style="text-decoration: none;color: black;">차트 · 호가</a>
+            </li>
+            <li style="margin-right: 20px;">
+                <a href="#" class="tab-link" style=" text-decoration: none; color: black;">종목정보</a>
+            </li>
+            <li>
+                <a href="#" class="tab-link" style=" text-decoration: none; color: black;">뉴스 · 공시</a>
+            </li>
+        </ul>
+        <!-- 검은색 움직이는 밑줄 -->
+        <div class="tab-underline" id="subTabsUnderline"></div>
+    </div>
+</main>
+
+<footer>
+    <div th:replace="~{layouts/footer.html}"></div>
+</footer>
+<script>
+    // 일반 탭 active 처리 (위쪽 탭)
+    function initTabs(ulId) {
+        const tabList = document.getElementById(ulId);
+        if (!tabList) return;
+
+        const links = tabList.querySelectorAll('.tab-link');
+
+        links.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                links.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    }
+
+    // 밑줄이 움직이는 탭 처리 (아래쪽 탭)
+    function initMovingUnderline(ulId, underlineId) {
+        const tabList = document.getElementById(ulId);
+        const underline = document.getElementById(underlineId);
+        if (!tabList || !underline) return;
+
+        const links = tabList.querySelectorAll('.tab-link');
+
+        // li의 offset 기준으로 밑줄 이동
+        function moveUnderline(target) {
+            const li = target.parentElement;    // <li>
+            underline.style.width = li.offsetWidth + 'px';
+            underline.style.left  = li.offsetLeft + 'px';
+        }
+
+        // 초기 위치: active 되어있는 탭 기준
+        const activeLink = tabList.querySelector('.tab-link.active') || links[0];
+        if (activeLink) {
+            moveUnderline(activeLink);
+        }
+
+        links.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // active 처리
+                links.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+
+                // 밑줄 이동
+                moveUnderline(this);
+            });
+        });
+
+        // 리사이즈 시 위치 다시 계산
+        window.addEventListener('resize', () => {
+            const currentActive = tabList.querySelector('.tab-link.active') || links[0];
+            if (currentActive) moveUnderline(currentActive);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // initTabs('marketTabs');                          // 위쪽 탭
+        initMovingUnderline('subTabs', 'subTabsUnderline'); // 아래쪽 움직이는 언더라인 탭
+    });
+</script>
+<script>
+    function updateTime() {
+        const now = new Date();
+
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+        const text = `순위·오늘 ${hours}:${minutes} 기준`;
+
+        document.getElementById('timeDisplay').innerText = text;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        initTabs('marketTabs');
+        initMovingUnderline('subTabs', 'subTabsUnderline');
+
+        updateTime();            // 처음 실행
+        setInterval(updateTime, 60 * 1000);  // 1분마다 갱신
+    });
+</script>
+<script>
+    function getRandomColor() {
+        const colors = ["#1E90FF", "#FF6347", "#6A5ACD", "#2E8B57", "#FF8C00", "#DC143C"];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function getColorForName(name) {
+        const key = `badgeColor_${name}`;
+
+        // 이미 저장된 색이 있다면 그대로 사용
+        const stored = localStorage.getItem(key);
+        if (stored) return stored;
+
+        // 없으면 새로 생성
+        const newColor = getRandomColor();
+        localStorage.setItem(key, newColor);
+        return newColor;
+    }
+
+    function createCircleBadge(text, color) {
+        const badge = document.createElement("div");
+        badge.className = "circle-badge";
+        badge.style.backgroundColor = color;
+        badge.textContent = text;
+        return badge;
+    }
+
+    function initCircleBadges() {
+        const names = document.querySelectorAll(".stock-name");
+
+        names.forEach(nameEl => {
+            // 색을 결정할 기준 이름 (data-stock-name이 있으면 그 값, 없으면 텍스트)
+            const fullName = (nameEl.dataset.stockName || nameEl.innerText).trim();
+            const firstChar = fullName.charAt(0);
+
+            // 항상 동일한 색을 가져오거나 생성
+            const color = getColorForName(fullName);
+
+            const badge = createCircleBadge(firstChar, color);
+
+            // stock-name 자체를 flex 컨테이너로 만들어서
+            // 왼쪽에 뱃지, 오른쪽에 기존 내용(2줄)이 오도록
+            nameEl.style.display = "flex";
+            nameEl.style.alignItems = "center";
+
+            // 기존 내용은 그대로 둔 채, 맨 앞에 뱃지만 끼워 넣기
+            nameEl.insertBefore(badge, nameEl.firstChild);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        initCircleBadges();
+    });
+</script>
+</body>
+</html>
