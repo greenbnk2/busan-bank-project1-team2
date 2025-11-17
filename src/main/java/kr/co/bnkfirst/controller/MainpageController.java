@@ -34,7 +34,8 @@ public class MainpageController {
         model.addAttribute("latestDocs", latestDocs);
         model.addAttribute("events", eventList);
 
-        return "main/main";
+        return "/main/main";
+    }
 
     @ResponseBody
     @GetMapping("/main/search")

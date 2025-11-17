@@ -4,7 +4,7 @@
       Chatbot.init({
         chatflowid: "c5c35ce4-18cb-4928-b072-f805252e5889",
         apiHost: "https://cloud.flowiseai.com",
-        
+
 
         // RAG/모델 파라미터 ↓ (필요 없으면 비워둬도 됩니다)
         chatflowConfig: {
@@ -38,75 +38,206 @@
         }
       })
 
-  const getWidget = () =>
-    document.querySelector('flowise-chatbot, flowise-embed')
+      const getWidget = () =>
+          document.querySelector('flowise-chatbot, flowise-embed')
 
-  // 🔧 "Powered by ..." 줄을 텍스트 기반으로 찾아 스페이서로 교체
-  const nukeBrandingKeepGap = () => {
-    const host = getWidget()
-    const root = host && host.shadowRoot
-    if (!root) return
+      const createFloatingCloseButton = () => {
+          // 이미 만들었으면 다시 만들지 않음
+          if (document.getElementById('bnk-chat-floating-close')) return
 
-    // 1) 링크로 먼저 시도
-    let brandNode = root.querySelector('a[href*="flowise"]')
+          const btn = document.createElement('button')
+          btn.id = 'bnk-chat-floating-close'
+          btn.innerText = '×'
 
-    // 2) 링크가 없다면 텍스트로 탐색
-    if (!brandNode) {
-      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
-      let t
-      while ((t = walker.nextNode())) {
-        const s = t.textContent.trim().toLowerCase()
-        if (s.includes('powered by')) {
-          brandNode = t.parentElement
-          break
-        }
+          const DURATION = 250   // 사라질 때만 사용
+
+          Object.assign(btn.style, {
+              position: 'fixed',
+              bottom: '70px',      // 필요하면 위치 조정
+              right: '10px',
+              width: '20px',
+              height: '20px',
+              borderRadius: '50%',
+              border: 'none',
+              background: '#858689',
+              color: '#ffffff',
+              fontSize: '18px',
+              cursor: 'pointer',
+              zIndex: 999999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.25)'
+              // 등장 애니메이션 제거 → 바로 보이도록
+          })
+
+          document.body.appendChild(btn)
+
+          btn.addEventListener('click', () => {
+              const w = getWidget()
+              if (w) {
+                  // 챗봇도 서서히 사라지게
+                  w.style.transition = `opacity ${DURATION}ms ease`
+                  w.style.opacity = '0'
+                  setTimeout(() => {
+                      w.style.display = 'none'
+                  }, DURATION)
+              }
+
+              // X 버튼도 서서히 사라짐
+              btn.style.transition = `opacity ${DURATION}ms ease`
+              btn.style.opacity = '0'
+              setTimeout(() => {
+                  btn.style.display = 'none'
+              }, DURATION)
+          })
       }
-    }
-    if (!brandNode) return
 
-    // 3) 줄 컨테이너(가장 가까운 작은 block 요소)를 찾음
-    let row = brandNode
-    const isSmall = el => {
-      const r = el.getBoundingClientRect()
-      return r.height > 10 && r.height < 60 && r.width > 150
-    }
-    while (row && row !== root && !isSmall(row)) row = row.parentElement
-    if (!row) row = brandNode.parentElement
+      // 🔴 X 버튼 생성 함수
+      const ensureCloseButton = () => {
+          const host = getWidget()
+          const root = host && host.shadowRoot
+          if (!root) return
 
-    // 4) 같은 높이의 스페이서로 교체
-    const h = (row.getBoundingClientRect().height || 28)
-    const spacer = document.createElement('div')
-    spacer.setAttribute('aria-hidden', 'true')
-    spacer.style.height = h + 'px'
-    spacer.style.opacity = '0'
-    spacer.style.pointerEvents = 'none'
-    row.replaceWith(spacer)
-  }
+          // 이미 있으면 다시 만들지 않음
+          if (root.querySelector('.bnk-close-btn')) return
 
-  // 최초 적용 + 변경 감시(텍스트/속성 포함)로 재적용
-  const start = () => {
-    const host = getWidget()
-    if (!host || !host.shadowRoot) return false
-    nukeBrandingKeepGap()
-    const obs = new MutationObserver(nukeBrandingKeepGap)
-    obs.observe(host.shadowRoot, {
-      childList: true,
-      characterData: true,
-      attributes: true,
-      subtree: true
-    })
-    return true
-  }
-  const boot = setInterval(() => { if (start()) clearInterval(boot) }, 300)
+          // 헤더(타이틀 바) 요소 찾기
+          // part 속성이 "header", "header something" 등일 수 있으므로 토큰/부분 매칭 사용
+          const header =
+              root.querySelector('[part~="header"]') ||  // part 목록에 header 포함
+              root.querySelector('[part*="header"]') ||  // 문자열에 header 포함
+              root.querySelector('header')               // 마지막 fallback
 
-  // (선택) 칩 제거 유지
-  const hideChips = () => {
-    const host = getWidget()
-    const root = host && host.shadowRoot
-    if (!root) return
-    root.querySelectorAll('.chatbot-button.selectable').forEach(n => n.remove())
-  }
-  setInterval(hideChips, 300)
+          if (!header) return
+
+          const btn = document.createElement('button')
+          btn.textContent = '×'
+          btn.className = 'bnk-close-btn'
+          Object.assign(btn.style, {
+              border: 'none',
+              background: 'transparent',
+              color: '#ffffff',
+              fontSize: '20px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              marginLeft: 'auto',
+              padding: '0 10px',
+              lineHeight: '1',
+              display: 'flex',
+              alignItems: 'center'
+          })
+
+          // X 누르면 챗봇 숨기기
+          btn.addEventListener('click', () => {
+              const w = getWidget()
+              if (w) {
+                  w.style.display = 'none'   // 페이지에서 챗봇 숨김
+              }
+          })
+
+          // 헤더에 버튼 붙이기
+          header.style.display = 'flex'
+          header.style.alignItems = 'center'
+          header.appendChild(btn)
+      }
+
+      // 브랜드 제거
+      const nukeBrandingKeepGap = () => {
+          const host = getWidget()
+          const root = host && host.shadowRoot
+          if (!root) return
+
+          let brandNode = root.querySelector('a[href*="flowise"]')
+
+          if (!brandNode) {
+              const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+              let t
+              while ((t = walker.nextNode())) {
+                  const s = t.textContent.trim().toLowerCase()
+                  if (s.includes('powered by')) {
+                      brandNode = t.parentElement
+                      break
+                  }
+              }
+          }
+          if (!brandNode) return
+
+          let row = brandNode
+          const isSmall = el => {
+              const r = el.getBoundingClientRect()
+              return r.height > 10 && r.height < 60 && r.width > 150
+          }
+          while (row && row !== root && !isSmall(row)) row = row.parentElement
+          if (!row) row = brandNode.parentElement
+
+          const h = (row.getBoundingClientRect().height || 28)
+          const spacer = document.createElement('div')
+          spacer.setAttribute('aria-hidden', 'true')
+          spacer.style.height = h + 'px'
+          spacer.style.opacity = '0'
+          spacer.style.pointerEvents = 'none'
+          row.replaceWith(spacer)
+      }
+
+      const start = () => {
+          const host = getWidget()
+          if (!host || !host.shadowRoot) return false
+
+          nukeBrandingKeepGap()
+          ensureCloseButton()   // ← 여기서 X 버튼 한 번 생성
+
+          const obs = new MutationObserver(() => {
+              nukeBrandingKeepGap()
+              ensureCloseButton() // ← DOM 변경될 때마다 X 버튼이 유지되도록
+          })
+          obs.observe(host.shadowRoot, {
+              childList: true,
+              characterData: true,
+              attributes: true,
+              subtree: true
+          })
+          return true
+      }
+
+      const boot = setInterval(() => {
+          const host = getWidget()
+          if (host) {
+              // 챗봇 아이콘이 DOM에 생긴 직후 X 버튼 생성
+              createFloatingCloseButton()
+          }
+
+          if (start()) {
+              clearInterval(boot)
+          }
+      }, 50)   // 50ms 간격으로 체크 → 챗봇과 거의 동시에 뜸
+
+      // flowise-chatbot / flowise-embed 요소가 DOM에 생기는 순간 감지해서
+      // 챗봇 초기화(start)와 X 버튼 생성을 동시에 실행
+      const waitForWidget = new MutationObserver((mutations, observer) => {
+          const host = getWidget()
+          if (host && host.shadowRoot) {
+              createFloatingCloseButton() // X 버튼
+              start()                    // branding 제거 + 헤더 X 등
+              observer.disconnect()      // 한 번만 실행
+          }
+      })
+
+      // 페이지 어디에 flowise 위젯이 추가되든 감지
+      waitForWidget.observe(document.body, {
+          childList: true,
+          subtree: true
+      })
+
+
+      // 칩 제거 유지
+      const hideChips = () => {
+          const host = getWidget()
+          const root = host && host.shadowRoot
+          if (!root) return
+          root.querySelectorAll('.chatbot-button.selectable').forEach(n => n.remove())
+      }
+      setInterval(hideChips, 300)
     </script>
     <style>
         /* Flowise 칩/추천 버튼들 전부 숨김 */
