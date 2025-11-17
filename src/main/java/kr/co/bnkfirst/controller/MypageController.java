@@ -66,4 +66,14 @@ public class MypageController {
         return "mypage/mypage_setup";
     }
 
+    // 은퇴설계 계산기 - RetirementCalcController로 이동
+
+    // 은퇴설계 계산기 결과 - RetirementCalcController로 이동
+
+    // 연금 계산기 - PensionCalcController로 이동
+
+    // 연금 계산기 결과 - 연금수령방법 기준 - PensionCalcController로 이동
+
+    // 연금 계산기 결과 - 현재 보유자산 기준 - PensionCalcController로 이동
+   
 }
