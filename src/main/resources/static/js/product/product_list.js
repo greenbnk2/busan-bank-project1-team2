@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                       <div>
                                         <div class="title">${p.pname}</div>
                                         <div class="new-prod"></div>
-                                        <div class="subtitle">안정적인 고금리 정기예금</div>
+                                        <div class="subtitle">${p.psubtitle}</div>
                                       </div>
                                     </div>
                                     <div class="cell rate-col">

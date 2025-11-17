@@ -303,22 +303,24 @@
                         </a>
                     </div>
                     <div style="display: flex; gap: 10px; margin-top: 10px;">
-                        <a href="#" style="text-decoration: none;" class="menu-link">
+                        <a th:href="@{/mypage/calc}" style="text-decoration: none;" class="menu-link">
                             <div class="menu-card" style="display: flex; justify-content: center; align-items: center; width: 150px; height: 84px; box-sizing: border-box; background-color: #F9FAFB; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
-                                <div>
+                                <div style="margin-top:3px;">
                                     <div style="display: flex; justify-content: center;">
-                                        <svg width="21" height="24" viewBox="0 0 21 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <g clip-path="url(#clip0_185_211)">
-                                            <path d="M10.5001 0C9.67039 0 9.00008 0.670312 9.00008 1.5V2.4C5.5782 3.09375 3.00008 6.12187 3.00008 9.75V10.6313C3.00008 12.8344 2.18914 14.9625 0.726642 16.6125L0.379767 17.0016C-0.0139832 17.4422 -0.107733 18.075 0.131329 18.6141C0.370392 19.1531 0.909454 19.5 1.50008 19.5H19.5001C20.0907 19.5 20.6251 19.1531 20.8688 18.6141C21.1126 18.075 21.0141 17.4422 20.6204 17.0016L20.2735 16.6125C18.811 14.9625 18.0001 12.8391 18.0001 10.6313V9.75C18.0001 6.12187 15.422 3.09375 12.0001 2.4V1.5C12.0001 0.670312 11.3298 0 10.5001 0ZM12.6235 23.1234C13.186 22.5609 13.5001 21.7969 13.5001 21H10.5001H7.50008C7.50008 21.7969 7.81414 22.5609 8.37664 23.1234C8.93914 23.6859 9.7032 24 10.5001 24C11.297 24 12.061 23.6859 12.6235 23.1234Z" fill="#4B5563"/>
+                                        <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <mask id="mask0_848_11" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="22">
+                                                <path d="M18 1H2C1.73478 1 1.48043 1.10536 1.29289 1.29289C1.10536 1.48043 1 1.73478 1 2V20C1 20.2652 1.10536 20.5196 1.29289 20.7071C1.48043 20.8946 1.73478 21 2 21H18C18.2652 21 18.5196 20.8946 18.7071 20.7071C18.8946 20.5196 19 20.2652 19 20V2C19 1.73478 18.8946 1.48043 18.7071 1.29289C18.5196 1.10536 18.2652 1 18 1Z" fill="white" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                                                <path d="M15.5 4H4.5V8.5H15.5V4Z" fill="black" stroke="black" stroke-width="2" stroke-linejoin="round"/>
+                                                <path d="M4 13L7.5 16.5M7.5 13L4 16.5M12 16.5H16M12 13.5H16" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </mask>
+                                            <g mask="url(#mask0_848_11)">
+                                                <path d="M-2 -1H22V23H-2V-1Z" fill="#4B5563"/>
                                             </g>
-                                            <defs>
-                                            <clipPath id="clip0_185_211">
-                                            <path d="M0 0H21V24H0V0Z" fill="white"/>
-                                            </clipPath>
-                                            </defs>
                                         </svg>
+
                                     </div>
-                                    <div style="font-size: 14px; color: #374151;">알림센터</div>
+                                    <div style="font-size: 11px; color: #374151; margin-top: 1px;">퇴직연금</div>
+                                    <div style="font-size: 11px; color: #374151; margin-top:-3px; text-align: center;">계산기</div>
                                 </div>
                             </div>
                         </a>
