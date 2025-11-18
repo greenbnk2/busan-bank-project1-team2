@@ -54,7 +54,7 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:oracle:thin:@//3.37.30.91:1522/XEPDB1   # Service name 방식
+    url: jdbc:oracle:thin:@//15.165.33.128:1522/XEPDB1   # Service name 방식
     username: BNK
     password: 1234         # 환경변수로 주입
   jpa:
