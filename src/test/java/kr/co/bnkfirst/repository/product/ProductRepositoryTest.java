@@ -1,6 +1,8 @@
 package kr.co.bnkfirst.repository.product;
 
 import kr.co.bnkfirst.entity.product.Product;
+import kr.co.bnkfirst.service.EmailService;
+import kr.co.bnkfirst.service.SmsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import javax.sql.DataSource;
 
@@ -15,6 +18,10 @@ import javax.sql.DataSource;
 class ProductRepositoryTest {
     @Autowired
     ProductRepository productRepository;
+    @MockitoBean
+    EmailService emailService;
+    @MockitoBean
+    SmsService smsService;
 
     @Test
     void findTest() {
