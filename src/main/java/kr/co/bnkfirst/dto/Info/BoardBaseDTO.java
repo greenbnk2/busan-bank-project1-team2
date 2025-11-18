@@ -1,4 +1,4 @@
-package kr.co.bnkfirst.dto.info;
+package kr.co.bnkfirst.dto.Info;
 
 import lombok.Data;
 
