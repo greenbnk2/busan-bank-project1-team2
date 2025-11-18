@@ -499,10 +499,10 @@
     <aside class="all-sidebar">
         <ul class="sidebar-menu">
             <h2>서식/약관/자료실</h2>
-            <li><a href="./deposit">예금</a></li>
-            <li class="active"><a href="./fund">펀드</a></li>
-            <li><a href="./trust">신탁</a></li>
-            <li><a href="./loan">대출</a></li>
+            <li><a href="./deposit">퇴직연금 서식</a></li>
+            <li class="active"><a href="./fund">자료실</a></li>
+            <li><a href="./loan">소규모펀드등공시</a></li>
+            <li><a href="./trust">공지사항</a></li>
         </ul>
 
         <!--추가 도움 영역-->
@@ -521,18 +521,15 @@
     <!-- 메인 콘텐츠 -->
     <main class="productsRoom-content">
         <div class="productsRoom-header">
-            <h1>펀드</h1>
+            <h1>자료실</h1>
         </div>
 
         <!-- 1단계 상위 탭 -->
         <div class="main-tab-btns">
-            <button class="main-btn active" onclick="showMainTab('terms')">상품약관</button>
-            <button class="main-btn" onclick="showMainTab('guide')">상품설명서</button>
-            <button class="main-btn" onclick="showMainTab('forms')">서식자료실</button>
-            <button class="main-btn" onclick="showMainTab('disclosure')">수시공시</button>
+            <button class="main-btn active" onclick="showMainTab('terms')">자료실</button>
         </div>
 
-        <!-- 상품약관 탭 -->
+        <!-- 자료실 탭 -->
         <section id="terms" class="tab-content active">
             <div class="list-top">
                 <p>총 <strong>0</strong>건 현재: <strong>1/1</strong>페이지</p>
@@ -544,8 +541,6 @@
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
-                    <th>파일</th>
-                    <th>거래조건변경사항</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -553,72 +548,6 @@
             </table>
 
             <div class="pagination terms-pagination"></div>
-        </section>
-
-
-        <!-- 설명서 탭 -->
-        <section id="guide" class="tab-content">
-            <div class="list-top">
-                <p>총 <strong>0</strong>건 현재: <strong>1/1</strong>페이지</p>
-            </div>
-            <table class="deposit-table" id="guide-table">
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>제목</th>
-                    <th>파일</th>
-                    <th>거래조건변경사항</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-
-            <div class="pagination guide-pagination"></div>
-        </section>
-
-        <!-- 서식자료실 탭 -->
-        <section id="forms" class="tab-content">
-            <div class="list-top">
-                <p>총 <strong>0</strong>건 현재: <strong>1/1</strong>페이지</p>
-            </div>
-            <table class="deposit-table" id="forms-table">
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>제목</th>
-                    <th>파일</th>
-                    <th>거래조건변경사항</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-
-            <div class="pagination forms-pagination"></div>
-        </section>
-
-        <!-- 수시공시 탭 -->
-        <section id="disclosure" class="tab-content">
-            <div class="list-top">
-                <p>총 <strong>0</strong>건 현재: <strong>1/1</strong>페이지</p>
-            </div>
-            <table class="deposit-table" id="disclosure-table">
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>제목</th>
-                    <th>파일</th>
-                    <th>거래조건변경사항</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-
-            <div class="pagination disclosure-pagination"></div>
         </section>
     </main>
 </div>
@@ -726,7 +655,7 @@
         //////////////////////////////
         // 서버에서 문서 목록 불러오기
         //////////////////////////////
-        const types = ["펀드(상품약관)","펀드(상품설명서)","펀드(서식자료실)","펀드(수시공시)"]
+        const types = ["자료실"]
         const documentData = {};
         const rowsPerPage = 5;
         try{
@@ -740,10 +669,7 @@
 
             console.log("서버에서 전체 문서 데이터 불러옴:", documentData);
 
-            setupPagination(documentData["펀드(상품약관)"], "#terms-table", ".terms-pagination");
-            setupPagination(documentData["펀드(상품설명서)"], "#guide-table", ".guide-pagination");
-            setupPagination(documentData["펀드(서식자료실)"], "#forms-table", ".forms-pagination");
-            setupPagination(documentData["펀드(수시공시)"], '#disclosure-table', ".disclosure-pagination");
+            setupPagination(documentData["자료실"], "#terms-table", ".terms-pagination");
         } catch(err) {
             console.error("데이터 불러오기 실패", err);
         }
@@ -773,8 +699,6 @@
           <tr>
             <td>${start + index + 1}</td>
             <td>${doc.doctitle}</td>
-            <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
-            <td><button class="change-btn">변경사항보기</button></td>
           </tr>`;
                     tbody.insertAdjacentHTML("beforeend", row);
                 });

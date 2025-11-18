@@ -390,6 +390,45 @@
             <div style="margin-top:25px;border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
                 <div>
                     <div style="height: 70px; display: flex; justify-content: end; background-color: white; align-items: flex-end;">
+                        <div style="color: #13263A; font-size: 20px; margin-bottom: 20px; margin-left: 30px;">나의 투자</div>
+                        <button th:onclick="|location.href='@{/product/main}'|" class="btn-register" style="margin-left:auto; height: 35px !important; width: 100px !important; margin-bottom: 17px; margin-right: 40px;">
+                            <div style="display: flex; justify-content: center;">
+                                <div style="margin-top: 2.5px; margin-right: 5px;">
+                                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 2.1875C7 1.70352 6.60898 1.3125 6.125 1.3125C5.64102 1.3125 5.25 1.70352 5.25 2.1875V6.125H1.3125C0.828516 6.125 0.4375 6.51602 0.4375 7C0.4375 7.48398 0.828516 7.875 1.3125 7.875H5.25V11.8125C5.25 12.2965 5.64102 12.6875 6.125 12.6875C6.60898 12.6875 7 12.2965 7 11.8125V7.875H10.9375C11.4215 7.875 11.8125 7.48398 11.8125 7C11.8125 6.51602 11.4215 6.125 10.9375 6.125H7V2.1875Z" fill="white"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    계좌추가
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <table id="accounts-table" style="border-collapse: collapse; width: 100%;border-top: 1px #E5E7EB solid;">
+                <tr style="color: #2B2F36; font-size: 14px; height: 52px; border-bottom: 1px #E5E7EB; ">
+                    <th style="width: 200px;">상품명</th>
+                    <th style="width: 290px;">계좌번호</th>
+                    <th style="width: 160px;">개설일</th>
+                    <th style="width: 160px;">만기일</th>
+                    <th style="width: 200px;">잔액(원)</th>
+                    <th style="">작업</th>
+                </tr>
+                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;" th:each="contract:${contractList}">
+                    <td>[[${contract.pname}]]</td>
+                    <td>[[${contract.pacc}]]</td>
+                    <td><span th:text="${#temporals.format(contract.pnew, 'yyyy.MM.dd')}"></span></td>
+                    <td><span th:text="${#temporals.format(contract.pend, 'yyyy.MM.dd')}"></span></td>
+                    <td><span th:text="${#numbers.formatInteger(contract.pbalance, '3', 'COMMA')}"></span></td>
+                    <td style="vertical-align: middle; text-align: center;">
+                        <button th:onclick="|location.href='@{/mypage/prod}'|" class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
+                    </td>
+                </tr>
+            </table>
+            </div>
+            <div style="margin-top:25px;border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
+                <div>
+                    <div style="height: 70px; display: flex; justify-content: end; background-color: white; align-items: flex-end;">
                         <div style="color: #13263A; font-size: 20px; margin-bottom: 20px; margin-left: 30px;">나의 문의내역</div>
                         <button class="btn-register" th:onclick="|location.href='@{/cs/consultation/Q&A}'|" style="margin-left:auto; height: 35px !important; width: 100px !important; margin-bottom: 17px; margin-right: 40px;">
                             <div style="display: flex; justify-content: center;">

@@ -498,11 +498,11 @@
         <!--왼쪽 사이드바-->
         <aside class="all-sidebar">
             <ul class="sidebar-menu">
-                <h2>상품공시실</h2>
-                <li><a href="./bankManual">은행상품공시이용매뉴얼</a></li>
-                <li class="active"><a href="./depositProduct">예금상품</a></li>
-                <li><a href="./AnyProduct">기타상품</a></li>
-                <li><a href="./serviceFee">서비스이용수수료</a></li>
+                <h2>퇴직연금사업자공시</h2>
+                <li><a href="./AnyProduct">운용금액 및 운용수익률</a></li>
+                <li class="active"><a href="./depositProduct">퇴직연금 계약서</a></li>
+                <li><a href="./bankManual">원리금 보장 상품 현황</a></li>
+                <li><a href="./serviceFee">수수료</a></li>
             </ul>
 
             <!--추가 도움 영역-->
@@ -521,14 +521,12 @@
         <!-- 메인 콘텐츠 -->
         <main class="productsRoom-content">
             <div class="productsRoom-header">
-                <h1>예금상품</h1>
+                <h1>운용관리/자산관리 계약 약관</h1>
             </div>
 
             <!-- 1단계 상위 탭 -->
             <div class="main-tab-btns">
-                <button class="main-btn active" onclick="showMainTab('terms')">적립식예금</button>
-                <button class="main-btn" onclick="showMainTab('guide')">거치식예금</button>
-                <button class="main-btn" onclick="showMainTab('forms')">입출금자유로운예금</button>
+                <button class="main-btn active" onclick="showMainTab('terms')">계약서</button>
             </div>
 
             <section id="terms" class="tab-content active">
@@ -541,10 +539,8 @@
                     <thead>
                         <tr>
                         <th>번호</th>
-                        <th>상품명</th>
-                        <th>상품설명서</th>
-                        <th>약관</th>
-                        <th>거래조건변경사항</th>
+                        <th>제목</th>
+                        <th>첨부파일</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -553,53 +549,6 @@
                 </table>
 
                 <div class="pagination terms-pagination"></div>
-            </section>
-            
-
-            <!-- 설명서 탭 -->
-            <section id="guide" class="tab-content">
-            <div class="list-top">
-                <p>총 <strong>0</strong>건 현재: <strong>1/1</strong>페이지</p>
-            </div>
-            <table class="deposit-table" id="guide-table">
-                <thead>
-                    <tr>
-                        <th>번호</th>
-                        <th>상품명</th>
-                        <th>상품설명서</th>
-                        <th>약관</th>
-                        <th>거래조건변경사항</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-
-                <div class="pagination guide-pagination"></div>
-            </section>
-
-            <!-- 서식자료실 탭 -->
-            <section id="forms" class="tab-content">
-            <div class="list-top">
-                <p>총 <strong>0</strong>건 현재: <strong>1/1</strong>페이지</p>
-            </div>
-            <table class="deposit-table" id="forms-table">
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>상품명</th>
-                    <th>상품설명서</th>
-                    <th>약관</th>
-                    <th>거래조건변경사항</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-
-                <div class="pagination forms-pagination"></div>
             </section>
         </main>
     </div>
@@ -704,7 +653,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
-        const types = ["예금상품(적립식예금)", "예금상품(거치식예금)", "예금상품(입출금자유예금)"];
+        const types = ["퇴직연금계약서"];
         const documentData = {};
         const rowsPerPage = 5;
 
@@ -718,9 +667,7 @@
 
             console.log("✅ 전체 문서 데이터 불러옴:", documentData);
 
-            setupPagination(documentData["예금상품(적립식예금)"], "#terms-table", ".terms-pagination");
-            setupPagination(documentData["예금상품(거치식예금)"], "#guide-table", ".guide-pagination");
-            setupPagination(documentData["예금상품(입출금자유예금)"], "#forms-table", ".forms-pagination");
+            setupPagination(documentData["퇴직연금계약서"], "#terms-table", ".terms-pagination");
         } catch (err) {
             console.error("❌ 데이터 불러오기 실패", err);
         }
@@ -751,8 +698,6 @@
             <td>${start + index + 1}</td>
             <td>${doc.doctitle}</td>
             <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
-            <td><button class="change-btn">변경사항보기</button></td>
-            <td><button class="change-btn">거래조건 변경사항</button></td>
           </tr>`;
                     tbody.insertAdjacentHTML("beforeend", row);
                 });

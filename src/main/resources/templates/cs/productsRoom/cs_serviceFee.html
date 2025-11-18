@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,19 +17,15 @@
             padding-top: 100px;
         }
 
-
         .productsRoom-page{
             display:flex;
             gap:40px;
             width: 1200px;
-            margin: 60px auto;
+            margin: 60px auto 100px;
             padding: 40px 20px;
             background: #F6F6F8;
             border-radius: 8px;
-            margin-bottom: 100px;
         }
-
-
 
         /*----------------------------------*/
         /*--왼쪽 사이드바--*/
@@ -39,12 +35,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-        }
-
-        .all-sidebar h2{
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: #333;
+            flex-shrink: 0;
         }
 
         .sidebar-menu {
@@ -82,8 +73,8 @@
         .sidebar-menu li.active{
             background: #ffe6e6;
             border-left: 4px solid #d91a1a;
-            color: #d91a1a;;
-            font-weight:  600;
+            color: #d91a1a;
+            font-weight: 600;
             padding-left: 12px;
         }
 
@@ -91,21 +82,18 @@
             border-bottom: none;
         }
 
-        /* 사이드바 메뉴 링크 공통 스타일 */
         .sidebar-menu a {
-            display: block;              /* li 전체 클릭되게 */
-            text-decoration: none;       /* 밑줄 제거 */
-            color: #222;                 /* 검정(짙은 회색) 글씨 */
+            display: block;
+            text-decoration: none;
+            color: #222;
         }
 
-        /* 방문 후에도 색 안 바뀌게 */
         .sidebar-menu a:visited {
             color: #222;
         }
 
-        /* (선택) 호버 시 색만 살짝 바꾸고 싶으면 */
         .sidebar-menu a:hover {
-            color: #D91A1A;              /* BNK 레드 */
+            color: #D91A1A;
         }
 
         /*----------------------------------*/
@@ -116,7 +104,6 @@
             color: #fff;
             border-radius: 12px;
             padding: 24px 20px;
-            margin-top: 0;
             text-align: center;
             box-shadow: 0 4px 4px rgba(0,0,0,0.08);
         }
@@ -157,9 +144,8 @@
         }
 
         /*----------------------------------*/
-        /*--메인 컨텐츠--*/
+        /*-- 메인 컨텐츠--*/
         /*----------------------------------*/
-
         .howUse-content{
             flex: 1;
         }
@@ -171,198 +157,12 @@
 
         .howUse-header p{
             color: #666;
-            margin-bottom:  20px;
-        }
-
-        .howUse-search {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
-            border-radius: 30px;
-            padding: 6px 12px;
-            background: #fafafa;
-        }
-
-        /*----------------------------------*/
-        /*-- 비밀번호 안내 페이지 --*/
-        /*----------------------------------*/
-        .password-section {
-            margin-bottom: 50px;
-        }
-
-        .password-section h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            border-bottom: 2px solid #d91a1a;
-            padding-bottom: 6px;
-        }
-
-        .password-section p {
-            color: #555;
-            font-size: 15px;
-            line-height: 1.7;
-            margin-bottom: 6px;
-        }
-
-        /* Case Box */
-        .case-box {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: #f9f9f9;
-            margin-top: 20px;
-            margin-bottom: 16px;
-            padding: 16px;
-        }
-
-        .case-box h3 {
-            background: #eef2ff;
-            border-left: 4px solid #f73c3c;
-            padding: 8px 12px;
-            font-size: 16px;
-            font-weight: 600;
-            margin: -16px -16px 12px -16px;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-
-        .case-box h3 span {
-            margin-left: 10px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .case-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #fff;
-            border-radius: 6px;
-            border: 1px solid #eee;
-            padding: 12px 16px;
-            font-size: 15px;
-            color: #333;
-        }
-
-        .btn-small {
-            background: #d91a1a;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 6px 14px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .btn-small:hover {
-            background: #b50f0f;
-        }
-
-        /*----------------------------------*/
-        /*-- 가입절차 탭 버튼 --*/
-        /*----------------------------------*/
-        .join-type-btns {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0 30px 0;
-        }
-
-        .join-btn {
-            border: 1px solid #ccc;
-            background: #fff;
-            color: #333;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .join-btn.active {
-            background: #d91a1a;
-            color: #fff;
-            border-color: #d91a1a;
-        }
-
-        /*----------------------------------*/
-        /*-- 가입절차 콘텐츠 --*/
-        /*----------------------------------*/
-        .join-section {
-            display: none;
-        }
-
-        .join-section.active {
-            display: block;
-        }
-
-        .info-box {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 16px 20px;
             margin-bottom: 20px;
-            line-height: 1.6;
-            font-size: 15px;
-        }
-
-        /* Step Box */
-        .step-box {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: #fafafa;
-            margin-bottom: 18px;
-            overflow: hidden;
-        }
-
-        .step-box h3 {
-            background: #f4f4f4;
-            border-bottom: 1px solid #ddd;
-            padding: 10px 16px;
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .step-content {
-            padding: 16px 20px;
-            background: #fff;
-        }
-
-        .step-content h4 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #333;
-        }
-
-        .step-content p {
-            font-size: 14.5px;
-            color: #555;
-            line-height: 1.7;
-            margin-bottom: 10px;
-        }
-
-        /* 버튼 그룹 */
-        .btn-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-small {
-            background: #d91a1a;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 6px 14px;
-            cursor: pointer;
             font-size: 14px;
+            line-height: 1.6;
         }
 
-        .btn-small:hover {
-            background: #b50f0f;
-        }
-
-
-        /*----------------------------------*/
-        /*-- 상위 탭 (예금/신탁 / 이체 / 조회) --*/
-        /*----------------------------------*/
+        /* 상위 탭 버튼 */
         .main-tab-btns {
             display: flex;
             border-bottom: 2px solid #d91a1a;
@@ -386,633 +186,514 @@
             font-weight: 600;
         }
 
-        /*----------------------------------*/
-        /*-- 하위 탭 (개인 / 기업) --*/
-        /*----------------------------------*/
-        .sub-tab-btns {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
+        /* 섹션 공통 */
+        .main-section{
+            display:none;
+        }
+        .main-section.active{
+            display:block;
         }
 
-        .sub-btn {
-            padding: 10px 20px;
-            border: none;
-            background: #f6f6f6;
+        .fee-section{
+            margin-top: 24px;
+        }
+
+        .fee-section h2{
+            font-size: 20px;
+            margin-bottom: 10px;
             color: #333;
-            border-radius: 6px 6px 0 0;
-            cursor: pointer;
-            margin-right: 6px;
+            border-left: 5px solid #d91a1a;
+            padding-left: 10px;
         }
 
-        .sub-btn.active {
-            background: #d91a1a;
-            color: #fff;
-        }
-
-        /*----------------------------------*/
-        /*-- 표 --*/
-        /*----------------------------------*/
-        .service-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            border: 1px solid #ddd;
-            text-align: center;
-            font-size: 15px;
-        }
-
-        .service-table th {
-            background: #fafafa;
-            border-bottom: 2px solid #d91a1a;
-            padding: 12px;
-            font-weight: 600;
-        }
-
-        .service-table td {
-            border: 1px solid #eee;
-            padding: 10px;
-            color: #333;
-        }
-
-        .service-table tr:nth-child(even) {
-            background: #fcfcfc;
-        }
-
-        /*----------------------------------*/
-        /*-- 공통 섹션 토글 --*/
-        /*----------------------------------*/
-        .main-section,
-        .sub-section {
-            display: none;
-        }
-
-        .main-section.active,
-        .sub-section.active {
-            display: block;
-        }
-
-        /*----------------------------------*/
-        /*-- 빈 영역 안내 박스 --*/
-        /*----------------------------------*/
-        .empty-box {
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 40px;
-            text-align: center;
+        .fee-section .sub-text{
+            font-size: 13px;
             color: #777;
-            border-radius: 8px;
+            margin-bottom: 10px;
         }
 
-
-
-
-
-
-
-
-
-        .sub-table-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #c41e20;
-            border-bottom: 2px solid #c41e20;
-            display: inline-block;
-            margin-top: 40px;
-            margin-bottom: 15px;
-            padding-bottom: 4px;
-        }
-
-        .service-table {
+        .service-table{
             width: 100%;
             border-collapse: collapse;
             background: #fff;
             border: 1px solid #ddd;
-            margin-bottom: 40px;
+            font-size: 14px;
+            margin-bottom: 16px;
         }
 
-        .service-table th, .service-table td {
+        .service-table th,
+        .service-table td{
             border: 1px solid #ddd;
+            padding: 8px 10px;
             text-align: center;
-            padding: 10px 8px;
-            font-size: 14px;
             line-height: 1.6;
         }
 
-        .service-table th {
+        .service-table th{
             background: #fafafa;
             font-weight: 600;
         }
 
-        .service-table tr:nth-child(even) {
+        .service-table tbody tr:nth-child(even){
             background: #fcfcfc;
         }
 
+        .service-table td.text-left{
+            text-align: left;
+        }
+
+        .fee-notice{
+            margin-top: 6px;
+            font-size: 12px;
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .fee-notice ul{
+            margin: 4px 0 0;
+            padding-left: 18px;
+        }
+
+        .fee-notice li{
+            margin-bottom: 3px;
+        }
     </style>
 </head>
 <body>
-    <!--푸터-->
-    <div th:replace="~{layouts/header}"></div>
-    
-    <div class="productsRoom-page">
-        <!--왼쪽 사이드바-->
-        <aside class="all-sidebar">
-            <ul class="sidebar-menu">
-                <h2>상품공시실</h2>
-                <li><a href="./bankManual">은행상품공시이용매뉴얼</a></li>
-                <li><a href="./depositProduct">예금상품</a></li>
-                <li><a href="./AnyProduct">기타상품</a></li>
-                <li class="active"><a href="./serviceFee">서비스이용수수료</a></li>
-            </ul>
+<!--헤더-->
+<div th:replace="~{layouts/header}"></div>
 
-            <!--추가 도움 영역-->
-            <section class="all-help">
-                <div class="help-box">
-                    <h3>추가 도움이 필요하신가요?</h3>
-                    <p>전문 상담원이 친절하게 도와드리겠습니다.</p>
-                    <div class="help-buttons">
-                        <button class="btn-call">전화상담</button>
-                        <button class="btn-chat">Talk상담</button>
-                    </div>
+<div class="productsRoom-page">
+    <!--왼쪽 사이드바-->
+    <aside class="all-sidebar">
+        <ul class="sidebar-menu">
+            <h2>퇴직연금사업자공시</h2>
+            <li><a href="./AnyProduct">운용금액 및 운용수익률</a></li>
+            <li><a href="./depositProduct">퇴직연금 계약서</a></li>
+            <li><a href="./bankManual">원리금 보장 상품 현황</a></li>
+            <li class="active"><a href="./serviceFee">수수료</a></li>
+        </ul>
+
+        <!--추가 도움 영역-->
+        <section class="all-help">
+            <div class="help-box">
+                <h3>추가 도움이 필요하신가요?</h3>
+                <p>전문 상담원이 친절하게 도와드리겠습니다.</p>
+                <div class="help-buttons">
+                    <button class="btn-call">전화상담</button>
+                    <button class="btn-chat">Talk상담</button>
+                </div>
+            </div>
+        </section>
+    </aside>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="howUse-content">
+        <div class="howUse-header">
+            <h1>서비스이용수수료</h1>
+            <p>
+                퇴직연금 제도별 운용관리수수료 및 자산관리수수료를 확인하실 수 있습니다.
+            </p>
+        </div>
+
+        <!-- 상위 탭 버튼 -->
+        <div class="main-tab-btns">
+            <button class="main-btn active" onclick="showMainTab('deposit')">확정급여형(DB) 수수료</button>
+            <button class="main-btn" onclick="showMainTab('transfer')">확정기여형(DC) 수수료</button>
+            <button class="main-btn" onclick="showMainTab('inquiry')">기업형IRP 수수료</button>
+            <button class="main-btn" onclick="showMainTab('cusIrp')">개인형IRP 수수료</button>
+        </div>
+
+        <!-- 확정급여형(DB) -->
+        <section id="deposit" class="main-section active">
+            <section class="fee-section">
+                <h2>확정급여형(DB) 수수료</h2>
+                <p class="sub-text">※ 수수료율은 연 기준이며, 적립금 자산평가액 평잔에 따라 차등 적용됩니다.</p>
+
+                <table class="service-table">
+                    <thead>
+                    <tr>
+                        <th>수수료구분</th>
+                        <th>수수료율(연)/금액</th>
+                        <th>부과기준</th>
+                        <th>납입주체</th>
+                        <th>취득자산</th>
+                        <th>장기할인</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>운용관리수수료</td>
+                        <td class="text-left">
+                            적립금 10억 미만 : 0.40%<br>
+                            30억 미만 : 0.35%<br>
+                            50억 미만 : 0.30%<br>
+                            100억 미만 : 0.25%<br>
+                            600억 미만 : 0.20%<br>
+                            600억 이상 : 0.10%
+                        </td>
+                        <td class="text-left">
+                            매 계약응당일 기준<br>
+                            (계산기간 적립금자산평가액 평잔 × 해당 수수료율)<br>
+                            * 계산기간 : 계약일 또는 직전 계산일 ~ 해당 계산기준일 전일
+                        </td>
+                        <td>사용자</td>
+                        <td>신탁재산(적립금)</td>
+                        <td>
+                            2년차 10%<br>
+                            3년차 12%<br>
+                            4년차 15%<br>
+                            5년차 이후 20%
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>자산관리수수료</td>
+                        <td class="text-left">
+                            적립금 600억 미만 : 0.30%<br>
+                            600억 이상 : 0.15%
+                        </td>
+                        <td class="text-left">
+                            매 계약응당일 기준<br>
+                            (계산기간 신탁재산평가액 평잔 × 수수료율)
+                        </td>
+                        <td>사용자</td>
+                        <td>신탁재산</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>가입자교육수수료</td>
+                        <td>0원</td>
+                        <td class="text-left">교육위탁계약서에서 정하되, 별도 징수하지 않음</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>중도해지수수료</td>
+                        <td>없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>계약이전수수료</td>
+                        <td>없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>-</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="fee-notice">
+                    <ul>
+                        <li>퇴직신탁·퇴직보험에서 전환된 계약은 첫 해 운용관리수수료를 면제하되, 초년도 중 중도해지·계약이전 시에는 해당 수수료를 부과합니다.</li>
+                        <li>사회적기업, 사회복지법인, 유치원·어린이집 등의 경우 운용관리·자산관리수수료 50% 할인 대상입니다.</li>
+                        <li>중소기업확인서를 제출한 경우, 제출 익일부터 운용관리·자산관리수수료 5% 추가 할인합니다.</li>
+                        <li>적립금 중 집합투자증권(ETF 제외) 자산평가액에 대해서는 운용관리수수료 10%를 할인합니다.</li>
+                    </ul>
                 </div>
             </section>
-        </aside>
+        </section>
 
-        <!-- 메인 콘텐츠 -->
-        <main class="howUse-content">
-            <div class="howUse-header">
-                <h1>서비스이용수수료</h1>
-                <p>서비스 이용시간 안내입니다.<br>
-                    이용시에 불편함이 없도록 각 서비스 별 이용시간을 확인해주세요.
-                </p>
-            </div>
-
-            <!-- 1단계 상위 탭 -->
-            <div class="main-tab-btns">
-                <button class="main-btn active" onclick="showMainTab('deposit')">송금관련수수료</button>
-                <button class="main-btn" onclick="showMainTab('transfer')">예금관련수수료</button>
-                <button class="main-btn" onclick="showMainTab('inquiry')">기타수수료</button>
-            </div>
-
-            <!-- 송금관련수수료 -->
-            <section id="deposit" class="main-section active">
-            <div class="sub-tab-btns">
-                <button class="sub-btn active" onclick="showSubTab('deposit-personal', this)">창구/자동화기기 송금</button>
-                <button class="sub-btn" onclick="showSubTab('deposit-corporate', this)">인터넷/텔레뱅킹 송금</button>
-            </div>
-
-            <!-- 창구/자동화기기 송금 -->
-            <div id="deposit-personal" class="sub-section active">
-                <h4 class="sub-table-title">창구에서 보내실 때</h4>
-                <p class="table-date">(2025년 11월 6일 기준, 단위: 원)</p>
+        <!-- 확정기여형(DC) -->
+        <section id="transfer" class="main-section">
+            <section class="fee-section">
+                <h2>확정기여형(DC) 수수료</h2>
+                <p class="sub-text">※ 사용자부담금·가입자부담금 모두 동일한 수수료 체계를 적용합니다.</p>
 
                 <table class="service-table">
-                <thead>
+                    <thead>
                     <tr>
-                    <th>송금금액</th>
-                    <th>부산은행으로 보낼 때</th>
-                    <th>다른 은행으로 보낼 때</th>
-                    <th>비고</th>
+                        <th>수수료구분</th>
+                        <th>수수료율(연)/금액</th>
+                        <th>부과기준</th>
+                        <th>납입주체</th>
+                        <th>취득자산</th>
+                        <th>장기할인</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr><td>10만원 이하</td><td>면제</td><td>1,000</td><td rowspan="4" style="text-align:left;">
-                    기초생활수급자, 장애인, 국가유공자, 독립유공자 및 유족, 5·18민주화운동부상자, 고엽제후유의증환자, 소년소녀가장, 차상위계층 면제<br>
-                    만65세 이상, 만18세 미만 20% 감면
-                    </td></tr>
-                    <tr><td>100만원 이하</td><td>면제</td><td>2,000</td></tr>
-                    <tr><td>100만원 초과</td><td>면제</td><td>3,500</td></tr>
-                    <tr><td>500만원 초과</td><td>면제</td><td>4,000</td></tr>
-                </tbody>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>운용관리수수료</td>
+                        <td class="text-left">
+                            적립금 10억 미만 : 0.40%<br>
+                            30억 미만 : 0.35%<br>
+                            50억 미만 : 0.30%<br>
+                            100억 미만 : 0.25%<br>
+                            100억 이상 : 0.20%
+                        </td>
+                        <td class="text-left">
+                            매 계약응당일 기준<br>
+                            (계산기간 적립금자산평가액 평잔 × 해당 수수료율)
+                        </td>
+                        <td>
+                            사용자(사용자부담금)<br>
+                            가입자(가입자부담금)
+                        </td>
+                        <td>
+                            현금(사용자부담금)<br>
+                            신탁재산(적립금)
+                        </td>
+                        <td>
+                            2년차 10%<br>
+                            3년차 12%<br>
+                            4년차 15%<br>
+                            5년차 이후 20%
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>자산관리수수료</td>
+                        <td>0.30%</td>
+                        <td class="text-left">
+                            매 계약응당일 기준<br>
+                            (계산기간 신탁재산평가액 평잔 × 수수료율)
+                        </td>
+                        <td>
+                            사용자(사용자부담금)<br>
+                            가입자(가입자부담금)
+                        </td>
+                        <td>
+                            현금 / 신탁재산
+                        </td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>가입자교육수수료</td>
+                        <td>0원</td>
+                        <td class="text-left">교육위탁계약서에서 정하되, 별도 징수하지 않음</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>중도해지수수료</td>
+                        <td>없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>계약이전수수료</td>
+                        <td>없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>-</td>
+                    </tr>
+                    </tbody>
                 </table>
 
-                <h4 class="sub-table-title">자동화기기 이용 시</h4>
-                <table class="service-table">
-                <thead>
-                    <tr>
-                    <th>구분</th>
-                    <th>고객구분</th>
-                    <th>징수기준</th>
-                    <th>비고</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>입금</td><td>—</td><td>면제</td><td>경남은행 계좌로 입금 시 면제</td></tr>
-                    <tr><td rowspan="3">출금</td><td>영업시간 중 일반</td><td>면제</td><td>경남은행 계좌에서 출금 시 면제</td></tr>
-                    <tr><td>영업시간 외 일반</td><td>건당 600원</td><td rowspan="2" style="text-align:left;">
-                    부산은행 고객에 한함<br>
-                    기초생활수급자·차상위계층·장애인·국가유공자·독립유공자·고엽제후유증환자·5·18민주화운동부상자·소년소녀가장·다문화가정·한부모가정·탈북새터민 면제<br>
-                    만18세 미만, 만65세 이상 건당 480원<br>
-                    1일 2회 이상 출금 시 2회분부터 건당 300원<br>
-                    1회 1만원 출금은 면제
-                    </td></tr>
-                    <tr><td>—</td><td>—</td></tr>
-                </tbody>
-                </table>
-
-                <h4 class="sub-table-title">자동화기기 이체 수수료</h4>
-                <table class="service-table">
-                <thead>
-                    <tr>
-                    <th>구분</th>
-                    <th>징수기준</th>
-                    <th>비고</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>이체 (자행/타행)</td><td>면제</td><td>경남은행 계좌로 이체 시 면제</td></tr>
-                    <tr><td>타행 이체 (영업시간 중)</td><td>건당 800원</td><td>경남은행 기기 이용 시 면제</td></tr>
-                    <tr><td>타행 이체 (영업시간 외)</td><td>건당 1,000원</td><td>경남은행 기기 이용 시 건당 600원</td></tr>
-                    <tr><td>타행 CD/ATM 이용</td><td>제휴업체 개별 계약에 따름</td><td>영업시간 중 08:30~17:00</td></tr>
-                </tbody>
-                </table>
-            </div>
-
-            <!-- 인터넷/텔레뱅킹 송금 -->
-            <div id="deposit-corporate" class="sub-section">
-                <p class="table-date">(2025년 11월 6일 기준)</p>
-
-                <h4 class="sub-table-title">인터넷/모바일뱅킹</h4>
-                <table class="service-table">
-                <thead>
-                    <tr>
-                    <th>구분</th>
-                    <th>수수료</th>
-                    <th>비고</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>부산은행 및 경남은행으로 송금</td><td>면제</td><td>—</td></tr>
-                    <tr><td>다른 은행으로 송금 (개인뱅킹)</td><td>면제</td><td>—</td></tr>
-                    <tr><td>다른 은행으로 송금 (기업뱅킹)</td><td>건당 500원</td><td>국가기관·지자체, 만18세 미만, 만65세 이상, 기초생활수급자, 차상위계층, 장애인, 국가유공자, 독립유공자 등 면제</td></tr>
-                </tbody>
-                </table>
-
-                <h4 class="sub-table-title">텔레뱅킹</h4>
-                <table class="service-table">
-                <thead>
-                    <tr>
-                    <th>구분</th>
-                    <th>수수료</th>
-                    <th>비고</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>부산은행 및 경남은행으로 송금</td><td>면제</td><td>—</td></tr>
-                    <tr><td>다른 은행으로 송금</td><td>건당 500원</td><td>국가기관·지자체, 만18세 미만, 만65세 이상, 기초생활수급자, 차상위계층, 장애인, 국가유공자, 독립유공자 등 면제</td></tr>
-                </tbody>
-                </table>
-
-                <h4 class="sub-table-title">송금 한도</h4>
-                <table class="service-table">
-                <thead>
-                    <tr>
-                    <th>서비스 구분</th>
-                    <th>송금 한도</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>창구</td><td>부산은행: 무제한 / 타행: 1회 1억원 이하</td></tr>
-                    <tr><td>자동화기기</td><td>1회 600만원 이하, 1일 10회 (최대 3천만원)</td></tr>
-                    <tr><td>텔레뱅킹</td><td>신청금액 범위 내 (타행 1회 1억원 이하)</td></tr>
-                    <tr><td>인터넷/모바일뱅킹</td><td>신청금액 범위 내 (타행 1회 10억원 이하)</td></tr>
-                </tbody>
-                </table>
-            </div>
-            </section>
-
-
-            <!-- 예금관련수수료 -->
-            <section id="transfer" class="main-section">
-                <div class="sub-tab-btns">
-                    <button class="sub-btn active" onclick="showSubTab('transfer-personal', this)">수신부문수수료</button>
-                    <button class="sub-btn" onclick="showSubTab('transfer-corporate', this)">대여금여 임차보증금 및 수수료</button>
-                </div>
-
-                <!-- 수신부문수수료 -->
-               <section id="transfer-personal" class="sub-section active">
-                    <p class="table-date">(2025년 11월 6일 기준, 단위: 원)</p>
-
-                    <table class="service-table">
-                        <thead>
-                        <tr>
-                            <th>구분</th>
-                            <th>대상항목</th>
-                            <th>징수금액</th>
-                            <th>비고</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td rowspan="5">수표·어음융자교부 수수료</td>
-                            <td>가계수표용지교부 수수료</td>
-                            <td>권당(20매) 10,000</td>
-                            <td>—</td>
-                        </tr>
-                        <tr><td>당좌수표용지교부 수수료</td><td>권당(20매) 10,000</td><td>—</td></tr>
-                        <tr><td>약속어음용지교부 수수료</td><td>권당(10매) 10,000</td><td>—</td></tr>
-                        <tr><td>영문당좌수표용지교부 수수료</td><td>권당(20매) 10,000</td><td>—</td></tr>
-                        <tr><td>영문당좌수표용지교부 수수료(특정거래처)</td><td>권당 제조단가+2,000 (50매 1권 기준)</td><td>—</td></tr>
-
-                        <tr>
-                            <td rowspan="3">제 증명서 발급 수수료</td>
-                            <td>(예금신탁) 잔액증명서</td>
-                            <td>장당 3,000</td>
-                            <td>기초생활수급자, 장애인, 국가유공자 등 면제 / 만65세 이상, 만18세 미만 20% 감면</td>
-                        </tr>
-                        <tr>
-                            <td>거래실적증명서</td>
-                            <td>부당 2,000 (10매 초과 시 장당 100원 추가, 최고 20,000원)</td>
-                            <td>—</td>
-                        </tr>
-                        <tr><td>은행거래조회서</td><td>부당 30,000</td><td>—</td></tr>
-
-                        <tr>
-                            <td rowspan="2">사고신고 수수료</td>
-                            <td>—</td>
-                            <td>장당 1,000</td>
-                            <td>기초생활수급자, 장애인, 국가유공자 등 면제 / 만65세 이상, 만18세 미만 20% 감면</td>
-                        </tr>
-
-                        <tr>
-                            <td>증서재발급 수수료</td>
-                            <td>건당 2,000</td>
-                            <td>사고신고로 인한 재발행 / 동일 감면규정 적용</td>
-                        </tr>
-
-                        <tr>
-                            <td rowspan="2">부도처리 수수료</td>
-                            <td>당좌·약속어음·가계수표</td>
-                            <td>장당 10,000</td>
-                            <td>—</td>
-                        </tr>
-                        <tr><td>자기앞수표</td><td>장당 5,000</td><td>—</td></tr>
-
-                        <tr>
-                            <td>납부자 자동이체 수수료</td>
-                            <td>타행 건당 300</td>
-                            <td>기초생활수급자 등 면제 / 만65세 이상·만18세 미만 20% 감면</td>
-                        </tr>
-
-                        <tr>
-                            <td>예약입금 수수료</td>
-                            <td>타행 건당 700</td>
-                            <td>수취계좌가 경남은행 계좌인 경우 면제</td>
-                        </tr>
-
-                        <tr>
-                            <td>단체급여이체 수수료</td>
-                            <td>타행 건당 500</td>
-                            <td>수취계좌가 경남은행 계좌인 경우 면제</td>
-                        </tr>
-
-                        <tr>
-                            <td>수표조회 수수료</td>
-                            <td>—</td>
-                            <td>장당 1,000</td>
-                            <td>면제 및 감면 규정 동일</td>
-                        </tr>
-
-                        <tr>
-                            <td>보관어음 수탁 수수료</td>
-                            <td>—</td>
-                            <td>장당 2,000</td>
-                            <td>면제 및 감면 규정 동일</td>
-                        </tr>
-
-                        <tr><td>가계당좌예금 개설 수수료</td><td>—</td><td>계좌당 30,000</td><td>—</td></tr>
-
-                        <tr><td>미사용 자기앞수표 반환 수수료</td><td>—</td><td>일일반환수표 20매 초과 시 장당 100</td><td>—</td></tr>
-
-                        <tr><td>납품대금 지급대행 수수료</td><td>—</td><td>장당 1,000</td><td>—</td></tr>
-
-                        <tr>
-                            <td>타행발행 자기앞수표 대지급 수수료</td>
-                            <td>—</td>
-                            <td>장당 1,000</td>
-                            <td>면제 및 감면 규정 동일</td>
-                        </tr>
-
-                        <tr>
-                            <td>금융거래 정보제공 수수료</td>
-                            <td>—</td>
-                            <td>통보인원당 2,000</td>
-                            <td>면제 규정 동일</td>
-                        </tr>
-
-                        <tr><td>주식납입금 업무대행 수수료</td><td>—</td><td>건당 20,000</td><td>—</td></tr>
-
-                        <tr>
-                            <td>사채 원리금 지급대행 수수료</td>
-                            <td>1년 이하 100,000<br>1~3년 이하 200,000<br>3년 초과 300,000</td>
-                            <td>대행기간별 차등징구</td>
-                        </tr>
-
-                        <tr><td>IC현금카드 발급 수수료</td><td>매당 2,000</td><td>면제대상: 고교생, 65세 이상, 장애인, 국가유공자 등</td></tr>
-
-                        <tr><td>아이즐거운카드 재발급 수수료</td><td>매당 1,000</td><td>면제대상 동일</td></tr>
-
-                        <tr><td>질권설정 수수료</td><td>—</td><td>건당 5,000</td><td>—</td></tr>
-
-                        <tr><td>명의변경 수수료</td><td>—</td><td>건당 5,000</td><td>—</td></tr>
-                        </tbody>
-                    </table>
-                </section>
-
-                <!-- 대여금고 임차보증금 및 수수료 -->
-                <div id="transfer-corporate" class="sub-section">
-
-                    <!-- 열쇠식 -->
-                    <h4 class="sub-table-title">열쇠식</h4>
-                    <table class="service-table">
-                        <thead>
-                        <tr>
-                            <th rowspan="2">종별</th>
-                            <th colspan="3">규격</th>
-                            <th rowspan="2">임차보증금(원)</th>
-                            <th rowspan="2">수수료(1년기준)</th>
-                        </tr>
-                        <tr>
-                            <th>높이</th>
-                            <th>폭</th>
-                            <th>길이</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1호</td><td>100</td><td>150</td><td>550</td><td>20,000</td><td>20,000</td>
-                        </tr>
-                        <tr>
-                            <td>2호</td><td>150</td><td>150</td><td>550</td><td>40,000</td><td>20,000</td>
-                        </tr>
-                        <tr>
-                            <td>3호</td><td>100</td><td>300</td><td>550</td><td>70,000</td><td>20,000</td>
-                        </tr>
-                        <tr>
-                            <td>4호</td><td>150</td><td>300</td><td>550</td><td>130,000</td><td>30,000</td>
-                        </tr>
-                        <tr>
-                            <td>5호</td><td>300</td><td>300</td><td>550</td><td>200,000</td><td>30,000</td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- 지문식 -->
-                    <h4 class="sub-table-title">지문식</h4>
-                    <table class="service-table">
-                        <thead>
-                        <tr>
-                            <th rowspan="2">종별</th>
-                            <th colspan="3">규격</th>
-                            <th rowspan="2">임차보증금(원)</th>
-                            <th rowspan="2">수수료(1년기준)</th>
-                        </tr>
-                        <tr>
-                            <th>높이</th>
-                            <th>폭</th>
-                            <th>길이</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>소형</td><td>65</td><td>250</td><td>530</td><td>150,000</td><td>20,000</td>
-                        </tr>
-                        <tr>
-                            <td>중형</td><td>115</td><td>250</td><td>530</td><td>200,000</td><td>30,000</td>
-                        </tr>
-                        <tr>
-                            <td>대형</td><td>240</td><td>250</td><td>530</td><td>250,000</td><td>50,000</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="fee-notice">
+                    <ul>
+                        <li>장기계약 할인 및 사회적기업·사회복지법인·중소기업 할인 규정은 확정급여형(DB)과 동일하게 적용됩니다.</li>
+                        <li>집합투자증권(ETF 제외) 자산평가액에는 운용관리수수료 10%를 추가 할인합니다.</li>
+                    </ul>
                 </div>
             </section>
+        </section>
 
+        <!-- 기업형 IRP -->
+        <section id="inquiry" class="main-section">
+            <section class="fee-section">
+                <h2>기업형 IRP 수수료</h2>
+                <p class="sub-text">※ 기업이 운영하는 IRP 계정의 수수료 체계입니다.</p>
 
-            
-                <!-- 기타수수료 -->
-                <div id="inquiry" class="main-section active">
-                <p class="table-date">(2025년 11월 6일 기준)</p>
-
-                <!-- 공동인증서 발급 수수료 -->
-                <h4 class="sub-table-title">공동인증서(구 공인인증서) 발급수수료</h4>
                 <table class="service-table">
                     <thead>
                     <tr>
-                        <th>용도 구분</th>
-                        <th>징수기준</th>
-                        <th>비고</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr><td>은행/신용카드/보험용</td><td>개인: 면제<br>법인/개인사업자: 4,400원</td><td>면제대상: 국가기관, 지방자치단체</td></tr>
-                    <tr><td>전자세금계산서용</td><td>법인/개인사업자: 4,400원</td><td>—</td></tr>
-                    <tr><td>범용</td><td>개인: 4,400원<br>법인/개인사업자: 110,000원</td><td>—</td></tr>
-                    </tbody>
-                </table>
-
-                <!-- 전자상거래 관련 수수료 -->
-                <h4 class="sub-table-title">전자상거래 관련 수수료</h4>
-                <table class="service-table">
-                    <thead>
-                    <tr>
-                        <th>구분</th>
-                        <th>징수기준</th>
-                        <th>비고</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr><td>전자상거래결제대행수수료</td><td>개별 제휴계약에 따름</td><td>—</td></tr>
-                    <tr><td>일반전자채권발행수수료(구매기업)</td><td>건당 500원 (발행일 선취)</td><td>—</td></tr>
-                    <tr><td>보증전자채권발행수수료(구매기업)</td><td>건당 1,000원 (발행일 선취)</td><td>—</td></tr>
-                    <tr><td>전자채권보관수수료(판매기업)</td><td>건당 500원 (채권만기 후취)<br>보관은행 변경 시 20,000원</td><td>—</td></tr>
-                    </tbody>
-                </table>
-
-                <!-- 기타업무 관련 수수료 -->
-                <h4 class="sub-table-title">기타업무 관련 수수료</h4>
-                <table class="service-table">
-                    <thead>
-                    <tr>
-                        <th>구분</th>
-                        <th>징수기준</th>
-                        <th>비고</th>
+                        <th>수수료구분</th>
+                        <th>수수료율(연)/금액</th>
+                        <th>부과기준</th>
+                        <th>납입주체</th>
+                        <th>취득자산</th>
+                        <th>장기할인</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td rowspan="2">거래내역통지 서비스수수료 (모바일통지서비스)</td>
-                        <td>계좌별/휴대폰 대수별 월 1,000원 (신청일 선취)<br>신청 당일 해지 시 미징수</td>
-                        <td>면제: 국가·지자체, 기초생활수급자, 차상위계층, 장애인, 국가유공자, 독립유공자, 소년소녀가장, 다문화가정, 한부모가정, 탈북새터민</td>
+                        <td>운용관리수수료</td>
+                        <td class="text-left">
+                            적립금 1억 미만 : 0.40%<br>
+                            1억 이상 : 0.38%
+                        </td>
+                        <td class="text-left">
+                            매 계약응당일 기준<br>
+                            (계산기간 적립금자산평가액 평잔 × 해당 수수료율)
+                        </td>
+                        <td>
+                            사용자(사용자부담분)<br>
+                            가입자(가입자부담분)
+                        </td>
+                        <td>
+                            현금 / 신탁재산(적립금)
+                        </td>
+                        <td>
+                            2년차 10%<br>
+                            3년차 12%<br>
+                            4년차 15%<br>
+                            5년차 이후 20%
+                        </td>
                     </tr>
-                    <tr><td>건별 30원 (익월 10일 후취)</td><td>—</td></tr>
+                    <tr>
+                        <td>자산관리수수료</td>
+                        <td class="text-left">
+                            적립금 1억 미만 : 0.20%<br>
+                            1억 이상 : 0.18%
+                        </td>
+                        <td class="text-left">
+                            매 계약응당일 기준<br>
+                            (계산기간 신탁재산평가액 평잔 × 수수료율)
+                        </td>
+                        <td>
+                            사용자(사용자부담분)<br>
+                            가입자(가입자부담분)
+                        </td>
+                        <td>
+                            현금 / 신탁재산
+                        </td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>가입자교육수수료</td>
+                        <td>0원</td>
+                        <td class="text-left">교육위탁계약서에서 정하되, 별도 징수하지 않음</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>중도해지수수료</td>
+                        <td>없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>계약이전수수료</td>
+                        <td>없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>-</td>
+                    </tr>
                     </tbody>
                 </table>
 
-                <!-- 유료부가서비스 수수료 -->
-                <h4 class="sub-table-title">유료부가서비스 수수료</h4>
-                <table class="service-table">
-                    <thead>
-                    <tr>
-                        <th>용도</th>
-                        <th>서비스명</th>
-                        <th>징수기준</th>
-                        <th>비고</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr><td>공동인증서 저장서비스</td><td>휴대폰인증서보관서비스</td><td>월 900원 (부가세 별도)</td><td rowspan="3">통신사 제공 부가서비스로, 해지 시 통신사에 요청 필요</td></tr>
-                    <tr><td>USIM스마트인증서비스</td><td>—</td><td>월 900원</td></tr>
-                    <tr><td>안심로그인서비스</td><td>도용방지 안심로그인</td><td>월 1,000원</td></tr>
-                    </tbody>
-                </table>
-
-                <!-- 보안매체 관련 수수료 -->
-                <h4 class="sub-table-title">보안매체 관련 수수료</h4>
-                <table class="service-table">
-                    <thead>
-                    <tr>
-                        <th>구분</th>
-                        <th>징수기준</th>
-                        <th>비고</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr><td>토큰형 OTP 신규발급</td><td>건당 5,000원</td><td>면제: 국가기관 및 지자체, 기기장애(2년 미만) 등</td></tr>
-                    <tr><td>토큰형 OTP 재발급/갱신</td><td>보증기간 1년 이상~2년 미만: 2,500원<br>1년 미만: 면제</td><td>—</td></tr>
-                    <tr><td>카드형 OTP 신규발급</td><td>건당 10,000원</td><td>면제: 국가기관 및 지자체, 기기장애(2년 미만) 등</td></tr>
-                    <tr><td>카드형 OTP 재발급/갱신</td><td>보증기간 1년 이상~2년 미만: 5,000원<br>1년 미만: 면제</td><td>—</td></tr>
-                    <tr><td>음성 OTP</td><td>신규·재발급·갱신: 면제</td><td>시각장애인 대상</td></tr>
-                    </tbody>
-                </table>
-
-                <!-- 전자어음 관련 수수료 -->
-                <h4 class="sub-table-title">전자어음 관련 수수료</h4>
-                <table class="service-table">
-                    <thead>
-                    <tr>
-                        <th>구분</th>
-                        <th>징수기준</th>
-                        <th>비고</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr><td>전자어음발행수수료</td><td>장당 1,000원</td><td>—</td></tr>
-                    <tr><td>전자어음배서수수료</td><td>장당 1,500원</td><td>—</td></tr>
-                    <tr><td>전자어음지급제시수수료</td><td>장당 2,500원</td><td>—</td></tr>
-                    <tr><td>전자어음보증수수료</td><td>장당 1,500원</td><td>—</td></tr>
-                    </tbody>
-                </table>
+                <div class="fee-notice">
+                    <ul>
+                        <li>장기계약 할인, 사회적기업·사회복지법인·중소기업 등에 대한 할인 규정은 확정기여형(DC)와 동일하게 적용합니다.</li>
+                        <li>집합투자증권(ETF 제외) 자산평가액에 대하여 운용관리수수료 10%를 할인합니다.</li>
+                    </ul>
                 </div>
-
             </section>
-        </main>
-    </div>
+        </section>
 
-    <!--푸터-->
-    <div th:replace="~{layouts/footer}"></div>
+        <!-- 개인형 IRP -->
+        <section id="cusIrp" class="main-section">
+            <section class="fee-section">
+                <h2>개인형 IRP 수수료</h2>
+                <p class="sub-text">※ 인터넷·모바일뱅킹 가입 시 수수료 면제 등 별도 우대가 적용됩니다.</p>
+
+                <table class="service-table">
+                    <thead>
+                    <tr>
+                        <th>수수료구분</th>
+                        <th>수수료율(연)/금액</th>
+                        <th>부과기준</th>
+                        <th>납입주체</th>
+                        <th>취득자산</th>
+                        <th>장기할인</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>운용관리수수료</td>
+                        <td class="text-left">
+                            일시부담금(인터넷·모바일뱅킹)<br>
+                            · 1억 미만 : 0.30% (면제)<br>
+                            · 1억 이상 : 0.28% (면제)<br><br>
+                            개인부담금(인터넷·모바일뱅킹)<br>
+                            · 1억 미만 : 0.08% (면제)<br>
+                            · 1억 이상 : 0.07% (면제)
+                        </td>
+                        <td class="text-left">
+                            매 계약응당일 기준<br>
+                            (계산기간 적립금자산평가액 평잔 × 해당 수수료율)
+                        </td>
+                        <td>가입자</td>
+                        <td>신탁재산(적립금)</td>
+                        <td>
+                            2년차 10%<br>
+                            3년차 12%<br>
+                            4년차 15%<br>
+                            5년차 이후 20%
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>자산관리수수료</td>
+                        <td class="text-left">
+                            일시·개인부담금(인터넷·모바일뱅킹)<br>
+                            · 1억 미만 : 0.20% (면제)<br>
+                            · 1억 이상 : 0.17% (면제)
+                        </td>
+                        <td class="text-left">
+                            매 계약응당일 기준<br>
+                            (계산기간 신탁재산평가액 평잔 × 해당 수수료율)
+                        </td>
+                        <td>가입자</td>
+                        <td>신탁재산</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>가입자교육수수료</td>
+                        <td>0원</td>
+                        <td class="text-left">교육위탁계약서에서 정하되, 별도 징수하지 않음</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>중도해지수수료</td>
+                        <td>없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>계약이전수수료</td>
+                        <td>없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>해당 없음</td>
+                        <td>-</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="fee-notice">
+                    <ul>
+                        <li>퇴직급여 일시부담금 납입 후 15일 이내 해지 신청 시 해당 기간의 운용관리·자산관리수수료는 면제됩니다.</li>
+                        <li>연금수령 개시 신청 시점부터 운용관리수수료의 80% 할인율을 적용합니다.</li>
+                        <li>인터넷·모바일뱅킹으로 IRP 계좌 개설 시 운용·자산관리수수료가 면제됩니다.</li>
+                        <li>집합투자증권(ETF 제외) 및 디폴트옵션 포트폴리오 적립금에 대해서는 별도 규정에 따른 할인 및 운용손익수수료가 적용됩니다.</li>
+                    </ul>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+
+<!--푸터-->
+<div th:replace="~{layouts/footer}"></div>
 </body>
 </html>
+
 <script>
     // header 불러오기
     fetch(`${contextPath}/layouts/header.html`)
@@ -1084,23 +765,11 @@
         })
         .catch(err => console.error('[Footer load failed]', err));
 
-</script>
-
-<script>
     // 상위 탭 전환
     function showMainTab(id) {
         document.querySelectorAll('.main-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.main-section').forEach(sec => sec.classList.remove('active'));
         event.target.classList.add('active');
         document.getElementById(id).classList.add('active');
-    }
-
-    // 하위 탭 전환
-    function showSubTab(id, el) {
-        const parent = el.closest('.main-section');
-        parent.querySelectorAll('.sub-btn').forEach(btn => btn.classList.remove('active'));
-        parent.querySelectorAll('.sub-section').forEach(sec => sec.classList.remove('active'));
-        el.classList.add('active');
-        parent.querySelector('#' + id).classList.add('active');
     }
 </script>

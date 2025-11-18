@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자료실>예금</title>
+    <title>자료실>퇴직연금자료실</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         /*----------------------------------*/
@@ -499,10 +499,10 @@
     <aside class="all-sidebar">
         <ul class="sidebar-menu">
             <h2>서식/약관/자료실</h2>
-            <li class="active"><a href="./deposit">예금</a></li>
-            <li><a href="./fund">펀드</a></li>
-            <li><a href="./trust">신탁</a></li>
-            <li><a href="./loan">대출</a></li>
+            <li class="active"><a href="./deposit">퇴직연금 서식</a></li>
+            <li><a href="./fund">자료실</a></li>
+            <li><a href="./loan">소규모펀드등공시</a></li>
+            <li><a href="./trust">공지사항</a></li>
         </ul>
 
         <!--추가 도움 영역-->
@@ -521,16 +521,18 @@
     <!-- 메인 콘텐츠 -->
     <main class="productsRoom-content">
         <div class="productsRoom-header">
-            <h1>예금</h1>
+            <h1>퇴직연금 서식 자료실</h1>
         </div>
 
         <!-- 1단계 상위 탭 -->
         <div class="main-tab-btns">
-            <button class="main-btn active" onclick="showMainTab('terms')">상품약관</button>
-            <button class="main-btn" onclick="showMainTab('guide')">상품설명서</button>
-            <button class="main-btn" onclick="showMainTab('forms')">서식자료실</button>
+            <button class="main-btn active" onclick="showMainTab('terms')">DB(확정급여형)</button>
+            <button class="main-btn" onclick="showMainTab('guide')">DC(확정기여형)</button>
+            <button class="main-btn" onclick="showMainTab('forms')">개인형IRP</button>
+            <button class="main-btn" onclick="showMainTab('comIrp')">기업형IRP</button>
         </div>
 
+        <!--DB-->
         <section id="terms" class="tab-content active">
             <div class="list-top">
                 <p>총 <strong>0</strong>건 현재: <strong>1/1</strong>페이지</p>
@@ -542,8 +544,8 @@
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
-                    <th>파일</th>
-                    <th>거래조건변경사항</th>
+                    <th>등록일</th>
+                    <th>첨부파일</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -555,7 +557,7 @@
         </section>
 
 
-        <!-- 설명서 탭 -->
+        <!-- DC-->
         <section id="guide" class="tab-content">
             <div class="list-top">
                 <p>총 <strong>0</strong>건 현재: <strong>1/1</strong>페이지</p>
@@ -565,8 +567,8 @@
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
-                    <th>파일</th>
-                    <th>거래조건변경사항</th>
+                    <th>등록일</th>
+                    <th>첨부파일</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -577,7 +579,7 @@
             <div class="pagination guide-pagination"></div>
         </section>
 
-        <!-- 서식자료실 탭 -->
+        <!-- 개인형 -->
         <section id="forms" class="tab-content">
             <div class="list-top">
                 <p>총 <strong>0</strong>건 현재: <strong>1/1</strong>페이지</p>
@@ -587,8 +589,30 @@
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
-                    <th>파일</th>
-                    <th>거래조건변경사항</th>
+                    <th>등록일</th>
+                    <th>첨부파일</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+            <div class="pagination forms-pagination"></div>
+        </section>
+
+        <!-- 기업형 탭 -->
+        <section id="comIrp" class="tab-content">
+            <div class="list-top">
+                <p>총 <strong>0</strong>건 현재: <strong>1/1</strong>페이지</p>
+            </div>
+            <table class="deposit-table" id="comIrp-table">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>등록일</th>
+                    <th>첨부파일</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -701,7 +725,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
-        const types = ["예금(상품약관)", "예금(상품설명서)", "예금(서식자료실)"];
+        const types = ["DB(확정급여형)", "DC(확정기여형)", "개인형IRP","기업형IRP"];
         const documentData = {};
         const rowsPerPage = 5;
 
@@ -715,9 +739,10 @@
 
             console.log("✅ 전체 문서 데이터 불러옴:", documentData);
 
-            setupPagination(documentData["예금(상품약관)"], "#terms-table", ".terms-pagination");
-            setupPagination(documentData["예금(상품설명서)"], "#guide-table", ".guide-pagination");
-            setupPagination(documentData["예금(서식자료실)"], "#forms-table", ".forms-pagination");
+            setupPagination(documentData["DB(확정급여형)"], "#terms-table", ".terms-pagination");
+            setupPagination(documentData["DC(확정기여형)"], "#guide-table", ".guide-pagination");
+            setupPagination(documentData["개인형IRP"], "#forms-table", ".forms-pagination");
+            setupPagination(documentData["기업형IRP"], "#comIrp-table", ".comIrp-pagination");
         } catch (err) {
             console.error("❌ 데이터 불러오기 실패", err);
         }
@@ -747,8 +772,8 @@
           <tr>
             <td>${start + index + 1}</td>
             <td>${doc.doctitle}</td>
+            <td>${doc.docupdate}</td>
             <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
-            <td><button class="change-btn">변경사항보기</button></td>
           </tr>`;
                     tbody.insertAdjacentHTML("beforeend", row);
                 });

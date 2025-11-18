@@ -1,15 +1,30 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const {initCalcFromRateTable} = await import('/BNK/js/product/init-calc.js');
 
+    // 렌더링
     fetchProduct().then(data => {
+        // console.log('check1');
         renderProduct(data);
+        // console.log('check2');
         try {
             // console.log(JSON.parse(data.pterms));
-            renderTerms(JSON.parse(data.pterms));
-            renderIRInfo(JSON.parse(data.pirinfo));
-            const pdirate = JSON.parse(data.pdirate);
-            renderDIInfo(pdirate);
-            initCalcFromRateTable(JSON.parse(data.pirinfo), Number(pdirate.maximum));
+            if (data.pterms !== null)
+                renderTerms(JSON.parse(data.pterms));
+            // console.log('check3');
+            if (data.pirinfo !== null)
+                renderIRInfo(JSON.parse(data.pirinfo));
+            // console.log('pdirate: '+data.pdirate);
+            if (data.pdirate !== null) {
+                const pdirate = JSON.parse(data.pdirate);
+                renderDIInfo(pdirate);
+                if (data.pirinfo !== null)
+                    initCalcFromRateTable(JSON.parse(data.pirinfo), Number(pdirate.maximum));
+            } else {
+                const diinfoCard = document.getElementById('diinfoCard');
+                diinfoCard.style.display = "none";
+                if (data.pirinfo !== null)
+                    initCalcFromRateTable(JSON.parse(data.pirinfo), 0);
+            }
         } catch (e) {
             console.error(e.message);
             return null;
