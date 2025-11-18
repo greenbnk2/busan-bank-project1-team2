@@ -1,9 +1,9 @@
-package kr.co.bnkfirst.controller.info;
+package kr.co.bnkfirst.controller;
 
-import kr.co.bnkfirst.dto.info.EventDTO;
-import kr.co.bnkfirst.dto.info.PageRequestDTO;
-import kr.co.bnkfirst.dto.info.PageResponseDTO;
-import kr.co.bnkfirst.service.info.EventService;
+import kr.co.bnkfirst.dto.Info.EventDTO;
+import kr.co.bnkfirst.dto.Info.PageRequestDTO;
+import kr.co.bnkfirst.dto.Info.PageResponseDTO;
+import kr.co.bnkfirst.service.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

@@ -1,8 +1,8 @@
-package kr.co.bnkfirst.service.info;
+package kr.co.bnkfirst.service;
 
-import kr.co.bnkfirst.dto.info.EventDTO;
-import kr.co.bnkfirst.dto.info.PageRequestDTO;
-import kr.co.bnkfirst.dto.info.PageResponseDTO;
+import kr.co.bnkfirst.dto.Info.EventDTO;
+import kr.co.bnkfirst.dto.Info.PageRequestDTO;
+import kr.co.bnkfirst.dto.Info.PageResponseDTO;
 
 
 public interface EventService {
