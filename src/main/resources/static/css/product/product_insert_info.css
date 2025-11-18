@@ -375,11 +375,17 @@ input[type="checkbox"] {
   font-size: 16px;
   font-weight: 600;
   color: #374151;
+    display: inline-flex;
 }
 
 #page1 .req {
   color: #D91A1A;
   margin-left: 3px;
+}
+
+#page1 .warn-comment{
+    color: #D91A1A;
+    margin-left: auto;
 }
 
 #page1 input,

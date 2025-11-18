@@ -20,7 +20,7 @@
     </select>
 
     <!-- member_info 정보입력 -->
-    <insert id="insertUser" parameterType="kr.co.bnkfirst.entity.Users">
+    <insert id="insertUser" parameterType="kr.co.bnkfirst.dto.UsersDTO">
         INSERT INTO USERS (
             "uId", MID, MPW, MNAME, MGENDER, MJUMIN,
             MPHONE, MCARRIER, MBIRTH, MEMAIL, MADDRESS,

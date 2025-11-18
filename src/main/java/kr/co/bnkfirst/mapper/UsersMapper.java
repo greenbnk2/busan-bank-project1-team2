@@ -14,5 +14,4 @@ public interface UsersMapper {
     // 정보입력(info) 아이디 중복확인
     int existsByMid(@Param("mid") String mid);
 
-
 }

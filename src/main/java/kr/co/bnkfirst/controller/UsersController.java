@@ -1,16 +1,16 @@
 package kr.co.bnkfirst.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,12 +30,14 @@ public class UsersController {
             return "redirect:/member/main";
         }
 
-        // 로그인 성공 시 세션 저장 + 10분 유지
+        // 로그인 성공 시 세션 저장 + 20분 유지
         session.setAttribute("loginUser", foundUser);
-        session.setMaxInactiveInterval(600);
+        session.setMaxInactiveInterval(1200);
+        session.setAttribute("sessionStart", System.currentTimeMillis());
+
         log.info("로그인 성공: {}", foundUser.getMid());
 
-        return "redirect:/member/main";
+        return "redirect:/main/main";
     }
 
     // 로그인 메인 페이지
@@ -43,13 +45,12 @@ public class UsersController {
     public String memberMain(Model model, HttpSession session) {
         UsersDTO loginUser = (UsersDTO) session.getAttribute("loginUser");
 
-        // 로그인 안 되어 있어도 메인 페이지 유지
-        if (loginUser == null) {
-            log.info("비로그인 접근");
-            model.addAttribute("userDTO", new UsersDTO());
-        } else {
-            model.addAttribute("loginUser", loginUser);
+        // 로그인 후 login 쪽에 머무를 수 없도록 설정
+        if (loginUser != null) {
+            return "redirect:/main/main";
         }
+
+        // 로그인 안 한 경우에만 로그인 화면 보여줌
         model.addAttribute("userDTO", new UsersDTO());
         return "member/member_main";
     }
@@ -58,6 +59,14 @@ public class UsersController {
     @GetMapping("/logout")
     @ResponseBody
     public void logout(HttpSession session) {
+        UsersDTO loginUser = (UsersDTO) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            log.info("비로그인 상태에서 로그아웃 접근 발생");
+            return;
+        }
+        log.info("로그아웃 성공 : {}", loginUser.getMid());
+
         session.invalidate();
     }
 
@@ -66,13 +75,30 @@ public class UsersController {
         return "member/member_terms";
     }
 
+    @PostMapping("/auth/save")
+    public String authSave(@ModelAttribute UsersDTO dto, HttpSession session) {
+
+        // 세션 저장
+        session.setAttribute("authData", dto);
+
+        return "redirect:/member/info";
+    }
+
+
     @GetMapping("/auth")
     public String memberAuth() {
         return "member/member_auth";
     }
 
     @GetMapping("/info")
-    public String memberInfo() {
+    public String memberInfo(HttpSession session, Model model) {
+
+        UsersDTO authData = (UsersDTO) session.getAttribute("authData");
+
+        if (authData != null) {
+            model.addAttribute("auth", authData);
+        }
+
         return "member/member_info";
     }
 
@@ -83,11 +109,11 @@ public class UsersController {
 
         if (result) {
             UsersDTO savedUser = usersService.findByMid(usersDTO.getMid());
-
             session.setAttribute("newUser", savedUser);
-            return "redirect:active";
+
+            return "redirect:/member/active";
         } else {
-            return "redirect:info";
+            return "redirect:/member/info";
         }
     }
 
@@ -113,8 +139,8 @@ public class UsersController {
                         "   <joinDate>SYSDATE</joinDate>" +
                         "</extra>";
 
-        model.addAttribute("member", newUser);  // DTO 그대로 전달
-        model.addAttribute("xml", xml);         // XML 별도 전달
+        model.addAttribute("member", newUser);
+        model.addAttribute("xml", xml);
 
         return "member/member_active";
     }
@@ -129,23 +155,46 @@ public class UsersController {
         return "member/member_findpw";
     }
 
-    /* AWS prod 시스템함수 추가 후 진행(이메일 인증)
-    @RestController
-    @RequiredArgsConstructor
-    public class MailTestController {
+    // 현재 세션 남은 시간 조회
+    // 현재 세션 남은 시간 조회
+    @GetMapping("/session/remaining")
+    @ResponseBody
+    public Map<String, Object> getRemaining(HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
 
-        private final JavaMailSender mailSender;
-
-        @GetMapping("/test-mail")
-        public String testMail() {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo("받을이메일@gmail.com");
-            message.setSubject("테스트 메일");
-            message.setText("메일 발송 테스트 성공!");
-
-            mailSender.send(message);
-            return "메일 발송 완료!";
+        Object loginUser = session.getAttribute("loginUser");
+        if (loginUser == null) {
+            result.put("remainSeconds", 0);
+            return result;
         }
+        Long startTime = (Long) session.getAttribute("sessionStart");
+        if (startTime == null) {
+            // 혹시 null이면 다시 저장 (예외 처리용)
+            startTime = System.currentTimeMillis();
+            session.setAttribute("sessionStart", startTime);
+        }
+        long now = System.currentTimeMillis();
+        long passed = (now - startTime) / 1000;
+        long remain = 1200 - passed;
+        if (remain < 0) remain = 0;
+
+        result.put("remainSeconds", remain);
+        return result;
     }
-     */
+
+    // 세션 연장 (다시 20분으로 리셋)
+    @PostMapping("/session/extend")
+    @ResponseBody
+    public Map<String, Object> extend(HttpSession session) {
+
+        Object loginUser = session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return Map.of("remainSeconds", 0);
+        }
+        session.setAttribute("sessionStart", System.currentTimeMillis());
+        session.setMaxInactiveInterval(1200);
+
+        return getRemaining(session);
+    }
+
 }

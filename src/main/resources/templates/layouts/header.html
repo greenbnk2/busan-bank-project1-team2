@@ -47,21 +47,21 @@
                 <div class="mega" role="region" aria-label="펀드 메뉴">
                     <div class="mega-inner">
                     <div>
-                        <h4 style="margin-bottom:27px; font-size: larger;">자료실</h4>
+                        <h4 style="margin-bottom:27px; font-size: larger;">퇴직연금 자료실</h4>
                         <ul>
-                        <li style="margin-bottom:15px;"><a th:href="@{/cs/data_room/deposit}">예금</a></li>
-                        <li style="margin-bottom:15px;"><a th:href="@{/cs/data_room/fund}">펀드</a></li>
-                        <li style="margin-bottom:15px;"><a th:href="@{/cs/data_room/trust}">신탁</a></li>
-                        <li style="margin-bottom:15px;"><a th:href="@{/cs/data_room/loan}">대출</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/data_room/deposit}">카테고리별서식</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/data_room/fund}">자료실</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/data_room/loan}">소규모펀드등공시</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/data_room/trust}">공지사항</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 style="margin-bottom:27px; font-size: larger;">상품공시실</h4>
+                        <h4 style="margin-bottom:27px; font-size: larger;">퇴직연금사업자공시</h4>
                         <ul>
-                        <li style="margin-bottom:15px;"><a th:href="@{/cs/productsRoom/bankManual}">은행상품공시이용매뉴얼</a></li>
-                        <li style="margin-bottom:15px;"><a th:href="@{/cs/productsRoom/depositProduct}">예금상품</a></li>
-                        <li style="margin-bottom:15px;"><a th:href="@{/cs/productsRoom/AnyProduct}">기타상품</a></li>
-                        <li style="margin-bottom:15px;"><a th:href="@{/cs/productsRoom/serviceFee}">서비스이용수수료</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/productsRoom/bankManual}">운용금액 및 운용수익률</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/productsRoom/depositProduct}">퇴직연금 계약서</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/productsRoom/AnyProduct}">원리금 보장 상품 현황</a></li>
+                        <li style="margin-bottom:15px;"><a th:href="@{/cs/productsRoom/serviceFee}">수수료</a></li>
                         </ul>
                     </div>
                     </div>
@@ -151,8 +151,16 @@
                     </div>
                 </li>
 
-                <li style="width:300px;">
+                <li style="width: 500px;">
                     <div style="display: flex; align-items: center;">
+                        <div id="session-box" style="display: flex; align-items: center; gap: 10px; white-space: nowrap; flex-shrink: 0; width: 200px">
+                            <span id="logout-btn" style="cursor:pointer; font-weight:600; flex-shrink:0;">로그아웃</span>
+                            <span id="session-timer" style="font-weight:600; color:#374151; flex-shrink:0;">--:--</span>
+                            <button class="btn-register" type="button" id="session-extend-btn"
+                                    style="cursor:pointer; border-radius:6px; border:1px solid #E5E7EB; width:65px; height:32px; flex-shrink:0;">
+                                연장
+                            </button>
+                        </div>
                         <div style=" width: 60px;">
                             <a th:href="@{/info/guide}">
                                 <img th:src="@{/images/magnifier.png}" alt="">
@@ -548,4 +556,101 @@
   setTimeout(syncNavHeight, 100);
 })();
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const timerSpan = document.getElementById('session-timer');
+        const extendBtn = document.getElementById('session-extend-btn');
+        const sessionBox = document.getElementById('session-box');
 
+        // 요소 없으면(해당 페이지에서 헤더 안 쓴 경우) 그냥 종료
+        if (!timerSpan || !extendBtn || !sessionBox) return;
+
+        let remainSeconds = 0;
+        let timerId = null;
+
+        function renderTimer() {
+            const min = String(Math.floor(remainSeconds / 60)).padStart(2, '0');
+            const sec = String(remainSeconds % 60).padStart(2, '0');
+            timerSpan.textContent = `${min}:${sec}`;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            renderTimer();
+
+            timerId = setInterval(function () {
+                remainSeconds--;
+                renderTimer();
+
+                if (remainSeconds <= 0) {
+                    clearInterval(timerId);
+                    alert('세션이 만료되어 로그아웃됩니다.');
+
+                    // 1) 세션 invalidate 요청
+                    fetch('/BNK/member/logout')
+                        .finally(function () {
+                            // 2) 로그인 페이지로 이동
+                            window.location.href = '/BNK/member/main';
+                        });
+                }
+            }, 1000);
+        }
+
+        // 페이지 로딩 시 남은 시간 조회
+        fetch('/BNK/member/session/remaining')
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                remainSeconds = data.remainSeconds || 0;
+
+                if (remainSeconds <= 0) {
+                    // 로그인 안 되어있으면 타이머 숨김
+                    sessionBox.style.display = 'none';
+                    return;
+                }
+
+                startTimer();
+            })
+            .catch(function () {
+                sessionBox.style.display = 'none';
+            });
+
+        // 연장 버튼 클릭 → 20분 재설정
+        extendBtn.addEventListener('click', function () {
+            fetch('/BNK/member/session/extend', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                    // * Spring Security CSRF 사용 중이면 여기에 TOKEN 추가해야 함
+                }
+            })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    remainSeconds = data.remainSeconds || 0;
+
+                    if (remainSeconds <= 0) {
+                        alert('세션이 만료되었습니다. 다시 로그인 해주세요.');
+                        return;
+                    }
+                    renderTimer();
+                    startTimer();
+                })
+                .catch(function () {
+                    alert('세션 연장 중 오류가 발생했습니다.');
+                });
+        });
+    });
+
+    // 로그아웃
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoutBtn = document.getElementById('logout-btn');
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function () {
+                fetch('/BNK/member/logout')
+                    .finally(() => {
+                        document.getElementById('session-box').style.display = 'none';
+                    });
+            });
+        }
+    });
+</script>
