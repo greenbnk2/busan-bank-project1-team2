@@ -33,7 +33,7 @@ public class StockRankingService {
     @Scheduled(fixedRate = 1500)
     public void refreshRanking() {
         try {
-            List<StockRankDTO> list = fetchRanking(10); // 원하는 TOP N
+            List<StockRankDTO> list = fetchRanking(100); // 원하는 TOP N
             cachedRanks = list; // 원자적 교체
         } catch (Exception e) {
             e.printStackTrace();
