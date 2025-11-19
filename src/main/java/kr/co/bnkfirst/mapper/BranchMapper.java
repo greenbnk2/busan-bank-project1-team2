@@ -14,6 +14,23 @@ public interface BranchMapper {
     @Select("SELECT * FROM BRANCH ORDER BY BRID ASC")
     List<BranchDTO> findAllBranches();
 
+    // ✅ 페이징 조회용
+    @Select("""
+        SELECT *
+        FROM BRANCH
+        ORDER BY BRID ASC
+        OFFSET #{offset} ROWS
+        FETCH NEXT #{size} ROWS ONLY
+    """)
+    List<BranchDTO> findBranchPage(
+            @Param("offset") int offset,
+            @Param("size")   int size
+    );
+
+    // ✅ 전체 개수(페이지 계산용, 나중에 쓸 수도 있음)
+    @Select("SELECT COUNT(*) FROM BRANCH")
+    int countBranches();
+
     //검색기능 ( all, 지역명, 영업점명, 지점코드, 주소)
     @Select("""
             SELECT * FROM BRANCH

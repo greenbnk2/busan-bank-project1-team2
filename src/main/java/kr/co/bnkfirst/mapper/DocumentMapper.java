@@ -2,9 +2,8 @@ package kr.co.bnkfirst.mapper;
 
 import kr.co.bnkfirst.dto.DocumentDTO;
 import kr.co.bnkfirst.dto.MainEventDTO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import kr.co.bnkfirst.dto.PageRequestDTO;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -53,5 +52,86 @@ public interface DocumentMapper {
         ORDER BY EVID DESC FETCH FIRST 4 ROWS ONLY
     """)
     List<MainEventDTO> selectMainEvents();
+
+
+    // ===== 관리자(admin_cs) =====
+    @Select("""
+    SELECT
+    DOCID, 
+    MID, 
+    DOCGROUP, 
+    DOCTYPE, 
+    DOCTITLE, 
+    DOCANSWER,
+    DOCFILE, 
+    DOCUPDATE, 
+    DOCCONTENT
+    FROM DOCUMENT
+    WHERE DOCTYPE = #{doctype}
+    ORDER BY DOCID DESC
+    """)
+    List<DocumentDTO> selectAdminDocumentsAll(
+            @Param("doctype") String doctype
+    );
+
+
+    @Select("""
+    SELECT
+        d.DOCID,
+        d.MID,
+        d.DOCGROUP,
+        d.DOCTYPE,
+        d.DOCTITLE,
+        d.DOCANSWER,
+        d.DOCFILE,
+        d.DOCUPDATE,
+        d.DOCCONTENT
+    FROM DOCUMENT d
+    WHERE d.DOCTYPE = #{doctype}       
+    ORDER BY d.DOCID DESC
+    OFFSET #{page.offset} ROWS
+    FETCH NEXT #{page.size} ROWS ONLY
+    """)
+    List<DocumentDTO> selectAdminDocuments(
+            @Param("doctype") String doctype,
+            @Param("page") PageRequestDTO pageRequestDTO
+    );
+
+    @Select("""
+    SELECT 
+        COUNT(*) 
+    FROM DOCUMENT d
+    WHERE 1=1
+      AND (#{doctype} IS NULL OR d.DOCTYPE = #{doctype})
+""")
+    int countAdminDocuments(
+            @Param("doctype") String doctype,
+            @Param("page") PageRequestDTO pageRequestDTO
+    );
+
+
+    // 단건 조회
+    @Select("""
+        SELECT
+            DOCID,
+            MID,
+            DOCGROUP,
+            DOCTYPE,
+            DOCTITLE,
+            DOCANSWER,
+            DOCFILE,
+            DOCUPDATE,
+            DOCCONTENT
+        FROM DOCUMENT
+        WHERE DOCID = #{docid}
+    """)
+    DocumentDTO selectAdminDocumentById(@Param("docid") int docid);
+
+    // 나머지 CRUD 는 일단 이렇게만 잡아두고 나중에 채워도 됨
+    int insertAdminDocument(DocumentDTO dto);
+    int updateAdminDocument(DocumentDTO dto);
+
+    @Delete("DELETE FROM DOCUMENT WHERE DOCID = #{docid}")
+    int deleteAdminDocument(@Param("docid") int docid);
 
 }

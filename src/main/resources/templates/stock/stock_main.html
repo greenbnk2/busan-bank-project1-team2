@@ -54,12 +54,46 @@
         .stock-row {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
+            align-items: center;
             padding: 10px 0;
             border-radius: 12px;
             transition: background-color 0.2s ease;  /* 서서히 변하도록 */
         }
         .stock-row:hover {
             background-color: #ECEFF3;  /* 원하는 회색으로 조절 */
+        }
+
+        /* 등락률 변화 강조용 (배경만 살짝 깜빡) */
+        @keyframes rateUpBgFlash {
+            from { background-color: #FFEAEA; }   /* 상승 = 연한 빨강 */
+            to   { background-color: transparent; }
+        }
+        @keyframes rateDownBgFlash {
+            from { background-color: #DBE4F5; }   /* 하락 = 연한 파랑 */
+            to   { background-color: transparent; }
+        }
+
+        .rate-span {
+            padding-top:6px;
+            padding-bottom:6px;
+            padding-left: 50px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .rate-change-up {
+            animation: rateUpBgFlash 1s ease-out;
+        }
+
+        .rate-change-down {
+            animation: rateDownBgFlash 1s ease-out;
+        }
+
+        .stock-row.flash-up {
+            animation: rowUpFlash 0.5s ease-out;
+        }
+        .stock-row.flash-down {
+            animation: rowDownFlash 0.5s ease-out;
         }
             /* 표 제목 영역 */
         .stock-header {
@@ -95,6 +129,30 @@
         .stock-table a {
             text-decoration: none;
             color: black;
+        }
+    </style>
+    <style>
+        /* 현재가 기본 스타일 */
+        .price-span {
+            color: #000000;
+        }
+
+        /* 올라갈 때 */
+        @keyframes priceUpFlash {
+            from { color: #de0000; }
+            to   { color: #000000; }
+        }
+        .price-flash-up {
+            animation: priceUpFlash 0.6s ease-out;
+        }
+
+        /* 내려갈 때 */
+        @keyframes priceDownFlash {
+            from { color: #0051C7; }
+            to   { color: #000000; }
+        }
+        .price-flash-down {
+            animation: priceDownFlash 0.6s ease-out;
         }
     </style>
 </head>
@@ -137,111 +195,53 @@
                 <div style="font-size: 15px; text-align: end;">등락률</div>
                 <div style="font-size: 15px; text-align: end; padding-right:10px;">거래대금 순</div>
             </div>
-<!--            1순위-->
-            <a th:href="@{/stock/order}">
-                <div class="stock-row">
-                    <div style=" display: flex; padding-left: 14px;">
-                        <div style="margin-right: 20px;">
-                            <div style="text-align: center; width: 20px;">1</div>
+<!--            1~10순위-->
+            <!-- 🔥 ka10032 상위 10개 루프 -->
+            <div id="stockRows">
+                <th:block th:each="item : ${ranks}">
+                <!-- 링크: /stock/order?code=005930 이런 식 -->
+                <a th:href="@{/stock/order(code=${item.code}, name=${item.name})}">
+                    <div class="stock-row">
+                        <!-- 순위 + 종목명 -->
+                        <div style="display:flex; padding-left:14px;">
+                            <div style="margin-right:20px;">
+                                <div style="text-align:center; width:20px;"
+                                     th:text="${item.rank}">1</div>
+                            </div>
+                            <div class="stock-name"
+                                 th:text="${item.name}">삼성전자</div>
                         </div>
-                        <div class="stock-name">SK하이닉스</div>
+
+                        <!-- 현재가 -->
+                        <div style="text-align:end;">
+                    <span th:text="${#numbers.formatInteger(item.price,0,'COMMA')}">
+                        152000
+                    </span>원
+                        </div>
+
+                        <!-- 등락률: 색상 class 부여 -->
+                        <div style="text-align:end;"
+                             th:classappend="${
+                        item.changeRate > 0 ? ' rate-up' :
+                        (item.changeRate < 0 ? ' rate-down' : ' rate-zero')
+                     }">
+                    <span th:text="${
+                        (item.changeRate > 0 ? '+' : (item.changeRate < 0 ? '-' : ''))
+                        + #numbers.formatDecimal(T(java.lang.Math).abs(item.changeRate), 1, 2)
+                        + '%'
+                    }">-0.07%</span>
+                        </div>
+
+                        <!-- 거래대금: 단위는 문서 기준으로 조정 (예: 억 단위로 보고 싶으면 /10000 등) -->
+                        <div style="text-align:end; padding-right:10px;">
+                    <span th:text="${#numbers.formatInteger(item.amount, 0, 'COMMA')} + ' 만원'">
+                        5,308,092
+                    </span>
+                        </div>
                     </div>
-                    <div style=" text-align: end;"><span>595000</span>원</div>
-                    <div style=" text-align: end;"
-                    class="rate-up">+6.42%</div>
-                    <div style=" text-align: end; padding-right: 10px;">61억</div>
-                </div>
-            </a>
-<!--            2순위-->
-            <a href="#">
-                <div class="stock-row">
-                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">2</div><div class="stock-name">그린광학</div></div>
-                    <div style=" text-align: end;"><span>30950</span>원</div>
-                    <div style=" text-align: end;"
-                         class="rate-up">+93.43%</div>
-                    <div style=" text-align: end;padding-right: 10px;">24억</div>
-                </div>
-            </a>
-            <!--            3순위-->
-            <a href="#">
-                <div class="stock-row">
-                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">3</div><div class="stock-name">삼성전자</div></div>
-                    <div style=" text-align: end;"><span>100200</span>원</div>
-                    <div style=" text-align: end;"
-                         class="rate-up">+3.08%</div>
-                    <div style=" text-align: end; padding-right: 10px;">20억</div>
-                </div>
-            </a>
-            <!--            4순위-->
-            <a href="#">
-                <div class="stock-row">
-                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">4</div><div class="stock-name">KODEX 레버리지</div></div>
-                    <div style=" text-align: end;"><span>43060</span>원</div>
-                    <div style=" text-align: end;"
-                         class="rate-up">+3.21%</div>
-                    <div style=" text-align: end; padding-right: 10px;">17억</div>
-                </div>
-            </a>
-            <!--            5순위-->
-            <a href="#">
-                <div class="stock-row">
-                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">5</div><div class="stock-name">이뮨온시아</div></div>
-                    <div style=" text-align: end;"><span>7040</span>원</div>
-                    <div style=" text-align: end;"
-                         class="rate-up">+10.00%</div>
-                    <div style=" text-align: end; padding-right: 10px;">14억</div>
-                </div>
-            </a>
-            <!--            6순위-->
-            <a href="#">
-                <div class="stock-row">
-                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">6</div><div class="stock-name">두산에너빌리티</div></div>
-                    <div style=" text-align: end;"><span>78800</span>원</div>
-                    <div style=" text-align: end;"
-                         class="rate-up">+0.53%</div>
-                    <div style=" text-align: end; padding-right: 10px;">11억</div>
-                </div>
-            </a>
-            <!--            7순위-->
-            <a href="#">
-                <div class="stock-row">
-                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">7</div><div class="stock-name">한화오션</div></div>
-                    <div style=" text-align: end;"><span>131400</span>원</div>
-                    <div style=" text-align: end;"
-                         class="rate-down">-0.53%</div>
-                    <div style=" text-align: end; padding-right: 10px;">9억</div>
-                </div>
-            </a>
-            <!--            8순위-->
-            <a href="#">
-                <div class="stock-row">
-                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">8</div><div class="stock-name">에이비엘바이오</div></div>
-                    <div style=" text-align: end;"><span>179800</span>원</div>
-                    <div style=" text-align: end;"
-                         class="rate-up">+3.53%</div>
-                    <div style=" text-align: end; padding-right: 10px;">8억</div>
-                </div>
-            </a>
-            <!--            9순위-->
-            <a href="#">
-                <div class="stock-row">
-                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">9</div><div class="stock-name">큐리오시스</div></div>
-                    <div style=" text-align: end;"><span>54200</span>원</div>
-                    <div style=" text-align: end;"
-                         class="rate-down">-0.53%</div>
-                    <div style=" text-align: end; padding-right: 10px;">5억</div>
-                </div>
-            </a>
-            <!--            10순위-->
-            <a href="#">
-                <div class="stock-row">
-                    <div style=" display: flex; padding-left: 14px;"><div style="text-align: center; width: 20px; margin-right: 20px;">10</div><div class="stock-name">HJ중공업</div></div>
-                    <div style=" text-align: end;"><span>23600</span>원</div>
-                    <div style=" text-align: end;"
-                         class="rate-down">-6.53%</div>
-                    <div style=" text-align: end; padding-right: 10px;">2억</div>
-                </div>
-            </a>
+                </a>
+            </th:block>
+            </div>
         </div>
     </main>
 
@@ -389,5 +389,137 @@
             initCircleBadges();
         });
     </script>
+    <script>
+        // 🔹 이전 랭킹 데이터 저장용
+        let prevRanksByCode = {};
+
+        async function fetchRanks() {
+            try {
+                console.log('[fetchRanks] 호출');
+
+                const res = await fetch('/BNK/api/ranks', {
+                    method: 'GET',
+                    cache: 'no-store'
+                });
+
+                if (!res.ok) {
+                    throw new Error('failed to fetch ranks: ' + res.status);
+                }
+
+                const ranks = await res.json();
+                console.log('[fetchRanks] 데이터:', ranks);
+                renderRanks(ranks);
+            } catch (e) {
+                console.error('랭킹 불러오기 실패:', e);
+            }
+        }
+
+        function renderRanks(ranks) {
+            const container = document.getElementById('stockRows');
+            if (!container) return;
+
+            let html = '';
+
+            ranks.forEach(item => {
+                const rank   = item.rank;
+                const code   = item.code;
+                const name   = item.name;
+                const price  = Number(item.price);
+                const rate   = Number(item.changeRate);
+                const amount = Number(item.amount);
+
+                // 🔥 이전 값과 비교
+                const prev = prevRanksByCode[code];
+                let changed = false;
+                let rateChangeClass = '';  // ⬅ 행 배경용 클래스
+
+                if (prev) {
+                    // 이전 등락률과 비교해서 "올라갔는지/내려갔는지"만 본다
+                    if (rate > prev.rate) {
+                        rateChangeClass = 'rate-change-up';
+                    } else if (rate < prev.rate) {
+                        rateChangeClass = 'rate-change-down';
+                    }
+                    // 같으면 rateChangeClass는 빈 문자열 → 깜빡이지 않음
+                }
+
+                const rateClass =
+                    rate > 0 ? 'rate-up' :
+                        (rate < 0 ? 'rate-down' : 'rate-zero');
+
+                const sign =
+                    rate > 0 ? '+' :
+                        (rate < 0 ? '-' : '');
+
+                const absRate  = Math.abs(rate).toFixed(2);
+                const rateText = `${sign}${absRate}%`;
+                const priceText  = price.toLocaleString('ko-KR');
+                const amountText = amount.toLocaleString('ko-KR') + ' 만원';
+
+                const url = `/BNK/stock/order?code=${encodeURIComponent(code)}&name=${encodeURIComponent(name)}`;
+
+                // 🔥 변경된 행이면 flash 클래스 추가
+                const rowClass = 'stock-row';
+
+                html += `
+                <a href="${url}">
+                    <div class="${rowClass}">
+                        <!-- 순위 + 종목명 -->
+                        <div style="display:flex; padding-left:14px;">
+                            <div style="margin-right:20px;">
+                                <div style="text-align:center; width:20px;">
+                                    ${rank}
+                                </div>
+                            </div>
+                            <div class="stock-name">
+                                ${name}
+                            </div>
+                        </div>
+
+                        <!-- 현재가 -->
+                        <div style="text-align:end;">
+                            <span>${priceText}</span>원
+                        </div>
+
+                        <!-- 등락률 -->
+                        <div style="text-align:end;" class="${rateClass}">
+                            <span class="rate-span ${rateChangeClass}">${rateText}</span>
+                        </div>
+
+                        <!-- 거래대금 -->
+                        <div style="text-align:end; padding-right:10px;">
+                            <span>${amountText}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+            });
+
+            container.innerHTML = html;
+
+            // 🔄 이번 데이터로 prev 갱신
+            prevRanksByCode = {};
+            ranks.forEach(item => {
+                prevRanksByCode[item.code] = {
+                    price: Number(item.price),
+                    rate:  Number(item.changeRate),
+                    amount: Number(item.amount)
+                };
+            });
+
+            // 동그라미 배지 다시 적용
+            if (typeof initCircleBadges === 'function') {
+                initCircleBadges();
+            }
+        }
+
+        // 페이지 로드 시 한 번 실행하고, 이후 1.5초마다 반복
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchRanks();
+            setInterval(fetchRanks, 1500);
+        });
+    </script>
+
+
 </body>
 </html>
