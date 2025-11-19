@@ -1342,7 +1342,10 @@
     }
 </script>
 <script>
-    const ws = new WebSocket(`ws://localhost:8080/BNK/ws/hoga?code=${STOCK_CODE}`);
+    const protocol = (location.protocol === 'https:') ? 'wss:' : 'ws:';
+    const ws = new WebSocket(
+        `${protocol}//${location.host}/BNK/ws/hoga?code=${STOCK_CODE}`
+    );
 
     let last0AValues = null;
     let last0DValues = null;
