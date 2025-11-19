@@ -19,8 +19,8 @@ public class StockController {
     public String mainPage(Model model) {
 
         model.addAttribute("ranks",
-                rankingService.getTopByTradingValue(10));
-        log.info("rank = {}", rankingService.getTopByTradingValue(10));
+                rankingService.getTopByTradingValue(100));
+        log.info("rank = {}", rankingService.getTopByTradingValue(100));
         return "stock/stock_main";
     }
 
