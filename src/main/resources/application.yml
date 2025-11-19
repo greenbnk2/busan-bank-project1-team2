@@ -22,6 +22,10 @@ app:
   upload:
     dir: upload
 
+kiwoom:
+  appkey: ${KIWOOM_APPKEY}
+  secret: ${KIWOOM_SECRET}
+  token-url: https://api.kiwoom.com/oauth2/token
 # ===== local =====
 ---
 spring:

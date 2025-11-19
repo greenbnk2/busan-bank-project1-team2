@@ -1,0 +1,19 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BnkFirstApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <envs>
+      <env name="MAIL_PASSWORD" value="vxzkpkjgvjkgvqsx" />
+      <env name="MAIL_USERNAME" value="eternalsoul0635@gmail.com" />
+      <env name="SOLAPI_API_KEY" value="NCSVDFHFDDPBAJVZ" />
+      <env name="SOLAPI_API_SECRET" value="O9WAEKPSDTW6QUYSV4B5C4LSHBXYCDAK" />
+      <env name="SOLAPI_NUMBER" value="01027698940" />
+      <env name="KIWOOM_APPKEY" value="tGmt2dnRgmWdZLNQMm6rynhNnQ_s7vfEB4rRwg_Fy6c" />
+      <env name="KIWOOM_SECRET" value="-EXGXO6aW892WdCiPLZekgPxBu6ASZZqbOnt4UoLLOo" />
+    </envs>
+    <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+    <module name="BNKFirst.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="kr.co.bnkfirst.BnkFirstApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
