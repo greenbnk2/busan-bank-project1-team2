@@ -34,4 +34,9 @@ public class BranchService {
         }
         return branchMapper.searchBranches(keyword);
     }
+
+    // 🔥 영업점 삭제
+    public void deleteBranch(int brid) {
+        branchMapper.deleteBranch(brid);
+    }
 }
