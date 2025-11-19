@@ -4,6 +4,7 @@ import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.mapper.UsersMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,7 @@ public class UsersService {
         return user;
     }
 
-    // 회원가입(member_info)
+    // 회원가입(info)
     public boolean register(UsersDTO dto) {
         log.info("회원가입 시도: {}", dto.getMid());
         try {
@@ -61,7 +62,7 @@ public class UsersService {
         }
     }
 
-    // 아이디 중복확인(member_info)
+    // 아이디 중복확인(info)
     public boolean existsByMid(String mid) {
         return usersMapper.existsByMid(mid) > 0;
     }
@@ -69,5 +70,41 @@ public class UsersService {
     // 가입 후 사용자 다시 조회 (MDATE 가져오기)
     public UsersDTO findByMid(String mid) {
         return usersMapper.findUserById(mid);  // mapper 이미 있으므로 그대로 사용
+    }
+
+    // 아이디 찾기(findid)
+    public String findIdByPhone(String name, String phone) {
+        return usersMapper.findIdByPhone(name, phone);
+    }
+    public String findIdByEmail(String name, String email) {
+        return usersMapper.findIdByEmail(name, email);
+    }
+
+    // 비밀번호 찾기(findpw)
+    public String resetPasswordByPhone(String mid, String phone) {
+
+        UsersDTO user = usersMapper.findByMidAndPhone(mid, phone);
+        if (user == null) return null;
+
+        // 임시 비밀번호 생성
+        String tempPw = RandomStringUtils.randomAlphanumeric(10);
+
+        String hashed = passwordEncoder.encode(tempPw);
+        usersMapper.updatePassword(mid, hashed);
+
+        return tempPw;
+    }
+
+    public String resetPasswordByEmail(String mid, String email) {
+
+        UsersDTO user = usersMapper.findByMidAndEmail(mid, email);
+        if (user == null) return null;
+
+        String tempPw = RandomStringUtils.randomAlphanumeric(10);
+
+        String hashed = passwordEncoder.encode(tempPw);
+        usersMapper.updatePassword(mid, hashed);
+
+        return tempPw;
     }
 }

@@ -18,6 +18,7 @@ import javax.sql.DataSource;
 class ProductRepositoryTest {
     @Autowired
     ProductRepository productRepository;
+
     @MockitoBean
     EmailService emailService;
     @MockitoBean
