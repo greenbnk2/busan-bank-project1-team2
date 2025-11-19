@@ -10,6 +10,8 @@ import java.util.List;
 @Mapper
 public interface DocumentMapper {
 
+    // ================== 일반 DOCUMENT ==================
+
     //전체조회
     @Select("SELECT * FROM DOCUMENT WHERE DOCTYPE = #{type} ORDER BY DOCID ASC")
     List<DocumentDTO> selectAllDocumentsByType(String type);
@@ -54,7 +56,8 @@ public interface DocumentMapper {
     List<MainEventDTO> selectMainEvents();
 
 
-    // ===== 관리자(admin_cs) =====
+    // ================== 관리자(admin_cs) 리스트 ==================
+
     @Select("""
     SELECT
     DOCID, 
@@ -109,6 +112,7 @@ public interface DocumentMapper {
             @Param("page") PageRequestDTO pageRequestDTO
     );
 
+    // ================== 관리자(admin_cs) 단건 ==================
 
     // 단건 조회
     @Select("""
@@ -127,10 +131,44 @@ public interface DocumentMapper {
     """)
     DocumentDTO selectAdminDocumentById(@Param("docid") int docid);
 
-    // 나머지 CRUD 는 일단 이렇게만 잡아두고 나중에 채워도 됨
+    // 🔥 관리자 등록 (INSERT)
+    @Insert("""
+        INSERT INTO DOCUMENT (
+            DOCGROUP,
+            DOCTYPE,
+            DOCTITLE,
+            DOCCONTENT,
+            DOCANSWER,
+            DOCFILE,
+            MID,
+            DOCUPDATE
+        ) VALUES (
+            #{docgroup},
+            #{doctype},
+            #{doctitle},
+            #{doccontent},
+            #{docanswer},
+            #{docfile},
+            #{mid},
+            SYSDATE
+        )
+        """)
     int insertAdminDocument(DocumentDTO dto);
+
+    // 🔥 관리자 수정 (UPDATE)
+    @Update("""
+        UPDATE DOCUMENT
+        SET
+            DOCTITLE   = #{doctitle},
+            DOCCONTENT = #{doccontent},
+            DOCANSWER  = #{docanswer},
+            DOCFILE    = #{docfile},
+            DOCUPDATE  = SYSDATE
+        WHERE DOCID = #{docid}
+        """)
     int updateAdminDocument(DocumentDTO dto);
 
+    // 삭제
     @Delete("DELETE FROM DOCUMENT WHERE DOCID = #{docid}")
     int deleteAdminDocument(@Param("docid") int docid);
 

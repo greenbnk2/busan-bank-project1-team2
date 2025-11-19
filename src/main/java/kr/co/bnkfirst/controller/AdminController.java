@@ -115,6 +115,8 @@ public class AdminController {
     /* ///////////////////////////
      * 고객센터 관리 (전세현)
      * /////////////////////////// */
+
+    //목록 출력하기
     @GetMapping("/admin/cs")
     public String csList(
             @RequestParam(defaultValue = "cs") String group,   // cs / form / data
@@ -147,12 +149,12 @@ public class AdminController {
         return "admin/admin_cs";
     }
 
+    //등록하기
     @GetMapping("/admin/cs/register")
     public String csRegisterForm(
             @RequestParam String group,
             @RequestParam String type,
-            Model model
-    ){
+            Model model){
         model.addAttribute("group", group);
         model.addAttribute("type", type);
         model.addAttribute("document", new DocumentDTO());
@@ -166,8 +168,20 @@ public class AdminController {
             @RequestParam String type,
             RedirectAttributes ra
     ){
+        // group/type 그대로 저장
         documentDTO.setDocgroup(group);
-        documentDTO.setDoctype(type);
+
+        // ★ DB DOCTYPE 문자열(FAQ, 자료실, …)로 변환
+        String doctype = documentService.resolveDoctype(group, type);
+        if (doctype == null) {
+            throw new IllegalArgumentException("지원하지 않는 group/type: " + group + "/" + type);
+        }
+        documentDTO.setDoctype(doctype);
+
+        // 작성자 없으면 기본 admin으로
+        if (documentDTO.getMid() == null) {
+            documentDTO.setMid("admin");
+        }
 
         documentService.insertAdminDocument(documentDTO);
 
@@ -175,6 +189,7 @@ public class AdminController {
         return "redirect:/admin/cs?group=" + group + "&type=" + type;
     }
 
+    //수정하기
     @GetMapping("/admin/cs/modify")
     public String csModifyForm(
             @RequestParam int docid,
@@ -198,15 +213,15 @@ public class AdminController {
             @RequestParam String type,
             RedirectAttributes ra
     ){
-        documentDTO.setDocgroup(group);
-        documentDTO.setDoctype(type);
-
+        // docgroup / doctype 건드리지 않고,
+        // 제목/내용/답변/파일만 수정
         documentService.updateAdminDocument(documentDTO);
 
         ra.addFlashAttribute("toastSuccess", "게시물이 수정되었습니다.");
         return "redirect:/admin/cs?group=" + group + "&type=" + type;
     }
 
+    //삭제하기
     @PostMapping("/admin/cs/delete")
     public String csDelete(
             @RequestParam int docid,
@@ -214,12 +229,16 @@ public class AdminController {
             @RequestParam String type,
             RedirectAttributes ra
     ){
-        documentService.deleteAdminDocument(docid);
-        ra.addFlashAttribute("toastSuccess", "게시물이 삭제되었습니다.");
+        if("cs".equals(group) && "branch".equals(type)) {
+            branchService.deleteBranch(docid);
+            ra.addFlashAttribute("toastSuccess","영업점 정보가 삭제되었습니다.");
+        }else{
+            documentService.deleteAdminDocument(docid);
+            ra.addFlashAttribute("toastSuccess","게시물이 삭제되었습니다.");
+        }
+
         return "redirect:/admin/cs?group=" + group + "&type=" + type;
     }
-
-
 
     // 고객센터 리스트 JSON 디버그용
     @GetMapping("/admin/cs/debug")

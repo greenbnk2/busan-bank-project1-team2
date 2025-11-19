@@ -1,6 +1,7 @@
 package kr.co.bnkfirst.mapper;
 
 import kr.co.bnkfirst.dto.BranchDTO;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -42,4 +43,8 @@ public interface BranchMapper {
             ORDER BY BRID ASC
     """)
     List<BranchDTO> searchBranches(@Param("keyword") String keyword);
+
+    // 🔥 영업점 삭제
+    @Delete("DELETE FROM BRANCH WHERE BRID = #{brid}")
+    int deleteBranch(@Param("brid") int brid);
 }
