@@ -3,7 +3,9 @@ package kr.co.bnkfirst.controller;
 import jakarta.annotation.security.PermitAll;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
+import kr.co.bnkfirst.dto.product.SlfcertDTO;
 import kr.co.bnkfirst.service.ProductService;
+import kr.co.bnkfirst.service.SlfcertService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -14,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -26,6 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final SlfcertService slfcertService;
 
     @GetMapping("/product/main")
     public String mainPage() {
@@ -73,6 +73,19 @@ public class ProductController {
     @GetMapping("/product/insertInfo")
     public String insertInfoPage() {
         return "product/product_insert_info";
+    }
+
+    @PostMapping("/product/slfcert")
+    public ResponseEntity<SlfcertDTO> slfcertForm(SlfcertDTO slfcertDTO) {
+        log.info("slfcert {}", slfcertDTO);
+        // 로그인 기능 구현 전까지 임시 데이터 주입
+        String cusid = "a123";
+        slfcertDTO.setCusid(cusid);
+        boolean isSaved = slfcertService.saveSlfcert(slfcertDTO);
+        if(isSaved) {
+            return ResponseEntity.ok(slfcertDTO);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Bad Request : 400
     }
 
     @GetMapping("/product/subCmpl/list")
