@@ -1,10 +1,7 @@
 package kr.co.bnkfirst.mapper;
 
 import kr.co.bnkfirst.dto.BranchDTO;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -47,4 +44,27 @@ public interface BranchMapper {
     // 🔥 영업점 삭제
     @Delete("DELETE FROM BRANCH WHERE BRID = #{brid}")
     int deleteBranch(@Param("brid") int brid);
+
+    // 🔎 단일 영업점 조회
+    @Select("SELECT * FROM BRANCH WHERE BRID = #{brid}")
+    BranchDTO findBranchById(@Param("brid") int brid);
+
+    // ✏️ 영업점 수정
+    @Update("""
+        UPDATE BRANCH
+        SET BRNAME = #{brname},
+            BRADDR = #{braddr},
+            BRTEL  = #{brtel},
+            BRFAX  = #{brfax}
+        WHERE BRID = #{brid}
+    """)
+    int updateBranch(BranchDTO dto);
+
+    @Insert("""
+    INSERT INTO BRANCH (BRID, BRNAME, BRADDR, BRTEL, BRFAX)
+    VALUES (BRANCH_SEQ.NEXTVAL, #{brname}, #{braddr}, #{brtel}, #{brfax})
+""")
+    int insertBranch(BranchDTO dto);
+
+
 }

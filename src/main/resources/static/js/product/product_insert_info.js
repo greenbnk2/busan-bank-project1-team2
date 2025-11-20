@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const state = {};                    // 모든 단계의 입력값을 여기에 저장(필요 시)
 
     /* 유효성 검사 정규표현식 */
-    const reName  = /^[가-힣]{2,10}$/;
-    const reHp    = /^01(?:0|1|[6-9])(?:\d{4})\d{4}$/;
+    const reName = /^[가-힣]{2,10}$/;
+    const reHp = /^01(?:0|1|[6-9])(?:\d{4})\d{4}$/;
 
     const pages = [...document.querySelectorAll('.step-page')];
     const steps = [...document.querySelectorAll('#wizardSteps .step')];
@@ -64,9 +64,9 @@ document.addEventListener('DOMContentLoaded', function () {
             checkNGo(brthdt, '생년월일을 입력해주세요.', 'brthdt-comment');
             checkNGo(natcd, '국적을 선택해주세요.', 'natcd-comment');
             checkNGo(taxyr, '귀속년도를 선택해주세요.', 'taxyr-comment');
-            checkNGo([enlnm,enfnm], '영문이름을 입력해주세요.', 'ennm-comment');
+            checkNGo([enlnm, enfnm], '영문이름을 입력해주세요.', 'ennm-comment');
             checkNGo(phone, '전화번호를 입력해주세요.', 'phone-comment', reHp, '전화번호가 유효하지 않습니다.');
-            checkNGo([zipcd,addr1], '우편번호와 주소를 입력해주세요.', 'addr-comment');
+            checkNGo([zipcd, addr1], '우편번호와 주소를 입력해주세요.', 'addr-comment');
             if (checkValid[0])
                 return true;
             else
@@ -125,8 +125,8 @@ document.addEventListener('DOMContentLoaded', function () {
     validComment(zipcd, '우편번호와 주소를 입력해주세요.', 'addr-comment');
     validComment(addr1, '우편번호와 주소를 입력해주세요.', 'addr-comment');
     form1.addr2.addEventListener('focusout', function () {
-        const comment =document.getElementById('addr-comment');
-        if(zipcd.value !== "" && addr1.value !== "")
+        const comment = document.getElementById('addr-comment');
+        if (zipcd.value !== "" && addr1.value !== "")
             comment.innerText = "";
         else {
             comment.innerText = "우편번호와 주소를 입력해주세요.";
@@ -149,12 +149,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // 이전 버튼: step1에서는 숨김, 그 외엔 표시
-        // 본인확인서 존재할 시 page2에서도 숨김
-        prevBtn.hidden = (n === 1) || (getHasInfo() && n === 2);
+        // 본인확인서 중복 제출 방지를 위해 page2에서도 숨김
+        prevBtn.hidden = (n === 1) || (n === 2);
 
         nextBtn.textContent = (n === totalSteps) ? '신청' : '다음';
         // 스크롤 보정
-        document.querySelector('html').scrollIntoView({behavior:'smooth', block:'start'});
+        document.querySelector('html').scrollIntoView({behavior: 'smooth', block: 'start'});
     }
 
 
@@ -173,7 +173,24 @@ document.addEventListener('DOMContentLoaded', function () {
         // 본인확인서 미등록시 step1에서 제출 동작
         if (!getHasInfo() && currentStep === 1) {
             // 서버 제출 동작(fetch)
-            alert('본인확인서(FATCA/CRS)가 등록되었습니다!');
+            const fd = new FormData(form1);
+            fetch('/BNK/product/slfcert', {
+                method: 'POST',
+                body: fd
+            }).then(res => {
+                if (res.ok)
+                    return res.json();
+                else
+                    throw new Error(`${res.status} ${res.statusText}`);
+            })
+                .then(data => {
+                    console.log(data);
+                    alert('본인확인서(FATCA/CRS)가 등록되었습니다!');
+                    root.dataset.hasInfo = 'true';
+                }).catch(e => {
+                    console.error(e.message);
+                    alert('등록 중 오류가 발생했습니다.');
+                });
         }
         showStep(currentStep + 1);
     });
@@ -191,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 이전
     prevBtn.addEventListener('click', () => {
         if (currentStep > 1) {
-            if (!(getHasInfo() && currentStep === 2))showStep(currentStep - 1);
+            if (!(getHasInfo() && currentStep === 2)) showStep(currentStep - 1);
         }
     });
 
@@ -219,6 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return false;
     }
+
     // 페이지 진입 시 화면 : 본인확인서가 존재하면 page2부터
     (function () {
         showStep(1);

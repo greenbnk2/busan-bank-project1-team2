@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>qna</title>
+
+    <style>
+        main {
+            background-color: #F6F6F8;
+            padding: 10px 20px 80px;
+        }
+        body {
+            background-color: #F6F6F8;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div th:replace="~{layouts/header.html}"></div>
+    </header>
+
+    <main style=" display: flex; justify-content: center;">
+        <div style="width: 1200px; ">
+            <div style="padding:20px; display: flex; justify-content: center; align-items: center; background: linear-gradient(to right, #EFF6FF, #ECFEFF); margin-top:25px;border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); overflow: hidden;height: 400px;">
+                <div style="display: flex;justify-content: center; padding-bottom: 40px;">
+                    <div>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <img th:src="@{/images/ox_title.png}" alt="" style="width: 800px;">
+                        </div>
+                        <div style="margin-top: 30px; font-size: 18px;">
+                            <div style="text-align: center;">퇴직금을 현명하게 받는 데 꼭 필요한 핵심만 골라 담았어요.</div>
+                            <div style="text-align: center;">OX 퀴즈로 한 번에 정리해보세요!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top:100px; padding:20px; display: flex; justify-content: center; align-items: center; background: linear-gradient(to right, #EFF6FF, #ECFEFF); border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); overflow: hidden;height: 600px;">
+                <div style="display: flex;justify-content: center; padding-bottom: 40px;">
+                    <div style="padding: 50px;margin-top: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="padding-bottom:13px; width: 93px; height: 80px; border-radius: 50%; background: #4160e5; font-weight: 700; color: white; font-size: 80px; display: flex; justify-content: center; align-items: center;">
+                                1
+                            </div>
+                            <div style="margin-left: 20px;font-weight: 700; font-size: 50px; color: #2e3758;">퇴직 시 적립금은 전액 IRP로 옮겨야 한다.</div>
+                        </div>
+                        <!-- OX 버튼 컨테이너 -->
+                        <div style="display:flex; gap:40px; justify-content:center; margin-top:80px;">
+                            <!-- O 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('O 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    width:160px; height:160px;
+                                    border:20px solid #3B82F6;
+                                    border-radius:50%;
+                                "></div>
+                            </button>
+
+                            <div style="border: 1px dashed #dbdbdb; margin-left: 40px; margin-right: 40px;"></div>
+                            <!-- X 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('X 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    position:relative;
+                                    width:160px; height:160px;
+                                ">
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(-45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:100px; padding:20px; display: flex; justify-content: center; align-items: center; background: linear-gradient(to right, #EFF6FF, #ECFEFF); border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); overflow: hidden;height: 600px;">
+                <div style="display: flex;justify-content: center; padding-bottom: 40px;">
+                    <div style="padding: 50px;margin-top: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="padding-bottom:13px; width: 93px; height: 80px; border-radius: 50%; background: #4160e5; font-weight: 700; color: white; font-size: 80px; display: flex; justify-content: center; align-items: center;">
+                                2
+                            </div>
+                            <div style="margin-left: 20px;font-weight: 700; font-size: 50px; color: #2e3758;">퇴직금은 일시금·연금 중 내가 선택한다.</div>
+                        </div>
+                        <!-- OX 버튼 컨테이너 -->
+                        <div style="display:flex; gap:40px; justify-content:center; margin-top:80px;">
+                            <!-- O 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('O 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    width:160px; height:160px;
+                                    border:20px solid #3B82F6;
+                                    border-radius:50%;
+                                "></div>
+                            </button>
+
+                            <div style="border: 1px dashed #dbdbdb; margin-left: 40px; margin-right: 40px;"></div>
+                            <!-- X 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('X 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    position:relative;
+                                    width:160px; height:160px;
+                                ">
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(-45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:100px; padding:20px; display: flex; justify-content: center; align-items: center; background: linear-gradient(to right, #EFF6FF, #ECFEFF); border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); overflow: hidden;height: 600px;">
+                <div style="display: flex;justify-content: center; padding-bottom: 40px;">
+                    <div style="padding: 50px;margin-top: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="padding-bottom:13px; width: 93px; height: 80px; border-radius: 50%; background: #4160e5; font-weight: 700; color: white; font-size: 80px; display: flex; justify-content: center; align-items: center;">
+                                3
+                            </div>
+                            <div style="margin-left: 20px;font-weight: 700; font-size: 50px; color: #2e3758;">퇴직연금은 중도인출이 불가능하다.</div>
+                        </div>
+                        <!-- OX 버튼 컨테이너 -->
+                        <div style="display:flex; gap:40px; justify-content:center; margin-top:80px;">
+                            <!-- O 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('O 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    width:160px; height:160px;
+                                    border:20px solid #3B82F6;
+                                    border-radius:50%;
+                                "></div>
+                            </button>
+
+                            <div style="border: 1px dashed #dbdbdb; margin-left: 40px; margin-right: 40px;"></div>
+                            <!-- X 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('X 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    position:relative;
+                                    width:160px; height:160px;
+                                ">
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(-45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:100px; padding:20px; display: flex; justify-content: center; align-items: center; background: linear-gradient(to right, #EFF6FF, #ECFEFF); border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); overflow: hidden;height: 600px;">
+                <div style="display: flex;justify-content: center; padding-bottom: 40px;">
+                    <div style="padding: 50px;margin-top: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="padding-bottom:13px; width: 93px; height: 80px; border-radius: 50%; background: #4160e5; font-weight: 700; color: white; font-size: 80px; display: flex; justify-content: center; align-items: center;">
+                                4
+                            </div>
+                            <div style="margin-left: 20px;font-weight: 700; font-size: 50px; color: #2e3758;">연금 수령이 일시금보다 세금이 낮을 수 있다.</div>
+                        </div>
+                        <!-- OX 버튼 컨테이너 -->
+                        <div style="display:flex; gap:40px; justify-content:center; margin-top:80px;">
+                            <!-- O 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('O 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    width:160px; height:160px;
+                                    border:20px solid #3B82F6;
+                                    border-radius:50%;
+                                "></div>
+                            </button>
+
+                            <div style="border: 1px dashed #dbdbdb; margin-left: 40px; margin-right: 40px;"></div>
+                            <!-- X 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('X 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    position:relative;
+                                    width:160px; height:160px;
+                                ">
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(-45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:100px; padding:20px; display: flex; justify-content: center; align-items: center; background: linear-gradient(to right, #EFF6FF, #ECFEFF); border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); overflow: hidden;height: 600px;">
+                <div style="display: flex;justify-content: center; padding-bottom: 40px;">
+                    <div style="padding: 50px;margin-top: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="padding-bottom:13px; width: 93px; height: 80px; border-radius: 50%; background: #4160e5; font-weight: 700; color: white; font-size: 80px; display: flex; justify-content: center; align-items: center;">
+                                5
+                            </div>
+                            <div style="margin-left: 20px;font-weight: 700; font-size: 50px; color: #2e3758;">IRP는 여러 개 만들 수 있다.</div>
+                        </div>
+                        <!-- OX 버튼 컨테이너 -->
+                        <div style="display:flex; gap:40px; justify-content:center; margin-top:80px;">
+                            <!-- O 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('O 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    width:160px; height:160px;
+                                    border:20px solid #3B82F6;
+                                    border-radius:50%;
+                                "></div>
+                            </button>
+
+                            <div style="border: 1px dashed #dbdbdb; margin-left: 40px; margin-right: 40px;"></div>
+                            <!-- X 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('X 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    position:relative;
+                                    width:160px; height:160px;
+                                ">
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(-45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:100px; padding:20px; display: flex; justify-content: center; align-items: center; background: linear-gradient(to right, #EFF6FF, #ECFEFF); border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); overflow: hidden;height: 600px;">
+                <div style="display: flex;justify-content: center; padding-bottom: 40px;">
+                    <div style="padding: 50px;margin-top: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="padding-bottom:13px; width: 93px; height: 80px; border-radius: 50%; background: #4160e5; font-weight: 700; color: white; font-size: 80px; display: flex; justify-content: center; align-items: center;">
+                                6
+                            </div>
+                            <div style="margin-left: 20px;font-weight: 700; font-size: 50px; color: #2e3758;">IRP와 회사 퇴직연금은 다른 제도다.</div>
+                        </div>
+                        <!-- OX 버튼 컨테이너 -->
+                        <div style="display:flex; gap:40px; justify-content:center; margin-top:80px;">
+                            <!-- O 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('O 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    width:160px; height:160px;
+                                    border:20px solid #3B82F6;
+                                    border-radius:50%;
+                                "></div>
+                            </button>
+
+                            <div style="border: 1px dashed #dbdbdb; margin-left: 40px; margin-right: 40px;"></div>
+                            <!-- X 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('X 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    position:relative;
+                                    width:160px; height:160px;
+                                ">
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(-45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:100px; padding:20px; display: flex; justify-content: center; align-items: center; background: linear-gradient(to right, #EFF6FF, #ECFEFF); border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); overflow: hidden;height: 600px;">
+                <div style="display: flex;justify-content: center; padding-bottom: 40px;">
+                    <div style="padding: 50px;margin-top: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="padding-bottom:13px; width: 93px; height: 80px; border-radius: 50%; background: #4160e5; font-weight: 700; color: white; font-size: 80px; display: flex; justify-content: center; align-items: center;">
+                                7
+                            </div>
+                            <div style="margin-left: 20px;font-weight: 700; font-size: 50px; color: #2e3758;">DB형은 근로자가 운용을 결정한다.</div>
+                        </div>
+                        <!-- OX 버튼 컨테이너 -->
+                        <div style="display:flex; gap:40px; justify-content:center; margin-top:80px;">
+                            <!-- O 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('O 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    width:160px; height:160px;
+                                    border:20px solid #3B82F6;
+                                    border-radius:50%;
+                                "></div>
+                            </button>
+
+                            <div style="border: 1px dashed #dbdbdb; margin-left: 40px; margin-right: 40px;"></div>
+                            <!-- X 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('X 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    position:relative;
+                                    width:160px; height:160px;
+                                ">
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(-45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:100px; padding:20px; display: flex; justify-content: center; align-items: center; background: linear-gradient(to right, #EFF6FF, #ECFEFF); border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); overflow: hidden;height: 600px;">
+                <div style="display: flex;justify-content: center; padding-bottom: 40px;">
+                    <div style="padding: 50px;margin-top: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="padding-bottom:13px; width: 93px; height: 80px; border-radius: 50%; background: #4160e5; font-weight: 700; color: white; font-size: 80px; display: flex; justify-content: center; align-items: center;">
+                                8
+                            </div>
+                            <div style="margin-left: 20px;font-weight: 700; font-size: 50px; color: #2e3758;">DC형은 수익률에 따라 금액이 달라진다.</div>
+                        </div>
+                        <!-- OX 버튼 컨테이너 -->
+                        <div style="display:flex; gap:40px; justify-content:center; margin-top:80px;">
+                            <!-- O 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('O 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    width:160px; height:160px;
+                                    border:20px solid #3B82F6;
+                                    border-radius:50%;
+                                "></div>
+                            </button>
+
+                            <div style="border: 1px dashed #dbdbdb; margin-left: 40px; margin-right: 40px;"></div>
+                            <!-- X 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('X 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    position:relative;
+                                    width:160px; height:160px;
+                                ">
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(-45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:100px; padding:20px; display: flex; justify-content: center; align-items: center; background: linear-gradient(to right, #EFF6FF, #ECFEFF); border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); overflow: hidden;height: 600px;">
+                <div style="display: flex;justify-content: center; padding-bottom: 40px;">
+                    <div style="padding: 50px;margin-top: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="padding-bottom:13px; width: 93px; height: 80px; border-radius: 50%; background: #4160e5; font-weight: 700; color: white; font-size: 80px; display: flex; justify-content: center; align-items: center;">
+                                9
+                            </div>
+                            <div style="margin-left: 20px;font-weight: 700; font-size: 50px; color: #2e3758;">퇴직연금은 55세 이후 연금으로 받을 수 있다.</div>
+                        </div>
+                        <!-- OX 버튼 컨테이너 -->
+                        <div style="display:flex; gap:40px; justify-content:center; margin-top:80px;">
+                            <!-- O 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('O 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    width:160px; height:160px;
+                                    border:20px solid #3B82F6;
+                                    border-radius:50%;
+                                "></div>
+                            </button>
+
+                            <div style="border: 1px dashed #dbdbdb; margin-left: 40px; margin-right: 40px;"></div>
+                            <!-- X 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('X 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    position:relative;
+                                    width:160px; height:160px;
+                                ">
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(-45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:100px; padding:20px; display: flex; justify-content: center; align-items: center; background: linear-gradient(to right, #EFF6FF, #ECFEFF); border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); overflow: hidden;height: 600px;">
+                <div style="display: flex;justify-content: center; padding-bottom: 40px;">
+                    <div style="padding: 50px;margin-top: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="padding-bottom:13px; width: 93px; height: 80px; border-radius: 50%; background: #4160e5; font-weight: 700; color: white; font-size: 80px; display: flex; justify-content: center; align-items: center;">
+                                10
+                            </div>
+                            <div style="margin-left: 20px;font-weight: 700; font-size: 50px; color: #2e3758;">퇴직금을 받으려면 IRP 개설이 필요 없다.</div>
+                        </div>
+                        <!-- OX 버튼 컨테이너 -->
+                        <div style="display:flex; gap:40px; justify-content:center; margin-top:80px;">
+                            <!-- O 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('O 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    width:160px; height:160px;
+                                    border:20px solid #3B82F6;
+                                    border-radius:50%;
+                                "></div>
+                            </button>
+
+                            <div style="border: 1px dashed #dbdbdb; margin-left: 40px; margin-right: 40px;"></div>
+                            <!-- X 버튼 -->
+                            <button
+                                    style="
+                                        width:300px; height:300px;
+                                        border-radius:50%;
+                                        border:none;
+                                        background:#ffffff;
+                                        display:flex;
+                                        justify-content:center;
+                                        align-items:center;
+                                        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+                                        cursor:pointer;
+                                        transition: transform 0.15s ease;
+                                    "
+                                    onclick="alert('X 선택')"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    >
+                                <div style="
+                                    position:relative;
+                                    width:160px; height:160px;
+                                ">
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                    <div style="
+                                        position:absolute;
+                                        top:0; left:50%;
+                                        width:20px; height:100%;
+                                        background:#EF4444;
+                                        transform:translateX(-50%) rotate(-45deg);
+                                        border-radius:5px;
+                                    "></div>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+
+    <footer>
+        <div th:replace="~{layouts/footer.html}"></div>
+    </footer>
+</body>
+</html>

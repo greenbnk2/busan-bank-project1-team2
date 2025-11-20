@@ -150,37 +150,70 @@ public class AdminController {
     }
 
     //등록하기
+    // 등록 폼
     @GetMapping("/admin/cs/register")
     public String csRegisterForm(
             @RequestParam String group,
             @RequestParam String type,
-            Model model){
+            Model model) {
+
         model.addAttribute("group", group);
         model.addAttribute("type", type);
-        model.addAttribute("document", new DocumentDTO());
-        return "admin/admin_csregister";
+
+        // 🔴 영업점 찾기인 경우: BRANCH용 폼
+        if ("BRANCH".equalsIgnoreCase(type)) {
+            model.addAttribute("branch", new BranchDTO());
+            return "admin/admin_branchRegister"; // ← 영업점 등록 템플릿
+        }
+
+        // 🔵 그 외: DOCUMENT용 폼
+        DocumentDTO dto = new DocumentDTO();
+        dto.setDocgroup(group); // 기본값 세팅(선택)
+        model.addAttribute("document", dto);
+
+        return "admin/admin_csregister"; // 지금 만들어둔 게시글 등록 폼
     }
 
     @PostMapping("/admin/cs/register")
     public String csRegister(
             DocumentDTO documentDTO,
+            BranchDTO branchDTO,          // 🔴 영업점용 DTO 같이 받기
             @RequestParam String group,
             @RequestParam String type,
             RedirectAttributes ra
-    ){
-        // group/type 그대로 저장
+    ) {
+        // 1️⃣ 영업점(찾기) → BRANCH 테이블 등록 후 바로 리턴
+        if ("branch".equalsIgnoreCase(type)) {
+
+            // 필요하다면 검증/기본값 세팅 등 추가
+            // ex) if (branchDTO.getBrname() == null || branchDTO.getBrname().isBlank()) { ... }
+
+            branchService.insertBranch(branchDTO);   // 🔥 BRANCH INSERT
+
+            ra.addFlashAttribute("toastSuccess", "영업점이 등록되었습니다.");
+            return "redirect:/admin/cs?group=" + group + "&type=" + type;
+        }
+
+        // 2️⃣ 나머지 타입 → DOCUMENT 테이블에 등록 (기존 로직)
         documentDTO.setDocgroup(group);
 
-        // ★ DB DOCTYPE 문자열(FAQ, 자료실, …)로 변환
+        // ★ 여기부터는 branch 가 아닌 경우에만 타도록!
         String doctype = documentService.resolveDoctype(group, type);
         if (doctype == null) {
             throw new IllegalArgumentException("지원하지 않는 group/type: " + group + "/" + type);
         }
         documentDTO.setDoctype(doctype);
 
-        // 작성자 없으면 기본 admin으로
         if (documentDTO.getMid() == null) {
             documentDTO.setMid("admin");
+        }
+
+        // null 방지
+        if (documentDTO.getDocanswer() == null) {
+            documentDTO.setDocanswer("");
+        }
+        if (documentDTO.getDocfile() == null) {
+            documentDTO.setDocfile("");
         }
 
         documentService.insertAdminDocument(documentDTO);
@@ -188,6 +221,9 @@ public class AdminController {
         ra.addFlashAttribute("toastSuccess", "게시물이 등록되었습니다.");
         return "redirect:/admin/cs?group=" + group + "&type=" + type;
     }
+
+
+
 
     //수정하기
     @GetMapping("/admin/cs/modify")
@@ -220,6 +256,39 @@ public class AdminController {
         ra.addFlashAttribute("toastSuccess", "게시물이 수정되었습니다.");
         return "redirect:/admin/cs?group=" + group + "&type=" + type;
     }
+
+    // =========================
+    //  영업점(Branch) 수정
+    // =========================
+    @GetMapping("/admin/cs/branch/modify")
+    public String branchModifyForm(
+            @RequestParam int brid,
+            @RequestParam String group,
+            @RequestParam String type,
+            Model model
+    ) {
+        BranchDTO branch = branchService.getBranchById(brid);
+
+        model.addAttribute("group", group);
+        model.addAttribute("type", type);
+        model.addAttribute("branch", branch);
+
+        return "admin/admin_branchModify";
+    }
+
+    @PostMapping("/admin/cs/branch/modify")
+    public String branchModify(
+            BranchDTO branchDTO,
+            @RequestParam String group,
+            @RequestParam String type,
+            RedirectAttributes ra
+    ) {
+        branchService.updateBranch(branchDTO);
+        ra.addFlashAttribute("toastSuccess", "영업점 정보가 수정되었습니다.");
+
+        return "redirect:/admin/cs?group=" + group + "&type=" + type;
+    }
+
 
     //삭제하기
     @PostMapping("/admin/cs/delete")

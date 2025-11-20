@@ -50,120 +50,123 @@
                         2021년에 해당합니다.</span>
             </div>
         </div>
-        <article class="card form-section">
-            <div class="inner">
-                <h2 class="form-title">
-                    <img th:src="@{/images/product/user-red.png}" alt="고객 기본 정보" class="form-icon">
-                    고객 기본 정보
+        <form id="customerForm">
+            <article class="card form-section">
+                <div class="inner">
+                    <h2 class="form-title">
+                        <img th:src="@{/images/product/user-red.png}" alt="고객 기본 정보" class="form-icon">
+                        고객 기본 정보
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">성명<span class="req">*</span>
+                                <span id="name-comment" class="warn-comment"></span></label>
+                            <input id="name" name="name" type="text" placeholder="홍길동">
+                        </div>
+
+                        <div class="form-group">
+                            <label>성별<span class="req">*</span></label>
+                            <div class="radio-row">
+                                <label><input type="radio" name="gender" value="M" checked> 남성</label>
+                                <label><input type="radio" name="gender" value="F"> 여성</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="birth">생년월일<span class="req">*</span>
+                                <span id="brthdt-comment" class="warn-comment"></span></label>
+                            <input id="birth" name="brthdt" type="date" placeholder="YYYY-MM-DD">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nation">국적<span class="req">*</span>
+                                <span id="natcd-comment" class="warn-comment"></span></label>
+                            <select id="nation" name="natcd">
+                                <option value="">-- 선택하세요 --</option>
+                                <option value="KR">대한민국</option>
+                                <option value="US">미국</option>
+                                <option value="JP">일본</option>
+                                <option value="CN">중국</option>
+                                <option value="GB">영국</option>
+                                <option value="FR">프랑스</option>
+                                <option value="DE">독일</option>
+                                <option value="CA">캐나다</option>
+                                <option value="AU">호주</option>
+                                <option value="SG">싱가포르</option>
+                                <option value="VN">베트남</option>
+                                <option value="TH">태국</option>
+                                <option value="PH">필리핀</option>
+                                <option value="IN">인도</option>
+                                <option value="ID">인도네시아</option>
+                                <option value="MY">말레이시아</option>
+                                <option value="RU">러시아</option>
+                                <option value="BR">브라질</option>
+                                <option value="ZA">남아프리카공화국</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="taxyr">귀속연도<span class="req">*</span>
+                                <span id="taxyr-comment" class="warn-comment"></span></label>
+                            <select id="taxyr" name="taxyr">
+                                <option value="">선택해 주세요</option>
+                                <option>2025</option>
+                                <option>2024</option>
+                                <option>2023</option>
+                                <option>2022</option>
+                                <option>2021</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="engLastName">영문성명<span class="req">*</span>
+                                <span id="ennm-comment" class="warn-comment"></span></label>
+                            <div style="display: flex; gap: 10px;">
+                                <input id="engLastName" class="engName" name="enlnm" type="text" placeholder="HONG">
+                                <input id="engFirstName" class="engName" name="enfnm" type="text"
+                                       placeholder="GIL DONG">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">휴대전화번호<span class="req">*</span>
+                                <span id="phone-comment" class="warn-comment"></span></label>
+                            <input id="phone" name="phone" type="tel" placeholder="기호를 제외한 숫자만 적어주세요.">
+                        </div>
+
+                        <div class="form-group full">
+                            <label>주소<span class="req">*</span>
+                                <span id="addr-comment" class="warn-comment"></span></label>
+                            <div class="addr-row">
+                                <input id="zip" name="zipcd" type="text" placeholder="우편번호" readonly style="flex:none">
+                                <button type="button" class="btn-white small" onclick="postcode()">주소검색</button>
+                            </div>
+                            <input id="addr1" name="addr1" type="text" placeholder="도로명 주소" readonly>
+                            <input id="addr2" name="addr2" type="text" placeholder="상세주소">
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="confirm-box">
+                <h2 class="confirm-title">
+                    <img th:src="@{/images/product/check-red.png}" alt="확인사항" class="confirm-icon">
+                    확인사항(해당하는 항복에 모두 체크)
                 </h2>
-
-                <form id="customerForm" class="form-grid">
-                    <div class="form-group">
-                        <label for="name">성명<span class="req">*</span>
-                            <span id="name-comment" class="warn-comment"></span></label>
-                        <input id="name" name="name" type="text" placeholder="홍길동">
-                    </div>
-
-                    <div class="form-group">
-                        <label>성별<span class="req">*</span></label>
-                        <div class="radio-row">
-                            <label><input type="radio" name="gender" value="남성" checked> 남성</label>
-                            <label><input type="radio" name="gender" value="여성"> 여성</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="birth">생년월일<span class="req">*</span>
-                            <span id="brthdt-comment" class="warn-comment"></span></label>
-                        <input id="birth" name="brthdt" type="date" placeholder="YYYY-MM-DD">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="nation">국적<span class="req">*</span>
-                            <span id="natcd-comment" class="warn-comment"></span></label>
-                        <select id="nation" name="natcd">
-                            <option value="">-- 선택하세요 --</option>
-                            <option value="KR">대한민국</option>
-                            <option value="US">미국</option>
-                            <option value="JP">일본</option>
-                            <option value="CN">중국</option>
-                            <option value="GB">영국</option>
-                            <option value="FR">프랑스</option>
-                            <option value="DE">독일</option>
-                            <option value="CA">캐나다</option>
-                            <option value="AU">호주</option>
-                            <option value="SG">싱가포르</option>
-                            <option value="VN">베트남</option>
-                            <option value="TH">태국</option>
-                            <option value="PH">필리핀</option>
-                            <option value="IN">인도</option>
-                            <option value="ID">인도네시아</option>
-                            <option value="MY">말레이시아</option>
-                            <option value="RU">러시아</option>
-                            <option value="BR">브라질</option>
-                            <option value="ZA">남아프리카공화국</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="taxyr">귀속연도<span class="req">*</span>
-                            <span id="taxyr-comment" class="warn-comment"></span></label>
-                        <select id="taxyr" name="taxyr">
-                            <option value="">선택해 주세요</option>
-                            <option>2025</option>
-                            <option>2024</option>
-                            <option>2023</option>
-                            <option>2022</option>
-                            <option>2021</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="engLastName">영문성명<span class="req">*</span>
-                            <span id="ennm-comment" class="warn-comment"></span></label>
-                        <div style="display: flex; gap: 10px;">
-                            <input id="engLastName" class="engName" name="enlnm" type="text" placeholder="HONG">
-                            <input id="engFirstName" class="engName" name="enfnm" type="text" placeholder="GIL DONG">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="phone">휴대전화번호<span class="req">*</span>
-                            <span id="phone-comment" class="warn-comment"></span></label>
-                        <input id="phone" name="phone" type="tel" placeholder="기호를 제외한 숫자만 적어주세요.">
-                    </div>
-
-                    <div class="form-group full">
-                        <label>주소<span class="req">*</span>
-                            <span id="addr-comment" class="warn-comment"></span></label>
-                        <div class="addr-row">
-                            <input id="zip" name="zipcd" type="text" placeholder="우편번호" readonly style="flex:none">
-                            <button type="button" class="btn-white small" onclick="postcode()">주소검색</button>
-                        </div>
-                        <input id="addr1" name="addr1" type="text" placeholder="도로명 주소" readonly>
-                        <input id="addr2" name="addr2" type="text" placeholder="상세주소">
-                    </div>
-                </form>
-            </div>
-        </article>
-        <article class="confirm-box">
-            <h2 class="confirm-title">
-                <img th:src="@{/images/product/check-red.png}" alt="확인사항" class="confirm-icon">
-                확인사항(해당하는 항복에 모두 체크)
-            </h2>
-            <label class="confirm-item" for="isKorean">
-                <input type="checkbox" name="krres" id="isKorean">
-                조세목적상 한국 거주자에 해당합니다.
-                <img th:src="@{/images/product/detail-grey.png}" alt="세부정보">
-            </label>
-            <label class="confirm-item" for="isForeign">
-                <input type="checkbox" name="others" id="isForeign">
-                한국 외에 조세목적상 거주지국이 있습니다.
-            </label>
-        </article>
+                <label class="confirm-item" for="isKorean">
+                    <input type="checkbox" name="krres" id="isKorean">
+                    조세목적상 한국 거주자에 해당합니다.
+                    <img th:src="@{/images/product/detail-grey.png}" alt="세부정보">
+                </label>
+                <label class="confirm-item" for="isForeign">
+                    <input type="checkbox" name="others" id="isForeign">
+                    한국 외에 조세목적상 거주지국이 있습니다.
+                </label>
+            </article>
+        </form>
     </section>
     <section class="step-page" id="page2" hidden>
         <h1 style="margin-bottom: 5px;">신규가입</h1>
