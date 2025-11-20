@@ -35,6 +35,21 @@ public class BranchService {
         return branchMapper.searchBranches(keyword);
     }
 
+    // ✅ 영업점 등록
+    public void insertBranch(BranchDTO dto) {
+        branchMapper.insertBranch(dto);
+    }
+
+    // 🔎 단일 영업점 조회
+    public BranchDTO getBranchById(int brid) {
+        return branchMapper.findBranchById(brid);
+    }
+
+    // ✏️ 영업점 수정
+    public void updateBranch(BranchDTO dto) {
+        branchMapper.updateBranch(dto);
+    }
+
     // 🔥 영업점 삭제
     public void deleteBranch(int brid) {
         branchMapper.deleteBranch(brid);
