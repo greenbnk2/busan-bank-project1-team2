@@ -830,8 +830,8 @@
 </div>
 <script>
     // 페이지 공통으로 쓰는 종목 코드, 이름
-    const STOCK_CODE = document.body.dataset.stockCode;
-    const STOCK_NAME = document.body.dataset.stockName;
+    window.STOCK_CODE = document.body.dataset.stockCode;
+    window.STOCK_NAME = document.body.dataset.stockName;
 </script>
 <script>
     // 일반 탭 active 처리 (위쪽 탭)
@@ -1204,6 +1204,50 @@
             toast.classList.remove('show');
         }, 1300);
     }
+
+    // ✅ 여러 번 안 뜨게 플래그
+    window.priceToastShown = false;
+
+    // info 는 선택값(없어도 동작하도록) – initPriceFromRanks 에서도 재사용
+    function showPriceAlertToast(info) {
+        console.log('[showPriceAlertToast] info =', info);
+
+        const toast = document.getElementById('orderToast');
+        const text  = document.getElementById('orderToastText');
+        if (!toast || !text) return;
+
+        // ❗ info 없으면 아무 것도 안 띄움 (숫자 없는 토스트 방지)
+        if (!info
+            || typeof info.dropRate !== 'number'
+            || typeof info.difference !== 'number') {
+            return;
+        }
+
+        const name = window.STOCK_NAME || '';
+
+        const dropRateFixed = info.dropRate.toFixed(2);
+        const diffAbs       = Math.abs(info.difference);
+        const diffText      = diffAbs.toLocaleString('ko-KR');
+        const maxText       = info.histMaxPrice
+            ? info.histMaxPrice.toLocaleString('ko-KR') + '원'
+            : '';
+
+        const extraLine =
+            `<br><span style="font-size:12px;opacity:0.8;">
+            최근 300개 고점${maxText ? ' (' + maxText + ')' : ''} 대비
+            <b>${dropRateFixed}%</b>
+            (${diffText}원) 하락
+         </span>`;
+
+        text.innerHTML = `지금이 ${name} 매수 기회에요${extraLine}`;
+
+        toast.classList.add('show');
+        clearTimeout(window._orderToastTimer);
+        window._orderToastTimer = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 1300);
+    }
+
 </script>
 <script>
     // 호가 레벨 개수
@@ -1401,6 +1445,18 @@
         const nowPrice = parseKiwoomAbs(nowPriceRaw);
         if (nowPrice != null) {
             nowPriceEl.textContent = formatNumber(nowPrice) + '원';
+
+            // // ✅ ALERT_PRICE 보다 저점(이하)일 때 한 번만 토스트
+            // if (!window.priceToastShown && typeof ALERT_PRICE !== 'undefined') {
+            //     if (nowPrice <= ALERT_PRICE) {
+            //         window.priceToastShown = true;
+            //         showPriceAlertToast({
+            //             type: 'alert',
+            //             currentPrice: nowPrice,
+            //             alertPrice : ALERT_PRICE
+            //         });
+            //     }
+            // }
         }
 
         // 전일 대비 / 등락률 표시
@@ -1421,6 +1477,9 @@
 
             changeEl.innerHTML =
                 `${sign}${formatNumber(absDiff)}원 (${sign}${absRate}%)`;
+
+            // 저번 장보다 -7% 낮다면 토스트
+            checkToastByChangeRate(rate);
         }
     }
 </script>
@@ -1473,17 +1532,8 @@
                 console.log('chart api rows =', rows);
                 if (!Array.isArray(rows)) return;
 
-                const candles = rows.map(item => ({
-                    time: Number(item.time),   // 이미 unix seconds
-                    open: Number(item.open),
-                    high: Number(item.high),
-                    low : Number(item.low),
-                    close: Number(item.close),
-                })).filter(c => !isNaN(c.open));
-
-                if (candles.length > 0) {
-                    candleSeries.setData(candles);
-                }
+                // ✅ 여기서 히스토리 세팅 + 최고가 계산까지 같이 함
+                setHistoryCandles(rows);
             })
             .catch(err => console.error('차트 데이터 로딩 오류', err));
 
@@ -1502,9 +1552,10 @@
     function updateChartFromTick(values) {
         if (!candleSeries || !values) return;
 
-        const priceRaw = values['6102'];
-        const price = parseKiwoomAbs(priceRaw);
-        if (price == null) return;
+        const price = parseKiwoomAbs(values['6102']);
+        if (price != null) {
+            checkBuyToastWithHistory(price);
+        }
 
         const barTime = getBarTimeFromValues(values); // 이미 유닉스 초 숫자
 
@@ -1571,6 +1622,168 @@
         // ✅ LightweightCharts 에는 항상 UTC 초 넘기기
         return Math.floor(utcMs / 1000);
     }
+</script>
+<script>
+    const ALERT_PRICE = 574000;
+</script>
+<script>
+    async function initPriceFromRanks() {
+        if (!window.STOCK_CODE) {
+            console.log('[initPriceFromRanks] STOCK_CODE 없음');
+            return;
+        }
+
+        try {
+            const res = await fetch('/BNK/api/ranks', {
+                method: 'GET',
+                cache: 'no-store'
+            });
+            if (!res.ok) {
+                console.error('[initPriceFromRanks] ranks api 실패', res.status);
+                return;
+            }
+
+            const ranks = await res.json();
+            console.log('[initPriceFromRanks] ranks =', ranks);
+
+            if (!Array.isArray(ranks)) {
+                console.error('[initPriceFromRanks] 배열 아님');
+                return;
+            }
+
+            const item = ranks.find(r => r.code === STOCK_CODE);
+            console.log('[initPriceFromRanks] 찾은 item =', item);
+
+            if (!item) {
+                console.log('[initPriceFromRanks] 현재 종목 코드 못 찾음:', STOCK_CODE);
+                return;
+            }
+
+            const nowPrice = Number(item.price);
+            if (isNaN(nowPrice)) {
+                console.log('[initPriceFromRanks] nowPrice NaN', item.price);
+                return;
+            }
+
+            const nowPriceEl = document.getElementById('topCurrentPrice');
+            if (nowPriceEl) {
+                nowPriceEl.textContent = nowPrice.toLocaleString('ko-KR') + '원';
+            }
+
+            const changeEl = document.getElementById('topChangeInfo');
+            if (changeEl && item.changeRate != null) {
+                const rate = Number(item.changeRate);
+                const sign = rate > 0 ? '+' : (rate < 0 ? '-' : '');
+                const absRate = Math.abs(rate).toFixed(2);
+
+                let color = '#555555';
+                if (rate > 0) color = '#d60000';
+                else if (rate < 0) color = '#0051c7';
+                changeEl.style.color = color;
+
+                changeEl.innerHTML = `${sign}${absRate}%`;
+
+                // 🔥 랭킹 API 기준 -7% 체크
+                checkToastByChangeRate(rate);
+            }
+
+            console.log('[initPriceFromRanks] nowPrice =', nowPrice, ', ALERT_PRICE =', ALERT_PRICE, ', priceToastShown =', window.priceToastShown);
+
+            // if (!window.priceToastShown && typeof ALERT_PRICE !== 'undefined') {
+            //     if (nowPrice <= ALERT_PRICE) {
+            //         window.priceToastShown = true;
+            //         console.log('[initPriceFromRanks] 토스트 띄움!');
+            //         showPriceAlertToast();
+            //     } else {
+            //         console.log('[initPriceFromRanks] 조건 미충족, 토스트 안 띄움');
+            //     }
+            // }
+
+        } catch (e) {
+            console.error('initPriceFromRanks 오류:', e);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        initPriceFromRanks();
+    });
+
+</script>
+<script>
+    // 전역
+    let toastAlreadyShown = false;
+    let histMaxPrice = null;
+
+    // 1) 300개 히스토리 세팅할 때
+    function setHistoryCandles(rows) {
+        const candles = rows.map(item => ({
+            time: Number(item.time),
+            open: Number(item.open),
+            high: Number(item.high),
+            low : Number(item.low),
+            close: Number(item.close),
+        })).filter(c => !isNaN(c.open));
+
+        candleSeries.setData(candles);
+
+        // 🔹 최근 300개 중 최고가 저장
+        histMaxPrice = Math.max(...candles.map(c => c.close));
+    }
+
+    // 2) 실시간 틱 들어올 때 (updateChartFromTick 안/밖)
+    function checkBuyToastWithHistory(currentPrice) {
+        if (!histMaxPrice || toastAlreadyShown) return;
+
+        const difference = histMaxPrice - currentPrice;   // 얼마 빠졌는지(원)
+        const dropRate   = (difference / histMaxPrice) * 100; // 몇 % 빠졌는지
+
+        const THRESHOLD = 10; // 10% 이상 빠졌을 때
+
+        // ⚠️ 조건만 만족하면 딱 한 번만 토스트
+        if (dropRate >= THRESHOLD) {
+            toastAlreadyShown = true;
+
+            showPriceAlertToast({
+                dropRate,
+                difference,
+                histMaxPrice,
+                currentPrice
+            });
+        }
+    }
+
+</script>
+<script>
+    // 전일 대비 등락률을 기준으로 토스트 체크 (-7% 이하)
+    function checkToastByChangeRate(rate) {
+        if (toastAlreadyShown) return;           // 이미 한 번 뜬 뒤면 패스
+        if (typeof rate !== 'number' || isNaN(rate)) return;
+
+        // -7% 이하(즉, 7% 이상 하락)면 토스트
+        if (rate <= -7) {
+            toastAlreadyShown = true;
+
+            const toast = document.getElementById('orderToast');
+            const text  = document.getElementById('orderToastText');
+            if (!toast || !text) return;
+
+            const name    = window.STOCK_NAME || '';
+            const absRate = Math.abs(rate).toFixed(2);
+
+            // 기존 스타일 그대로 사용
+            text.innerHTML = `지금이 ${name} 매수 기회에요
+            <br><span style="font-size:12px;opacity:0.8;">
+            지난 정규장보다 <b>${absRate}%</b> 하락
+         </span>`;
+
+            toast.classList.add('show');
+            clearTimeout(window._orderToastTimer);
+            window._orderToastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 1300);
+        }
+    }
+
 </script>
 </body>
 </html>

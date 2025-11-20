@@ -772,7 +772,7 @@
           <tr>
             <td>${start + index + 1}</td>
             <td>${doc.doctitle}</td>
-            <td>${doc.docupdate}</td>
+            <td>${doc.docupdate.split("T")[0]}</td>
             <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
           </tr>`;
                     tbody.insertAdjacentHTML("beforeend", row);

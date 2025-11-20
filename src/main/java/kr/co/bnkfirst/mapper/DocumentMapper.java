@@ -133,27 +133,31 @@ public interface DocumentMapper {
 
     // 🔥 관리자 등록 (INSERT)
     @Insert("""
-        INSERT INTO DOCUMENT (
-            DOCGROUP,
-            DOCTYPE,
-            DOCTITLE,
-            DOCCONTENT,
-            DOCANSWER,
-            DOCFILE,
-            MID,
-            DOCUPDATE
-        ) VALUES (
-            #{docgroup},
-            #{doctype},
-            #{doctitle},
-            #{doccontent},
-            #{docanswer},
-            #{docfile},
-            #{mid},
-            SYSDATE
-        )
-        """)
+    INSERT INTO DOCUMENT (
+        DOCID,
+        DOCGROUP,
+        DOCTYPE,
+        DOCTITLE,
+        DOCCONTENT,
+        DOCANSWER,
+        DOCFILE,
+        MID,
+        DOCUPDATE
+    ) VALUES (
+        DOCUMENT_SEQ.NEXTVAL,   -- ★ PK 자동생성
+        #{docgroup},
+        #{doctype},
+        #{doctitle},
+        #{doccontent},
+        #{docanswer},
+        #{docfile},
+        #{mid},
+        SYSDATE
+    )
+    """)
     int insertAdminDocument(DocumentDTO dto);
+
+
 
     // 🔥 관리자 수정 (UPDATE)
     @Update("""
