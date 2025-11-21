@@ -88,7 +88,8 @@ public class SecurityConfig {
                         "/stock/**",
                         "/tologo/**",
                         "/mypage/**",
-                        "/ws/**"
+                        "/ws/**",
+                        "/retirement-renew/**"
                 ).permitAll()
 
                 .requestMatchers("/admin/**").hasRole("ADMIN")
