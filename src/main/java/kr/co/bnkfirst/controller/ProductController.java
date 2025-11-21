@@ -71,21 +71,35 @@ public class ProductController {
     }
 
     @GetMapping("/product/insertInfo")
-    public String insertInfoPage() {
+    public String insertInfoPage(Model model) {
+        // 임시 아이디 : 로그인 구현 후 삭제
+        String mid = "a123";
+        boolean isExist = slfcertService.countSlfcertByMid(mid);
+        model.addAttribute("mid", mid);
+        model.addAttribute("hasInfo", isExist ? "true" : "false");
         return "product/product_insert_info";
     }
 
-    @PostMapping("/product/slfcert")
+    @PostMapping("/api/slfcert")
     public ResponseEntity<SlfcertDTO> slfcertForm(SlfcertDTO slfcertDTO) {
         log.info("slfcert {}", slfcertDTO);
         // 로그인 기능 구현 전까지 임시 데이터 주입
         String cusid = "a123";
         slfcertDTO.setCusid(cusid);
-        boolean isSaved = slfcertService.saveSlfcert(slfcertDTO);
-        if(isSaved) {
+        SlfcertDTO saved = slfcertService.saveSlfcert(slfcertDTO);
+        if(saved == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else if (saved.getCusid().equals(cusid)) {
             return ResponseEntity.ok(slfcertDTO);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Bad Request : 400
+    }
+
+    @GetMapping("/api/slfcert/{mid}")
+    public ResponseEntity<Void> chkSlfcertExist(@PathVariable String mid) {
+        // 로그인 기능 구현 전까지 임시 데이터 주입
+        boolean exists = slfcertService.countSlfcertByMid(mid);
+        return exists ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @GetMapping("/product/subCmpl/list")

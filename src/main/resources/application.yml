@@ -39,17 +39,41 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update            # 로컬 개발은 편하게 update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     open-in-view: false
     properties:
       hibernate.format_sql: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            required: true
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
+
 logging:
   level:
-    org.hibernate.SQL: debug
+    org.hibernate.SQL: info
+    org.hibernate.orm.jdbc.bind: trace
     org.mybatis: info
 solapi:
-  enabled: false           # 로컬에서 실제 문자 테스트할 거면 true
+  enabled: true           # 로컬에서 실제 문자 테스트할 거면 true
   # api.key/secret/number는 환경변수에서 주입 (없으면 빈 문자열)
+  api:
+    key: ${SOLAPI_API_KEY:}
+    secret: ${SOLAPI_API_SECRET:}
+    number: ${SOLAPI_NUMBER:}
+  mock: false # 통신사 인증 작동시 false로 하면 됨
 
 # ===== prod (운영) =====
 ---
@@ -58,12 +82,14 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:oracle:thin:@//15.165.33.61:1522/XEPDB1   # Service name 방식
+    url: jdbc:oracle:thin:@//3.39.247.70:1522/XEPDB1   # Service name 방식
     username: BNK
     password: 1234         # 환경변수로 주입
   jpa:
     hibernate:
       ddl-auto: none              # ★ 스키마 올리기 전엔 none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     open-in-view: false
     properties:
       hibernate.format_sql: true
@@ -107,7 +133,7 @@ spring:
     activate:
       on-profile: test
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=Oracle;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    url: jdbc:h2:mem:testdb;MODE=Oracle;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=true
     driver-class-name: org.h2.Driver
     username: sa
     password:

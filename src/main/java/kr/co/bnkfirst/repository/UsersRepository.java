@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Integer> {
 
-    // Optional<Users> findBymid(String mid); 암호화 전
+    Optional<Users> findByMid(String mid);
 
 }
