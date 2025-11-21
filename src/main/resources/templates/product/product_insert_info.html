@@ -15,7 +15,7 @@
 <header>
     <div id="header" th:replace="~{layouts/header.html}"></div>
 </header>
-<main id="wizard" th:attr="data-has-info=${hasInsertInfo}">
+<main id="wizard" th:attr="data-mid=${mid}">
     <!--    <main id="wizard" th:attr="data-has-info=true">-->
     <!-- 1) 스텝퍼 -->
     <ol class="stepper" id="wizardSteps" aria-label="신청 진행 단계">
@@ -135,7 +135,7 @@
                         <div class="form-group">
                             <label for="phone">휴대전화번호<span class="req">*</span>
                                 <span id="phone-comment" class="warn-comment"></span></label>
-                            <input id="phone" name="phone" type="tel" placeholder="기호를 제외한 숫자만 적어주세요.">
+                            <input id="phone" name="phone" type="tel" placeholder="'-'를 포함하여 적어주세요. 예) 010-1111-1111">
                         </div>
 
                         <div class="form-group full">

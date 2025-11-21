@@ -1,3 +1,8 @@
+/*
+    날짜 : 2025.11.20.
+    이름 : 강민철
+    내용 : product_insert_info.html JS 작성
+ */
 document.addEventListener('DOMContentLoaded', function () {
     /*======== 스탭퍼 스크립트 ========*/
     let currentStep = 1;                 // 1~5
@@ -6,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* 유효성 검사 정규표현식 */
     const reName = /^[가-힣]{2,10}$/;
-    const reHp = /^01(?:0|1|[6-9])(?:\d{4})\d{4}$/;
+    const reHp = /^01(?:0|1|[6-9])-(?:\d{4})-\d{4}$/;
 
     const pages = [...document.querySelectorAll('.step-page')];
     const steps = [...document.querySelectorAll('#wizardSteps .step')];
@@ -44,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     if (input.value.trim() === "") {
                         input.focus();
-                        span.innerText = comment;
+                        span.innerText = comment1;
                         checkValid[0] = false;
                         if (checkValid[1] === null)
                             checkValid[1] = input;
@@ -68,9 +73,11 @@ document.addEventListener('DOMContentLoaded', function () {
             checkNGo(phone, '전화번호를 입력해주세요.', 'phone-comment', reHp, '전화번호가 유효하지 않습니다.');
             checkNGo([zipcd, addr1], '우편번호와 주소를 입력해주세요.', 'addr-comment');
             if (checkValid[0])
-                return true;
-            else
+                submitSlfcert();
+            else {
                 checkValid[1].focus();
+                return false;
+            }
         },
         2() {
             // 예: 모든 약관 체크 확인
@@ -90,6 +97,21 @@ document.addEventListener('DOMContentLoaded', function () {
             return true;
         } // 제출 단계라면 서버 전송 등 처리
     };
+
+    /* ============== step1 본인확인서 존재 여부 확인 ============== */
+    (async function chkFATCAExist() {
+        const wizard = document.getElementById('wizard');
+        const mid = wizard.dataset.mid;
+        const res = await fetch(`/BNK/api/slfcert/${mid}`, {method: 'HEAD'});
+        if (res.ok) {
+            wizard.setAttribute('data-has-info', 'true');
+            showStep(2)
+        }
+        else {
+            wizard.setAttribute('data-has-info', 'false');
+            showStep(1);
+        }
+    })();
 
     /* ============== step1 유효성 검사 ============== */
     const form1 = document.getElementById('customerForm');
@@ -170,30 +192,41 @@ document.addEventListener('DOMContentLoaded', function () {
             window.location.href = "/BNK/product/subCmpl/list";
             return;
         }
-        // 본인확인서 미등록시 step1에서 제출 동작
+
+        showStep(currentStep + 1);
+    });
+
+    // 본인확인서 제출 함수
+    function submitSlfcert() {
         if (!getHasInfo() && currentStep === 1) {
             // 서버 제출 동작(fetch)
             const fd = new FormData(form1);
-            fetch('/BNK/product/slfcert', {
+            fd.set('krres', form1.krres.checked ? 'Y' : 'N');
+            fd.set('others', form1.others.checked ? 'Y' : 'N');
+            fd.set('ftype', form1.natcd.value === 'US' ? 'W9' : 'W8');
+            fd.set('sts', 'VALID');
+            fetch('/BNK/api/slfcert', {
                 method: 'POST',
                 body: fd
             }).then(res => {
                 if (res.ok)
                     return res.json();
+                else if (res.status === 204)
+                    return null;
                 else
                     throw new Error(`${res.status} ${res.statusText}`);
-            })
-                .then(data => {
-                    console.log(data);
-                    alert('본인확인서(FATCA/CRS)가 등록되었습니다!');
-                    root.dataset.hasInfo = 'true';
-                }).catch(e => {
-                    console.error(e.message);
-                    alert('등록 중 오류가 발생했습니다.');
-                });
+            }).then(data => {
+                console.log(data);
+                alert('본인확인서(FATCA/CRS)가 등록되었습니다!');
+                root.dataset.hasInfo = 'true';
+                return true;
+            }).catch(e => {
+                console.error(e.message);
+                alert('등록 중 오류가 발생했습니다.\n' + e.message);
+                return false;
+            });
         }
-        showStep(currentStep + 1);
-    });
+    }
 
     // 취소: 모든 단계에서 항상 동작
     document.getElementById('cancelBtn').addEventListener('click', () => {
@@ -236,13 +269,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return false;
     }
-
-    // 페이지 진입 시 화면 : 본인확인서가 존재하면 page2부터
-    (function () {
-        showStep(1);
-        if (getHasInfo()) showStep(2);
-    })();
-
 
     /*============== 약관 및 상품설명서 받기 스크립트 ================*/
     const radios = document.querySelectorAll('input[name="receive"]');

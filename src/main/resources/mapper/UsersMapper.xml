@@ -5,7 +5,7 @@
 
 <mapper namespace="kr.co.bnkfirst.mapper.UsersMapper">
     <!-- 로그인(main) -->
-    <select id="findUserById" parameterType="string" resultType="kr.co.bnkfirst.dto.UsersDTO">
+    <select id="findByMid" parameterType="string" resultType="kr.co.bnkfirst.dto.UsersDTO">
         SELECT
             MID     AS mid,
             MPW     AS mpw,

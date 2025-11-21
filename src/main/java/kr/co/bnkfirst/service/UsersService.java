@@ -1,7 +1,9 @@
 package kr.co.bnkfirst.service;
 
 import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.entity.Users;
 import kr.co.bnkfirst.mapper.UsersMapper;
+import kr.co.bnkfirst.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -15,12 +17,13 @@ public class UsersService {
 
     private final UsersMapper usersMapper;
     private final PasswordEncoder passwordEncoder; // 비밀번호 암호화기 주입
+    private final UsersRepository usersRepository;
 
     // 로그인
     public UsersDTO login(String mId, String mPw) {
         log.info("Trying to login user: {}", mId);
 
-        UsersDTO user = usersMapper.findUserById(mId);
+        UsersDTO user = usersMapper.findByMid(mId);
         if (user == null) {
             log.warn("No user found for ID: {}", mId);
             return null;
@@ -69,7 +72,7 @@ public class UsersService {
 
     // 가입 후 사용자 다시 조회 (MDATE 가져오기)
     public UsersDTO findByMid(String mid) {
-        return usersMapper.findUserById(mid);  // mapper 이미 있으므로 그대로 사용
+        return usersMapper.findByMid(mid);  // mapper 이미 있으므로 그대로 사용
     }
 
     // 아이디 찾기(findid)
@@ -94,7 +97,6 @@ public class UsersService {
 
         return tempPw;
     }
-
     public String resetPasswordByEmail(String mid, String email) {
 
         UsersDTO user = usersMapper.findByMidAndEmail(mid, email);
@@ -106,5 +108,19 @@ public class UsersService {
         usersMapper.updatePassword(mid, hashed);
 
         return tempPw;
+    }
+
+    // 금융인증서
+    public Users save(UsersDTO dto) {
+
+        Users entity = dto.toEntity();
+
+        return usersRepository.save(entity);
+    }
+
+    public Users findById(int uid){
+
+        return usersRepository.findById(uid)
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원"));
     }
 }

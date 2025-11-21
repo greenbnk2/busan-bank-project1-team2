@@ -27,6 +27,8 @@ public class QUsers extends EntityPathBase<Users> {
 
     public final StringPath mcarrier = createString("mcarrier");
 
+    public final StringPath mci = createString("mci");
+
     public final StringPath mcond = createString("mcond");
 
     public final StringPath mcontent = createString("mcontent");
