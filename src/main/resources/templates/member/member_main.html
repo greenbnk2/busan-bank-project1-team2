@@ -19,8 +19,8 @@
       <!-- 감싸기 -->
       <div class="form-card" style="height: 600px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
 
-      <form th:action="@{/member/main}" th:object="${userDTO}" method="post">
-        <!-- 로그인 테이블 -->
+      <form th:action="@{/member/login}" method="post">
+          <!-- 로그인 테이블 -->
         <table class="login-table">
           <tr style="font-size: 25px;">
             <td>로그인</td>
@@ -29,11 +29,11 @@
             <td style="padding: 0 0 9px;">BNK 부산은행은 고객님의 정보를 소중히 보호합니다</td>
           </tr>
           <tr class="field-row">
-            <td class="field-label">아이디</td>            
+            <td class="field-label">아이디</td>
           </tr>
           <tr class="field-row">
             <td style="margin-bottom: 9px;">
-                <input type="text" th:field="*{mid}" placeholder="아이디를 입력하세요" autocomplete="username">
+                <input type="text" name="mid" placeholder="아이디를 입력하세요" autocomplete="username">
             </td>
           </tr>
           <tr class="field-row">
@@ -41,7 +41,7 @@
           </tr>
           <tr class="field-row">
             <td>
-                <input type="password" th:field="*{mpw}" placeholder="비밀번호를 입력하세요" autocomplete="current-password">
+                <input type="password" name="mpw" placeholder="비밀번호를 입력하세요" autocomplete="current-password">
             </td>
           </tr>
 
@@ -127,7 +127,7 @@
     box-sizing: border-box;
     padding: 0 12px;
     outline: none;
-  }  
+  }
   .sep-dot{ margin: 0 8px; }
 
   .notice {

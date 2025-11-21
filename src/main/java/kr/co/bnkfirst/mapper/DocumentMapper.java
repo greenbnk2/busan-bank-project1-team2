@@ -144,13 +144,13 @@ public interface DocumentMapper {
         MID,
         DOCUPDATE
     ) VALUES (
-        DOCUMENT_SEQ.NEXTVAL,   -- ★ PK 자동생성
+        DOCUMENT_SEQ.NEXTVAL,
         #{docgroup},
         #{doctype},
         #{doctitle},
         #{doccontent},
-        #{docanswer},
-        #{docfile},
+        #{docanswer, jdbcType=VARCHAR},
+        #{docfile, jdbcType=VARCHAR},
         #{mid},
         SYSDATE
     )
@@ -159,18 +159,20 @@ public interface DocumentMapper {
 
 
 
+
     // 🔥 관리자 수정 (UPDATE)
     @Update("""
-        UPDATE DOCUMENT
-        SET
-            DOCTITLE   = #{doctitle},
-            DOCCONTENT = #{doccontent},
-            DOCANSWER  = #{docanswer},
-            DOCFILE    = #{docfile},
-            DOCUPDATE  = SYSDATE
-        WHERE DOCID = #{docid}
-        """)
+    UPDATE DOCUMENT
+    SET
+        DOCTITLE   = #{doctitle},
+        DOCCONTENT = #{doccontent},
+        DOCANSWER  = #{docanswer, jdbcType=VARCHAR},
+        DOCFILE    = #{docfile, jdbcType=VARCHAR},
+        DOCUPDATE  = SYSDATE
+    WHERE DOCID = #{docid}
+    """)
     int updateAdminDocument(DocumentDTO dto);
+
 
     // 삭제
     @Delete("DELETE FROM DOCUMENT WHERE DOCID = #{docid}")

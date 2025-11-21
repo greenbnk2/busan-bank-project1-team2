@@ -13,11 +13,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "users")
+@Table(name = "USERS")
 public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"uId\"")
     private int uid;
     private String mid;
     private String mpw;
@@ -41,6 +42,8 @@ public class Users {
     private String mtitle;
     private String mcontent;
 
+    private String mci;
+
     public UsersDTO toDTO(){
         return UsersDTO.builder()
                 .uid(uid)
@@ -62,6 +65,7 @@ public class Users {
                 .mlimit(mlimit)
                 .mtitle(mtitle)
                 .mcontent(mcontent)
+                .mci(mci)
                 .build();
     }
 }
