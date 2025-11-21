@@ -820,6 +820,7 @@ const I18N = {
 };
 // === 헤더 i18n 추가 ===
 const I18N_HEADER = {
+    header_branch_search:        { ko:'영업점 찾기',         en:'Find a Branch',                  zh:'查找营业网点',              ja:'営業店検索' },
   /* 1차 GNB */
   nav_deposit:      { ko:'예금',     en:'Deposit',         zh:'存款',        ja:'預金' },
   nav_fund:         { ko:'펀드',     en:'Funds',           zh:'基金',        ja:'ファンド' },
@@ -949,7 +950,6 @@ const I18N_FOOTER = {
 
   /* 고객지원 링크 */
   footer_cs_contact:     { ko:'문의하기',   en:'Contact Us',    zh:'联系我们',     ja:'お問い合わせ' },
-  footer_cs_branch:      { ko:'지점찾기',   en:'Find a Branch', zh:'查找网点',     ja:'支店検索' },
   footer_cs_faq:         { ko:'FAQ',       en:'FAQ',           zh:'常见问题',     ja:'FAQ' },
 
   /* 서비스 링크 */
@@ -978,6 +978,66 @@ const I18N_FOOTER = {
                            ja:'釜山広域市 南区 凡一路30（凡一洞）| 代表: 1588-6200' }
 };
 Object.assign(I18N, I18N_FOOTER);
+// === Header extra i18n: 헤더에서 새로 쓰인 한글 텍스트들 ===
+const I18N_HEADER_EXTRA = {
+    /* 상단 1차 메뉴 */
+    header_nav_stock:         { ko:'증권',             en:'Securities',                zh:'证券',                 ja:'証券' },
+    header_nav_product:       { ko:'상품',             en:'Products',                  zh:'产品',                 ja:'商品' },
+    header_nav_forms_notice:  { ko:'서식/공지사항',    en:'Forms / Notices',           zh:'表格/公告',            ja:'書式/お知らせ' },
+    header_nav_retire_guide:  { ko:'퇴직연금 알아보기', en:'Learn about Retirement Pension', zh:'了解退休养老金',   ja:'退職年金について' },
+    header_nav_cs:            { ko:'고객센터',         en:'Customer Center',           zh:'客服中心',             ja:'カスタマーセンター' },
+    header_nav_bank_intro:    { ko:'은행소개',         en:'About the Bank',            zh:'银行介绍',             ja:'銀行紹介' },
+
+    /* 상품 > 카테고리별 상품 */
+    header_prod_by_cat:       { ko:'카테고리별 상품',   en:'Products by Category',      zh:'按类别分类的产品',     ja:'カテゴリ別商品' },
+    header_prod_deposit:      { ko:'예금상품',         en:'Deposit Products',          zh:'存款产品',             ja:'預金商品' },
+    header_prod_saving:       { ko:'적금상품',         en:'Installment Savings',       zh:'积蓄产品',             ja:'積立商品' },
+    header_prod_fund:         { ko:'펀드상품',         en:'Fund Products',             zh:'基金产品',             ja:'ファンド商品' },
+
+    /* 서식/공지사항 > 퇴직연금 자료실 */
+    header_retroom_title:        { ko:'퇴직연금 자료실',        en:'Retirement Pension Resources',        zh:'退休养老金资料室',          ja:'退職年金資料室' },
+    header_retroom_form_by_cat:  { ko:'카테고리별서식',         en:'Forms by Category',                   zh:'按类别分类的表格',         ja:'カテゴリ別書式' },
+    header_retroom_data:         { ko:'자료실',                 en:'Resources',                           zh:'资料室',                   ja:'資料室' },
+    header_retroom_smallfund:    { ko:'소규모펀드등공시',       en:'Small-Scale Fund Disclosures',        zh:'小规模基金等公告',         ja:'小規模ファンド等の公示' },
+    header_retroom_notice:       { ko:'공지사항',               en:'Notices',                             zh:'公告',                     ja:'お知らせ' },
+
+    /* 서식/공지사항 > 퇴직연금사업자공시 */
+    header_retprovider_title:    { ko:'퇴직연금사업자공시',     en:'Retirement Plan Provider Disclosure', zh:'退休金经营机构公示',       ja:'退職年金事業者公示' },
+    header_retprovider_balance:  { ko:'운용금액 및 운용수익률', en:'Assets under Management & Returns',   zh:'运用金额及运用收益率',     ja:'運用残高および収益率' },
+    header_retprovider_contract: { ko:'퇴직연금 계약서',        en:'Retirement Pension Contract',         zh:'退休养老金合同',           ja:'退職年金契約書' },
+    header_retprovider_principal:{ ko:'원리금 보장 상품 현황',  en:'Principal-Guaranteed Products',       zh:'本金及利息保障产品现况',   ja:'元本保証商品の現況' },
+    header_retprovider_fee:      { ko:'수수료',                 en:'Fees',                                zh:'手续费',                   ja:'手数料' },
+
+    /* 고객센터 > 고객상담/금융소비자보호/이용안내 */
+    header_cs_consult:           { ko:'고객상담',               en:'Customer Consultation',               zh:'客户咨询',                 ja:'お客さま相談' },
+    header_cs_required_docs:     { ko:'필요서류안내',           en:'Required Documents',                  zh:'所需资料指南',             ja:'必要書類案内' },
+    header_cs_qa:                { ko:'Q&A',                    en:'Q&A',                                 zh:'问与答',                   ja:'Q&A' },
+    // FAQ, 영업점 찾기 등은 이미 다른 I18N에 있으므로 재사용됨
+
+    header_cs_consumer_protect:  { ko:'금융소비자보호',         en:'Financial Consumer Protection',       zh:'金融消费者保护',           ja:'金融消費者保護' },
+    header_cs_charter:           { ko:'금융소비자보호헌장',     en:'Financial Consumer Protection Charter', zh:'金融消费者保护宪章',    ja:'金融消費者保護憲章' },
+    header_cs_complaint_flow:    { ko:'민원접수 및 처리프로세스', en:'Complaint Handling Process',         zh:'投诉受理及处理流程',       ja:'苦情受付・処理プロセス' },
+    header_cs_must_info:         { ko:'소비자보호필수안내사항', en:'Essential Consumer Protection Info',  zh:'消费者保护必备指南',       ja:'消費者保護必須案内事項' },
+    header_cs_rights:            { ko:'금융소비자권리행사안내', en:'How to Exercise Your Rights',         zh:'金融消费者权利行使指南',   ja:'金融消費者の権利行使案内' },
+
+    header_cs_howto_use:         { ko:'이용안내',               en:'How to Use',                          zh:'使用指南',                 ja:'利用案内' },
+    header_cs_join_process:      { ko:'가입절차',               en:'Sign-up Process',                     zh:'开户/加入流程',            ja:'加入手続き' },
+    header_cs_pw_guide:          { ko:'비밀번호안내',           en:'Password Guide',                      zh:'密码指南',                 ja:'パスワード案内' },
+    header_cs_service_time:      { ko:'서비스 이용시간',        en:'Service Hours',                       zh:'服务时间',                 ja:'サービス利用時間' },
+    header_cs_fee_info:          { ko:'수수료안내',             en:'Fee Information',                     zh:'手续费说明',               ja:'手数料案内' },
+
+    /* 은행소개 */
+    header_bankinfo_title:       { ko:'은행안내',               en:'Bank Information',                    zh:'银行指南',                 ja:'銀行案内' },
+    header_bankinfo_guide:       { ko:'은행안내',               en:'Bank Information',                    zh:'银行指南',                 ja:'銀行案内' },
+    header_bankinfo_story:       { ko:'BNK부산은행스토리',      en:'BNK Busan Bank Story',                zh:'BNK釜山银行故事',         ja:'BNK釜山銀行ストーリー' },
+    header_bankinfo_invest:      { ko:'투자자정보',             en:'Investor Relations',                  zh:'投资者信息',               ja:'投資家情報' },
+
+    /* 세션 영역 버튼 */
+    header_session_extend:       { ko:'연장',                   en:'Extend',                              zh:'延长',                     ja:'延長' },
+};
+// 기존 I18N에 병합
+Object.assign(I18N, I18N_HEADER_EXTRA);
+
 /** 2) 역매핑(한국어/영어 문자열 → 의미 키) */
 const valueToKey = (() => {
   const m = {};

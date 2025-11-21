@@ -121,28 +121,83 @@ public class AdminController {
     public String csList(
             @RequestParam(defaultValue = "cs") String group,   // cs / form / data
             @RequestParam(defaultValue = "faq") String type,   // faq / doc / qna / ....
+            @RequestParam(required = false) String keyword,    // 🔍 검색어
+            @RequestParam(required = false, defaultValue = "all") String condition, // 상태
             Model model
     ) {
         log.info("admin cs list group={}, type={}", group, type);
+
+        boolean hasKeyword = (keyword != null && !keyword.trim().isEmpty());
 
         // 기본 값: 빈 리스트
         List<DocumentDTO> docList = List.of();
         List<BranchDTO>   branchList = List.of();
 
+        // =======================
+        // 1) 영업점(찾기)인 경우
+        // =======================
         if ("cs".equals(group) && "branch".equals(type)) {
-            // 영업점은 BRANCH 테이블에서 전체 조회
-            branchList = branchService.getAllBranches();
+            if (hasKeyword) {
+                // 주소/지점명 등에서 검색 (이미 BranchService에 있음)
+                branchList = branchService.searchBranches(keyword);
+            } else {
+                branchList = branchService.getAllBranches();
+            }
+
+            // =======================
+            // 2) 나머지는 DOCUMENT
+            // =======================
         } else {
-            // 나머지는 DOCUMENT.DOCTYPE 기준
             String doctype = documentService.resolveDoctype(group, type);
             if (doctype == null) {
                 throw new IllegalArgumentException("지원하지 않는 group/type: " + group + "/" + type);
             }
-            docList = documentService.getAdminDocuments(doctype); // 전체 로드 → JS에서 페이지네이션
+
+            // 일단 해당 DOCTYPE 전체 로드 (기존 방식)
+            List<DocumentDTO> all = documentService.getAdminDocuments(doctype);
+
+            // 🔍 2-1) 제목/내용 키워드 필터
+            if (hasKeyword) {
+                String kw = keyword.toLowerCase();
+                all = all.stream()
+                        .filter(dto -> {
+                            String title = dto.getDoctitle() != null ? dto.getDoctitle().toLowerCase() : "";
+                            String content = dto.getDoccontent() != null ? dto.getDoccontent().toLowerCase() : "";
+                            return title.contains(kw) || content.contains(kw);
+                        })
+                        .toList();
+            }
+
+            // 🔍 2-2) 상태(condition) 필터
+            //  - complete(답변): 답변 있음
+            //  - wait(대기) / accept(접수): 답변 없음 으로 일단 처리
+            if (condition != null && !"all".equals(condition)) {
+                all = all.stream()
+                        .filter(dto -> {
+                            String answer = dto.getDocanswer();
+                            boolean hasAnswer = (answer != null && !answer.isBlank());
+
+                            switch (condition) {
+                                case "complete": // 답변
+                                    return hasAnswer;
+                                case "wait":     // 대기
+                                case "accept":   // 접수 (별도 컬럼 없으니 일단 '답변 없음'으로)
+                                    return !hasAnswer;
+                                default:
+                                    return true;
+                            }
+                        })
+                        .toList();
+            }
+
+            docList = all;
         }
 
+        // 뷰로 전달
         model.addAttribute("group", group);
         model.addAttribute("type", type);
+        model.addAttribute("keyword", keyword);     // 🔁 검색어 유지용
+        model.addAttribute("condition", condition); // 🔁 상태 유지용
         model.addAttribute("docList", docList);
         model.addAttribute("branchList", branchList);
 
@@ -320,6 +375,53 @@ public class AdminController {
         log.info("admin cs DEBUG group={}, type={}, page={}", group, type, pageRequestDTO);
 
         return documentService.getAdminDocumentPage(group, type, pageRequestDTO);
+    }
+
+    // ===== Q&A 답변 작성 화면 열기 =====
+    @GetMapping("/admin/cs/qna/answer")
+    public String showQnaAnswerForm(
+            @RequestParam("docid") int docid,
+            @RequestParam("group") String group,
+            @RequestParam("type") String type,
+            Model model
+    ) {
+        DocumentDTO qna = documentService.getDocumentById(docid);
+        if (qna == null) {
+            return "redirect:/admin/cs?group=" + group + "&type=" + type;
+        }
+
+        model.addAttribute("qna", qna);
+        model.addAttribute("group", group);
+        model.addAttribute("type", type);
+
+        // templates/admin/cs_qna_answer.html
+        return "admin/cs_qna_answer";
+    }
+
+
+    // ===== Q&A 답변 등록 처리 (POST) =====
+    @PostMapping("/admin/cs/qna/answer")
+    public String submitQnaAnswer(
+            @RequestParam("docid") int docid,
+            @RequestParam("group") String group,
+            @RequestParam("type") String type,
+            @RequestParam("answerContent") String answerContent,
+            RedirectAttributes rttr
+    ) {
+        DocumentDTO dto = documentService.getDocumentById(docid);
+        if (dto == null) {
+            rttr.addFlashAttribute("error", "존재하지 않는 문의입니다.");
+            return "redirect:/admin/cs?group=" + group + "&type=" + type;
+        }
+
+        // ⭐ DOCANSWER 컬럼에 답변 내용 저장
+        dto.setDocanswer(answerContent);
+
+        // 기존 관리자 수정 로직 재사용 (UPDATE)
+        documentService.updateAdminDocument(dto);
+
+        rttr.addFlashAttribute("msg", "답변이 등록되었습니다.");
+        return "redirect:/admin/cs?group=" + group + "&type=" + type;
     }
 
 }

@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface UsersMapper {
-    UsersDTO findUserById(@Param("mid") String mid);
+    UsersDTO findByMid(@Param("mid") String mid);
 
     // 정보입력(info) insert
     int insertUser(UsersDTO user);

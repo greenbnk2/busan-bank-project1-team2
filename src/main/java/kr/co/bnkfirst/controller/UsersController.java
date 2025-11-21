@@ -2,7 +2,9 @@ package kr.co.bnkfirst.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import kr.co.bnkfirst.dto.FinanceCertResult;
 import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.service.FinanceCertService;
 import kr.co.bnkfirst.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,56 +22,27 @@ import java.util.Map;
 @RequestMapping("/member")
 public class UsersController {
 
+    /*
+        날짜 : 2025/11/20
+        이름 : 이준우
+        내용 : 로그인 security 방식으로 변경
+     */
+
     private final UsersService usersService;
+    private final FinanceCertService financeCertService;
 
-    // 로그인 처리
-    @PostMapping("/main")
-    public String login(@ModelAttribute UsersDTO userDTO, HttpSession session) {
-        UsersDTO foundUser = usersService.login(userDTO.getMid(), userDTO.getMpw());
-
-        if (foundUser == null) {
-            log.warn("로그인 실패 - 아이디 또는 비밀번호 오류");
-            return "redirect:/member/main";
-        }
-
-        // 로그인 성공 시 세션 저장 + 20분 유지
-        session.setAttribute("loginUser", foundUser);
-        session.setMaxInactiveInterval(1200);
-        session.setAttribute("sessionStart", System.currentTimeMillis());
-
-        log.info("로그인 성공: {}", foundUser.getMid());
-
-        return "redirect:/main/main";
-    }
-
-    // 로그인 메인 페이지
     @GetMapping("/main")
     public String memberMain(Model model, HttpSession session) {
+
         UsersDTO loginUser = (UsersDTO) session.getAttribute("loginUser");
 
-        // 로그인 후 login 쪽에 머무를 수 없도록 설정
         if (loginUser != null) {
             return "redirect:/main/main";
         }
 
-        // 로그인 안 한 경우에만 로그인 화면 보여줌
         model.addAttribute("userDTO", new UsersDTO());
+
         return "member/member_main";
-    }
-
-    // 로그아웃 기능(세션 삭제)
-    @GetMapping("/logout")
-    @ResponseBody
-    public void logout(HttpSession session) {
-        UsersDTO loginUser = (UsersDTO) session.getAttribute("loginUser");
-
-        if (loginUser == null) {
-            log.info("비로그인 상태에서 로그아웃 접근 발생");
-            return;
-        }
-        log.info("로그아웃 성공 : {}", loginUser.getMid());
-
-        session.invalidate();
     }
 
     @GetMapping("/terms")
@@ -272,4 +246,43 @@ public class UsersController {
         return getRemaining(session);
     }
 
+    // 금융인증서 11월19일 추가
+    @PostMapping("/api/finance-cert/start")
+    @ResponseBody
+    public Map<String, String> startFinanceCert(HttpSession session) {
+
+        String txId = UUID.randomUUID().toString();
+        session.setAttribute("FIN_TX_ID", txId);
+
+        String redirectUrl = financeCertService.buildAuthUrl(txId);
+
+        return Map.of("redirectUrl", redirectUrl);
+    }
+
+    @GetMapping("/auth/finance-cert/callback")
+    @ResponseBody
+    public Map<String, Object> financeCertCallback(
+            @RequestParam("tx_id") String txId,
+            @RequestParam("code") String code,
+            HttpSession session
+    ) {
+        String savedTxId = (String) session.getAttribute("FIN_TX_ID");
+        if (savedTxId == null || !savedTxId.equals(txId)) {
+            return Map.of("ok", false, "message", "잘못된 인증 요청입니다.");
+        }
+
+        FinanceCertResult r = financeCertService.fetchResult(txId, code);
+
+        session.setAttribute("FIN_USER", r);
+
+        return Map.of(
+                "ok", true,
+                "name", r.getName(),
+                "birth", r.getBirth(),
+                "gender", r.getGender(),
+                "carrier", r.getCarrier(),
+                "phone", r.getPhone(),
+                "ci", r.getCi()
+        );
+    }
 }

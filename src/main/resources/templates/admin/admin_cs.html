@@ -441,6 +441,53 @@
             background-color: #FDF2F2;
         }
     </style>
+    <style>
+        /* 검색창 안 대분류 필터 탭 영역 */
+        .cs-search-tabs {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .cs-search-tab {
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* 실제 라디오 버튼 숨기기 */
+        .cs-search-tab input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 기본 필터칩 모양 */
+        .cs-search-tab-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 90px;
+            height: 32px;
+            padding: 0 14px;
+            border-radius: 999px;
+            border: 1px solid #E5E7EB;
+            font-size: 13px;
+            color: #374151;
+            background: #F9FAFB;
+            transition: background .12s ease, color .12s ease,
+            border-color .12s ease, box-shadow .12s ease;
+        }
+
+        /* 선택된 필터칩(활성) – 살짝만 강조 */
+        .cs-search-tab--active .cs-search-tab-label {
+            background: #D91A1A;
+            color: #FFFFFF;
+            border-color: #D91A1A;
+            box-shadow: 0 1px 3px rgba(217, 26, 26, 0.25);
+            font-weight: 500;
+        }
+    </style>
+
 </head>
 <body>
   <header>
@@ -473,77 +520,119 @@
       </div>
 
 
-      <div style="margin-top:25px; padding:30px; padding-top: 25px; box-sizing: border-box; background-color: white; width: 100%;  border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
-        <div style="display: flex; gap: 20px; ">
-          <div>
-            <input class="input--ph-gray" placeholder="글 제목 검색" type="text" style="box-sizing: border-box; outline:none; padding-left:15px; font-size: 14px; width: 908px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-          </div>
-          <div style="">
-            <select name="condition" id="" style="box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 100px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-              <option value="all">전체 상태</option>
-              <option value="complete">답변</option>
-              <option value="wait">대기</option>
-              <option value="accept">접수</option>
-            </select>
-          </div>
-          <div style="display: flex; gap: 10px; margin-left: auto;">
-            <div style="margin-top: auto;">
-              <button class="btn-register" style="gap:6px; box-sizing: border-box; width: 90px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
-                <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
-                  <svg  width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_191_162)">
-                    <path d="M13 11.5C13 12.9344 12.5344 14.2594 11.75 15.3344L15.7063 19.2937C16.0969 19.6844 16.0969 20.3188 15.7063 20.7094C15.3156 21.1 14.6812 21.1 14.2906 20.7094L10.3344 16.75C9.25938 17.5375 7.93437 18 6.5 18C2.90937 18 0 15.0906 0 11.5C0 7.90937 2.90937 5 6.5 5C10.0906 5 13 7.90937 13 11.5ZM6.5 16C7.09095 16 7.67611 15.8836 8.22208 15.6575C8.76804 15.4313 9.26412 15.0998 9.68198 14.682C10.0998 14.2641 10.4313 13.768 10.6575 13.2221C10.8836 12.6761 11 12.0909 11 11.5C11 10.9091 10.8836 10.3239 10.6575 9.77792C10.4313 9.23196 10.0998 8.73588 9.68198 8.31802C9.26412 7.90016 8.76804 7.56869 8.22208 7.34254C7.67611 7.1164 7.09095 7 6.5 7C5.90905 7 5.32389 7.1164 4.77792 7.34254C4.23196 7.56869 3.73588 7.90016 3.31802 8.31802C2.90016 8.73588 2.56869 9.23196 2.34254 9.77792C2.1164 10.3239 2 10.9091 2 11.5C2 12.0909 2.1164 12.6761 2.34254 13.2221C2.56869 13.768 2.90016 14.2641 3.31802 14.682C3.73588 15.0998 4.23196 15.4313 4.77792 15.6575C5.32389 15.8836 5.90905 16 6.5 16Z" fill="white"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_191_162">
-                    <path d="M0 5H16V21H0V5Z" fill="white"/>
-                    </clipPath>
-                    </defs>
-                  </svg>
-                  <div>
-                    검색
-                  </div>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+        <!-- 🔍 검색 + 대분류 탭 필터 -->
+        <div style="margin-top:25px; padding:30px; padding-top: 25px; box-sizing: border-box;
+            background-color: white; width: 100%;  border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
 
-      <div style="display: flex; justify-content: center;">
-        <div style="margin-top:50px; padding:30px; padding-top: 25px; box-sizing: border-box; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
-          <div style="display: flex; gap: 20px; display: flex; justify-content: center;">
-            <div style="box-sizing: border-box;">
-              <button id="btn-cs" class="btn-register" style="gap:6px; box-sizing: border-box; width: 130px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
-                <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
-                  <div>
+            <form id="csSearchForm"
+                  th:action="@{/admin/cs}"
+                  method="get"
+                  style="display: flex; gap: 16px; align-items: center; width: 100%;">
+
+                <!-- 실제로 서버에 넘어갈 값들 -->
+                <input type="hidden" id="groupInput" name="group" th:value="${group}">
+                <input type="hidden" id="typeInput"  name="type"  th:value="${type}">
+                <input type="hidden" name="condition" th:value="${condition}">
+
+                <!-- 🔍 검색어 -->
+                <div style="flex:1 1 auto;">
+                    <input class="input--ph-gray"
+                           name="keyword"
+                           th:value="${keyword}"
+                           placeholder="글 제목 검색"
+                           type="text"
+                           style="box-sizing: border-box; outline:none; padding-left:15px;
+                          font-size: 14px; width: 100%; height: 42px;
+                          border:1px solid #D1D5DB; border-radius: 6px;">
+                </div>
+
+                <!-- 🔴 대분류 탭 3개 -->
+                <div class="cs-search-tabs"
+                     style="display:flex; gap:8px; flex-shrink:0;">
+
+                    <!-- 화면용 라디오 (name은 groupTab으로만 사용) -->
+                    <label class="cs-search-tab"
+                           th:classappend="${group}=='cs' ? ' cs-search-tab--active' : ''"
+                           style="position:relative; cursor:pointer;">
+                        <input type="radio" name="groupTab" value="cs"
+                               th:checked="${group}=='cs'"
+                               style="position:absolute; opacity:0; pointer-events:none;">
+                        <span style="display:inline-flex; align-items:center; justify-content:center;
+                             min-width:90px; height:34px; padding:0 14px;
+                             border-radius:999px; border:1px solid #E5E7EB;
+                             font-size:13px; color:#374151; background:#F9FAFB;"
+                              th:styleappend="${group}=='cs' ?
+                        ';background:#D91A1A; color:#fff; border-color:#D91A1A;' : ''">
                     고객센터
-                  </div>
-                </div>
-              </button>
-            </div>
-            <div style="box-sizing: border-box;">
-              <button id="btn-form" class="btn-register" style="gap:6px; box-sizing: border-box; width: 130px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
-                <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
-                  <div>
-                    퇴직연금서식
-                  </div>
-                </div>
-              </button>
-            </div>
-            <div style="box-sizing: border-box;">
-              <button id="btn-data" class="btn-register" style="gap:6px; box-sizing: border-box; width: 130px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
-                <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
-                  <div>
-                    퇴직연금자료
-                  </div>
-                </div>
-              </button>
-            </div>
-          </div>
+                </span>
+                    </label>
 
+                    <label class="cs-search-tab"
+                           th:classappend="${group}=='form' ? ' cs-search-tab--active' : ''"
+                           style="position:relative; cursor:pointer;">
+                        <input type="radio" name="groupTab" value="form"
+                               th:checked="${group}=='form'"
+                               style="position:absolute; opacity:0; pointer-events:none;">
+                        <span style="display:inline-flex; align-items:center; justify-content:center;
+                             min-width:90px; height:34px; padding:0 14px;
+                             border-radius:999px; border:1px solid #E5E7EB;
+                             font-size:13px; color:#374151; background:#F9FAFB;"
+                              th:styleappend="${group}=='form' ?
+                        ';background:#D91A1A; color:#fff; border-color:#D91A1A;' : ''">
+                    퇴직연금서식
+                </span>
+                    </label>
+
+                    <label class="cs-search-tab"
+                           th:classappend="${group}=='data' ? ' cs-search-tab--active' : ''"
+                           style="position:relative; cursor:pointer;">
+                        <input type="radio" name="groupTab" value="data"
+                               th:checked="${group}=='data'"
+                               style="position:absolute; opacity:0; pointer-events:none;">
+                        <span style="display:inline-flex; align-items:center; justify-content:center;
+                             min-width:90px; height:34px; padding:0 14px;
+                             border-radius:999px; border:1px solid #E5E7EB;
+                             font-size:13px; color:#374151; background:#F9FAFB;"
+                              th:styleappend="${group}=='data' ?
+                        ';background:#D91A1A; color:#fff; border-color:#D91A1A;' : ''">
+                    퇴직연금자료
+                </span>
+                    </label>
+                </div>
+
+                <!-- 🔍 검색 버튼 -->
+                <div style="flex-shrink:0;">
+                    <button type="submit"
+                            class="btn-register"
+                            style="gap:6px; box-sizing: border-box; width: 90px; height: 42px;
+                           background-color: #D91A1A; color: white; border:none;
+                           border-radius: 8px; cursor: pointer;">
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
+                            <!-- 아이콘은 그대로 -->
+                            <svg  width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_191_162)">
+                                    <path d="M13 11.5C13 12.9344 12.5344 14.2594 11.75 15.3344L15.7063 19.2937C16.0969 19.6844 16.0969 20.3188 15.7063 20.7094C15.3156 21.1 14.6812 21.1 14.2906 20.7094L10.3344 16.75C9.25938 17.5375 7.93437 18 6.5 18C2.90937 18 0 15.0906 0 11.5C0 7.90937 2.90937 5 6.5 5C10.0906 5 13 7.90937 13 11.5ZM6.5 16C7.09095 16 7.67611 15.8836 8.22208 15.6575C8.76804 15.4313 9.26412 15.0998 9.68198 14.682C10.0998 14.2641 10.4313 13.768 10.6575 13.2221C10.8836 12.6761 11 12.0909 11 11.5C11 10.9091 10.8836 10.3239 10.6575 9.77792C10.4313 9.23196 10.0998 8.73588 9.68198 8.31802C9.26412 7.90016 8.76804 7.56869 8.22208 7.34254C7.67611 7.1164 7.09095 7 6.5 7C5.90905 7 5.32389 7.1164 4.77792 7.34254C4.23196 7.56869 3.73588 7.90016 3.31802 8.31802C2.90016 8.73588 2.56869 9.23196 2.34254 9.77792C2.1164 10.3239 2 10.9091 2 11.5C2 12.0909 2.1164 12.6761 2.34254 13.2221C2.56869 13.768 2.90016 14.2641 3.31802 14.682C3.73588 15.0998 4.23196 15.4313 4.77792 15.6575C5.32389 15.8836 5.90905 16 6.5 16Z" fill="white"/>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_191_162">
+                                        <path d="M0 5H16V21H0V5Z" fill="white"/>
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            <div>검색</div>
+                        </div>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+
+        <div style="display: flex; justify-content: center;">
+        <div style="margin-top:50px; padding:15px; padding-top: 15px; box-sizing: border-box; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
             <!-- 여기부터 하단 소분류 버튼 영역 -->
-            <div style="margin-top: 20px;">
+            <div style="margin-top: 5px;">
                 <!-- 고객센터 하위 버튼 -->
                 <div id="sub-cs" style="display:none; gap:10px;">
                     <button type="button" class="sub-btn" data-key="cs-faq">FAQ</button>
@@ -872,21 +961,37 @@
               }
 
               // === 공통 관리(수정/삭제) 버튼 컬럼 추가 ===
+              // === 관리 버튼 컬럼 (타입별 분기) ===
               const manageTd = document.createElement('td');
               manageTd.style.textAlign = 'center';
-              manageTd.innerHTML = `
-        <button type="button"
-                class="row-action-btn row-edit"
-                data-id="${itemId}">
-            수정
-        </button>
-        <button type="button"
-                class="row-action-btn row-delete"
-                data-id="${itemId}">
-            삭제
-        </button>
+
+              if (type === 'qna') {
+                  // ✅ Q&A : 수정/삭제 대신 "답변하기"만
+                  manageTd.innerHTML = `
+      <button type="button"
+              class="row-action-btn row-answer"
+              data-id="${itemId}">
+          답변하기
+      </button>
     `;
+              } else {
+                  // 그 외 타입(FAQ, 자료실, 영업점 등)은 기존처럼 수정/삭제
+                  manageTd.innerHTML = `
+      <button type="button"
+              class="row-action-btn row-edit"
+              data-id="${itemId}">
+          수정
+      </button>
+      <button type="button"
+              class="row-action-btn row-delete"
+              data-id="${itemId}">
+          삭제
+      </button>
+    `;
+              }
+
               tr.appendChild(manageTd);
+
 
               tbody.appendChild(tr);
           });
@@ -959,21 +1064,20 @@
           const subForm = document.getElementById('sub-form');
           const subData = document.getElementById('sub-data');
 
-          // 1) 현재 group에 맞는 소분류 영역만 보여주기
-          if (group === 'cs')   subCs.style.display   = 'flex';
-          if (group === 'form') subForm.style.display = 'flex';
-          if (group === 'data') subData.style.display = 'flex';
-
-          // 2) 상단 대분류 버튼 클릭 시 → 첫 기본 타입으로 이동
-          document.getElementById('btn-cs').addEventListener('click', () => {
-              location.href = `${baseUrl}?group=cs&type=faq`;
-          });
-          document.getElementById('btn-form').addEventListener('click', () => {
-              location.href = `${baseUrl}?group=form&type=db`;
-          });
-          document.getElementById('btn-data').addEventListener('click', () => {
-              location.href = `${baseUrl}?group=data&type=room`;
-          });
+          // ✅ 1) 현재 group에 맞는 소분류 영역만 보여주기
+          if (group === 'cs') {
+              subCs.style.display   = 'flex';
+              subForm.style.display = 'none';
+              subData.style.display = 'none';
+          } else if (group === 'form') {
+              subCs.style.display   = 'none';
+              subForm.style.display = 'flex';
+              subData.style.display = 'none';
+          } else if (group === 'data') {
+              subCs.style.display   = 'none';
+              subForm.style.display = 'none';
+              subData.style.display = 'flex';
+          }
 
           // 3) 소분류 버튼 클릭 시 → group/type 붙여서 서버로 이동
           document.querySelectorAll('.sub-btn').forEach(btn => {
@@ -1014,6 +1118,18 @@
           tbody.addEventListener('click', async (e) => {
               const editBtn   = e.target.closest('.row-edit');
               const deleteBtn = e.target.closest('.row-delete');
+              const answerBtn  = e.target.closest('.row-answer');
+
+              // ===== 답변하기 버튼 =====
+              if (answerBtn) {
+                  const id = answerBtn.dataset.id;
+
+                  // 👉 실제 Q&A 답변 작성 화면 URL에 맞게 수정해서 써!
+                  // 예시: /admin/cs/qna/answer?docid=...
+                  const url = `${baseUrl}/qna/answer?docid=${id}&group=${group}&type=${type}`;
+                  window.location.href = url;
+                  return;
+              }
 
               // ===== 수정 버튼 =====
               if (editBtn) {
@@ -1075,6 +1191,57 @@
           });
       });
   </script>
+  <script>
+      // 🔁 검색 대분류 탭 클릭 시 group / type 동기화 + 자동 검색
+      (function () {
+          const groupInput = document.getElementById('groupInput');
+          const typeInput  = document.getElementById('typeInput');
+          const form       = document.getElementById('csSearchForm');
+
+          if (!groupInput || !typeInput || !form) return;
+
+          // 라디오 모두 순회
+          document.querySelectorAll('input[name="groupTab"]').forEach(radio => {
+              radio.addEventListener('change', (e) => {
+                  const g = e.target.value;  // cs / form / data
+                  groupInput.value = g;
+
+                  // 그룹별 기본 type 세팅 (기존 탭 구조에 맞춰서)
+                  switch (g) {
+                      case 'cs':
+                          typeInput.value = 'faq';   // FAQ
+                          break;
+                      case 'form':
+                          typeInput.value = 'db';    // DB(확정급여형)
+                          break;
+                      case 'data':
+                          typeInput.value = 'room';  // 자료실(기존 group=data 기본 타입)
+                          break;
+                  }
+
+                  // 1️⃣ 탭 색상/스타일 토글 (라디오가 들어있는 label 기준)
+                  document.querySelectorAll('.cs-search-tab span').forEach(span => {
+                      // 기본 상태
+                      span.style.background   = '#F9FAFB';
+                      span.style.color        = '#374151';
+                      span.style.borderColor  = '#E5E7EB';
+                  });
+
+                  const span = e.target.parentElement.querySelector('span');
+                  if (span) {
+                      span.style.background   = '#D91A1A';
+                      span.style.color        = '#ffffff';
+                      span.style.borderColor  = '#D91A1A';
+                  }
+
+                  // 2️⃣ 탭 바꾸자마자 바로 검색 실행 (리스트 즉시 변경)
+                  form.submit();
+              });
+          });
+      })();
+  </script>
+
+
 
 
   <footer>
