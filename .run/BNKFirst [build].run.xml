@@ -3,7 +3,11 @@
     <ExternalSystemSettings>
       <option name="env">
         <map>
-          <entry key="MAIL_PASSWORD" value="vxzk pkjg vjkg vqsx" />
+          <entry key="KFTC_API_KEY" value="3abeca29-d333-4768-b00e-7ad65d11cc4c" />
+          <entry key="KIWOOM_APPKEY" value="tGmt2dnRgmWdZLNQMm6rynhNnQ_s7vfEB4rRwg_Fy6c" />
+          <entry key="KIWOOM_SECRET" value="-EXGXO6aW892WdCiPLZekgPxBu6ASZZqbOnt4UoLLOo" />
+          <entry key="KOREAEXIM_API_KEY" value="Tiv33LcLGUprpYXTEEw2VH7NYkCWFhRx" />
+          <entry key="MAIL_PASSWORD" value="vxzkpkjgvjkgvqsx" />
           <entry key="MAIL_USERNAME" value="eternalsoul0635@gmail.com" />
           <entry key="SOLAPI_API_KEY" value="NCSVDFHFDDPBAJVZ" />
           <entry key="SOLAPI_API_SECRET" value="O9WAEKPSDTW6QUYSV4B5C4LSHBXYCDAK" />
