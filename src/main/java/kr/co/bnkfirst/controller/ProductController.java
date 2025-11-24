@@ -74,20 +74,10 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-<<<<<<< HEAD
-    @GetMapping("/product/insertInfo/{pid}")
-    public String insertInfoPage(Model model, Principal principal, @PathVariable String pid) {
-        if (principal == null) {
-            throw new ErrorResponseException(HttpStatus.FORBIDDEN); // 비로그인시 403
-        }
-        String mid = principal.getName();
-        log.info("mid {}", mid);
-=======
     @GetMapping("/product/insertInfo")
     public String insertInfoPage(Model model) {
         // 임시 아이디 : 로그인 구현 후 삭제
         String mid = "a123";
->>>>>>> parent of 74a8a7f (datetime at 12:16 p.m. version. 0.0.6-SNAPSHOT register)
         boolean isExist = slfcertService.countSlfcertByMid(mid);
         UsersDTO userInfo = mypageService.findById(mid);
         model.addAttribute("mid", mid);
