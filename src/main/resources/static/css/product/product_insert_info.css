@@ -1262,21 +1262,12 @@ input[type="checkbox"] {
 }
 
 #page4 .unit {
-<<<<<<< HEAD
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--gray-500);
-    font-size: 13px;
-=======
   position: absolute;
   right: 38px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--gray-500);
   font-size: 13px;
->>>>>>> parent of 74a8a7f (datetime at 12:16 p.m. version. 0.0.6-SNAPSHOT register)
 }
 
 #page4 .input.unit-padding {
