@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.co.bnkfirst.dto.FinanceCertResult;
 import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.entity.Users;
+import kr.co.bnkfirst.jwt.JwtProvider;
 import kr.co.bnkfirst.service.FinanceCertService;
 import kr.co.bnkfirst.service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +23,70 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/member")
 public class UsersController {
-
-    /*
-        날짜 : 2025/11/20
-        이름 : 이준우
-        내용 : 로그인 security 방식으로 변경
-     */
-
+    private final JwtProvider jwtProvider;
     private final UsersService usersService;
     private final FinanceCertService financeCertService;
+
+    /*
+        날짜 : 2025/11/21
+        이름 : 이준우
+        내용 : 로그인 세션 + jwt 하이브리드 방식 변경
+     */
+
+    @PostMapping("/login")
+    public String login(
+            @RequestParam String mid,
+            @RequestParam String mpw,
+            HttpSession session
+    ) {
+
+        log.info("로그인 시도 ID: {}", mid);
+
+        UsersDTO dto = usersService.login(mid, mpw);
+        log.info("비밀번호 암호화 체크 : "+mpw);
+        log.info("dto 체크 : "+dto);
+
+        if (dto == null) {
+            log.warn("로그인 실패 - 존재하지 않거나 비밀번호 불일치: {}", mid);
+            return "redirect:/member/main?error=fail";
+        }
+
+        // JWT 생성
+        Users user = dto.toEntity();
+        String role = dto.getRole();
+
+        String token = jwtProvider.createToken(user, role);
+        log.info("token: {}", token);
+
+        // 세션 저장
+        session.setAttribute("jwtToken", token);
+        session.setAttribute("loginUser", dto);
+
+        long now = System.currentTimeMillis();
+        session.setAttribute("sessionStart", now);
+        session.setMaxInactiveInterval(1200);
+
+        log.info("로그인 성공 - ID: {}, JWT 발급됨, 세션 시작시간: {}", mid, now);
+
+        return "redirect:/main/main";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+
+        Object userObj = session.getAttribute("loginUser");
+
+        if (userObj != null) {
+            UsersDTO user = (UsersDTO) userObj;
+            log.info("사용자 로그아웃: {}", user.getMid());
+        } else {
+            log.info("로그아웃 요청: 로그인된 사용자 없음");
+        }
+
+        session.invalidate(); // 세션 삭제
+//        log.info("세션 체크: {}", session.getAttribute("loginUser"));
+        return "redirect:/member/main";
+    }
 
     @GetMapping("/main")
     public String memberMain(Model model, HttpSession session) {

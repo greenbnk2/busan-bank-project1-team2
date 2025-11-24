@@ -50,7 +50,7 @@
                         2021년에 해당합니다.</span>
             </div>
         </div>
-        <form id="customerForm">
+        <form id="customerForm" th:object="${userInfo}">
             <article class="card form-section">
                 <div class="inner">
                     <h2 class="form-title">
@@ -62,7 +62,7 @@
                         <div class="form-group">
                             <label for="name">성명<span class="req">*</span>
                                 <span id="name-comment" class="warn-comment"></span></label>
-                            <input id="name" name="name" type="text" placeholder="홍길동">
+                            <input id="name" name="name" type="text" placeholder="홍길동" th:value="*{mname}">
                         </div>
 
                         <div class="form-group">
@@ -77,7 +77,7 @@
                             <label for="birth">생년월일<span class="req">*</span>
                                 <span id="brthdt-comment" class="warn-comment"
                                       min="1800-01-01" max="2999-12-31"></span></label>
-                            <input id="birth" name="brthdt" type="date" placeholder="YYYY-MM-DD">
+                            <input id="birth" name="brthdt" type="date" placeholder="YYYY-MM-DD" th:value="*{mbirth}">
                         </div>
 
                         <div class="form-group">
@@ -136,7 +136,7 @@
                         <div class="form-group">
                             <label for="phone">휴대전화번호<span class="req">*</span>
                                 <span id="phone-comment" class="warn-comment"></span></label>
-                            <input id="phone" name="phone" type="tel" placeholder="'-'를 포함하여 적어주세요. 예) 010-1111-1111">
+                            <input id="phone" name="phone" type="tel" placeholder="'-'를 포함하여 적어주세요. 예) 010-1111-1111" th:value="*{mphone}">
                         </div>
 
                         <div class="form-group full">
@@ -290,7 +290,7 @@
             </div>
         </article>
         <article class="get-terms card">
-            <form novalidate>
+            <form id="get-terms" novalidate>
                 <h3>약관 및 상품설명서 받기</h3>
                 <div class="field">
                     <span class="field-label">수령 방법 선택</span>
@@ -309,9 +309,9 @@
                 <div class="field input-field">
                     <label id="contact-label" for="contactInput" class="sr-only">연락처 입력</label>
                     <input id="contactInput" class="text-input" type="tel" inputmode="numeric" autocomplete="tel"
-                           placeholder="휴대폰 번호 (‘-’ 없이)" required pattern="^01[0-9]{8,9}$"
+                           placeholder="휴대폰 번호 (‘-’ 포함) 예) 010-1234-5678" required pattern="^01(?:0|1|[6-9])-(?:\d{4})-\d{4}$"
                            aria-describedby="contact-help contact-error">
-                    <p class="help" id="contact-help">휴대폰 번호는 ‘-’ 없이 숫자만 입력해 주세요.</p>
+                    <p class="help" id="contact-help">휴대폰 번호는 ‘-’를 넣어서 입력해 주세요.</p>
                     <p class="error" id="contact-error" aria-live="polite"></p>
                 </div>
             </form>
@@ -484,8 +484,8 @@
         <article class="consumer-info card-white">
             <h2>가입자정보</h2>
             <div class="form-row" style="width: 50%;">
-                <label class="label">상품명</label>
-                <input class="input" value="홍길동" readonly>
+                <label class="label">가입자명</label>
+                <input class="input" name="mname" value="홍길동" readonly>
             </div>
         </article>
         <article class="insert-info card-white">
@@ -498,7 +498,7 @@
                 <!-- 상품명 -->
                 <div class="form-row">
                     <label class="label">상품명</label>
-                    <input class="input" value="저탄소 실천 적금" readonly>
+                    <input class="input" name="pname" value="저탄소 실천 적금" readonly>
                 </div>
 
                 <!-- 빈칸(정렬 맞춤) -->
@@ -581,7 +581,7 @@
                 <!-- 최초불입금액 -->
                 <div class="form-row">
                     <label class="label">최초불입금액 <span class="req">*</span></label>
-                    <div class="chips" id="firstAmtChips">
+                    <div class="Chips" id="firstAmtChips">
                         <button type="button" class="Chip" data-won="10000">1만원</button>
                         <button type="button" class="Chip" data-won="100000">10만원</button>
                         <button type="button" class="Chip" data-won="500000">50만원</button>

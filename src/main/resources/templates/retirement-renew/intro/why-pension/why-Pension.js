@@ -1,20 +1,18 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const tabs = document.querySelectorAll(".rp-tab-menu li a");
-    const contents = document.querySelectorAll(".rp-tab-content");
+document.addEventListener("DOMContentLoaded", () => {
 
-    tabs.forEach(tab => {
-        tab.addEventListener("click", function (e) {
-            e.preventDefault();
-            const target = this.getAttribute("href");
+    const tabButtons = document.querySelectorAll(".pension-tab button");
+    const tabContents = document.querySelectorAll(".tab-content");
 
-            // 탭 active 변경
-            document.querySelectorAll(".rp-tab-menu li")
-                .forEach(li => li.classList.remove("active"));
-            this.parentElement.classList.add("active");
+    tabButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
 
-            // 콘텐츠 표시 변경
-            contents.forEach(c => c.style.display = "none");
-            document.querySelector(target).style.display = "block";
+            tabButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const targetId = btn.dataset.tab;
+            tabContents.forEach(c => c.classList.remove("active"));
+            document.getElementById(targetId).classList.add("active");
         });
     });
+
 });

@@ -975,7 +975,8 @@ const I18N_FOOTER = {
   footer_addr_tpl:       { ko:'부산광역시 남구 범일로 30 (범일동) | 대표전화: 1588-6200',
                            en:'30 Beomil-ro, Nam-gu, Busan | Main: 1588-6200',
                            zh:'釜山广域市南区凡一路30号（凡一洞）| 总机：1588-6200',
-                           ja:'釜山広域市 南区 凡一路30（凡一洞）| 代表: 1588-6200' }
+                           ja:'釜山広域市 南区 凡一路30（凡一洞）| 代表: 1588-6200' },
+    footer_branch_search:  { ko:'지점찾기', en:'Find a Branch', zh:'网点查询', ja:'支店検索' },
 };
 Object.assign(I18N, I18N_FOOTER);
 // === Header extra i18n: 헤더에서 새로 쓰인 한글 텍스트들 ===
@@ -1034,6 +1035,52 @@ const I18N_HEADER_EXTRA = {
 
     /* 세션 영역 버튼 */
     header_session_extend:       { ko:'연장',                   en:'Extend',                              zh:'延长',                     ja:'延長' },
+    /* ===== 퇴직연금 알아보기 메뉴 ===== */
+    // 1단계 섹션 제목
+    header_retire_intro:      { ko:'퇴직연금 소개',        en:'Introduction to Retirement Pension',
+        zh:'退休养老金介绍',       ja:'退職年金の紹介' },
+    header_retire_system:     { ko:'퇴직연금 제도의 이해',  en:'Understanding the Retirement Pension System',
+        zh:'了解退休养老金制度',   ja:'退職年金制度の理解' },
+    header_retire_guide:      { ko:'도입/운영안내',        en:'Setup & Operation Guide',
+        zh:'导入/运营指南',       ja:'導入・運用案内' },
+
+    // 소개 섹션 내부
+    header_retire_why:        { ko:'왜 퇴직연금인가?',      en:'Why Retirement Pension?',
+        zh:'为什么是退休养老金？', ja:'なぜ退職年金なのか？' },
+    header_retire_what:       { ko:'퇴직연금이란?',        en:'What is a Retirement Pension?',
+        zh:'什么是退休养老金？',   ja:'退職年金とは？' },
+    header_retire_benefit:    { ko:'퇴직연금 도입혜택',     en:'Benefits of Adopting a Retirement Pension',
+        zh:'引入退休养老金的优势', ja:'退職年金導入のメリット' },
+
+    // 제도 이해 섹션 내부
+    header_retire_db:         { ko:'확정급여형(DB)',       en:'Defined Benefit (DB) Plan',
+        zh:'确定给付型(DB)',       ja:'確定給付型(DB)' },
+    header_retire_dc:         { ko:'확정급여형(DC)',       en:'Defined Contribution (DC) Plan',
+        zh:'确定缴费型(DC)',       ja:'確定拠出型(DC)' },
+    header_retire_irp:        { ko:'개인형퇴직연금제도(IRP)', en:'Individual Retirement Pension (IRP)',
+        zh:'个人型退休养老金(IRP)', ja:'個人型退職年金(IRP)' },
+    header_retire_general:    { ko:'제도 일반사항',        en:'General Information',
+        zh:'制度一般事项',         ja:'制度一般事項' },
+
+    // 도입/운영 안내 내부
+    header_retire_proc_overview:{ ko:'도입과정 한눈에 보기',  en:'Overview of Implementation Process',
+        zh:'一览导入流程',         ja:'導入プロセスの概要' },
+    header_retire_proc_check: { ko:'운영과정 체크포인트',    en:'Operational Checkpoints',
+        zh:'运营过程检查要点',      ja:'運用プロセスのチェックポイント' },
+    header_retire_invest:     { ko:'적립금 운용전략',        en:'Contribution Investment Strategy',
+        zh:'积立金运用策略',        ja:'積立金運用戦略' },
+
+    // 단일 링크 섹션
+    header_retire_nps:        { ko:'NPS 노후설계서비스',    en:'NPS Retirement Planning Service',
+        zh:'NPS养老规划服务',       ja:'NPS老後設計サービス' },
+    header_retire_portal_error:{ ko:'통합연금포털 오류 신고', en:'Integrated Pension Portal Error Report',
+        zh:'综合养老金门户错误申报', ja:'統合年金ポータル不具合申告' },
+
+    // 오류 신고 하위
+    header_retire_error_submit:{ ko:'오류신고 접수',        en:'Submit Error Report',
+        zh:'提交错误申报',         ja:'不具合申告受付' },
+    header_retire_error_result:{ ko:'오류신고 내역 및 결과조회', en:'View Error Report History & Results',
+        zh:'查询错误申报记录及结果',  ja:'申告履歴・結果照会' },
 };
 // 기존 I18N에 병합
 Object.assign(I18N, I18N_HEADER_EXTRA);

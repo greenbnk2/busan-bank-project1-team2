@@ -43,4 +43,7 @@ public class PcontractDTO {
     private String mname;
     private String mphone;
     private String pwtpi;
+
+    // 추가 컬럼 - 강민철
+    private String pcwtpi;
 }

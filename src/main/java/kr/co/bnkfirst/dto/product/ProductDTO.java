@@ -28,6 +28,9 @@ public class ProductDTO {
     private String psubtitle;
     private String pinfo;
 
+    // 없어서 추가함 - 손진일 2025/11/23
+    private String pwtpi;
+
     public Product toEntity(){
         return Product.builder()
                 .id(id)
@@ -46,6 +49,7 @@ public class ProductDTO {
                 .pdirate(pdirate)
                 .psubtitle(psubtitle)
                 .pinfo(pinfo)
+                .pwtpi(pwtpi)
                 .build();
     }
 }

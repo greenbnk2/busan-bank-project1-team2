@@ -630,3 +630,91 @@ main {
   .notice-list{ color:#9ca3af; }
   .notice-icon{ background:#7f1d1d; border-color:#991b1b; }
 }
+
+/* 펀드 */
+.fund-card {
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    background: #fff;
+}
+
+.fund-card-header {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.fund-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.fund-card-subtitle {
+    font-size: 12px;
+    color: #dc2626; /* 빨간 글씨 느낌 */
+}
+
+.fund-card-meta {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+.fund-meta-item + .fund-meta-item {
+    margin-left: 8px;
+}
+
+.fund-card-returns {
+    display: flex;
+    gap: 8px;
+}
+
+.fund-return-box {
+    width:76px;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+    padding: 10px 4px;
+    border-radius: 8px;
+}
+
+.fund-return-value {
+    color: #dc2626;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* 카드형에서만 override */
+.fund-grid .fund-return-value {
+    font-size: 13px;
+}
+
+.fund-return-label {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.fund-card-footer {
+    margin-top: 12px;
+    text-align: right;
+}
+
+/* grid / list 레이아웃만 다르게 */
+.fund-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 12px;
+}
+
+.fund-list {
+    display: block;
+}
+
+.fund-list .fund-card-meta {
+    text-align: end;
+}
+
+.fund-list .fund-card-returns {
+    justify-content: flex-end;   /* 오른쪽 정렬 */
+}

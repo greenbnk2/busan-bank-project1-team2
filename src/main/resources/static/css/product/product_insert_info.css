@@ -1260,7 +1260,7 @@ input[type="checkbox"] {
 
 #page4 .unit {
     position: absolute;
-    right: 38px;
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--gray-500);

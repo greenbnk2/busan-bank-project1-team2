@@ -168,7 +168,14 @@
                             </div>
                             <div style="display: flex; margin-bottom: 13px;">
                                 <div style="font-size: 14px; color: #4A4A4A;">최근 거래일시</div>
-                                <div style="margin-left: auto; font-size: 14px;"><span th:text="${#temporals.format(dealList.ddate, 'yyyy.MM.dd HH:mm')}"></span></div>
+                                <div style="margin-left: auto; font-size: 14px;">
+                                    <span th:if="${dealList != null}"
+                                          th:text="${#temporals.format(dealList.ddate, 'yyyy.MM.dd HH:mm')}"></span>
+
+                                    <span th:if="${dealList == null}">
+                                        최근 거래가 없습니다.
+                                    </span>
+                                </div>
                             </div>
                             <div style="display: flex;">
                                 <div style="font-size: 14px; color: #4A4A4A;">인증서 만료일</div>
@@ -520,9 +527,14 @@
                         </div>
                       </div>
                       <div style="margin-top: 10px; font-size: 14px; height: 35px; display: flex; align-items: center; justify-content: center;">
-                        <span th:text="${#temporals.format(dealList.ddate, 'MM.dd')}"></span>&nbsp;
-                          <span th:text="${dealList.dwho.substring(0, 1) + #strings.repeat('○', #strings.length(dealList.dwho) - 1)}"></span>님께&nbsp;
-                          <span th:text="${#numbers.formatInteger(dealList.dbalance, 3, 'COMMA')}"></span>원
+                          <div th:if="${dealList != null}">
+                            <span th:text="${#temporals.format(dealList.ddate, 'MM.dd')}"></span>&nbsp;
+                              <span th:text="${dealList.dwho.substring(0, 1) + #strings.repeat('○', #strings.length(dealList.dwho) - 1)}"></span>님께&nbsp;
+                              <span th:text="${#numbers.formatInteger(dealList.dbalance, 3, 'COMMA')}"></span>원
+                          </div>
+                          <div th:if="${dealList == null}">
+                                거래 없음
+                          </div>
                       </div>
                     </div>
                   </div>

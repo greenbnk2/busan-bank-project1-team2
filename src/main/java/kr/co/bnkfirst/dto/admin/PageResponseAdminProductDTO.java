@@ -1,7 +1,7 @@
 package kr.co.bnkfirst.dto.admin;
 
+import kr.co.bnkfirst.dto.PFundPageRequestDTO;
 import kr.co.bnkfirst.dto.PageRequestDTO;
-import kr.co.bnkfirst.dto.product.ProductDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 public class PageResponseAdminProductDTO {
 
-    private List<ProductDTO> dtoList;
+    /** 화면에 뿌릴 공통 DTO 리스트 */
+    private List<AdminProductRowDTO> dtoList;
 
     private String boardType; // 게시판 종류
     private int pg;
@@ -26,7 +27,9 @@ public class PageResponseAdminProductDTO {
     private String keyword;
 
     @Builder
-    public PageResponseAdminProductDTO(PageRequestDTO pageRequestDTO, List<ProductDTO> dtoList, int total) {
+    public PageResponseAdminProductDTO(PFundPageRequestDTO pageRequestDTO,
+                                       List<AdminProductRowDTO> dtoList,
+                                       int total) {
 
         this.boardType = pageRequestDTO.getBoardType();
         this.pg = pageRequestDTO.getPg();
@@ -35,10 +38,10 @@ public class PageResponseAdminProductDTO {
         this.dtoList = dtoList;
 
         this.startNo = total - ((pg - 1) * size);
-        this.end = (int)(Math.ceil(this.pg / 5.0)) * 5;
-        this.start = this.end - 4;
+        this.end = (int) (Math.ceil(this.pg / 10.0)) * 10;
+        this.start = this.end - 9;
 
-        int last = (int)(Math.ceil(total / (double) size));
+        int last = (int) (Math.ceil(total / (double) size));
         this.end = Math.min(end, last);
         this.prev = this.pg > 1;
         this.next = this.pg < last;
@@ -46,5 +49,4 @@ public class PageResponseAdminProductDTO {
         this.searchType = pageRequestDTO.getSearchType();
         this.keyword = pageRequestDTO.getKeyword();
     }
-
 }
