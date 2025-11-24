@@ -1,11 +1,75 @@
 <div style="margin-top:10px;"></div>
 <header>
     <div th:replace="~{layouts/info/_header.html}"></div>
+<<<<<<< HEAD
     <meta name="theme-color" content="#E60012"/>
     <link rel="icon"
           href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23E60012'/%3E%3Ctext x='50' y='58' font-size='56' text-anchor='middle' fill='white' font-family='Arial, Helvetica, sans-serif'%3EB%3C/text%3E%3C/svg%3E"/>
     <style>
         body {
+=======
+</header>
+<main>
+    <!-- branch section -->
+    <section class="branch-section">
+        <div class="branch-text">
+            <h1>영업점안내</h1>
+            <div class="subtitle">가까운 곳에서 고객님을 기다리겠습니다.</div>
+        </div>
+    </section>
+
+    <div class="tab-menu">
+        <button class="active">영업점</button>
+        <button>365코너</button>
+        <button>24/365코너</button>
+        <button>해외지점</button>
+        <button>대여금고</button>
+        <button>롯데ATM</button>
+        <button>STM</button>
+        <button>외화ATM</button>
+    </div>
+
+    <div class="search-box">
+        <select>
+            <option>전체</option>
+        </select>
+        <input type="text" placeholder="본점">
+        <button class="btn-register">검색</button>
+    </div>
+
+    <div class="result">
+        <p><strong>본점</strong>에 대한 검색결과는 <b>1건</b>입니다.</p>
+
+        <div class="branch-item">
+            <strong>1. 본점영업부</strong>
+            <span>전화: (020) 051-661-4000</span><br>
+            <span>주소: (484-00) 부산 남구 문현금융로 30, 1층 (문현동, 부산은행본점)</span><br>
+            <span>[대기고객수] <mark
+                    style="background:#d91a1a;color:white;padding:2px 4px;border-radius:2px;">단위초과</mark></span>
+        </div>
+
+        <div class="map-wrap">
+            <!-- 카카오맵 임시 삽입 -->
+            <iframe src="https://map.kakao.com/?q=부산은행%20본점" width="100%" height="400" style="border:0;"
+                loading="lazy"></iframe>
+        </div>
+    </div>
+</main>
+
+
+<meta name="theme-color" content="#E60012" />
+<link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23E60012'/%3E%3Ctext x='50' y='58' font-size='56' text-anchor='middle' fill='white' font-family='Arial, Helvetica, sans-serif'%3EB%3C/text%3E%3C/svg%3E" />
+<style>
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background-color: #F6F6F8;
+        margin: 0;
+        padding: 0;
+        color: #222;
+        line-height: 1.7;
+    }
+>>>>>>> parent of 74a8a7f (datetime at 12:16 p.m. version. 0.0.6-SNAPSHOT register)
 
             font-family: "Noto Sans KR", sans-serif;
             margin-top: 60px;
@@ -14,6 +78,7 @@
             padding: 0;
             line-height: 1.7;
         }
+<<<<<<< HEAD
 
 
         header,
@@ -184,6 +249,27 @@
             outline: none;
             box-shadow: 0 6px 14px -10px var(--shadow);
             transition: background .18s ease,
+=======
+    </style>
+<style>
+    .btn-register {
+        --bg1: #D91A1A;
+        --bg2: #F03A3A;
+        --shadow: rgba(217, 26, 26, .45);
+        position: relative;
+        box-sizing: border-box;
+        width: 90px;
+        height: 42px;
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        cursor: pointer;
+        background: linear-gradient(180deg, var(--bg2), var(--bg1));
+        outline: none;
+        box-shadow: 0 6px 14px -10px var(--shadow);
+        transition:
+            background .18s ease,
+>>>>>>> parent of 74a8a7f (datetime at 12:16 p.m. version. 0.0.6-SNAPSHOT register)
             box-shadow .18s ease,
             transform .12s ease;
             /* 프레스만 사용할 예정 */
@@ -198,6 +284,7 @@
             /* 확실하게 떠오르지 않도록 고정 */
         }
 
+<<<<<<< HEAD
         /* Active: 살짝 눌리는 프레스 효과만 */
         .btn-register:active {
             transform: scale(.98);
@@ -395,6 +482,10 @@
     </div>
 
 </main>
+=======
+    
+</style>
+>>>>>>> parent of 74a8a7f (datetime at 12:16 p.m. version. 0.0.6-SNAPSHOT register)
 
 <footer style="margin-top: 50px;">
     <div th:replace="~{layouts/footer.html}"></div>
