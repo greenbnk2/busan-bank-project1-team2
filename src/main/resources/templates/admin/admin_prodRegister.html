@@ -399,7 +399,7 @@
     <div id="printRoot" style="width: 1200px; ">
       <div>
         <div style="display: flex; font-size: 24px; color: #4B5563;">
-          <div>상품등록</div>
+          <div>예·적금 상품등록</div>
         </div>
         <div style="display: flex;">
           <div style="font-size: 16px; color: #4B5563;">은행 예금·적금 상품을 등록하고 금리 및 상태를 설정할 수 있습니다.</div>
@@ -441,133 +441,229 @@
           </div>
         </div>
       </div>
-      <div style="padding: 25px; margin-top:25px; padding-bottom: 32px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
-        <div style="font-size:20px; color:#2B2F36;">
-          기본 정보
-        </div>
-        <div>
-          <div style="display: flex; margin-top: 20px; gap: 25px;">
-            <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">상품명</div><div style="color: red;">*</div></div>
-              <div>
-                <input type="text" placeholder="상품명을 입력하세요" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-              </div>
+      <form th:action="@{/admin/prod/register}" method="post">
+          <div style="padding: 25px; margin-top:25px; padding-bottom: 32px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
+            <div style="font-size:20px; color:#2B2F36;">
+              기본 정보
             </div>
             <div>
-              <div>상품ID</div>
-              <div>
-                <input readonly value="PRD-20241104-001" type="text" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px; background-color: #F9FAFB;">
-              </div>
-            </div>
-          </div>
-          <div style="display: flex; margin-top: 20px; gap: 25px;">
-            <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">상품유형</div><div style="color: red;">*</div></div>
-              <div>
-                <select name="type" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                  <option value="#">선택하세요</option>
-                </select>
-            </div>
-            </div>
-            <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">금리(연)</div><div style="color: red;">*</div></div>
-              <div class="input-suffix" style="margin-top:13px;">
-                <input type="number" step="0.01" placeholder="0.00">
-                <span class="suffix">%</span>
-              </div>
-            </div>
-          </div>
-          <div style="display: flex; margin-top: 20px; gap: 25px;">
-            <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">기간</div><div style="color: red;">*</div></div>
-              <div class="date-range">
-                <!-- 시작일 -->
-                <div class="date-field">
-                  <input type="date" id="startDate" class="date-input" placeholder="시작일" aria-label="시작일">
-                  <button type="button" class="calendar-btn" aria-label="시작일 달력 열기">
-                    <!-- calendar icon -->
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M7 3v2M17 3v2M4 8h16M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5A2 2 0 0 0 3 7v12a2 2 0 0 0 2 2Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    </svg>
-                  </button>
+              <div style="display: flex; margin-top: 20px; gap: 25px;">
+                <div>
+                  <div style="display: flex;"><div style="margin-right: 2px;">상품명</div><div style="color: red;">*</div></div>
+                  <div>
+                    <input name="pname" type="text" placeholder="상품명을 입력하세요" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                  </div>
                 </div>
-
-                <span class="date-sep">~</span>
-
-                <!-- 마감일 -->
-                <div class="date-field">
-                  <input type="date" id="endDate" class="date-input" placeholder="마감일" aria-label="마감일">
-                  <button type="button" class="calendar-btn" aria-label="마감일 달력 열기">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M7 3v2M17 3v2M4 8h16M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5A2 2 0 0 0 3 7v12a2 2 0 0 0 2 2Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    </svg>
-                  </button>
+                <div>
+                  <div>상품ID<span style="color: red;margin-left: 2px;">*</span></div>
+                  <div>
+                    <input name="pid" placeholder="BNK-TD-1" type="text" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                  </div>
                 </div>
               </div>
-            </div>
-            <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">상태</div><div style="color: red;">*</div></div>
-              <div>
-                <select name="type" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                  <option value="#">선택하세요</option>
-                  <option value="active">활성</option>
-                  <option value="wait">대기</option>
-                  <option value="end">종료</option>
-                </select>
+              <div style="display: flex; margin-top: 20px; gap: 25px;">
+                <div>
+                  <div style="display: flex;"><div style="margin-right: 2px;">상품유형</div><div style="color: red;">*</div></div>
+                  <div>
+                    <select name="ptype" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                      <option value="예금">예금</option>
+                      <option value="적금">적금</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <div style="display: flex;"><div style="margin-right: 2px;">기본금리</div><div style="color: red;">*</div></div>
+                  <div class="input-suffix" style="margin-top:13px;">
+                    <input type="number" name="pbirate" step="0.01" placeholder="0.00">
+                    <span class="suffix">%</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="padding: 25px; margin-top:25px; padding-bottom: 32px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
-        <div style="font-size:20px; color:#2B2F36;">
-          상세 설명
-        </div>
-        <div>
-          <div style="display: flex; margin-top: 20px;">
-            <div>
-              <div>상품 설명</div>
-              <div>
-                <textarea placeholder="상품에 대한 상세한 설명을 입력하세요" name="" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div style="display: flex; margin-top: 20px;">
-            <div>
-              <div>주요 혜택</div>
-              <div>
-                <textarea placeholder="주요 혜택을 입력하세요 (예: 우대금리 0.1%, 수수료 면제 등)" name="" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- 약관 첨부 -->
-        <div style="margin-top:24px;">
-          <div style="margin-bottom:8px; color:#374151;">약관 첨부</div>
+              <div style="display: flex; margin-top: 20px; gap: 25px;">
+                <div>
+                  <div style="display: flex;"><div style="margin-right: 2px;">계약기간</div><div style="color: red;">*</div></div>
+                  <div style="display: flex;">
+                    <!-- 최소개월수 -->
+                    <div>
+                      <input type="text" name="pcprdstart" placeholder="최소개월수" aria-label="최소개월수"
+                      style="box-sizing: border-box;
+                                width: 100%;
+                                height: 42px;
+                                padding-left: 15px;
+                                padding-right: 36px;
+                                font-size: 16px;
+                                border: 1px solid #D1D5DB;
+                                border-radius: 6px;
+                                outline: none;
+                                margin-top: 13px;">
+                    </div>
 
-          <div id="termsDropzone" class="upload-card" role="button" tabindex="0" aria-label="파일을 드래그하거나 클릭하여 업로드">
-            <input id="termsFile" type="file" accept=".pdf,.doc,.docx" hidden>
-            <div class="upload-inner">
-              <!-- cloud + arrow -->
-              <svg width="36" height="36" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M7 18h10a4 4 0 0 0 0-8 5 5 0 0 0-9.6-1.6A4 4 0 0 0 7 18Zm5-3v-6m0 0-3 3m3-3 3 3"
-                      fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <div class="upload-title">파일을 여기에 드래그하거나 클릭하여 업로드</div>
-              <div class="upload-sub">PDF, DOC, DOCX 파일만 업로드 가능 (최대 10MB)</div>
+                    <span class="date-sep"
+                    style="padding: 5px;
+                            margin-top: 18px;">~</span>
+
+                    <!-- 최대개월수 -->
+                    <div>
+                      <input type="text" name="pcprdend" placeholder="최대개월수" aria-label="최대개월수"
+                      style="box-sizing: border-box;
+                            width: 100%;
+                            height: 42px;
+                            padding-left: 15px;
+                            padding-right: 36px;
+                            font-size: 16px;
+                            border: 1px solid #D1D5DB;
+                            border-radius: 6px;
+                            outline: none;
+                            margin-top: 13px;">
+                    </div>
+                  </div>
+                </div>
+                  <div>
+                      <div style="display: flex;"><div style="margin-right: 2px;">최고금리</div><div style="color: red;">*</div></div>
+                      <div class="input-suffix" style="margin-top:13px;">
+                          <input type="number" name="phirate" step="0.01" placeholder="0.00">
+                          <span class="suffix">%</span>
+                      </div>
+                  </div>
+              </div>
+              <div style="display: flex; margin-top: 20px; gap: 25px;">
+                <div>
+                    <div style="display: flex;"><div style="margin-right: 2px;">상태</div><div style="color: red;">*</div></div>
+                    <div>
+                        <select name="pcond" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                            <option value="활성">활성</option>
+                            <option value="대기">대기</option>
+                            <option value="종료">종료</option>
+                        </select>
+                    </div>
+                </div>
+                  <div>
+                      <div style="display: flex;"><div style="margin-right: 2px;">가입대상</div><div style="color: red;">*</div></div>
+                      <div>
+                          <input name="pelgbl" type="text" placeholder="가입대상을 입력하세요" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                      </div>
+                  </div>
+              </div>
+                <div style="display: flex; margin-top: 20px; gap: 25px;">
+                    <div>
+                        <div style="display: flex;"><div style="margin-right: 2px;">가입방법</div><div style="color: red;">*</div></div>
+                        <div>
+                            <input name="prmthd" type="text" placeholder="가입방법을 입력하세요" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex;"><div style="margin-right: 2px;">이자지급구분</div><div style="color: red;">*</div></div>
+                        <div>
+                            <select name="pwtpi" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                                <option value="만기일시지급">만기일시지급</option>
+                                <option value="월이자지급">월이자지급</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display: flex; margin-top: 20px; gap: 25px;">
+                        <div>
+                            <div style="display: flex;"><div style="margin-right: 2px;">가입금액</div><div style="color: red;">*</div></div>
+                            <div>
+                                <input name="pjnfee" type="text" placeholder="가입금액을 입력하세요" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                            </div>
+                        </div>
+                        <div>
+                    </div>
+                    </div>
+                </div>
             </div>
           </div>
+          <div style="padding: 25px; margin-top:25px; padding-bottom: 32px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
+            <div style="font-size:20px; color:#2B2F36;">
+              상세 설명
+            </div>
+            <div>
+              <div style="display: flex; margin-top: 20px;">
+                <div>
+                  <div>상품안내</div>
+                  <div>
+                    <textarea placeholder="상품에 대한 상세한 설명을 입력하세요" name="pinfo" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <div>
+              <div style="display: flex; margin-top: 20px;">
+                <div>
+                  <div>상품 간단 설명</div>
+                  <div>
+                    <textarea placeholder="상품에 대한 간단한 설명을 입력하세요" name="psubtitle" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; margin-top: 20px;">
+                <div>
+                  <div>세제혜택</div>
+                  <div>
+                    <textarea placeholder="주요 혜택을 입력하세요 (예: 수수료 면제 등)" name="pprfcrt" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <div>
+                  <div style="display: flex; margin-top: 20px;">
+                      <div>
+                          <div>금리안내</div>
+                          <div>
+                              <textarea placeholder="금리 혜택을 입력하세요 (예: 우대금리 0.1% 등)" name="pirinfo" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div>
+                  <div style="display: flex; margin-top: 20px;">
+                      <div>
+                          <div>우대금리</div>
+                          <div>
+                              <textarea placeholder="우대금리를 입력하세요" name="pdirate" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div>
+                  <div style="display: flex; margin-top: 20px;">
+                      <div>
+                          <div>약관 제목, 링크 추가</div>
+                          <div>
+                              <textarea placeholder="약관 제목, 링크를 추가하세요" name="pterms" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            <!-- 약관 첨부 -->
+            <div style="margin-top:24px;">
+              <div style="margin-bottom:8px; color:#374151;">약관 첨부</div>
 
-          <!-- 선택 결과/에러 메시지 -->
-          <div id="termsResult" class="upload-result" aria-live="polite"></div>
-        </div>
-      </div>
-      <div style="padding: 25px; margin-top:25px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
+              <div id="termsDropzone" class="upload-card" role="button" tabindex="0" aria-label="파일을 드래그하거나 클릭하여 업로드">
+                <input id="termsFile" type="file" accept=".pdf,.doc,.docx" hidden>
+                <div class="upload-inner">
+                  <!-- cloud + arrow -->
+                  <svg width="36" height="36" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 18h10a4 4 0 0 0 0-8 5 5 0 0 0-9.6-1.6A4 4 0 0 0 7 18Zm5-3v-6m0 0-3 3m3-3 3 3"
+                          fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="upload-title">파일을 여기에 드래그하거나 클릭하여 업로드</div>
+                  <div class="upload-sub">PDF, DOC, DOCX 파일만 업로드 가능 (최대 10MB)</div>
+                </div>
+              </div>
+
+              <!-- 선택 결과/에러 메시지 -->
+              <div id="termsResult" class="upload-result" aria-live="polite"></div>
+            </div>
+          </div>
+          <div style="padding: 25px; margin-top:25px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
         <div style="display: flex; gap: 10px; justify-content: space-between;">
           <div>
-            <button class="btn-pressable btn-sheen" id="btnPrint" style="box-sizing: border-box; width: 120px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
+            <button type="button" class="btn-pressable btn-sheen" id="btnPrint" style="box-sizing: border-box; width: 120px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
               <div style="display: flex; gap: 8px; justify-content: center;">
                 <div>
                   <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -582,10 +678,12 @@
           </div>
           <div style="display: flex; gap: 10px;">
             <div>
-              <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 65px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
+              <button type="button"
+                      th:onclick="|location.href='@{/admin/prod}'|"
+                      class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 65px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
             </div>
             <div>
-              <button class="btn-register" style="gap:6px; box-sizing: border-box; width: 120px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
+              <button type="submit" class="btn-register" style="gap:6px; box-sizing: border-box; width: 120px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
                 <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
                   <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_454_136)">
@@ -606,7 +704,7 @@
           </div>
         </div>
       </div>
-      
+      </form>
     </div>
   </main>
 

@@ -15,6 +15,10 @@ class ProductServiceTest {
 
     @MockitoBean
     kr.co.bnkfirst.mapper.BranchMapper branchMapper;
+    @MockitoBean
+    EmailService emailService;
+    @MockitoBean
+    SmsService smsService;
 
     @Autowired
     ProductService productService;

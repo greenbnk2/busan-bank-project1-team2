@@ -15,38 +15,9 @@
 
     <main>
         <!-- ===== 사이드바 ===== -->
-        <aside class="sidebar">
-            <h3>은행안내</h3>
+        <aside th:replace="~{layouts/info/_sidebar.html}"></aside>
 
-            <div class="menu-item">
-                <div class="menu-item">
-                    <a th:href="@{/info/guide/ceoGreeting}" class="menu-title" style="text-decoration: none;">CEO인사말</a>
-                </div>
-            </div>
 
-            <div class="menu-item">
-                <div class="menu-title">미션과 전략체계</div>
-                <div class="submenu">
-                    <a th:href="@{/info/guide/missionStrategy}">그룹 전략 체계도</a>
-                    <a th:href="@{/info/guide/groupMission}">그룹 미션</a>
-                    <a th:href="@{/info/guide/groupVision}">그룹 비전</a>
-                    <a th:href="@{/info/guide/strategySlogan}">그룹 전략 슬로건</a>
-                    <a th:href="@{/info/guide/coreValues}">그룹 핵심가치</a>
-                </div>
-            </div>
-
-            <div class="menu-item">
-                <div class="menu-title">조직도</div>
-            </div>
-
-            <div class="menu-item">
-                <div class="menu-title">연혁</div>
-            </div>
-
-            <div class="menu-item">
-                <div class="menu-title">윤리경영</div>
-            </div>
-        </aside>
 
         <!-- 본문 -->
         <section class="content">
@@ -120,7 +91,7 @@
 
         body {
             font-family: "Noto Sans KR", sans-serif;
-            margin: 0px;
+            margin-top: 60px;
             background-color: #fafafa;
             color: #222;
         }

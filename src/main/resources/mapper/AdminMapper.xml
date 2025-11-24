@@ -6,43 +6,123 @@
 <mapper namespace="kr.co.bnkfirst.mapper.AdminMapper">
 
 <!--상품 목록 출력-->
-    <sql id="searchWhere">
-        <where>
-            <if test="pageRequestDTO.searchType != null and pageRequestDTO.keyword != ''">
-                <choose>
-                    <when test="pageRequestDTO.searchType == 'title'">
-                        AND A.TITLE LIKE '%' || #{pageRequestDTO.keyword} || '%'
-                    </when>
-                    <when test="pageRequestDTO.searchType == 'content'">
-                        AND A.CONTENT LIKE '%' || #{pageRequestDTO.keyword} || '%'
-                    </when>
-                    <when test="pageRequestDTO.searchType == 'writer'">
-                        AND U.NICK LIKE '%' || #{pageRequestDTO.keyword} || '%'
-                    </when>
-                </choose>
-            </if>
-        </where>
-    </sql>
-
-    <select id="selectAllProduct" resultType="kr.co.bnkfirst.dto.product.ProductDTO">
+    <!-- 예적금 상품 목록 (페이지 단위) -->
+    <select id="selectProductPage"
+            resultType="kr.co.bnkfirst.dto.product.ProductDTO">
         SELECT
         *
         FROM product
-        <include refid="searchWhere"/>
         ORDER BY pupdate DESC
-        OFFSET #{pageRequestDTO.offset} ROWS
-        FETCH NEXT #{pageRequestDTO.size} ROWS ONLY
+        OFFSET #{offset} ROWS
+        FETCH NEXT #{limit} ROWS ONLY
     </select>
 
+    <!-- 예적금 상품 총 개수 -->
+    <select id="selectProductTotal" resultType="int">
+        SELECT COUNT(*)
+        FROM product
+    </select>
 
-    <select id="selectCountTotal" resultType="int">
-        SELECT COUNT(*) FROM product
-        <include refid="searchWhere"/>
+    <!-- 펀드 목록 (페이지 단위) -->
+    <select id="selectFundPage"
+            resultType="kr.co.bnkfirst.dto.product.FundDTO">
+        SELECT
+        *
+        FROM fund
+        ORDER BY fsetdt DESC NULLS LAST
+        OFFSET #{offset} ROWS
+        FETCH NEXT #{limit} ROWS ONLY
+    </select>
+
+    <!-- 펀드 총 개수 -->
+    <select id="selectFundTotal" resultType="int">
+        SELECT COUNT(*)
+        FROM fund
     </select>
 <!--상품 목록 출력-->
-<!--    상품 삭제-->
+<!--    예적금 상품 추가-->
+    
+    <insert id="insertDeposit">
+        INSERT INTO
+        PRODUCT(pid, ptype, pname, PBIRATE, phirate, pcprd, pelgbl, prmthd, pprfcrt, pirinfo, pcond, pjnfee, pwtpi, pterms, pdirate, psubtitle, pinfo)
+        VALUES(#{pid},#{ptype},#{pname},#{pbirate},#{phirate},#{pcprd},#{pelgbl},#{prmthd},#{pprfcrt},#{pirinfo},#{pcond},#{pjnfee},#{pwtpi},#{pterms},#{pdirate},#{psubtitle},#{pinfo})
+    </insert>
+    
+<!--    예적금 상품 추가-->
+<!--    펀드 상품 추가-->
+    <insert id="insertFund">
+        INSERT INTO
+        fund(fid, fname, famc, frlvl, ftype, frefpr, fsetdt, ftc, fm1pr, fm3pr, fm6pr, fm12pr, facmpr)
+        VALUES(#{fid}, #{fname}, #{famc}, #{frlvl}, #{ftype}, #{frefpr}, #{fsetdt}, #{ftc}, #{fm1pr}, #{fm3pr}, #{fm6pr}, #{fm12pr}, #{facmpr})
+    </insert>
+<!--    펀드 상품 추가-->
+
+<!--    예적금 상품 찾기(수정용)-->
+    <select id="selectByProduct" resultType="kr.co.bnkfirst.dto.product.ProductDTO">
+        SELECT * FROM product where pid = #{pid}
+    </select>
+<!--    예적금 상품 찾기(수정용)-->
+
+    <!--    펀드 상품 찾기(수정용)-->
+    <select id="selectByFund" resultType="kr.co.bnkfirst.dto.product.FundDTO">
+        SELECT * FROM fund where fid = #{fid}
+    </select>
+<!--    펀드 상품 찾기(수정용)-->
+
+<!--    예적금 상품 수정-->
+    <update id="updateProduct">
+        UPDATE product SET
+        pid = #{pid},
+        ptype = #{ptype},
+        pname = #{pname},
+        pbirate = #{pbirate},
+        phirate = #{phirate},
+        pcprd = #{pcprd},
+        pelgbl = #{pelgbl},
+        prmthd = #{prmthd},
+        pprfcrt = #{pprfcrt},
+        pirinfo = #{pirinfo},
+        pcond = #{pcond},
+        pjnfee = #{pjnfee},
+        pwtpi = #{pwtpi},
+        pterms = #{pterms},
+        pdirate = #{pdirate},
+        psubtitle = #{psubtitle},
+        pinfo = #{pinfo}
+        WHERE pid = #{pid}
+    </update>
+
+<!--    예적금 상품 수정-->
+
+    <!--    펀드 상품 수정-->
+    <update id="updateFund">
+        UPDATE fund SET
+        fname = #{fname},
+        famc = #{famc},
+        frlvl = #{frlvl},
+        ftype = #{ftype},
+        frefpr = #{frefpr},
+        fsetdt = #{fsetdt},
+        ftc = #{ftc},
+        fm1pr = #{fm1pr},
+        fm3pr = #{fm3pr},
+        fm6pr = #{fm6pr},
+        fm12pr = #{fm12pr},
+        facmpr = #{facmpr}
+        WHERE fid = #{fid}
+    </update>
+
+<!--    펀드 상품 수정-->
+
+<!--    예적금 상품 삭제-->
     <delete id="deleteByProduct">
         delete from product where pid = #{pid}
+    </delete>
+
+    <!--    예적금 상품 삭제-->
+    <!--    펀드 상품 삭제-->
+    <delete id="deleteByFund">
+        delete from fund where fid = #{fid}
     </delete>
 
 <!--유저 목록 출력-->

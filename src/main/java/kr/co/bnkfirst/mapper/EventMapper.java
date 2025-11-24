@@ -1,7 +1,7 @@
 package kr.co.bnkfirst.mapper;
 
-import kr.co.bnkfirst.dto.info.EventDTO;
-import kr.co.bnkfirst.dto.info.PageRequestDTO;  // ✅ info 폴더 안에 있으므로 이렇게 수정
+import kr.co.bnkfirst.dto.Info.EventDTO;
+import kr.co.bnkfirst.dto.Info.PageRequestDTO;  // ✅ info 폴더 안에 있으므로 이렇게 수정
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
