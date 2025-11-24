@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.bnkfirst.mapper.SlfcertMapper">
+    <sql id="krresValue">
+        <choose>
+            <when test="krres == 'on'">
+                'Y',
+            </when>
+            <otherwise>
+                'N',
+            </otherwise>
+        </choose>
+    </sql>
+    <sql id="othersValue">
+        <choose>
+            <when test="others == 'on'">
+                'Y',
+            </when>
+            <otherwise>
+                'N',
+            </otherwise>
+        </choose>
+    </sql>
+    <insert id="saveSlfcert" parameterType="kr.co.bnkfirst.dto.product.SlfcertDTO">
+        INSERT INTO SLFCERT (cusid, ftype, signdt, sts, taxyr, krres, "OTHERS",
+                             natcd, name, gender, brthdt, zipcd, addr1, addr2, enlnm, enfnm,
+                             phone, crtdt, uptdt)
+        VALUES (#{cusid},
+                #{ftype},
+                SYSDATE,
+                'VALID',
+                #{taxyr},
+                <include refid="krresValue"/>
+                <include refid="othersValue"/>
+                #{natcd},
+                #{name},
+                #{gender},
+                TO_DATE(#{brthdt}, 'YYYY-MM-DD'),
+                #{zipcd},
+                #{addr1},
+                #{addr2},
+                #{enlnm},
+                #{enfnm},
+                #{phone},
+                SYSTIMESTAMP,
+                SYSTIMESTAMP)
+    </insert>
+</mapper>
