@@ -46,6 +46,7 @@ public class UsersService {
         }
 
         log.info("Login success for ID: {}", mId);
+        log.info("UsersService 반환값 체크: "+user.toString() );
         return user;
     }
 

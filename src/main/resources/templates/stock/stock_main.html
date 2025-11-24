@@ -208,7 +208,7 @@
         .ticker-content {
             display: inline-block;
             white-space: nowrap;
-            animation: tickerMove 400s linear infinite;
+            animation: tickerMove 1000s linear infinite;
         }
 
         @keyframes tickerMove {
@@ -229,6 +229,19 @@
             color: #555;    /* 보합 */
         }
     </style>
+    <style>
+        /* 환율 스타일 */
+        .fx-info-bar {
+            margin: 10px 0 20px;
+            padding: 8px 16px;
+            background: #FFF5F5;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .fx-info-bar strong {
+            margin-left: 8px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -236,6 +249,12 @@
     </header>
 
     <main>
+        <div class="fx-info-bar" th:inline="text">
+            <span>오늘의 달러 환율(한국수출입은행 기준)</span>
+            <strong>
+                1 USD = [[${#numbers.formatDecimal(usdKrw, 0, 'COMMA', 2, 'POINT')}]]원
+            </strong>
+        </div>
         <div style="">
             <ul class="tab-list" id="marketTabs" style="list-style: none; display: flex;">
                 <li style=" margin-right: 20px;">

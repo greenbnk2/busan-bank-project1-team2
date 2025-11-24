@@ -1,16 +1,30 @@
 package kr.co.bnkfirst;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-//Security 의존성 임시 제거
-@SpringBootApplication(
-        exclude = {
-                org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-        }
-)
+@SpringBootApplication
+// 개인 컴퓨터 환경에서 Kiwoom 실행에서 제외
+//@ComponentScan(excludeFilters = {
+//        @ComponentScan.Filter(
+//                type = FilterType.REGEX,
+//                pattern = {
+//                        "kr\\.co\\.bnkfirst\\.kiwoom\\..*",
+//                        "kr\\.co\\.bnkfirst\\.kiwoomRank\\..*",
+//                        "kr\\.co\\.bnkfirst\\.config\\.WebSocketConfig"
+//                }
+//        ),
+//        @ComponentScan.Filter(
+//                type = FilterType.ASSIGNABLE_TYPE,
+//                classes = {
+//                        kr.co.bnkfirst.controller.StockController.class,
+//                        kr.co.bnkfirst.controller.KiwoomTestController.class
+//                }
+//        )
+//})
 @EnableScheduling
 public class BnkFirstApplication {
 

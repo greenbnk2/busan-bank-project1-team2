@@ -3,7 +3,7 @@
     이름 : 강민철
     내용 : product_insert_info.html JS 작성
  */
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     /*======== 스탭퍼 스크립트 ========*/
     let currentStep = 1;                 // 1~5
     const totalSteps = 5;
@@ -83,11 +83,48 @@ document.addEventListener('DOMContentLoaded', function () {
             // 예: 모든 약관 체크 확인
             // const ok = [...document.querySelectorAll('[name="agree"]:checked')].length >= 3;
             // if(!ok){ alert('모든 약관에 동의해주세요.'); return false; }
+            console.log('validators[2] work check');
+            const section = document.querySelector('#page2 .accept-terms');
+            const items = [...section.querySelectorAll('.terms-list .terms-item')];
+            const links = items.map(i => i.querySelector('a.icon-btn')).filter(Boolean);
+            const ok = links.every(a => a.classList.contains('downloaded'));
+            if (!ok) {
+                alert('상품설명서 및 약관을 모두 다운로드(또는 열람)해주세요.');
+                return false;
+            }
+            const esnInfo = $('#esn-info').checked;
+            const termsConfirm = $('#terms-confirm').checked;
+            if (!(esnInfo && termsConfirm)) {
+                alert('필수 안내사항과 상품 설명 및 약관을 모두 읽고 동의해주세요.');
+                return false;
+            }
+            if (input.value === '' || !input.checkVisibility()) {
+                alert('약관 및 상품설명서 수령방법을 선택, 입력해주세요.');
+                return false;
+            }
             return true;
         },
         3() {
-            // 예: 인증 완료 플래그 확인
-            // if(!state.verified){ alert('본인인증을 완료하세요.'); return false; }
+            const requiredChecks = [
+                '#int-rates-confirm',
+                '#pay-date-confirm',
+                '#calc-basis-confirm',
+                '#rates-note-confirm',
+                '#disadvantages-confirm',
+                '#p-i-limit-confirm'
+            ].map(sel => $(sel));
+
+            const areAllChecked = () => requiredChecks.every(chk => chk.checked);
+
+            if (!areAllChecked()) {
+                const firstUnchecked = requiredChecks.find(chk => !chk.checked);
+                if (firstUnchecked) {
+                    alert('모든 중요사항을 확인 후 체크해주세요.');
+                    firstUnchecked.scrollIntoView({ behavior: "smooth", block: "center" });
+                    firstUnchecked.focus();
+                }
+                return false;
+            }
             return true;
         },
         4() {
@@ -98,8 +135,8 @@ document.addEventListener('DOMContentLoaded', function () {
         } // 제출 단계라면 서버 전송 등 처리
     };
 
-    /* ============== step1 본인확인서 존재 여부 확인 ============== */
-    (async function chkFATCAExist() {
+    /* ============== step1 본인확인서 존재 여부 확인, 초기화면 설정 ============== */
+    await (async function chkFATCAExist() {
         const wizard = document.getElementById('wizard');
         const mid = wizard.dataset.mid;
         try {
@@ -197,7 +234,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        showStep(currentStep + 1);
+        if (ok)
+            showStep(currentStep + 1);
     });
 
     // 본인확인서 제출 함수
@@ -255,8 +293,14 @@ document.addEventListener('DOMContentLoaded', function () {
             // 완료했거나 바로 이전까지만 허용 등 정책 가능
             if (idx + 1 <= currentStep || idx + 1 === currentStep + 1) {
                 // 본인확인서 미등록시에만 step1 이동 가능
-                if (!(getHasInfo() && idx === 0))
-                    showStep(idx + 1);
+                if (!(idx === 0)) {
+                    const ok = validators[currentStep]();
+                    // console.log('validators return : ' + ok);
+                    if (ok) {
+                        console.log('currentStep is ' + currentStep);
+                        showStep(idx + 1);
+                    }
+                }
             }
         });
     });
@@ -272,6 +316,26 @@ document.addEventListener('DOMContentLoaded', function () {
         return false;
     }
 
+    /* ====================== 상품 정보 채우기 ====================== */
+    const {initProdInfo} = await import('/BNK/js/product/fill_prod_info.js');
+    await (async () => {
+        const url = new URL(window.location.href);
+        const parts = url.pathname.split('/');
+        const pid = decodeURIComponent(parts[parts.length - 1]);
+        try {
+            const res = await fetch(`/BNK/product/details/${pid}`, {method: "GET"});
+            if (!res.ok) throw new Error('상품 정보를 가져오는 도중 문제 발생');
+            const productInfo = await res.json();
+            console.log(productInfo);
+            initProdInfo(productInfo);
+
+        } catch (e) {
+            console.error(e.message);
+        }
+
+    })();
+
+
     /*============== 약관 및 상품설명서 받기 스크립트 ================*/
     const radios = document.querySelectorAll('input[name="receive"]');
     const input = document.getElementById('contactInput');
@@ -283,11 +347,11 @@ document.addEventListener('DOMContentLoaded', function () {
         error.textContent = '';
         if (mode === 'sms') {
             input.type = 'tel';
-            input.placeholder = "휴대폰 번호 (‘-’ 없이)";
+            input.placeholder = "휴대폰 번호 (‘-’ 포함) 예) 010-1234-5678";
             input.setAttribute('inputmode', 'numeric');
             input.setAttribute('autocomplete', 'tel');
-            input.setAttribute('pattern', '^01[0-9]{8,9}$');
-            help.textContent = "휴대폰 번호는 ‘-’ 없이 숫자만 입력해 주세요.";
+            input.setAttribute('pattern', '^01(?:0|1|[6-9])-(?:\\d{4})-\\d{4}$');
+            help.textContent = "휴대폰 번호는 ‘-’를 넣어서 입력해 주세요.";
         } else {
             input.type = 'email';
             input.placeholder = "이메일 주소";
@@ -391,20 +455,65 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         });
+    })();
 
-        // (선택) 다음 단계로 넘어갈 때 모두 다운로드했는지 검증하고 싶다면 validators[2] 교체
-        if (window.validators) {
-            const original = validators[2] || (() => true);
-            validators[2] = function () {
-                // 기본 검증 통과 후 추가 체크
-                const ok = links.every(a => a.classList.contains('downloaded'));
-                if (!ok) {
-                    alert('상품설명서 및 약관을 모두 다운로드(또는 열람)해 주세요.');
-                    return false;
+    /*================== 3단계 중요내용 스크립트 =====================*/
+    (() => {
+        const requiredChecks = [
+            '#int-rates-confirm',
+            '#pay-date-confirm',
+            '#calc-basis-confirm',
+            '#rates-note-confirm',
+            '#disadvantages-confirm',
+            '#p-i-limit-confirm'
+        ].map(sel => $(sel));
+
+        const docAll = $('#doc-all-confirm');
+        const docAllLabel = $('label[for="doc-all-confirm"]');
+
+        // 처음에는 docAll 비활성화
+        docAll.disabled = true;
+
+        // 개별 체크 여부 검사
+        const areAllChecked = () => requiredChecks.every(chk => chk.checked);
+
+        // docAll 상태 갱신
+        const updateDocAll = () => {
+            if (areAllChecked()) {
+                docAll.disabled = false;
+                docAll.checked = true;
+            } else {
+                docAll.disabled = true;
+                docAll.checked = false;
+            }
+        };
+
+        // label 클릭 시 전체 체크 검사
+        docAllLabel.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            if (!areAllChecked()) {
+                alert("위의 모든 사항을 확인 후 체크해주세요.");
+
+                // UX 향상: 첫 번째 미체크 요소로 스크롤 이동
+                const firstUnchecked = requiredChecks.find(chk => !chk.checked);
+                if (firstUnchecked) {
+                    firstUnchecked.scrollIntoView({ behavior: "smooth", block: "center" });
+                    firstUnchecked.focus();
                 }
-                return original();
-            };
-        }
+
+                return;
+            }
+
+            // 모든 항목 체크되어 있으면 docAll 체크 완료
+            docAll.disabled = false;
+            docAll.checked = true;
+        });
+
+        // 개별 체크박스가 변경될 때도 docAll 동기화
+        requiredChecks.forEach(chk => {
+            chk.addEventListener('change', updateDocAll);
+        });
     })();
 
 

@@ -89,31 +89,31 @@
           <tr style="color: #2B2F36; font-size: 14px; height: 52px; border-bottom: 1px #E5E7EB;">
             <th style="width: 120px;">상품ID</th>
             <th style="width: 290px;">상품명</th>
-            <th style="width: 140px;">금리(연)</th>
-            <th style="width: 190px;">기간</th>
-            <th style="width: 170px;">상태</th>
-            <th style="width: 170px;">등록일</th>
+            <th style="width: 140px;">최고금리/총 보수</th>
+            <th style="width: 190px;">기간/위험등급</th>
+            <th style="width: 170px;">상태/유형</th>
+            <th style="width: 170px;">등록일/설정일</th>
             <th>관리</th>
           </tr>
           <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;"
-              th:each="product, stat:${pageResponseDTO.dtoList}">
-            <td><span th:text="${product.pid}"></span></td>
-            <td><span th:text="${product.pname}"></span></td>
-            <td style="color: #D91A1A;"><span th:text="${product.phirate}"></span>%</td>
-            <td><span th:text="${product.pcprd}"></span></td>
+              th:each="row, stat:${pageResponseDTO.dtoList}">
+            <td><span th:text="${row.productId}"></span></td>
+            <td><span th:text="${row.name}"></span></td>
+            <td style="color: #D91A1A;"><span th:text="${row.rateOrFee}"></span>%</td>
+            <td><span th:text="${row.periodOrRisk}"></span></td>
             <td style="vertical-align: middle; text-align: center;">
-              <span th:text="${product.pcond}"></span>
+              <span th:text="${row.statusOrType}"></span>
             </td>
-            <td><span th:text="${product.pupdate.substring(0, 10)}"></span></td>
+            <td><span th:text="${row.regOrSetDate}"></span></td>
             <td style="vertical-align: middle; text-align: center;">
               <div style="display: flex; align-items: center; justify-content: center; gap: 0px;">
                 <button type="button"
-                        id="btnModify"
+                        class="btn-modify"
                         style="display:inline-flex; align-items:center; justify-content:center;
                               width:32px; height:32px; border:none; background:transparent; 
                               border-radius:6px; cursor:pointer;"
-                        aria-label="회원 수정"
-                        th:onclick="|location.href='@{/admin/prod/modify}'|">
+                        aria-label="상품 수정"
+                        th:data-url="${row.modifyUrl}">
                   <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_191_277)">
                     <path d="M14.7375 5.67832C14.0531 4.99395 12.9469 4.99395 12.2625 5.67832L11.3219 6.61582L14.3813 9.6752L15.3219 8.73457C16.0063 8.0502 16.0063 6.94395 15.3219 6.25957L14.7375 5.67832ZM5.3875 12.5533C5.19687 12.7439 5.05 12.9783 4.96562 13.2377L4.04063 16.0127C3.95 16.2814 4.02188 16.5783 4.22188 16.7814C4.42188 16.9846 4.71875 17.0533 4.99062 16.9627L7.76562 16.0377C8.02188 15.9533 8.25625 15.8064 8.45 15.6158L13.6781 10.3846L10.6156 7.32207L5.3875 12.5533ZM3 7.0002C1.34375 7.0002 0 8.34395 0 10.0002V18.0002C0 19.6564 1.34375 21.0002 3 21.0002H11C12.6562 21.0002 14 19.6564 14 18.0002V15.0002C14 14.4471 13.5531 14.0002 13 14.0002C12.4469 14.0002 12 14.4471 12 15.0002V18.0002C12 18.5533 11.5531 19.0002 11 19.0002H3C2.44688 19.0002 2 18.5533 2 18.0002V10.0002C2 9.44707 2.44688 9.0002 3 9.0002H6C6.55312 9.0002 7 8.55332 7 8.0002C7 7.44707 6.55312 7.0002 6 7.0002H3Z" fill="#2B2F36"/>
@@ -130,8 +130,8 @@
                         style="display:inline-flex; align-items:center; justify-content:center;
                               width:32px; height:32px; border:none; background:transparent; 
                               border-radius:6px; cursor:pointer;"
-                        aria-label="회원 삭제"
-                        th:onclick="|location.href='@{/admin/prod/delete(pid=${product.pid})}'|">
+                        aria-label="상품 삭제"
+                        th:attr="data-delete-url=${row.deleteUrl}">
                   <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_191_278)">
                     <path d="M4.225 5.55313L4 6H1C0.446875 6 0 6.44687 0 7C0 7.55312 0.446875 8 1 8H13C13.5531 8 14 7.55312 14 7C14 6.44687 13.5531 6 13 6H10L9.775 5.55313C9.60625 5.2125 9.25938 5 8.88125 5H5.11875C4.74062 5 4.39375 5.2125 4.225 5.55313ZM13 9H1L1.6625 19.5938C1.7125 20.3844 2.36875 21 3.15937 21H10.8406C11.6312 21 12.2875 20.3844 12.3375 19.5938L13 9Z" fill="#D91A1A"/>
@@ -147,26 +147,6 @@
             </td>
           </tr>
         </table>
-        <script>
-          document.addEventListener('DOMContentLoaded', () => {
-          // 표 영역 하나에만 리스너 1개
-          const table = document.querySelector('table');
-
-          table.addEventListener('click', (e) => {
-            const btn = e.target.closest('.btn-delete');
-            if (!btn) return; // 삭제 버튼이 아닌 클릭은 무시
-
-            // 행 정보가 필요하면 여기서 가져오기
-            const tr = btn.closest('tr');
-            const memberId = tr?.querySelector('td:nth-of-type(2)')?.textContent.trim(); // 예: 김철수
-
-            if (confirm((memberId ? `${memberId}을(를) ` : '') + '삭제하시겠습니까?')) {
-              // TODO: 삭제 실행 (이동/비동기 등)
-              // location.href = `/members/${encodeURIComponent(memberId)}/delete`;
-            }
-          });
-        });
-        </script>
         <script>
           window.addEventListener('DOMContentLoaded', () => {
             // 상태 텍스트 → 배지 스타일 매핑
@@ -244,13 +224,23 @@
 
         </div>
         <div style="grid-column: 3; margin-left: auto; box-sizing: border-box;">
-          <button th:onclick="|location.href='@{/admin/prod/register}'|" class="btn-register" style="gap:6px; box-sizing: border-box; width: 90px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
+          <button th:onclick="|location.href='@{/admin/prod/register}'|" class="btn-register" style="gap:6px; box-sizing: border-box; width: 140px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
             <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
               <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 2.5C8 1.94687 7.55312 1.5 7 1.5C6.44688 1.5 6 1.94687 6 2.5V7H1.5C0.946875 7 0.5 7.44688 0.5 8C0.5 8.55312 0.946875 9 1.5 9H6V13.5C6 14.0531 6.44688 14.5 7 14.5C7.55312 14.5 8 14.0531 8 13.5V9H12.5C13.0531 9 13.5 8.55312 13.5 8C13.5 7.44688 13.0531 7 12.5 7H8V2.5Z" fill="white"/>
               </svg>
               <div>
-                등록
+                예적금 상품 등록
+              </div>
+            </div>
+          </button>
+            <button th:onclick="|location.href='@{/admin/fund/register}'|" class="btn-register" style="gap:6px; box-sizing: border-box; width: 130px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
+              <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 2.5C8 1.94687 7.55312 1.5 7 1.5C6.44688 1.5 6 1.94687 6 2.5V7H1.5C0.946875 7 0.5 7.44688 0.5 8C0.5 8.55312 0.946875 9 1.5 9H6V13.5C6 14.0531 6.44688 14.5 7 14.5C7.55312 14.5 8 14.0531 8 13.5V9H12.5C13.0531 9 13.5 8.55312 13.5 8C13.5 7.44688 13.0531 7 12.5 7H8V2.5Z" fill="white"/>
+              </svg>
+              <div>
+                펀드 상품 등록
               </div>
             </div>
           </button>
@@ -574,7 +564,7 @@
   </footer>
   <div th:if="${toastSuccess}" class="toast success" th:text="${toastSuccess}"></div>
   <div th:if="${toastError}" class="toast error"   th:text="${toastError}"></div>
-  <<style>
+  <style>
       .toast{
           position: fixed; left:50%; bottom:28px; transform:translateX(-50%);
           min-width:260px; max-width:90vw; padding:14px 16px; border-radius:10px;
@@ -602,6 +592,41 @@
       document.addEventListener('DOMContentLoaded', () => {
           showToastEl(document.querySelector('.toast.success'));
           showToastEl(document.querySelector('.toast.error'));
+      });
+  </script>
+  <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          const table = document.querySelector('table');
+          if (!table) return;
+
+          table.addEventListener('click', (e) => {
+              // 1) 수정 버튼 클릭
+              const modifyBtn = e.target.closest('.btn-modify');
+              if (modifyBtn) {
+                  const url = modifyBtn.dataset.url;
+                  if (url) {
+                      location.href = url;
+                  }
+                  return;
+              }
+
+              // 2) 삭제 버튼 클릭
+              const btn = e.target.closest('.btn-delete');
+              if (!btn) return; // 둘 다 아니라면 무시
+
+              const tr = btn.closest('tr');
+              const productName = tr?.querySelector('td:nth-of-type(2)')?.textContent.trim();
+              const msg = (productName ? `${productName}을(를) ` : '') + '삭제하시겠습니까?';
+
+              if (!confirm(msg)) {
+                  return;
+              }
+
+              const url = btn.dataset.deleteUrl;
+              if (url) {
+                  location.href = url;
+              }
+          });
       });
   </script>
 

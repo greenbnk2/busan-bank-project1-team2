@@ -36,11 +36,10 @@ public class UsersDTO {
     private LocalDateTime maccess;
     private String mlimit;
 
-    // ↓ 사용x
-    private String mtitle;
-    private String mcontent;
 
     private String mci;
+
+    private String role;
 
     public Users toEntity(){
         return Users.builder()
@@ -61,10 +60,9 @@ public class UsersDTO {
                 .mnum(mnum)
                 .maccess(maccess)
                 .mlimit(mlimit)
-                .mtitle(mtitle)
-                .mcontent(mcontent)
                 // CI 매핑
                 .mci(mci)
+                .role(role)
                 .build();
     }
 }

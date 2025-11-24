@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'kr.co.bnkfirst'
-version = '0.0.6-SNAPSHOT'
+version = '0.0.7-SNAPSHOT'
 description = 'BNKFirst'
 
 java {
@@ -85,6 +85,11 @@ dependencies {
 
     // WebClient
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // jwt 관련 의존성 추가(2025/11/21 이준우)
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.7'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.7'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.7'
 }
 
 tasks.named('test') {

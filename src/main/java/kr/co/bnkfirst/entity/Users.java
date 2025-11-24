@@ -39,10 +39,10 @@ public class Users {
     private LocalDateTime maccess;
     private String mlimit;
 
-    private String mtitle;
-    private String mcontent;
 
     private String mci;
+
+    private String role;
 
     public UsersDTO toDTO(){
         return UsersDTO.builder()
@@ -63,9 +63,8 @@ public class Users {
                 .mnum(mnum)
                 .maccess(maccess)
                 .mlimit(mlimit)
-                .mtitle(mtitle)
-                .mcontent(mcontent)
                 .mci(mci)
+                .role(role)
                 .build();
     }
 }

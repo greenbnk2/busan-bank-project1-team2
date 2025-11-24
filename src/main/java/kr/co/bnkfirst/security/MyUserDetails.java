@@ -3,6 +3,7 @@ package kr.co.bnkfirst.security;
 import kr.co.bnkfirst.entity.Users;
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 
+@Slf4j
 @Data
 @Builder
 public class MyUserDetails implements UserDetails {
@@ -26,13 +28,14 @@ public class MyUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        String grade = user.getMgrade();
+        String role = user.getRole();
 
-        if(grade == null || grade.isBlank()){
-            grade = "USER";
+        if(role == null || role.isBlank()){
+            role = "USER";
         }
 
-        String authority = "ROLE_" + grade.toUpperCase();
+        String authority = "ROLE_" + role.toUpperCase();
+        log.info("Authority :" + authority);
 
         return List.of(new SimpleGrantedAuthority(authority));
     }

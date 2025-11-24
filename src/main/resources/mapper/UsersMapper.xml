@@ -13,7 +13,8 @@
             MPHONE  AS mphone,
             MEMAIL  AS memail,
             MDATE   AS mdate,
-            MGRADE  AS mgrade
+            MGRADE  AS mgrade,
+            "ROLE"    AS role
         FROM USERS
         WHERE MID = #{mid}
     </select>
