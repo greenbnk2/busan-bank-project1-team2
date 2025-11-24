@@ -35,6 +35,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(
+<<<<<<< HEAD
                         "/", "/css/**", "/js/**", "/images/**",
                         "/components/**", "/upload/**",
                         "/member/**", "/main/**",
@@ -42,6 +43,27 @@ public class SecurityConfig {
                         "/kiwoom/**", "/docs/**", "/product/**",
                         "/qna/**", "/stock/**", "/tologo/**",
                         "/ws/**", "/retirement-renew/**", "/mypage/calc/**"
+=======
+                        "/",
+                        "/css/**", "/js/**", "/images/**",
+                        "/components/**",
+                        "/upload/**",
+                        "/member/**",
+                        "/main/**",
+                        "/api/**",
+                        "/member/api/**",
+                        "/cs/**",
+                        "/info/**",
+                        "/board/**",
+                        "/kiwoom/**",
+                        "/docs/**",
+                        "/product/**",
+                        "/qna/**",
+                        "/stock/**",
+                        "/tologo/**",
+                        "/mypage/**",
+                        "/ws/**"
+>>>>>>> parent of 74a8a7f (datetime at 12:16 p.m. version. 0.0.6-SNAPSHOT register)
                 ).permitAll()
                 .requestMatchers("/mypage/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
