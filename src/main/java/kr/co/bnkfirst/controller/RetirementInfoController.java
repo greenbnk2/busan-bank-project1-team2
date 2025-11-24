@@ -10,7 +10,6 @@ public class RetirementInfoController {
     public String whyPension(){
         return "retirement-renew/intro/why-pension/why-pension";
     }
-<<<<<<< HEAD
 
     @GetMapping("/retirement-renew/system/db")
     public String db(){
@@ -41,6 +40,4 @@ public class RetirementInfoController {
     public String portalError(){
         return "retirement-renew/portal-error/portal-error/portal-error";
     }
-=======
->>>>>>> 74a8a7fa328179ecef4c979ebbe9f3bfd03e64d6
 }
