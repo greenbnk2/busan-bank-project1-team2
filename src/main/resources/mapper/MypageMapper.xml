@@ -14,7 +14,7 @@
         select * from deal where mid = #{mid} order by ddate desc fetch first 1 rows only
     </select>
 
-    <select id="findByBalance" resultType="int">
+    <select id="findByBalance" resultType="java.lang.Integer">
         SELECT sum(c.PBALANCE) FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pcuid = #{mid}
     </select>
 
@@ -45,7 +45,7 @@
     </select>
 
 <!--    이번 달 입금 및 출금-->
-    <select id="findBySumPlusDbalance" resultType="int">
+    <select id="findBySumPlusDbalance" resultType="java.lang.Integer">
         SELECT sum(dbalance)
         FROM deal
         WHERE mid = #{mid}
@@ -53,7 +53,7 @@
           AND ddate >= trunc(sysdate, 'MM')
         ORDER BY ddate DESC
     </select>
-    <select id="findBySumMinusDbalance" resultType="int">
+    <select id="findBySumMinusDbalance" resultType="java.lang.Integer">
         SELECT sum(dbalance)
         FROM deal
         WHERE mid = #{mid}

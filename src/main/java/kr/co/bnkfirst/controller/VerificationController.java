@@ -31,9 +31,7 @@ public class VerificationController {
         return p == null ? null : p.replaceAll("\\D", "");
     }
 
-    // ==========================
-    //      이메일 인증
-    // ==========================
+    // 이메일 인증
     @PostMapping("/email/send")
     public ResponseEntity<Map<String, Object>> sendEmail(@RequestBody Map<String, String> json) {
         String email = json.get("email");
@@ -55,9 +53,7 @@ public class VerificationController {
         return ResponseEntity.ok(Map.of("matched", matched));
     }
 
-    // ==========================
-    //      SMS 인증
-    // ==========================
+    // SMS 인증
     @PostMapping(value = "/sms/send", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> sendSms(@RequestBody Map<String, String> request) {
 
@@ -95,7 +91,7 @@ public class VerificationController {
 
         if (phone == null || inputCode == null || inputCode.isBlank()) {
             return ResponseEntity.badRequest().body(Map.of(
-                    "ok", false, "message", "요청 값이 올바르지 않습니다."
+                    "ok", false, "message", "앗! 정보가 정확하지 않아요. 다시 확인 부탁드려요."
             ));
         }
 

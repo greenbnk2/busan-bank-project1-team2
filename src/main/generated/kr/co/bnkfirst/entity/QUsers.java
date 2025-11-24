@@ -27,9 +27,9 @@ public class QUsers extends EntityPathBase<Users> {
 
     public final StringPath mcarrier = createString("mcarrier");
 
-    public final StringPath mcond = createString("mcond");
+    public final StringPath mci = createString("mci");
 
-    public final StringPath mcontent = createString("mcontent");
+    public final StringPath mcond = createString("mcond");
 
     public final DateTimePath<java.time.LocalDateTime> mdate = createDateTime("mdate", java.time.LocalDateTime.class);
 
@@ -53,7 +53,7 @@ public class QUsers extends EntityPathBase<Users> {
 
     public final StringPath mpw = createString("mpw");
 
-    public final StringPath mtitle = createString("mtitle");
+    public final StringPath role = createString("role");
 
     public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 

@@ -62,6 +62,9 @@ public class Product {
     @Lob
     private String pinfo;
 
+    // 없어서 추가함 - 손진일 2025/11/23
+    private String pwtpi;
+
     public ProductDTO toDTO(){
         return ProductDTO.builder()
                 .id(id)
@@ -82,6 +85,7 @@ public class Product {
                 .pdirate(pdirate)
                 .psubtitle(psubtitle)
                 .pinfo(pinfo)
+                .pwtpi(pwtpi)
                 .build();
     }
 }

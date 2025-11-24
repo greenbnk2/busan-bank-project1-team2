@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'kr.co.bnkfirst'
-version = '0.0.2-SNAPSHOT'
+version = '0.0.7-SNAPSHOT'
 description = 'BNKFirst'
 
 java {
@@ -74,6 +74,22 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    // 임시 비밀번호 발급 관련 의존성 추가
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    // gson
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    // WebSocket
+    implementation 'org.java-websocket:Java-WebSocket:1.5.7'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    // WebClient
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // jwt 관련 의존성 추가(2025/11/21 이준우)
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.7'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.7'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.7'
 }
 
 tasks.named('test') {

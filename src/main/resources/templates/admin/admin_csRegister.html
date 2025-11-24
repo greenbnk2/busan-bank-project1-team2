@@ -394,196 +394,216 @@
         if (window.initAdminHeader) window.initAdminHeader('cs');
     });
   </script>
-  
+
 
   <main style="background-color: #F6F6F8; display: flex; justify-content: center;">
-    <div id="printRoot" style="width: 1200px; ">
-      <div>
-        <div style="display: flex; font-size: 24px; color: #4B5563;">
-          <div>게시글등록</div>
-        </div>
-        <div style="display: flex;">
-          <div style="font-size: 16px; color: #4B5563;">고객상담, 이용안내, 금융소비자보호, 상품공시실, 서식/약관/자료실의 새 글을 등록합니다.</div>
-          <div style="display: flex; margin-left: auto; margin-right: 10px;">
-            <button th:onclick="|location.href='@{/admin/cs}'|" class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 150px; height: 42.5px; border:none; border-radius: 8px; cursor: pointer; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; background-color: white;">
-              <div style="display: flex; gap: 8px; justify-content: center; align-content: center;">
-                <div style="margin-top: 2px;">
-                  <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_454_42)">
-                    <path d="M0.293701 7.29365C-0.0969238 7.68428 -0.0969238 8.31865 0.293701 8.70928L5.2937 13.7093C5.68433 14.0999 6.3187 14.0999 6.70933 13.7093C7.09995 13.3187 7.09995 12.6843 6.70933 12.2937L3.41245 8.9999H13C13.5531 8.9999 14 8.55303 14 7.9999C14 7.44678 13.5531 6.9999 13 6.9999H3.41558L6.7062 3.70615C7.09683 3.31553 7.09683 2.68115 6.7062 2.29053C6.31558 1.8999 5.6812 1.8999 5.29058 2.29053L0.290576 7.29053L0.293701 7.29365Z" fill="#374151"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_454_42">
-                    <path d="M0 0H14V16H0V0Z" fill="white"/>
-                    </clipPath>
-                    </defs>
-                  </svg>
-                </div>
-                <div>
-                  목록으로 돌아가기
-                </div>
-              </div>
-            </button>
-          </div>
-          <div style="display: flex; justify-content: center; align-items: center; font-size: 14px; background-color: white; width: 165px; height: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
-            <div style="display: flex; align-items: center;">
-              <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_194_44)">
-                <path d="M7 8C8.06087 8 9.07828 7.57857 9.82843 6.82843C10.5786 6.07828 11 5.06087 11 4C11 2.93913 10.5786 1.92172 9.82843 1.17157C9.07828 0.421427 8.06087 0 7 0C5.93913 0 4.92172 0.421427 4.17157 1.17157C3.42143 1.92172 3 2.93913 3 4C3 5.06087 3.42143 6.07828 4.17157 6.82843C4.92172 7.57857 5.93913 8 7 8ZM5.57188 9.5C2.49375 9.5 0 11.9937 0 15.0719C0 15.5844 0.415625 16 0.928125 16H13.0719C13.1281 16 13.1813 15.9938 13.2375 15.9844C10.8531 14.2625 10.1187 11.5781 10.0156 9.72812C9.5125 9.57812 8.98125 9.5 8.43125 9.5H5.57188ZM15.2219 7.05312L11.4719 8.55313C11.1875 8.66875 11 8.94375 11 9.25C11 11.2281 11.8094 14.525 15.2125 15.9438C15.3969 16.0219 15.6062 16.0219 15.7906 15.9438C19.1906 14.525 20 11.2281 20 9.25C20 8.94375 19.8125 8.66875 19.5281 8.55313L15.7781 7.05312C15.6 6.98125 15.4 6.98125 15.2219 7.05312ZM18.4813 9.75C18.3594 11.3344 17.6312 13.3969 15.5 14.4281V8.55625L18.4813 9.75Z" fill="#E6002D"/>
-                </g>
-                <defs>
-                <clipPath id="clip0_194_44">
-                <path d="M0 0H20V16H0V0Z" fill="white"/>
-                </clipPath>
-                </defs>
-              </svg>
-              <div style="margin-left: 10px;">관리자: Admin</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="padding: 25px; margin-top:25px; padding-bottom: 32px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
-        <div style="font-size:20px; color:#2B2F36;">
-          기본 정보
-        </div>
-        <div>
-          <div style="display: flex; margin-top: 20px;">
-            <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">글 제목</div><div style="color: red;">*</div></div>
+      <div id="printRoot" style="width: 1200px; ">
+
+          <!-- ✅ 여기서부터 form 시작 -->
+          <form th:action="@{/admin/cs/register}"
+                method="post"
+                enctype="multipart/form-data"
+                th:object="${document}">
+
+              <!-- ✅ POST에서 @RequestParam으로 받는 group / type 같이 전송 -->
+              <input type="hidden" name="group" th:value="${group}">
+              <input type="hidden" name="type"  th:value="${type}">
+
+              <!-- ==== 상단 타이틀/버튼 영역 ==== -->
               <div>
-                <input id="titleInput" type="text" placeholder="게시글 제목을 입력하세요 (최대 100자)" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1140px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                <!-- 글자수 표시 -->
-                <div id="titleCounter" aria-live="polite"
-                    style="margin-top:3px; margin-left: 5px; font-size:12px; color:#6B7280;">0 / 100자
+                  <div style="display: flex; font-size: 24px; color: #4B5563;">
+                      <div>게시글등록</div>
+                  </div>
+                  <div style="display: flex;">
+                      <div style="font-size: 16px; color: #4B5563;">
+                          고객상담, 이용안내, 금융소비자보호, 상품공시실, 서식/약관/자료실의 새 글을 등록합니다.
+                      </div>
+                      <div style="display: flex; margin-left: auto; margin-right: 10px;">
+                          <button th:onclick="|location.href='@{/admin/cs}'|"
+                                  type="button"
+                                  class="btn-pressable btn-sheen"
+                                  style="box-sizing: border-box; width: 150px; height: 42.5px; border:none; border-radius: 8px; cursor: pointer; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; background-color: white;">
+                              목록으로 돌아가기
+                          </button>
+                      </div>
+                      <div style="display: flex; justify-content: center; align-items: center; font-size: 14px; background-color: white; width: 165px; height: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
+                          <div style="display: flex; align-items: center;">
+                              <div style="margin-left: 10px;">관리자: Admin</div>
+                          </div>
+                      </div>
                   </div>
               </div>
-            </div>
-          </div>
-          <div style="display: flex; margin-top: 20px; gap: 25px;">
-            <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">작성자</div></div>
-              <div>
-                <input type="text" value="관리자" readonly placeholder="작성자를 입력하세요" style="background-color: #F9FAFB; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-              </div>
-            </div>
-            <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">유형</div><div style="color: red;">*</div></div>
-              <div class="input-suffix" style="margin-top:13px;">
-                <select name="type" id="" style="box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                  <option value="#">선택하세요</option>
-                  <option value="a">고객상담</option>
-                  <option value="b">이용안내</option>
-                  <option value="c">금융소비자보호</option>
-                  <option value="d">상품공시실</option>
-                  <option value="e">서식/약관/자료실</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div style="display: flex; margin-top: 20px; gap: 25px;">
-            <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">등록일</div><div style="color: red;">*</div></div>
-              <div class="date-range">
-                <!-- 시작일 -->
-                <div class="date-field">
-                  <input type="date" id="startDate" class="date-input" placeholder="시작일" aria-label="시작일">
-                  <button type="button" class="calendar-btn" aria-label="시작일 달력 열기">
-                    <!-- calendar icon -->
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M7 3v2M17 3v2M4 8h16M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5A2 2 0 0 0 3 7v12a2 2 0 0 0 2 2Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    </svg>
-                  </button>
-                </div>
 
-              </div>
-            </div>
-            <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">상태</div><div style="color: red;">*</div></div>
-              <div>
-                <select name="type" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                  <option value="#">선택하세요</option>
-                  <option value="a">접수</option>
-                  <option value="wait">대기</option>
-                  <option value="end">답변</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="padding: 25px; margin-top:25px; padding-bottom: 32px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
-        <div style="font-size:20px; color:#2B2F36;">
-          본문 작성
-        </div>
-        <div>
-          <div style="display: flex; margin-top: 20px;">
-            <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">내용</div><div style="color: red;">*</div></div>
-              <div>
-                <textarea placeholder="게시글 내용을 입력하세요" name="" id="" style="height: 250px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- 첨부파일 -->
-        <div style="margin-top:24px;">
-          <div style="margin-bottom:8px; color:#374151;">첨부파일</div>
-
-          <div id="termsDropzone" class="upload-card" role="button" tabindex="0" aria-label="파일을 드래그하거나 클릭하여 업로드">
-            <input id="termsFile" type="file" accept=".pdf,.doc,.docx" hidden>
-            <div class="upload-inner">
-              <!-- cloud + arrow -->
-              <svg width="36" height="36" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M7 18h10a4 4 0 0 0 0-8 5 5 0 0 0-9.6-1.6A4 4 0 0 0 7 18Zm5-3v-6m0 0-3 3m3-3 3 3"
-                      fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <div class="upload-title">파일을 여기에 드래그하거나 클릭하여 업로드</div>
-              <div class="upload-sub">PDF, DOC, DOCX 파일만 업로드 가능 (최대 10MB)</div>
-            </div>
-          </div>
-
-          <!-- 선택 결과/에러 메시지 -->
-          <div id="termsResult" class="upload-result" aria-live="polite"></div>
-        </div>
-      </div>
-      <div style="padding: 25px; margin-top:25px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
-        <div style="display: flex; gap: 10px; justify-content: space-between;">
-          <div>
-            <button class="btn-pressable btn-sheen" id="btnPrint" style="box-sizing: border-box; width: 120px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
-              <div style="display: flex; gap: 8px; justify-content: center;">
-                <div>
-                  <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 18C5.45 18 4.97933 17.8043 4.588 17.413C4.19667 17.0217 4.00067 16.5507 4 16V14H2C1.45 14 0.979333 13.8043 0.588 13.413C0.196667 13.0217 0.000666667 12.5507 0 12V8C0 7.15 0.291667 6.43767 0.875 5.863C1.45833 5.28833 2.16667 5.00067 3 5H17C17.85 5 18.5627 5.28767 19.138 5.863C19.7133 6.43833 20.0007 7.15067 20 8V12C20 12.55 19.8043 13.021 19.413 13.413C19.0217 13.805 18.5507 14.0007 18 14H16V16C16 16.55 15.8043 17.021 15.413 17.413C15.0217 17.805 14.5507 18.0007 14 18H6ZM16 4H4V2C4 1.45 4.196 0.979333 4.588 0.588C4.98 0.196667 5.45067 0.000666667 6 0H14C14.55 0 15.021 0.196 15.413 0.588C15.805 0.98 16.0007 1.45067 16 2V4ZM16 9.5C16.2833 9.5 16.521 9.404 16.713 9.212C16.905 9.02 17.0007 8.78267 17 8.5C16.9993 8.21733 16.9033 7.98 16.712 7.788C16.5207 7.596 16.2833 7.5 16 7.5C15.7167 7.5 15.4793 7.596 15.288 7.788C15.0967 7.98 15.0007 8.21733 15 8.5C14.9993 8.78267 15.0953 9.02033 15.288 9.213C15.4807 9.40567 15.718 9.50133 16 9.5ZM6 16H14V12H6V16Z" fill="#374151"/>
-                  </svg>
-                </div>
-                <div>
-                  인쇄하기
-                </div>
-              </div>
-            </button>
-          </div>
-          <div style="display: flex; gap: 10px;">
-            <div>
-              <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 65px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
-            </div>
-            <div>
-              <button class="btn-register" style="gap:6px; box-sizing: border-box; width: 120px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
-                <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M14 3V5H5V19H19V10H21V20C21 20.2652 20.8946 20.5196 20.7071 20.7071C20.5196 20.8946 20.2652 21 20 21H4C3.73478 21 3.48043 20.8946 3.29289 20.7071C3.10536 20.5196 3 20.2652 3 20V4C3 3.73478 3.10536 3.48043 3.29289 3.29289C3.48043 3.10536 3.73478 3 4 3H14ZM19.94 3.354L20.647 4.061C20.7407 4.15476 20.7934 4.28192 20.7934 4.4145C20.7934 4.54708 20.7407 4.67424 20.647 4.768L11.314 14.1L9.322 15.08C9.26575 15.1079 9.20217 15.1174 9.14022 15.1072C9.07827 15.0971 9.02107 15.0677 8.97668 15.0233C8.93229 14.9789 8.90295 14.9217 8.89278 14.8598C8.88261 14.7978 8.89213 14.7343 8.92 14.678L9.9 12.686L19.233 3.353C19.3268 3.25926 19.4539 3.20661 19.5865 3.20661C19.7191 3.20661 19.8462 3.25926 19.94 3.353V3.354Z" fill="white"/>
-                  </svg>
+              <!-- ================= 기본 정보 카드 ================= -->
+              <div style="padding: 25px; margin-top:25px; padding-bottom: 32px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
+                  <div style="font-size:20px; color:#2B2F36;">
+                      기본 정보
+                  </div>
                   <div>
-                    등록하기
+
+                      <!-- 제목 -->
+                      <div style="display: flex; margin-top: 20px;">
+                          <div>
+                              <div style="display: flex;">
+                                  <div style="margin-right: 2px;">글 제목</div>
+                                  <div style="color: red;">*</div>
+                              </div>
+                              <div>
+                                  <!-- ✅ doctitle 바인딩 -->
+                                  <input id="titleInput"
+                                         type="text"
+                                         th:field="*{doctitle}"
+                                         placeholder="게시글 제목을 입력하세요 (최대 100자)"
+                                         style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1140px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                                  <div id="titleCounter" aria-live="polite"
+                                       style="margin-top:3px; margin-left: 5px; font-size:12px; color:#6B7280;">
+                                      0 / 100자
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div style="display: flex; margin-top: 20px; gap: 25px;">
+                          <!-- 작성자 (MID) -->
+                          <div>
+                              <div style="display: flex;"><div style="margin-right: 2px;">작성자</div></div>
+                              <div>
+                                  <!-- 화면 표시용 -->
+                                  <input type="text"
+                                         value="관리자"
+                                         readonly
+                                         style="background-color: #F9FAFB; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                                  <!-- ✅ 실제 전송용 MID -->
+                                  <input type="hidden" th:field="*{mid}" value="admin"/>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div style="display: flex; margin-top: 20px; gap: 25px;">
+                          <!-- 등록일 (표시만, DB는 SYSDATE) -->
+                          <div>
+                              <div style="display: flex;">
+                                  <div style="margin-right: 2px;">등록일</div><div style="color: red;">*</div>
+                              </div>
+                              <div class="date-range">
+                                  <div class="date-field">
+                                      <input type="date"
+                                             id="startDate"
+                                             class="date-input"
+                                             placeholder="시작일"
+                                             aria-label="시작일">
+                                      <button type="button" class="calendar-btn" aria-label="시작일 달력 열기">
+                                          <!-- 아이콘 -->
+                                          ...
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <!-- 상태 (추후 DB 컬럼 만들면 DTO에 필드 추가해서 th:field 로 바꿔도 됨) -->
+                          <div>
+                              <div style="display: flex;">
+                                  <div style="margin-right: 2px;">상태</div><div style="color: red;">*</div>
+                              </div>
+                              <div>
+                                  <select name="docstatus"
+                                          style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                                      <option value="">선택하세요</option>
+                                      <option value="RECEIVE">접수</option>
+                                      <option value="WAIT">대기</option>
+                                      <option value="END">답변</option>
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- ✅ docgroup은 현재 group값으로 DTO에 세팅 -->
+                      <input type="hidden" th:field="*{docgroup}" th:value="${group}"/>
+
                   </div>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
+              </div>
+
+              <!-- ================= 본문 작성 카드 ================= -->
+              <div style="padding: 25px; margin-top:25px; padding-bottom: 32px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
+                  <div style="font-size:20px; color:#2B2F36;">
+                      본문 작성
+                  </div>
+                  <div>
+                      <div style="display: flex; margin-top: 20px;">
+                          <div>
+                              <div style="display: flex;">
+                                  <div style="margin-right: 2px;">내용</div><div style="color: red;">*</div>
+                              </div>
+                              <div>
+                                  <!-- ✅ doccontent 바인딩 -->
+                                  <textarea th:field="*{doccontent}"
+                                            placeholder="게시글 내용을 입력하세요"
+                                            style="height: 250px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- 첨부파일 -->
+                  <div style="margin-top:24px;">
+                      <div style="margin-bottom:8px; color:#374151;">첨부파일</div>
+
+                      <div id="termsDropzone" class="upload-card" role="button" tabindex="0" aria-label="파일을 드래그하거나 클릭하여 업로드">
+                          <!-- ✅ name 추가 (컨트롤러에서 @RequestParam("uploadFile")로 받을 수 있음) -->
+                          <input id="termsFile" type="file"
+                                 name="uploadFile"
+                                 accept=".pdf,.doc,.docx"
+                                 hidden>
+                          <div class="upload-inner">
+                              <div class="upload-title">파일을 여기에 드래그하거나 클릭하여 업로드</div>
+                              <div class="upload-sub">PDF, DOC, DOCX 파일만 업로드 가능 (최대 10MB)</div>
+                          </div>
+                      </div>
+
+                      <div id="termsResult" class="upload-result" aria-live="polite"></div>
+                  </div>
+              </div>
+
+              <!-- ================= 버튼 영역 ================= -->
+              <div style="padding: 25px; margin-top:25px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
+                  <div style="display: flex; gap: 10px; justify-content: space-between;">
+                      <div>
+                          <button class="btn-pressable btn-sheen"
+                                  id="btnPrint"
+                                  type="button"
+                                  style="box-sizing: border-box; width: 120px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
+                              인쇄하기
+                          </button>
+                      </div>
+                      <div style="display: flex; gap: 10px;">
+                          <div>
+                              <button class="btn-pressable btn-sheen"
+                                      type="button"
+                                      style="box-sizing: border-box; width: 65px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
+                                  취소
+                              </button>
+                          </div>
+                          <div>
+                              <!-- ✅ 등록 버튼: submit -->
+                              <button class="btn-register"
+                                      type="submit"
+                                      style="gap:6px; box-sizing: border-box; width: 120px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
+                                  <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
+                                      등록하기
+                                  </div>
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+          </form>
+          <!-- ✅ form 끝 -->
+
       </div>
-      
-    </div>
   </main>
+
+
 
   <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
     <div id="bnk-chatbot-slot"></div>

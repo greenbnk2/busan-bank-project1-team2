@@ -50,7 +50,7 @@
                     <div class="m-title">
                         <span class="m-badge1">✷</span>
                         <div>
-                            <div class="m-name">공인인증서</div>
+                            <div class="m-name">금융인증서</div>
                             <div class="m-sub">저장된 인증서로 이용</div>
                         </div>
                     </div>
@@ -158,21 +158,23 @@
                 </div>
             </section>
 
-            <!-- 공인인증서(테이블 레이아웃) -->
+            <!-- 금융인증서(테이블 레이아웃) -->
             <section id="panel-cert" class="auth-panel" role="tabpanel" aria-labelledby="method-cert" aria-hidden="true" >
                 <div class="form-card">
                     <table class="auth-table">
                         <tbody>
                         <tr>
-                            <th scope="row" class="field-name"><h2 style="margin: 0;">공인인증서 인증</h2></th>
+                            <th scope="row" class="field-name"><h2 style="margin: 0;">금융인증서 인증</h2></th>
                         </tr>
                         <tr>
-                            <td><p style="color:#4b5563; margin: 0 10px 0;">PC 또는 모바일에 저장된 공인인증서를 선택하여 인증을 진행해주세요.</p></td>
+                            <td><p style="color:#4b5563; margin: 0 10px 0;">PC 또는 모바일에 저장된 금융인증서를 선택하여 인증을 진행해주세요.</p></td>
                         </tr>
                         <tr>
                             <td colspan="4">
                                 <div class="btns">
-                                    <button type="button" class="btn-register" id="btnOpenCertModal" style="width:720px;">공인인증서 선택</button>
+                                    <button type="button" class="btn-register" id="btnFinanceCert" style="width:720px;">
+                                        금융인증서 선택
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -215,12 +217,12 @@
     </form>
 </main>
 
-<!-- ▼▼ 공인인증서 모달(임시 폼) ▼▼ -->
+<!-- ▼▼ 금융인증서 모달 현재 미구현 -->
 <div id="certModal" aria-hidden="true">
   <div class="modal-backdrop" data-close-modal></div>
   <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
     <div class="modal-header">
-      <h3 id="certModalTitle" style="margin:0;">공인인증서 로그인</h3>
+      <h3 id="certModalTitle" style="margin:0;">금융인증서 로그인</h3>
       <button type="button" class="modal-close" title="닫기" data-close-modal>&times;</button>
     </div>
     <div class="modal-body">
@@ -286,7 +288,6 @@
         btnPhone.click();
     })();
 </script>
-
 
 <script>
     // 인증상태
@@ -382,42 +383,110 @@
     });
 </script>
 
-
-<script>
-    // 공인인증서 모달 처리
-    (function () {
-        const modal = document.getElementById("certModal");
-        const btnOpen = document.getElementById("btnOpenCertModal");
-        const btnSubmit = document.getElementById("btnCertSubmit");
-
-        document.querySelectorAll("[data-close-modal]").forEach(btn => {
-            btn.addEventListener("click", () => {
-                modal.setAttribute("aria-hidden", "true");
-            });
-        });
-
-        if (btnOpen) {
-            btnOpen.addEventListener("click", () => {
-                modal.setAttribute("aria-hidden", "false");
-            });
-        }
-
-        if (btnSubmit) {
-            btnSubmit.addEventListener("click", () => {
-                alert("공인인증서 인증(데모용 UI)");
-                modal.setAttribute("aria-hidden", "true");
-            });
-        }
-    })();
-</script>
-
-
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+
 <script>
     flatpickr("#birthInput", {
-        dateFormat: "Y-m-d",
         locale: "ko",
+        dateFormat: "Y-m-d"
     });
+</script>
+
+<script>
+    // 금융인증서 버튼 → 모달 열기
+    (function () {
+        const btn = document.getElementById("btnFinanceCert");
+        const modal = document.getElementById("certModal");
+        if (!btn || !modal) return;
+
+        btn.addEventListener("click", () => {
+            modal.setAttribute("aria-hidden", "false");
+        });
+    })();
+
+    // 모달 닫기
+    document.querySelectorAll("[data-close-modal]").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.getElementById("certModal").setAttribute("aria-hidden", "true");
+        });
+    });
+
+    // 모달 내부 "확인" → 금융 인증 실행
+    document.getElementById("btnCertSubmit").addEventListener("click", async () => {
+        const certId = document.getElementById("certSelect").value;
+        const pw = document.getElementById("certPw").value;
+
+        if (!certId || !pw) {
+            alert("인증서를 선택하고 비밀번호를 입력해주세요.");
+            return;
+        }
+
+        try {
+            const res = await fetch("/BNK/member/api/finance-cert/start", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ certId, pw })
+            });
+
+            const data = await res.json();
+
+            if (!data.ok) {
+                alert(data.message || "인증 실패");
+                return;
+            }
+
+            document.querySelector("input[name='mname']").value = data.name;
+            document.querySelector("input[name='mbirth']").value = data.birth;
+            document.querySelector("select[name='mgender']").value = data.gender;
+            document.querySelector("select[name='mcarrier']").value = data.carrier;
+            document.querySelector("input[name='mphone']").value = data.phone;
+
+            // 모달 닫기
+            document.getElementById("certModal").setAttribute("aria-hidden", "true");
+
+            alert("금융인증이 완료되었습니다!");
+
+        } catch (e) {
+            console.error(e);
+            alert("금융인증 처리 중 오류 발생");
+        }
+    });
+
+    // 콜백 수신 시 자동 입력 반영
+    (async function () {
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.has("tx_id") && params.has("code")) {
+            const txId = params.get("tx_id");
+            const code = params.get("code");
+
+            try {
+                const res = await fetch(`/BNK/member/auth/finance-cert/callback?tx_id=${txId}&code=${code}`);
+                const data = await res.json();
+
+                if (!data.ok) {
+                    alert("금융 인증 처리 실패");
+                    return;
+                }
+
+                // 인증정보 자동 입력
+                document.querySelector("input[name='mname']").value = data.name;
+                document.querySelector("input[name='mbirth']").value = data.birth;
+                document.querySelector("select[name='mgender']").value = data.gender;
+                document.querySelector("select[name='mcarrier']").value = data.carrier;
+                document.querySelector("input[name='mphone']").value = data.phone;
+
+                alert("금융인증 완료되었습니다!");
+
+                history.replaceState({}, document.title, location.pathname);
+
+            } catch (e) {
+                console.error(e);
+                alert("금융인증 콜백 처리 중 오류 발생");
+            }
+        }
+    })();
 </script>
   <footer><div th:replace="~{layouts/footer.html}"></div></footer>
 </body>

@@ -55,6 +55,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final DateTimePath<java.time.LocalDateTime> pupdate = createDateTime("pupdate", java.time.LocalDateTime.class);
 
+    public final StringPath pwtpi = createString("pwtpi");
+
     public QProduct(String variable) {
         super(Product.class, forVariable(variable));
     }

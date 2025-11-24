@@ -700,7 +700,7 @@
           <tr>
             <td>${start + index + 1}</td>
             <td>${doc.doctitle}</td>
-            <td>${doc.docupdate}</td>
+            <td>${doc.docupdate.split("T")[0]}</td>
           </tr>`;
                     tbody.insertAdjacentHTML("beforeend", row);
                 });

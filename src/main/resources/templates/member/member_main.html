@@ -17,10 +17,10 @@
     <section style="width: 580px; margin: 0 auto; margin-top: 30px;">
 
       <!-- 감싸기 -->
-      <div class="form-card" style="height: 720px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
+      <div class="form-card" style="height: 600px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
 
-      <form th:action="@{/member/main}" th:object="${userDTO}" method="post">
-        <!-- 로그인 테이블 -->
+      <form th:action="@{/member/login}" method="post">
+          <!-- 로그인 테이블 -->
         <table class="login-table">
           <tr style="font-size: 25px;">
             <td>로그인</td>
@@ -29,32 +29,27 @@
             <td style="padding: 0 0 9px;">BNK 부산은행은 고객님의 정보를 소중히 보호합니다</td>
           </tr>
           <tr class="field-row">
-            <td class="field-label">아이디</td>            
+            <td class="field-label">아이디</td>
           </tr>
           <tr class="field-row">
             <td style="margin-bottom: 9px;">
-                <input type="text" th:field="*{mid}" placeholder="아이디를 입력하세요" autocomplete="username">
+                <input type="text" name="mid" placeholder="아이디를 입력하세요" autocomplete="username">
             </td>
           </tr>
           <tr class="field-row">
             <td class="field-label">비밀번호</td>
           </tr>
           <tr class="field-row">
-            <td style="margin-bottom: 19px;">
-                <input type="password" th:field="*{mpw}" placeholder="비밀번호를 입력하세요" autocomplete="current-password">
+            <td>
+                <input type="password" name="mpw" placeholder="비밀번호를 입력하세요" autocomplete="current-password">
             </td>
           </tr>
 
             <tr>
                 <td class="field-td" style="border-bottom: 1px solid #ddd;">
-                  <button id="loginBtn" class="btn-pressable btn-sheen" style="box-sizing:border-box;width:500px;height:42px;border:none;border-radius:8px; cursor:pointer;border:1px solid #D1D5DB;background-color:white;">
+                  <button id="loginBtn" type="submit" class="btn-register" style="width: 520px">
                     로그인
                   </button>
-                </td>
-            </tr>
-            <tr>
-                <td class="field-td">
-                    <button class="btn-register" style="width: 500px;">공인인증서 로그인</button>
                 </td>
             </tr>
             <tr>
@@ -80,61 +75,6 @@
     </section>
   </div>
 </main>
-
-    <!--
-    - 로그인시 로그아웃 폼 설정
-    - 현재 : 로그인 → 메인 페이지 이동 → member_main로 넘어오지 못하도록 막음
-            <tr th:if="${loginUser != null}">
-                <td class="field-td">
-                    <button type="button" class="btn-register" style="width: 500px;" onclick="logoutUser()">
-                        로그아웃
-                    </button>
-                </td>
-            </tr>
-    // 로그아웃 확인 모달
-    <div th:if="${loginUser != null}" id="logoutModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <p>정말 로그아웃 하시겠습니까?</p>
-            <div class="modal-buttons">
-                <button id="confirmLogout" class="btn-register">예</button>
-                <button id="cancelLogout" class="btn-pressable btn-sheen" style="box-sizing:border-box;width:90px;height:42px; border-radius:8px; cursor:pointer;border:1px solid #D1D5DB;background-color:white;">아니오
-                </button>
-            </div>
-        </div>
-    </div>
-    // 로그아웃 모달 스크립트
-    <script>
-        function logoutUser() {
-            document.getElementById('logoutModal').style.display = 'flex';
-        }
-
-        const confirmLogoutBtn = document.getElementById('confirmLogout');
-        const cancelLogoutBtn = document.getElementById('cancelLogout');
-
-        confirmLogoutBtn.addEventListener('click', () => {
-            fetch('/BNK/member/logout', { method: 'GET' })
-                .then(response => {
-                    if (response.ok) {
-                        alert('로그아웃 되었습니다.');
-                        location.reload();
-                    } else {
-                        alert('로그아웃 실패: 서버 응답 오류 (' + response.status + ')');
-                    }
-                })
-                .catch(error => {
-                    console.error('로그아웃 중 오류:', error);
-                    alert('로그아웃 실패: 네트워크 오류');
-                })
-                .finally(() => {
-                    document.getElementById('logoutModal').style.display = 'none';
-                });
-        });
-
-        cancelLogoutBtn.addEventListener('click', () => {
-            document.getElementById('logoutModal').style.display = 'none';
-        });
-    </script>
-    -->
 
     <footer><div th:replace="~{layouts/footer.html}"></div></footer>
 </body>
@@ -176,7 +116,7 @@
 
   .field-td {
     text-align: center;
-    padding: 10px;
+    padding: 20px 0 20px 0;
   }
 
   .field-td input {
@@ -187,7 +127,7 @@
     box-sizing: border-box;
     padding: 0 12px;
     outline: none;
-  }  
+  }
   .sep-dot{ margin: 0 8px; }
 
   .notice {
@@ -217,64 +157,5 @@
   .field-label {
     font-size: 18px;
   }
-  /* 모달 스타일 추가 */
-  .modal {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
-  }
-
-  .modal-content {
-      background: #fff;
-      border-radius: 15px;
-      padding: 30px 40px;
-      text-align: center;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-      width: 360px;
-      animation: popUp 0.2s ease;
-  }
-
-  @keyframes popUp {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-  }
-
-  .modal-content p {
-      font-size: 18px;
-      margin-bottom: 20px;
-  }
-
-  .modal-buttons {
-      display: flex;
-      justify-content: space-around;
-      gap: 10px;
-  }
-
-  .btn-confirm, .btn-cancel {
-      width: 120px;
-      padding: 10px 0;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 15px;
-  }
-
-  .btn-confirm {
-      background-color: #D6001C;
-      color: white;
-  }
-
-  .btn-cancel {
-      background-color: #ccc;
-  }
-
-  .btn-confirm:hover { background-color: #b8001b; }
-  .btn-cancel:hover { background-color: #b3b3b3; }
-
 </style>
 </html>

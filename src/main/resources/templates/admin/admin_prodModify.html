@@ -3,55 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/components/button.css">
     <title>admin_prodModify</title>
-    <style>
-        .btn-register {
-          --bg1: #D91A1A;
-          --bg2: #F03A3A;
-          --shadow: rgba(217,26,26,.45);
-          position: relative;
-          box-sizing: border-box;
-          width: 90px; height: 42px;
-          border: none; border-radius: 8px;
-          color: #fff; cursor: pointer;
-          background: linear-gradient(180deg, var(--bg2), var(--bg1));
-          outline: none;
-          box-shadow: 0 6px 14px -10px var(--shadow);
-          transition:
-            background .18s ease,
-            box-shadow .18s ease,
-            transform .12s ease; /* 프레스만 사용할 예정 */
-          will-change: background, box-shadow, transform;
-        }
-
-        /* Hover: 컬러와 섀도우만 아주 미세하게 (리프트 없음) */
-        .btn-register:hover {
-          background: linear-gradient(180deg, #f24a4a, #d61a1a);
-          box-shadow: 0 8px 18px -12px var(--shadow);
-          transform: none; /* 확실하게 떠오르지 않도록 고정 */
-        }
-
-        /* Active: 살짝 눌리는 프레스 효과만 */
-        .btn-register:active {
-          transform: scale(.98);
-          box-shadow: 0 4px 10px -10px var(--shadow);
-        }
-
-        /* 키보드 포커스 접근성 */
-        .btn-register:focus-visible {
-          outline: 3px solid rgba(240,58,58,.55);
-          outline-offset: 2px;
-        }
-
-        /* 모션 최소화 존중 */
-        @media (prefers-reduced-motion: reduce) {
-          .btn-register { transition: none !important; }
-        }
-
-        @media (prefers-color-scheme: dark) {
-          .btn-register { --shadow: rgba(240,58,58,.35); }
-        }
-      </style>
       <style>
         .input-suffix {
           position: relative;
@@ -388,87 +341,11 @@
   }
 }
 </style>
-<style>
-/* 이미 쓰던 프레스 효과 클래스가 있다면 그대로 사용해도 됨 */
-.btn-pressable {
-  position: relative;
-  transition: box-shadow .18s ease, transform .12s ease, background .18s ease;
-  will-change: box-shadow, transform, background;
-  --btn-shadow: rgba(0,0,0,.12);
-  --btn-shadow-hover: rgba(0,0,0,.18);
-  --btn-shadow-active: rgba(0,0,0,.22);
-}
-.btn-pressable:hover { box-shadow: 0 8px 18px -12px var(--btn-shadow-hover); }
-.btn-pressable:active { transform: scale(.98); box-shadow: 0 4px 10px -10px var(--btn-shadow-active); }
-.btn-pressable:focus-visible { outline: 3px solid rgba(240,58,58,.55); outline-offset: 2px; }
-/* 공통 설정 */
-.btn-sheen {
-  position: relative;
-  overflow: hidden;
-  border-radius: inherit;
-}
 
-/* hover 시 아랫부분에 회색빛 음영이 은은하게 비침 */
-.btn-sheen::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-
-  /* 아래쪽 중심부에서 위로 번지는 부드러운 그라디언트 */
-  background: radial-gradient(
-    130% 90% at 50% 125%,           /* 중심을 버튼 아래쪽으로 이동 */
-    rgba(150,150,150,0.25) 0%,      /* 가장 아래: 옅은 회색빛 */
-    rgba(180,180,180,0.18) 28%,     /* 중간: 은은하게 퍼짐 */
-    rgba(200,200,200,0.08) 45%,     /* 상단으로 갈수록 흐려짐 */
-    rgba(255,255,255,0) 70%         /* 위로 갈수록 완전 투명 */
-  );
-
-  opacity: 0;
-  transition: opacity .22s ease;
-}
-
-.btn-sheen:hover::before {
-  opacity: 0.9; /* hover 시 부드럽게 나타남 */
-}
-
-/* 위쪽 경계선이 약간 밝아 보이도록 (살짝 반사 느낌) */
-.btn-sheen::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-
-  background: linear-gradient(
-    to top,
-    rgba(255,255,255,0.12) 0%,
-    rgba(255,255,255,0) 40%
-  );
-
-  opacity: 0;
-  transition: opacity .22s ease;
-}
-
-.btn-sheen:hover::after {
-  opacity: 1;
-}
-
-/* 모션 최소화 존중 */
-@media (prefers-reduced-motion: reduce) {
-  .btn-sheen::before,
-  .btn-sheen::after {
-    transition: none !important;
-  }
-}
-
-
-</style>
 </head>
 <body>
   <header>
-      <div th:replace="~{layouts/admin_header.html}"></div>
+    <<div th:replace="~{layouts/admin_header.html}"></div>
   </header>
   <script>
     async function includeWithScripts(targetSelector, url) {
@@ -519,10 +396,11 @@
   
 
   <main style="background-color: #F6F6F8; display: flex; justify-content: center;">
-    <div id="printRoot" style="width: 1200px; ">
+      <form th:action="@{/admin/prod/modify}" method="post">
+        <div id="printRoot" style="width: 1200px; ">
       <div>
         <div style="display: flex; font-size: 24px; color: #4B5563;">
-          <div>상품수정</div>
+          <div>예·적금 상품수정</div>
         </div>
         <div style="display: flex;">
           <div style="font-size: 16px; color: #4B5563;">등록된 상품 정보를 수정하고 상태를 변경할 수 있습니다.</div>
@@ -573,13 +451,13 @@
             <div>
               <div style="display: flex;"><div style="margin-right: 2px;">상품명</div><div style="color: red;">*</div></div>
               <div>
-                <input type="text" placeholder="상품명을 입력하세요" value="BNK 정기예금" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                <input name="pname" type="text" th:value="${dto.pname}" placeholder="상품명을 입력하세요" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
               </div>
             </div>
             <div>
-              <div>상품ID</div>
+              <div>상품ID<span style="color: red;margin-left: 2px;">*</span></div>
               <div>
-                <input readonly value="PRD-20241104-001" type="text" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px; background-color: #F9FAFB;">
+                <input readonly name="pid" th:value="${dto.pid}" placeholder="BNK-TD-1" type="text" style="background: #f4f4f4; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
               </div>
             </div>
           </div>
@@ -587,59 +465,78 @@
             <div>
               <div style="display: flex;"><div style="margin-right: 2px;">상품유형</div><div style="color: red;">*</div></div>
               <div>
-                <select name="type" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                  <option value="#">선택하세요</option>
+                <select name="ptype" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                  <option value="예금" th:selected="${dto.ptype == '예금'}">예금</option>
+                  <option value="적금" th:selected="${dto.ptype == '적금'}">적금</option>
                 </select>
-            </div>
+              </div>
             </div>
             <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">금리(연)</div><div style="color: red;">*</div></div>
+              <div style="display: flex;"><div style="margin-right: 2px;">기본금리</div><div style="color: red;">*</div></div>
               <div class="input-suffix" style="margin-top:13px;">
-                <input value="3.5" type="number" step="0.01" placeholder="0.00">
+                <input type="number" name="pbirate" th:value="${dto.pbirate}" step="0.01" placeholder="0.00">
                 <span class="suffix">%</span>
               </div>
             </div>
           </div>
           <div style="display: flex; margin-top: 20px; gap: 25px;">
             <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">기간</div><div style="color: red;">*</div></div>
-              <div class="date-range">
-                <!-- 시작일 -->
-                <div class="date-field">
-                  <input value="2025-01-01" type="date" id="startDate" class="date-input" placeholder="시작일" aria-label="시작일">
-                  <button type="button" class="calendar-btn" aria-label="시작일 달력 열기">
-                    <!-- calendar icon -->
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M7 3v2M17 3v2M4 8h16M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5A2 2 0 0 0 3 7v12a2 2 0 0 0 2 2Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    </svg>
-                  </button>
-                </div>
-
-                <span class="date-sep">~</span>
-
-                <!-- 마감일 -->
-                <div class="date-field">
-                  <input value="2025-12-31" type="date" id="endDate" class="date-input" placeholder="마감일" aria-label="마감일">
-                  <button type="button" class="calendar-btn" aria-label="마감일 달력 열기">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M7 3v2M17 3v2M4 8h16M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5A2 2 0 0 0 3 7v12a2 2 0 0 0 2 2Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div style="display: flex;"><div style="margin-right: 2px;">상태</div><div style="color: red;">*</div></div>
+              <div style="display: flex;"><div style="margin-right: 2px;">계약기간</div><div style="color: red;">*</div></div>
               <div>
-                <select name="type" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                  <option value="#">선택하세요</option>
-                  <option value="active" selected>활성</option>
-                  <option value="wait">대기</option>
-                  <option value="end">종료</option>
-                </select>
+                  <input name="pcprd" type="text" th:value="${dto.pcprd}" placeholder="계약기간을 입력하세요" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
               </div>
             </div>
+              <div>
+                  <div style="display: flex;"><div style="margin-right: 2px;">최고금리</div><div style="color: red;">*</div></div>
+                  <div class="input-suffix" style="margin-top:13px;">
+                      <input type="number" th:value="${dto.phirate}" name="phirate" step="0.01" placeholder="0.00">
+                      <span class="suffix">%</span>
+                  </div>
+              </div>
           </div>
+          <div style="display: flex; margin-top: 20px; gap: 25px;">
+            <div>
+                <div style="display: flex;"><div style="margin-right: 2px;">상태</div><div style="color: red;">*</div></div>
+                <div>
+                    <select name="pcond" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                        <option value="활성" th:selected="${dto.pcond == '활성'}">활성</option>
+                        <option value="대기" th:selected="${dto.pcond == '대기'}">대기</option>
+                        <option value="종료" th:selected="${dto.pcond == '종료'}">종료</option>
+                    </select>
+                </div>
+            </div>
+              <div>
+                  <div style="display: flex;"><div style="margin-right: 2px;">가입대상</div><div style="color: red;">*</div></div>
+                  <div>
+                      <input name="pelgbl" th:value="${dto.pelgbl}" type="text" placeholder="가입대상을 입력하세요" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                  </div>
+              </div>
+          </div>
+            <div style="display: flex; margin-top: 20px; gap: 25px;">
+                <div>
+                    <div style="display: flex;"><div style="margin-right: 2px;">가입방법</div><div style="color: red;">*</div></div>
+                    <div>
+                        <input name="prmthd" th:value="${dto.prmthd}" type="text" placeholder="가입방법을 입력하세요" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                    </div>
+                </div>
+                <div>
+                    <div style="display: flex;"><div style="margin-right: 2px;">이자지급구분</div><div style="color: red;">*</div></div>
+                    <div>
+                        <select name="pwtpi" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                            <option value="만기일시지급" th:selected="${dto.pwtpi == '만기일시지급'}">만기일시지급</option>
+                            <option value="월이자지급" th:selected="${dto.pwtpi == '월이자지급'}">월이자지급</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; margin-top: 20px; gap: 25px;">
+                <div>
+                    <div style="display: flex;"><div style="margin-right: 2px;">가입금액</div><div style="color: red;">*</div></div>
+                    <div>
+                        <input name="pjnfee" th:value="${dto.pjnfee}" type="text" placeholder="가입금액을 입력하세요" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
       <div style="padding: 25px; margin-top:25px; padding-bottom: 32px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
@@ -649,23 +546,61 @@
         <div>
           <div style="display: flex; margin-top: 20px;">
             <div>
-              <div>상품 설명</div>
+              <div>상품안내</div>
               <div>
-                <textarea placeholder="상품에 대한 상세한 설명을 입력하세요" name="" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;">BNK 부산은행의 대표 정기예금 상품입니다. 안정적인 수익률과 다양한 우대금리 혜택을 제공하며, 고객의 목돈 마련을 위한 최적의 선택입니다.</textarea>
+                <textarea placeholder="상품에 대한 상세한 설명을 입력하세요" name="pinfo" th:text="${dto.pinfo}" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
               </div>
             </div>
           </div>
         </div>
+          <div style="display: flex; margin-top: 20px;">
+              <div>
+                  <div>상품 간단 설명</div>
+                  <div>
+                      <textarea placeholder="상품에 대한 간단한 설명을 입력하세요" name="psubtitle" th:text="${dto.psubtitle}" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
+                  </div>
+              </div>
+          </div>
         <div>
           <div style="display: flex; margin-top: 20px;">
             <div>
-              <div>주요 혜택</div>
+              <div>세제혜택</div>
               <div>
-                <textarea placeholder="주요 혜택을 입력하세요 (예: 우대금리 0.1%, 수수료 면제 등)" name="" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;">신규고객 우대금리 0.2%, 온라인 가입 시 수수료 면제</textarea>
+                <textarea placeholder="주요 혜택을 입력하세요 (예: 수수료 면제 등)" name="pprfcrt" th:text="${dto.pprfcrt}" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
               </div>
             </div>
           </div>
         </div>
+          <div>
+              <div style="display: flex; margin-top: 20px;">
+                  <div>
+                      <div>금리안내</div>
+                      <div>
+                          <textarea placeholder="금리 혜택을 입력하세요 (예: 우대금리 0.1% 등)" name="pirinfo" th:text="${dto.pirinfo}" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div>
+              <div style="display: flex; margin-top: 20px;">
+                  <div>
+                      <div>우대금리</div>
+                      <div>
+                          <textarea placeholder="우대금리를 입력하세요" name="pdirate" th:text="${dto.pdirate}" id="" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div>
+              <div style="display: flex; margin-top: 20px;">
+                  <div>
+                      <div>약관 제목, 링크 수정</div>
+                      <div>
+                          <textarea placeholder="약관 제목, 링크를 수정하세요" name="pterms" id="" th:text="${dto.pterms}" style="height: 122px; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 1147px; border:1px solid #D1D5DB; border-radius: 6px; background-color: white; resize: none; padding: 15px;"></textarea>
+                      </div>
+                  </div>
+              </div>
+          </div>
         <!-- 약관 첨부 -->
         <div style="margin-top:24px;">
           <div style="margin-bottom:8px; color:#374151;">약관 첨부</div>
@@ -690,7 +625,7 @@
       <div style="padding: 25px; margin-top:25px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
         <div style="display: flex; gap: 10px; justify-content: space-between;">
           <div>
-            <button class="btn-pressable btn-sheen" id="btnPrint" style="box-sizing: border-box; width: 120px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
+            <button type="button" class="btn-pressable btn-sheen" id="btnPrint" style="box-sizing: border-box; width: 120px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
               <div style="display: flex; gap: 8px; justify-content: center;">
                 <div>
                   <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -705,32 +640,35 @@
           </div>
           <div style="display: flex; gap: 10px;">
             <div>
-              <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 65px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
+              <button type="button"
+                      th:onclick="|location.href='@{/admin/prod}'|"
+                      class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 65px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
             </div>
             <div>
-              <button class="btn-register" style="gap:6px; box-sizing: border-box; width: 120px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
-                <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
-                  <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_454_136)">
-                    <path d="M2 1C0.896875 1 0 1.89688 0 3V13C0 14.1031 0.896875 15 2 15H12C13.1031 15 14 14.1031 14 13V5.41563C14 4.88438 13.7906 4.375 13.4156 4L11 1.58438C10.625 1.20938 10.1156 1 9.58438 1H2ZM2 4C2 3.44688 2.44688 3 3 3H9C9.55313 3 10 3.44688 10 4V6C10 6.55312 9.55313 7 9 7H3C2.44688 7 2 6.55312 2 6V4ZM7 9C7.53043 9 8.03914 9.21071 8.41421 9.58579C8.78929 9.96086 9 10.4696 9 11C9 11.5304 8.78929 12.0391 8.41421 12.4142C8.03914 12.7893 7.53043 13 7 13C6.46957 13 5.96086 12.7893 5.58579 12.4142C5.21071 12.0391 5 11.5304 5 11C5 10.4696 5.21071 9.96086 5.58579 9.58579C5.96086 9.21071 6.46957 9 7 9Z" fill="white"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_454_136">
-                    <path d="M0 0H14V16H0V0Z" fill="white"/>
-                    </clipPath>
-                    </defs>
-                  </svg>
-                  <div>
-                    수정 완료
-                  </div>
-                </div>
-              </button>
+                <button type="submit" class="btn-register" style="gap:6px; box-sizing: border-box; width: 120px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
+                        <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_454_136)">
+                                <path d="M2 1C0.896875 1 0 1.89688 0 3V13C0 14.1031 0.896875 15 2 15H12C13.1031 15 14 14.1031 14 13V5.41563C14 4.88438 13.7906 4.375 13.4156 4L11 1.58438C10.625 1.20938 10.1156 1 9.58438 1H2ZM2 4C2 3.44688 2.44688 3 3 3H9C9.55313 3 10 3.44688 10 4V6C10 6.55312 9.55313 7 9 7H3C2.44688 7 2 6.55312 2 6V4ZM7 9C7.53043 9 8.03914 9.21071 8.41421 9.58579C8.78929 9.96086 9 10.4696 9 11C9 11.5304 8.78929 12.0391 8.41421 12.4142C8.03914 12.7893 7.53043 13 7 13C6.46957 13 5.96086 12.7893 5.58579 12.4142C5.21071 12.0391 5 11.5304 5 11C5 10.4696 5.21071 9.96086 5.58579 9.58579C5.96086 9.21071 6.46957 9 7 9Z" fill="white"/>
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_454_136">
+                                    <path d="M0 0H14V16H0V0Z" fill="white"/>
+                                </clipPath>
+                            </defs>
+                        </svg>
+                        <div>
+                            수정 완료
+                        </div>
+                    </div>
+                </button>
             </div>
           </div>
         </div>
       </div>
       
     </div>
+      </form>
   </main>
 
   <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">

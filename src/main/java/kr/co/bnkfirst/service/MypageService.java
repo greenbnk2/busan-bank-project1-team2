@@ -35,7 +35,8 @@ public class MypageService{
     }
 
     public int findByBalance(String mid) {
-        return mypageMapper.findByBalance(mid);
+        Integer sum = mypageMapper.findByBalance(mid);
+        return (sum != null) ? sum : 0;
     }
 
     public List<DocumentDTO> findByDocumentList(String mid) {
@@ -67,11 +68,14 @@ public class MypageService{
     }
 
     public int findBySumPlusDbalance(String mid){
-        return mypageMapper.findBySumPlusDbalance(mid);
+        Integer sum = mypageMapper.findBySumPlusDbalance(mid);
+        return (sum != null) ? sum : 0;
     }
 
-    public int findBySumMinusDbalance(String mid){
-        return mypageMapper.findBySumMinusDbalance(mid);
+    public Integer findBySumMinusDbalance(String mid){
+        Integer sum = mypageMapper.findBySumMinusDbalance(mid);
+        int result = (sum != null) ? sum : 0;
+        return result;
     }
 
 //    상품 해지 과정

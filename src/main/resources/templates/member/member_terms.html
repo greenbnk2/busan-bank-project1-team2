@@ -202,49 +202,62 @@
              style="display:inline-block; box-sizing:border-box; width:40%; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111; text-decoration:none;">
               취소
           </a>
-          <a th:href="@{/member/auth}" id="nextBtn" class="btn-register"
-             style="display:inline-block; box-sizing:border-box; width:40%; height:42px; line-height:42px; border-radius:8px; background-color:#007BFF; color:white; text-align:center; text-decoration:none;">
+          <button id="nextBtn" class="btn-register"
+                  style="display:inline-block; box-sizing:border-box; width:40%; height:42px; line-height:42px; border-radius:8px; background-color:#007BFF; color:white; text-align:center; border:none; cursor:pointer;">
               다음
-          </a>
+          </button>
       </div>
   </div>
 </main>
 
 <script>
-  // 아코디언: 오른쪽 버튼(.chev) 클릭/엔터/스페이스로 토글
-  document.querySelectorAll('.item').forEach((item) => {
-    const btn = item.querySelector('.chev');
-    const panel = item.querySelector('.panel');
+    // 아코디언: 오른쪽 버튼(.chev) 클릭/엔터/스페이스로 토글
+    document.querySelectorAll('.item').forEach((item) => {
+        const btn = item.querySelector('.chev');
+        const panel = item.querySelector('.panel');
 
-    function toggle(open) {
-      const willOpen = (open !== undefined) ? open : !btn.classList.contains('is-open');
-      btn.classList.toggle('is-open', willOpen);
-      btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-      panel.classList.toggle('open', willOpen)
-      panel.style.maxHeight = willOpen ? panel.scrollHeight + 'px' : 0;
+        function toggle(open) {
+            const willOpen = (open !== undefined) ? open : !btn.classList.contains('is-open');
+            btn.classList.toggle('is-open', willOpen);
+            btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+            panel.classList.toggle('open', willOpen);
+            panel.style.maxHeight = willOpen ? panel.scrollHeight + 'px' : 0;
+        }
+
+        btn.addEventListener('click', () => toggle());
+        btn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggle();
+            }
+        });
+
+        panel.style.maxHeight = 0;
+    });
+
+    // 전체 동의 → 하위 체크박스 동기화
+    const agreeAll = document.getElementById('agreeAll');
+    const reqChecks = [...document.querySelectorAll('.reqchk')];
+    const optChecks = [...document.querySelectorAll('.optchk')];
+
+    if (agreeAll) {
+        agreeAll.addEventListener('change', () => {
+            [...reqChecks, ...optChecks].forEach(c => c.checked = agreeAll.checked);
+        });
     }
 
-    btn.addEventListener('click', () => toggle());
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggle();
-      }
-    });
-
-    panel.style.maxHeight = 0;
-  });
-
-  // 전체 동의 → 하위 체크박스 동기화 (선택)
-  const agreeAll = document.getElementById('agreeAll');
-  const reqChecks = [...document.querySelectorAll('.reqchk')];
-  const optChecks = [...document.querySelectorAll('.optchk')];
-
-  if (agreeAll) {
-    agreeAll.addEventListener('change', () => {
-      [...reqChecks, ...optChecks].forEach(c => c.checked = agreeAll.checked);
-    });
-  }
+    // "다음" 버튼 클릭 시 필수 항목 확인 후 /member/auth 로 이동
+    const nextBtn = document.getElementById('nextBtn');
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            const allRequiredChecked = reqChecks.every(chk => chk.checked);
+            if (!allRequiredChecked) {
+                alert("필수 약관에 모두 동의해야 다음 단계로 이동할 수 있습니다.");
+                return;
+            }
+            window.location.href = "/BNK/member/auth";
+        });
+    }
 </script>
 
     <!-- 모달 창 -->
@@ -254,34 +267,6 @@
             <button id="modal-close" class="btn-register">확인</button>
         </div>
     </div>
-
-    <!-- ✅ JS -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const nextBtn = document.getElementById('nextBtn');
-            const reqChecks = document.querySelectorAll('.reqchk');
-            const modal = document.getElementById('modal-alert');
-            const modalClose = document.getElementById('modal-close');
-
-            nextBtn.addEventListener('click', function (e) {
-                const allChecked = Array.from(reqChecks).every(chk => chk.checked);
-                if (!allChecked) {
-                    e.preventDefault();
-                    modal.classList.add('show');
-                }
-            });
-
-            modalClose.addEventListener('click', function () {
-                modal.classList.remove('show');
-            });
-
-            // ESC 키 닫기
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape') modal.classList.remove('show');
-            });
-        });
-    </script>
-
 
     <footer><div th:replace="~{layouts/footer.html}"></div></footer>
 </body>
