@@ -53,4 +53,8 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
     Optional<Product> findByPid(String pid);
 
     List<Product> findByPnameContainingIgnoreCaseOrPtypeContainingIgnoreCase(String pname, String ptype);
+
+    //퇴직연금 상품 목록 조회 - 세현
+    List<Product> findByPtype(String ptype);
+
 }

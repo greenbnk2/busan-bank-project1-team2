@@ -1,9 +1,12 @@
 package kr.co.bnkfirst.kiwoomRank;
 
 import jakarta.annotation.PostConstruct;
+import kr.co.bnkfirst.dbstockrank.OverseasStockRankingService;
+import kr.co.bnkfirst.kiwoom.KiwoomRateLimitException;
 import kr.co.bnkfirst.kiwoom.KiwoomTrClient;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +15,11 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Getter
+@Slf4j
 public class StockRankingService {
 
     private final KiwoomTrClient trClient;
+    private final OverseasStockRankingService overseasStockRankingService;
 
     // 🔥 최신 랭크 데이터를 저장할 캐시
     private volatile List<StockRankDTO> cachedRanks = new ArrayList<>();
@@ -35,8 +40,11 @@ public class StockRankingService {
         try {
             List<StockRankDTO> list = fetchRanking(100); // 원하는 TOP N
             cachedRanks = list; // 원자적 교체
+        } catch (KiwoomRateLimitException e) {
+            // 🔥 조용히 무시하고 캐시 유지
+            log.warn("Kiwoom 요청 제한(429) — 이번 회차는 기존 캐시 유지");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("국내 랭킹 갱신 실패", e);
         }
     }
 
@@ -135,5 +143,16 @@ public class StockRankingService {
         String cleaned = s.trim().replace(",", "");
         long v = Long.parseLong(cleaned);
         return Math.abs(v); // "-152000" → 152000
+    }
+
+    public List<StockRankDTO> getTopByTradingValueAbroad(int limit) {
+        List<StockRankDTO> cached = overseasStockRankingService.getCachedRanks();
+        if (cached == null || cached.isEmpty()) {
+            return Collections.emptyList();
+        }
+        if (cached.size() <= limit) {
+            return cached;
+        }
+        return cached.subList(0, limit);
     }
 }

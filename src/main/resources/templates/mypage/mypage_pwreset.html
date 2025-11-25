@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 비밀번호변경</title>
+    <!--
+        날짜 : 2025/11/25
+        이름 : 이준우
+        내용 : 비밀번호 변경 page 생성
+     -->
+</head>
+<body>
+<div th:replace="~{layouts/header.html}"></div>
+
+<main>
+    <div class="form-card">
+        <form>
+            <!-- 테이블 감싸기 -->
+            <div>
+                <table class="table-wrap">
+                    <tr>
+                        <td><h2 style="margin: 0 0 5px 5px">비밀번호 변경</h2></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 5px; color: #16a34a">✔ 안전한 서비스 이용을 위해 비밀번호를 강화해 주세요</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 5px; color: #16a34a">✔ 다른 계정과 중복되지 않는 비밀번호를 사용해 주세요</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 5px; color: #16a34a">✔ 이전에 사용한 비밀번호는 피하는 것이 안전합니다</td>
+                    </tr>
+                    <tr class="field-row">
+                        <td class="field-label">현재 비밀번호</td>
+                        <td><input type="password" id="currentPw" name="currentPw"></td>
+                    </tr>
+                    <tr class="field-row">
+                        <td class="field-label">새 비밀번호</td>
+                        <td><input type="password" id="newPw" name="newPw"></td>
+                    </tr>
+                    <tr class="field-row">
+                        <td class="field-label">새 비밀번호 확인</td>
+                        <td><input type="password" id="newPwConfirm" name="newPwConfirm"></td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+        <div class="btns">
+            <button id="nextBtn" class="btn-register"
+                    onclick="openCertModal()"
+                    style="display:inline-block; box-sizing:border-box; width:100%; height:42px; line-height:42px; border-radius:8px; background-color:#007BFF; color:white; text-align:center; border:none; cursor:pointer;">
+                다음
+            </button>
+        </div>
+        <div class="btns">
+            <a th:href="@{/mypage/main}" class="btn-pressable"
+               style="display:inline-block; box-sizing:border-box; width:100%; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111; text-decoration:none;">
+                취소
+            </a>
+        </div>
+    </div>
+</main>
+
+<!-- 모달창 -->
+<div id="certModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
+        <div class="modal-header">
+            <h3 id="certModalTitle" style="margin:0;">본인확인</h3>
+            <button type="button" class="modal-close" data-close-modal>&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- 인증 방식 선택 탭 -->
+            <div class="verify-methods" style="display:flex; gap:10px; margin-bottom:12px;">
+                <button type="button" id="method-phone" class="method-card active" style="flex:1;">휴대폰</button>
+                <button type="button" id="method-email" class="method-card" style="flex:1;">이메일</button>
+            </div>
+            <!-- 휴대폰 인증 영역 -->
+            <div id="panel-phone">
+                <div class="field" style="margin-bottom:10px;">
+                    <label class="field-label">휴대폰번호</label>
+                    <div class="field-row" style="display:flex; gap:8px;">
+                        <input type="text" class="input" id="pwresetPhone" placeholder="010-1234-5678">
+                        <button type="button" class="btn-register" id="btnPhoneReq" style="width:90px;">인증요청</button>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field-label">인증번호</label>
+                    <div class="field-row" style="display:flex; gap:8px;">
+                        <input type="text" class="input" id="pwresetPhoneCode" placeholder="인증번호 입력" style="flex:1;">
+                        <button type="button" class="btn-register" id="btnPhoneVerify" style="width:90px;">확인</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 이메일 인증 영역 (처음엔 숨김) -->
+            <div id="panel-email" style="display:none;">
+                <div class="field" style="margin-bottom:10px;">
+                    <label class="field-label">이메일</label>
+                    <div class="field-row" style="display:flex; gap:8px;">
+                        <input type="text" class="input" id="pwresetEmail" placeholder="example@bank.com">
+                        <button type="button" class="btn-register" id="btnEmailReq" style="width:90px;">인증요청</button>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field-label">인증번호</label>
+                    <div class="field-row" style="display:flex; gap:8px;">
+                        <input type="text" class="input" id="pwresetEmailCode" placeholder="인증번호 입력" style="flex:1;">
+                        <button type="button" class="btn-register" id="btnEmailVerify" style="width:90px;">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-pressable" data-close-modal
+                    style="display:inline-block; box-sizing:border-box; width:48%; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111;">
+                취소
+            </button>
+            <button type="button" class="btn-register" id="btnCertSubmit" style="width:48%;">확인</button>
+        </div>
+    </div>
+</div>
+
+
+    <footer><div th:replace="~{layouts/footer.html}"></div></footer>
+</body>
+
+<script>
+    (function () {
+        const modal = document.getElementById("certModal");
+        const closeBtns = document.querySelectorAll("[data-close-modal]");
+
+        const methodPhone  = document.getElementById("method-phone");
+        const methodEmail  = document.getElementById("method-email");
+        const panelPhone   = document.getElementById("panel-phone");
+        const panelEmail   = document.getElementById("panel-email");
+
+        const btnPhoneReq    = document.getElementById("btnPhoneReq");
+        const btnPhoneVerify = document.getElementById("btnPhoneVerify");
+        const btnEmailReq    = document.getElementById("btnEmailReq");
+        const btnEmailVerify = document.getElementById("btnEmailVerify");
+        const btnCertSubmit  = document.getElementById("btnCertSubmit");
+
+        let phoneVerified = false;
+        let emailVerified = false;
+
+        // 모달 열기
+        window.openCertModal = function () {
+            modal.setAttribute("aria-hidden", "false");
+        };
+
+        // 모달 닫기
+        closeBtns.forEach(btn =>
+            btn.addEventListener("click", () =>
+                modal.setAttribute("aria-hidden", "true")
+            )
+        );
+
+        // 탭 전환
+        function setMethod(method) {
+            if (method === "phone") {
+                methodPhone.classList.add("active");
+                methodEmail.classList.remove("active");
+                panelPhone.style.display  = "block";
+                panelEmail.style.display  = "none";
+            } else {
+                methodEmail.classList.add("active");
+                methodPhone.classList.remove("active");
+                panelEmail.style.display  = "block";
+                panelPhone.style.display  = "none";
+            }
+        }
+
+        if (methodPhone && methodEmail) {
+            methodPhone.addEventListener("click", () => setMethod("phone"));
+            methodEmail.addEventListener("click", () => setMethod("email"));
+        }
+
+        // 휴대폰 인증 흐름
+        if (btnPhoneReq) {
+            btnPhoneReq.addEventListener("click", () => {
+                const phone = document.getElementById("pwresetPhone").value.trim();
+                if (!phone) {
+                    alert("휴대폰 번호를 입력하세요.");
+                    return;
+                }
+                // TODO: 서버로 전송
+                alert("휴대폰 인증번호가 발송되었습니다.");
+            });
+        }
+
+        if (btnPhoneVerify) {
+            btnPhoneVerify.addEventListener("click", () => {
+                const code = document.getElementById("pwresetPhoneCode").value.trim();
+                if (!code) {
+                    alert("인증번호를 입력하세요.");
+                    return;
+                }
+                // TODO: 서버 검증
+                phoneVerified = true;
+                emailVerified = false; // 둘 중 하나만 사용
+                alert("휴대폰 인증이 완료되었습니다.");
+            });
+        }
+
+        // 이메일 인증 흐름
+        if (btnEmailReq) {
+            btnEmailReq.addEventListener("click", () => {
+                const email = document.getElementById("pwresetEmail").value.trim();
+                if (!email) {
+                    alert("이메일을 입력하세요.");
+                    return;
+                }
+                // TODO: 서버로 전송
+                alert("이메일 인증번호가 발송되었습니다.");
+            });
+        }
+
+        if (btnEmailVerify) {
+            btnEmailVerify.addEventListener("click", () => {
+                const code = document.getElementById("pwresetEmailCode").value.trim();
+                if (!code) {
+                    alert("인증번호를 입력하세요.");
+                    return;
+                }
+                // TODO: 서버 검증
+                emailVerified = true;
+                phoneVerified = false;
+                alert("이메일 인증이 완료되었습니다.");
+            });
+        }
+
+        // 모달 확인 버튼
+        if (btnCertSubmit) {
+            btnCertSubmit.addEventListener("click", () => {
+                if (!phoneVerified && !emailVerified) {
+                    alert("휴대폰 또는 이메일 인증을 먼저 완료해주세요.");
+                    return;
+                }
+
+                const cur  = document.getElementById("currentPw").value.trim();
+                const npw  = document.getElementById("newPw").value.trim();
+                const npw2 = document.getElementById("newPwConfirm").value.trim();
+
+                if (!cur || !npw || !npw2) {
+                    alert("비밀번호 입력칸을 모두 채워주세요.");
+                    return;
+                }
+                if (npw !== npw2) {
+                    alert("새 비밀번호가 서로 다릅니다.");
+                    return;
+                }
+
+                // TODO: 여기서 fetch로 서버에 비밀번호 변경 요청 보내기
+                alert("비밀번호가 변경되었습니다.");
+
+                modal.setAttribute("aria-hidden", "true");
+                window.location.href = "/BNK/mypage/main";
+            });
+        }
+
+        // 초기 상태: 휴대폰 탭 선택
+        setMethod("phone");
+    })();
+</script>
+
+<style>
+    main {
+        width: 1200px;
+        background-color: #F6F6F8;
+        padding: 80px 20px;
+        margin: 0 auto;
+    }
+    body {
+        font-family: 'Noto Sans KR', '맑은 고딕', sans-serif;
+        background: #F6F6F8;
+        color: #111827;
+        line-height: 1.5;
+    }
+    .form-card {
+        max-width: 420px;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(2,6,23,.06);
+        padding: 28px 35px;
+        margin: 0 auto;
+    }
+    .field-row {
+        padding-left: 5px;
+        display: flex;
+        margin: 5px;
+    }
+    .field-row td {
+        padding: 10px 0;
+    }
+    .field-row td:first-child {
+        height: 40px;
+        line-height: 40px;
+        font-weight: 600;
+    }
+    .field-row input {
+        width: 250px;
+        height: 40px;
+        border: 1px solid #bbb;
+        border-radius: 10px;
+        padding: 0 12px;
+        box-sizing: border-box;
+    }
+    .field-row td + td {
+        padding-left: 20px;
+    }
+    .field-label {
+        width: 120px;
+        font-weight: 600;
+        vertical-align: middle;
+    }
+    .table-wrap {
+        width: 100%;
+    }
+
+    .table-wrap table {
+        width: 100%;
+    }
+    .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
+
+    /*  모달 style  */
+    #certModal[aria-hidden="true"] { display:none; }
+    #certModal[aria-hidden="false"] { display:block; }
+    #certModal .modal-backdrop {
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,.45);
+        backdrop-filter: blur(2px);
+    }
+    #certModal .modal-dialog {
+        position:fixed;
+        left:50%;
+        top:50%;
+        transform:translate(-50%, -50%);
+        width: 350px;
+        max-width: 92vw;
+        background:#fff;
+        border:1px solid #e5e7eb;
+        border-radius:16px;
+        box-shadow:0 20px 60px rgba(2,6,23,.2);
+        padding:18px;
+    }
+    #certModal .modal-header {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:8px;
+    }
+    #certModal .modal-close {
+        width:32px;
+        height:32px;
+        border-radius:8px;
+        border:1px solid #e5e7eb;
+        background:#fff;
+        cursor:pointer;
+    }
+    #certModal .modal-body {
+        padding: 6px 2px;
+    }
+    #certModal .modal-footer {
+        display:flex;
+        gap:10px;
+        margin-top:14px;
+    }
+    .method-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        padding: 8px 0;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .method-card.active {
+        border-color: #d6001c;
+        color: #d6001c;
+    }
+</style>
+</html>
