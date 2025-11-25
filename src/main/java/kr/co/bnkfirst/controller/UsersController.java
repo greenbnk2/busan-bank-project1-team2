@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -303,43 +304,44 @@ public class UsersController {
         return getRemaining(session);
     }
 
-    // 금융인증서 11월19일 추가
-    @PostMapping("/api/finance-cert/start")
+    // 금융인증서 추가(11월19일)
+    // 공동인증서 모의 인증으로 변경 : 파일 + 비밀번호 확인용(11월24일)
+    @PostMapping("/api/joint-cert/verify")
     @ResponseBody
-    public Map<String, String> startFinanceCert(HttpSession session) {
-
-        String txId = UUID.randomUUID().toString();
-        session.setAttribute("FIN_TX_ID", txId);
-
-        String redirectUrl = financeCertService.buildAuthUrl(txId);
-
-        return Map.of("redirectUrl", redirectUrl);
-    }
-
-    @GetMapping("/auth/finance-cert/callback")
-    @ResponseBody
-    public Map<String, Object> financeCertCallback(
-            @RequestParam("tx_id") String txId,
-            @RequestParam("code") String code,
+    public Map<String, Object> verifyJointCert(
+            @RequestParam("certFile")MultipartFile certFile,
+            @RequestParam("certPw") String certPw,
             HttpSession session
-    ) {
-        String savedTxId = (String) session.getAttribute("FIN_TX_ID");
-        if (savedTxId == null || !savedTxId.equals(txId)) {
-            return Map.of("ok", false, "message", "잘못된 인증 요청입니다.");
+            ){
+        // 파일 선택 조건
+        if (certFile == null || certFile.isEmpty()) {
+
+           return Map.of("ok", false, "message", "공동인증서 파일을 선택해 주세요.");
+        }
+        String originalName = certFile.getOriginalFilename();
+        if (originalName == null || originalName.isBlank()) {
+
+            return Map.of("ok", false, "message", "유효한 파일명을 찾을 수 없습니다.");
         }
 
-        FinanceCertResult r = financeCertService.fetchResult(txId, code);
+        String lower = originalName.toLowerCase();
+        boolean imageOk = lower.endsWith(".jpg")
+                || lower.endsWith(".png")
+                || lower.endsWith(".jpeg");
+        if (!imageOk) {
 
-        session.setAttribute("FIN_USER", r);
+            return Map.of("ok", false, "message", "jpg, jpeg, png 형식의 파일만 업로드할 수 있습니다.");
+        }
 
-        return Map.of(
-                "ok", true,
-                "name", r.getName(),
-                "birth", r.getBirth(),
-                "gender", r.getGender(),
-                "carrier", r.getCarrier(),
-                "phone", r.getPhone(),
-                "ci", r.getCi()
-        );
+        // 비밀번호 조건
+        if (certPw == null || !certPw.trim().equals("123456")) {
+
+            return Map.of("ok", false, "message", "인증서 비밀번호가 올바르지 않습니다.");
+        }
+
+        // 모의 인증
+        session.setAttribute("JOINT_CERT_AUTH", true);
+
+        return Map.of("ok", true, "fileName", originalName);
     }
 }

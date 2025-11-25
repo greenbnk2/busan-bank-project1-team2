@@ -33,6 +33,25 @@ public class StockController {
         return "stock/stock_main";
     }
 
+    @GetMapping("/stock/mainAbroad")
+    public String mainAbroadPage(Model model) {
+
+        var ranks = rankingService.getTopByTradingValueAbroad(100);
+        model.addAttribute("ranks", ranks);
+        log.info("overseas ranks size = {}", ranks.size());
+
+        /*
+        날짜: 2025-11-25
+        작업자: 전세현
+        내용: 오늘 기준 USD/KRW 환율
+         */
+        double usdKrw = fxService.getUsdKrwRate(LocalDate.now());
+        model.addAttribute("usdKrw", usdKrw);
+        log.info("usdKrw (abroad) = {}", usdKrw);
+
+        return "stock/stock_mainAbroad";
+    }
+
     @GetMapping("/stock/order")
     public String stockOrder(@RequestParam("code") String code,
                              @RequestParam(value = "name", required = false) String name,

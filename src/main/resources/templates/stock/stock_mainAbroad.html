@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>stock_main</title>
+    <title>stock_mainAbroad</title>
     <style>
         main {
             background-color: #F6F6F8;
@@ -230,18 +230,70 @@
         }
     </style>
     <style>
-        /* 환율 스타일 */
-        .fx-info-bar {
-            margin: 10px 0 20px;
-            padding: 8px 16px;
-            background: #FFF5F5;
-            border-radius: 6px;
-            font-size: 13px;
+        .currency-toggle {
+            margin: 10px 0;
+            text-align: right;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
         }
-        .fx-info-bar strong {
-            margin-left: 8px;
+
+        .currency-btn {
+            border: 1px solid #E5E7EB;
+            background: #F3F4F6;
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            color: #4B5563;
+            transition:
+                    background-color 0.15s ease,
+                    border-color 0.15s ease,
+                    box-shadow 0.15s ease,
+                    transform 0.08s ease;
+        }
+
+        .currency-btn:hover {
+            background: #E5E7EB;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            transform: translateY(-1px);
+        }
+
+        .currency-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 0 0 rgba(0,0,0,0);
+        }
+
+        .currency-btn.active {
+            background: #111827;
+            color: #F9FAFB;
+            border-color: #111827;
+            box-shadow: 0 2px 6px rgba(15,23,42,0.35);
+        }
+
+        .currency-btn.active .currency-text-sub {
+            color: #E5E7EB;
+        }
+
+        .currency-emoji {
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .currency-text-main {
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .currency-text-sub {
+            font-size: 11px;
+            color: #9CA3AF;
         }
     </style>
+
 </head>
 <body>
     <header>
@@ -249,19 +301,13 @@
     </header>
 
     <main>
-        <div class="fx-info-bar" th:inline="text">
-            <span>오늘의 달러 환율(한국수출입은행 기준)</span>
-            <strong>
-                1 USD = [[${#numbers.formatDecimal(usdKrw, 0, 'COMMA', 2, 'POINT')}]]원
-            </strong>
-        </div>
         <div style="">
             <ul class="tab-list" id="marketTabs" style="list-style: none; display: flex;">
                 <li style=" margin-right: 20px;">
-                    <a href="#" class="tab-link active" style="text-decoration: none;color: black;">국내 정규장</a>
+                    <a th:href="@{/stock/main}" class="tab-link" style="text-decoration: none;color: black;">국내 정규장</a>
                 </li>
                 <li>
-                    <a th:href="@{/stock/mainAbroad}" class="tab-link" style=" text-decoration: none; color: black;">해외 데이마켓</a>
+                    <a href="#" class="tab-link active" style=" text-decoration: none; color: black;">해외 데이마켓</a>
                 </li>
             </ul>
         </div>
@@ -277,6 +323,54 @@
                     <a href="#" class="tab-link" style=" text-decoration: none; color: black;">국내 투자자 동향</a>
                 </li>
             </ul>
+
+            <!--
+            날짜: 2025-11-25
+            작업자: 전세현
+            내용: 오늘 기준 USD/KRW 환율
+            -->
+            <div class="currency-toggle">
+                <button type="button" class="currency-btn active" data-currency="USD">
+                    <span class="currency-emoji">🇺🇸</span>
+                    <span class="currency-text-main">USD</span>
+                    <span class="currency-text-sub">달러</span>
+                </button>
+                <button type="button" class="currency-btn" data-currency="KRW">
+                    <span class="currency-emoji">🇰🇷</span>
+                    <span class="currency-text-main">KRW</span>
+                    <span class="currency-text-sub">원</span>
+                </button>
+            </div>
+
+            <script th:inline="javascript">
+                // 서버에서 내려준 환율 (예: 1473.5)
+                const USD_KRW = /*[[${usdKrw}]]*/ 0;
+            </script>
+            <script>
+                // 현재 선택된 통화 (기본 USD)
+                let currentCurrency = 'USD';
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    const currencyButtons = document.querySelectorAll('.currency-btn');
+
+                    currencyButtons.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            currentCurrency = btn.dataset.currency;
+
+                            // 버튼 active 스타일 토글
+                            currencyButtons.forEach(b =>
+                                b.classList.toggle('active', b === btn)
+                            );
+
+                            // 이미 랭킹 데이터를 받았다면 다시 렌더링
+                            if (window.latestRanks) {
+                                renderRanks(window.latestRanks);
+                            }
+                        });
+                    });
+                });
+            </script>
+
             <!-- 검은색 움직이는 밑줄 -->
             <div class="tab-underline" id="subTabsUnderline"></div>
         </div>
@@ -309,7 +403,7 @@
                         <div style="text-align:end;">
                     <span th:text="${#numbers.formatInteger(item.price,0,'COMMA')}">
                         152000
-                    </span>원
+                    </span> 달러
                         </div>
 
                         <!-- 등락률: 색상 class 부여 -->
@@ -327,7 +421,7 @@
 
                         <!-- 거래대금: 단위는 문서 기준으로 조정 (예: 억 단위로 보고 싶으면 /10000 등) -->
                         <div style="text-align:end; padding-right:10px;">
-                    <span th:text="${#numbers.formatInteger(item.amount, 0, 'COMMA')} + ' 만원'">
+                    <span th:text="${#numbers.formatInteger(item.amount, 0, 'COMMA')} + ' 달러'">
                         5,308,092
                     </span>
                         </div>
@@ -364,7 +458,7 @@
                     item.changeRate > 0 ? 'ticker-rate-up' :
                     (item.changeRate < 0 ? 'ticker-rate-down' : 'ticker-rate-zero')
                 }">
-                    <span th:text="${#numbers.formatInteger(item.price,0,'COMMA')}">72,300</span>원
+                    <span th:text="${#numbers.formatInteger(item.price,0,'COMMA')}">72,300</span> 달러
                     (
                     <span th:text="${
                         (item.changeRate > 0 ? '+' : (item.changeRate < 0 ? '-' : '')) +
@@ -525,7 +619,7 @@
             try {
                 console.log('[fetchRanks] 호출');
 
-                const res = await fetch('/BNK/api/ranks', {
+                const res = await fetch('/BNK/api/overseas-ranks', {
                     method: 'GET',
                     cache: 'no-store'
                 });
@@ -547,6 +641,9 @@
             const container = document.getElementById('stockRows');
             if (!container) return;
 
+            // 통화 토글용으로 마지막 데이터 저장 : 전세현
+            window.latestRanks = ranks;
+
             let html = '';
             let minItem = null;
 
@@ -554,9 +651,9 @@
                 const rank   = item.rank;
                 const code   = item.code;
                 const name   = item.name;
-                const price  = Number(item.price);
+                const priceUsd  = Number(item.price);        // 원본: 달러
                 const rate   = Number(item.changeRate);
-                const amount = Number(item.amount);
+                const amountUsd = Number(item.amount);       // 거래대금 (달러)
 
                 if (!isNaN(rate)) {
                     if (!minItem || rate < Number(minItem.changeRate)) {
@@ -585,8 +682,25 @@
 
                 const absRate  = Math.abs(rate).toFixed(2);
                 const rateText = `${sign}${absRate}%`;
-                const priceText  = price.toLocaleString('ko-KR');
-                const amountText = amount.toLocaleString('ko-KR') + ' 만원';
+
+                // 통화에 따른 가격/거래대금 계산 : 전세현
+                const priceKrw  = priceUsd  * USD_KRW;
+                const amountKrw = amountUsd * USD_KRW;
+
+                let displayPrice, priceUnit;
+                let displayAmount, amountUnit;
+
+                if (currentCurrency === 'KRW') {
+                    displayPrice  = Math.round(priceKrw).toLocaleString('ko-KR');
+                    displayAmount = Math.round(amountKrw).toLocaleString('ko-KR');
+                    priceUnit  = ' 원';
+                    amountUnit = ' 원';
+                } else {
+                    displayPrice  = priceUsd.toLocaleString('ko-KR');
+                    displayAmount = amountUsd.toLocaleString('ko-KR');
+                    priceUnit  = ' $';
+                    amountUnit = ' $';
+                }
 
                 const url = `/BNK/stock/order?code=${encodeURIComponent(code)}&name=${encodeURIComponent(name)}`;
 
@@ -604,13 +718,13 @@
                             </div>
                         </div>
                         <div style="text-align:end;">
-                            <span>${priceText}</span>원
+                            <span>${displayPrice}</span>${priceUnit}
                         </div>
                         <div style="text-align:end;" class="${rateClass}">
                             <span class="rate-span ${rateChangeClass}">${rateText}</span>
                         </div>
                         <div style="text-align:end; padding-right:10px;">
-                            <span>${amountText}</span>
+                            <span>${displayAmount}</span>${amountUnit}
                         </div>
                     </div>
                 </a>
@@ -623,7 +737,7 @@
             ranks.forEach(item => {
                 prevRanksByCode[item.code] = {
                     price: Number(item.price),
-                    rate:  Number(item.changeRate),
+                    rate:   Number(item.changeRate),
                     amount: Number(item.amount)
                 };
             });
@@ -688,7 +802,7 @@
             <span style="margin-right:40px;">
                 ${r.name}
                 <span class="${rateClass}">
-                    ${priceText}원 (${sign}${absRate}%)
+                     $${priceText} (${sign}${absRate}%)
                 </span>
             </span>
         `;

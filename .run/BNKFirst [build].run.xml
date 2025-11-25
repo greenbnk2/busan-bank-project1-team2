@@ -3,6 +3,8 @@
     <ExternalSystemSettings>
       <option name="env">
         <map>
+          <entry key="DBSEC_API_KEY" value="PShAIw780n6Vdy1ZJ8SjHLyenFTqdEBGE5Hc" />
+          <entry key="DBSEC_API_SECRET" value="fIdrEAefFO86SEgYxFHunj73HtMMTfWV" />
           <entry key="KFTC_API_KEY" value="3abeca29-d333-4768-b00e-7ad65d11cc4c" />
           <entry key="KIWOOM_APPKEY" value="tGmt2dnRgmWdZLNQMm6rynhNnQ_s7vfEB4rRwg_Fy6c" />
           <entry key="KIWOOM_SECRET" value="-EXGXO6aW892WdCiPLZekgPxBu6ASZZqbOnt4UoLLOo" />

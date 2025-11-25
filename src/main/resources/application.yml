@@ -31,14 +31,20 @@ kiwoom:
   secret: ${KIWOOM_SECRET}
   token-url: https://api.kiwoom.com/oauth2/token
 
+db:
+  appkey: ${DBSEC_API_KEY}
+  secret: ${DBSEC_API_SECRET}
+  token-url: https://openapi.dbsec.co.kr:8443/oauth2/token
+  scope: "oob"
+
 koreaexim:
   base-url: https://oapi.koreaexim.go.kr/site/program/financial/exchangeJSON
   auth-key: ${KOREAEXIM_API_KEY}
 
-  kftc:
-    base-url: https://developers.kftc.or.kr/proxy
-    api-key: ${KFTC_API_KEY}
-    access-token: "temp"
+kftc:
+  base-url: https://developers.kftc.or.kr/proxy
+  api-key: ${KFTC_API_KEY}
+  access-token: "temp"
 
 
 # ===== local =====

@@ -101,4 +101,11 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    //퇴직연금 상품 목록 조회 메소드 추가 - 세현
+    public List<ProductDTO> findRetireProducts() {
+        List<Product> list = productRepository.findByPtype("퇴직연금");
+        return list.stream()
+                .map(Product::toDTO)
+                .collect(Collectors.toList());
+    }
 }
