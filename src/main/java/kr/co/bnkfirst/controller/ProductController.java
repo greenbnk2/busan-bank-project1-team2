@@ -21,14 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Optional;
-
-/*
-    이름 : 강민철, 손진일
-    날짜 : 2025.11.21.
-    내용 : 상품 페이지 컨트롤러
- */
 
 @Slf4j
 @Controller
@@ -81,33 +74,24 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @GetMapping("/product/insertInfo/{pid}")
-    public String insertInfoPage(Model model, Principal principal, @PathVariable String pid) {
-        if (principal == null) {
-            throw new ErrorResponseException(HttpStatus.FORBIDDEN); // 비로그인시 403
-        }
-        String mid = principal.getName();
-        log.info("mid {}", mid);
+    @GetMapping("/product/insertInfo")
+    public String insertInfoPage(Model model) {
+        // 임시 아이디 : 로그인 구현 후 삭제
+        String mid = "a123";
         boolean isExist = slfcertService.countSlfcertByMid(mid);
         UsersDTO userInfo = mypageService.findById(mid);
         model.addAttribute("mid", mid);
-        model.addAttribute("pid", pid);
         model.addAttribute("hasInfo", isExist ? "true" : "false");
         model.addAttribute("userInfo", userInfo);
         return "product/product_insert_info";
     }
 
     @PostMapping("/api/slfcert")
-    public ResponseEntity<SlfcertDTO> slfcertForm(SlfcertDTO slfcertDTO, Principal principal) {
+    public ResponseEntity<SlfcertDTO> slfcertForm(SlfcertDTO slfcertDTO) {
         log.info("slfcert {}", slfcertDTO);
-        String cusid = principal.getName();
-        log.info("cusid {}", cusid);
+        // 로그인 기능 구현 전까지 임시 데이터 주입
+        String cusid = "a123";
         slfcertDTO.setCusid(cusid);
-        boolean isExist = slfcertService.countSlfcertByMid(cusid);
-        if (isExist) {
-            log.info("slfcert already exist");
-            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Conflict : 409
-        }
         SlfcertDTO saved = slfcertService.saveSlfcert(slfcertDTO);
         if(saved == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
