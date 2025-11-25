@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     /* 유효성 검사 훅: 단계별로 통과하면 true 반환 */
     const validators = {
-        1() {
+        async 1() {
             // 필수 입력 검증
             const form1 = document.getElementById('customerForm');
             const name = form1.name;
@@ -74,9 +74,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             checkNGo([enlnm, enfnm], '영문이름을 입력해주세요.', 'ennm-comment');
             checkNGo(phone, '전화번호를 입력해주세요.', 'phone-comment', reHp, '전화번호가 유효하지 않습니다.');
             checkNGo([zipcd, addr1], '우편번호와 주소를 입력해주세요.', 'addr-comment');
-            if (checkValid[0])
-                submitSlfcert();
-            else {
+            if (checkValid[0]) {
+                await submitSlfcert();
+            } else {
                 checkValid[1].focus();
                 return false;
             }
@@ -142,14 +142,17 @@ document.addEventListener('DOMContentLoaded', async function () {
     await (async function chkFATCAExist() {
         const wizard = document.getElementById('wizard');
         const mid = wizard.dataset.mid;
-        const res = await fetch(`/BNK/api/slfcert/${mid}`, {method: 'HEAD'});
-        if (res.ok) {
-            wizard.setAttribute('data-has-info', 'true');
-            showStep(2)
-        }
-        else {
-            wizard.setAttribute('data-has-info', 'false');
-            showStep(1);
+        try {
+            const res = await fetch(`/BNK/api/slfcert/${mid}`, {method: 'HEAD'});
+            if (res.ok) {
+                wizard.setAttribute('data-has-info', 'true');
+                showStep(2)
+            } else if (res.status === 404) {
+                wizard.setAttribute('data-has-info', 'false');
+                showStep(1);
+            }
+        } catch (e) {
+            console.error(e.message);
         }
     })();
 
@@ -223,7 +226,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     /* 다음/제출 */
     nextBtn.addEventListener('click', async () => {
         // 현재 단계 저장/검증
-        if (!validators[currentStep]()) return;
+        const validator = validators[currentStep];
+        const ok = validator ? await validator() : true; // 없는 검증은 통과
 
         // 마지막이면 제출 동작
         if (currentStep === totalSteps) {
@@ -238,35 +242,33 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     // 본인확인서 제출 함수
-    function submitSlfcert() {
-        if (!getHasInfo() && currentStep === 1) {
-            // 서버 제출 동작(fetch)
-            const fd = new FormData(form1);
-            fd.set('krres', form1.krres.checked ? 'Y' : 'N');
-            fd.set('others', form1.others.checked ? 'Y' : 'N');
-            fd.set('ftype', form1.natcd.value === 'US' ? 'W9' : 'W8');
-            fd.set('sts', 'VALID');
-            fetch('/BNK/api/slfcert', {
-                method: 'POST',
-                body: fd
-            }).then(res => {
-                if (res.ok)
-                    return res.json();
-                else if (res.status === 204)
-                    return null;
-                else
-                    throw new Error(`${res.status} ${res.statusText}`);
-            }).then(data => {
-                console.log(data);
-                alert('본인확인서(FATCA/CRS)가 등록되었습니다!');
-                root.dataset.hasInfo = 'true';
-                return true;
-            }).catch(e => {
-                console.error(e.message);
-                alert('등록 중 오류가 발생했습니다.\n' + e.message);
-                return false;
-            });
-        }
+    async function submitSlfcert() {
+        // 서버 제출 동작(fetch)
+        const fd = new FormData(form1);
+        fd.set('krres', form1.krres.checked ? 'Y' : 'N');
+        fd.set('others', form1.others.checked ? 'Y' : 'N');
+        fd.set('ftype', form1.natcd.value === 'US' ? 'W9' : 'W8');
+        fd.set('sts', 'VALID');
+        await fetch('/BNK/api/slfcert', {
+            method: 'POST',
+            body: fd
+        }).then(res => {
+            if (res.ok)
+                return res.json();
+            else if (res.status === 204)
+                return null;
+            else
+                throw new Error(`${res.status} ${res.statusText}`);
+        }).then(data => {
+            console.log(data);
+            alert('본인확인서(FATCA/CRS)가 등록되었습니다!');
+            root.dataset.hasInfo = 'true';
+            return true;
+        }).catch(e => {
+            console.error(e.message);
+            alert('등록 중 오류가 발생했습니다.\n' + e.message);
+            return false;
+        });
     }
 
     // 취소: 모든 단계에서 항상 동작
