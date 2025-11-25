@@ -115,4 +115,10 @@ public class MypageController {
         return "mypage/mypage_compare";
     }
 
+    // 비밀번호 변경 매핑 (이준우 2025.11.25)
+    @GetMapping("/mypage/pwreset")
+    public String pwResetPage() {
+
+        return "mypage/mypage_pwreset";
+    }
  }

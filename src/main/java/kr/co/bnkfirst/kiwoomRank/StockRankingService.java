@@ -1,6 +1,7 @@
 package kr.co.bnkfirst.kiwoomRank;
 
 import jakarta.annotation.PostConstruct;
+import kr.co.bnkfirst.dbstockrank.OverseasStockRankingService;
 import kr.co.bnkfirst.kiwoom.KiwoomRateLimitException;
 import kr.co.bnkfirst.kiwoom.KiwoomTrClient;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import java.util.*;
 public class StockRankingService {
 
     private final KiwoomTrClient trClient;
+    private final OverseasStockRankingService overseasStockRankingService;
 
     // 🔥 최신 랭크 데이터를 저장할 캐시
     private volatile List<StockRankDTO> cachedRanks = new ArrayList<>();
@@ -143,4 +145,14 @@ public class StockRankingService {
         return Math.abs(v); // "-152000" → 152000
     }
 
+    public List<StockRankDTO> getTopByTradingValueAbroad(int limit) {
+        List<StockRankDTO> cached = overseasStockRankingService.getCachedRanks();
+        if (cached == null || cached.isEmpty()) {
+            return Collections.emptyList();
+        }
+        if (cached.size() <= limit) {
+            return cached;
+        }
+        return cached.subList(0, limit);
+    }
 }

@@ -16,17 +16,17 @@ public class CsBranchController {
 
     private final BranchService branchService;
 
-    // 전체 조회 (DB + 금융결제원 API)
+    // 전체 조회
     @GetMapping
     public List<BranchDTO> getAllBranches() {
         log.info("[GET] 전체 지점 목록 요청");
-        return branchService.getIntegratedBranches();
+        return branchService.getAllBranches();
     }
 
-    // 검색 (DB + 금융결제원 API)
+    // 검색
     @GetMapping("/search")
     public List<BranchDTO> searchBranches(@RequestParam(required = false) String keyword) {
         log.info("[GET] 지점 검색 요청 keyword={}", keyword);
-        return branchService.searchIntegratedBranches(keyword);
+        return branchService.searchBranches(keyword);
     }
 }

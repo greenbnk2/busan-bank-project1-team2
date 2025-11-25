@@ -216,9 +216,9 @@
                         </div>
                         <div style="width: 115px;text-align: center;">
                             <button class="auth-btn"
-                                    th:onclick="|location.href='@{/cs/consultation/findStore}'|"
+                                    th:onclick="|location.href='@{/corporate/main}'|"
                                     style="cursor: pointer;border-radius: 6px; border:1px solid #E5E7EB; width:85px; height:38px;">
-                                영업점 찾기
+                                기업뱅킹
                             </button>
                         </div>
                         <div th:if="${session.loginUser != null && (session.loginUser.role == 'USER' || session.loginUser.role == 'ADMIN')}">

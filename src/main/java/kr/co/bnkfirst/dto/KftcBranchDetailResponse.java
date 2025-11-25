@@ -1,16 +1,22 @@
 package kr.co.bnkfirst.dto;
+
 import lombok.Data;
 
 @Data
 public class KftcBranchDetailResponse {
 
-    private String brch_name;
-    private String brch_addr;
-    private String telno;
-    private String faxno;
-    private String opentime;
-    private String closetime;
-    private String mapx;
-    private String mapy;
+    private String trms_org_code;
+    private String brch_code;
+    private String dup_brch_code;
 
+    private String brch_name;
+    private String addr;
+    private String tel;
+    private String fax;
+
+    private String open_time;
+    private String close_time;
+
+    private String latitude;
+    private String longitude;
 }

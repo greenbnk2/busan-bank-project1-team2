@@ -230,6 +230,7 @@
         }
     </style>
     <style>
+        /* 환율 버튼 스타일 */
         .currency-toggle {
             margin: 10px 0;
             text-align: right;
@@ -293,7 +294,19 @@
             color: #9CA3AF;
         }
     </style>
-
+    <style>
+        /* 환율 스타일 */
+        .fx-info-bar {
+            margin: 10px 0 20px;
+            padding: 8px 16px;
+            background: #FFF5F5;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .fx-info-bar strong {
+            margin-left: 8px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -301,6 +314,12 @@
     </header>
 
     <main>
+        <div class="fx-info-bar" th:inline="text">
+            <span>오늘의 달러 환율(한국수출입은행 기준)</span>
+            <strong>
+                1 USD = [[${#numbers.formatDecimal(usdKrw, 0, 'COMMA', 2, 'POINT')}]]원
+            </strong>
+        </div>
         <div style="">
             <ul class="tab-list" id="marketTabs" style="list-style: none; display: flex;">
                 <li style=" margin-right: 20px;">
@@ -386,8 +405,8 @@
             <!-- 🔥 ka10032 상위 10개 루프 -->
             <div id="stockRows">
                 <th:block th:each="item : ${ranks}">
-                <!-- 링크: /stock/order?code=005930 이런 식 -->
-                <a th:href="@{/stock/order(code=${item.code}, name=${item.name})}">
+                <!-- 링크: /stock/orderAbroad?code=005930 이런 식 -->
+                <a th:href="@{/stock/orderAbroad(code=${item.code}, name=${item.name})}">
                     <div class="stock-row">
                         <!-- 순위 + 종목명 -->
                         <div style="display:flex; padding-left:14px;">
@@ -702,7 +721,7 @@
                     amountUnit = ' $';
                 }
 
-                const url = `/BNK/stock/order?code=${encodeURIComponent(code)}&name=${encodeURIComponent(name)}`;
+                const url = `/BNK/stock/orderAbroad?code=${encodeURIComponent(code)}&name=${encodeURIComponent(name)}`;
 
                 html += `
                 <a href="${url}">

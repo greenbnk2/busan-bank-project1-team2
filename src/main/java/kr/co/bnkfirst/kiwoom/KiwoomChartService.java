@@ -2,6 +2,7 @@
 package kr.co.bnkfirst.kiwoom;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class KiwoomChartService {
 
     private final KiwoomTrClient trClient;
@@ -74,28 +76,42 @@ public class KiwoomChartService {
 
     private CandleDTO toCandleDTO(Map<String, String> row) {
         try {
-            // 🔹 시간: "20250917132000"
-            String cntrTm = row.get("cntr_tm"); // yyyyMMddHHmmss
+            String cntrTm = row.get("cntr_tm");
             long epochSec = parseCntrTimeToEpoch(cntrTm);
 
-            // 🔹 가격: 앞에 '-' 붙어 있어도 절대값으로 사용
-            long open  = parseKiwoomAbs(row.get("open_pric"));
-            long high  = parseKiwoomAbs(row.get("high_pric"));
-            long low   = parseKiwoomAbs(row.get("low_pric"));
-            long close = parseKiwoomAbs(row.get("cur_prc"));
+            long open  = parseKiwoomAbsSafe(row.get("open_pric"));
+            long high  = parseKiwoomAbsSafe(row.get("high_pric"));
+            long low   = parseKiwoomAbsSafe(row.get("low_pric"));
+            long close = parseKiwoomAbsSafe(row.get("cur_prc"));
+
+            // 모든 값이 0이면 이 봉은 무효일 수도 있으니 스킵
+            if (open == 0 && high == 0 && low == 0 && close == 0) {
+                log.warn("toCandleDTO: 빈 캔들 스킵 row={}", row);
+                return null;
+            }
 
             return new CandleDTO(epochSec, open, high, low, close);
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private long parseKiwoomAbs(String s) {
-        if (s == null) return 0L;
-        String cleaned = s.trim().replace(",", "");
-        long v = Long.parseLong(cleaned);
-        return Math.abs(v);
+    private long parseKiwoomAbsSafe(String raw) {
+        if (raw == null) return 0L;
+
+        String s = raw.trim();
+        if (s.isEmpty() || "-".equals(s)) return 0L;
+
+        s = s.replace("+", "").replace("-", "");
+
+        try {
+            return Long.parseLong(s);
+        } catch (NumberFormatException e) {
+            log.warn("parseKiwoomAbsSafe 숫자 변환 실패 raw='{}'", raw);
+            return 0L;
+        }
     }
 
     private long parseCntrTimeToEpoch(String cntrTm) {

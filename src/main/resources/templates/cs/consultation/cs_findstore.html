@@ -508,7 +508,7 @@
         //////////////////////////////////
         let branchData = [];
         try {
-            const res = await fetch('/api/kftc/branch/list');   // ⭐ 여기로 수정
+            const res = await fetch('/BNK/api/branch');
             if (!res.ok) throw new Error('서버 응답 오류');
             branchData = await res.json();
         } catch (err) {
@@ -606,10 +606,7 @@
             } else {
                 pageData.forEach(branch => {
                     const row = `
-          <tr data-code="${branch.brid}"
-    data-name="${branch.brname}"
-    data-addr="${branch.braddr}">
-
+          <tr data-name="${branch.brname}" data-addr="${branch.braddr}">
             <td>${branch.brname}<br><button class="detail-btn">상세보기</button></td>
             <td>${branch.braddr}</td>
             <td>${branch.brtel}</td>

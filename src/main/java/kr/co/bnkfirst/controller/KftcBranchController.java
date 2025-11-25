@@ -12,9 +12,10 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/kftc/branch")
+@RequestMapping("/kftc/branch")   // ← 여기를 정확히 이렇게 고쳐라
 @RequiredArgsConstructor
 public class KftcBranchController {
+
 
     private final KftcBranchApiService apiService;
 
