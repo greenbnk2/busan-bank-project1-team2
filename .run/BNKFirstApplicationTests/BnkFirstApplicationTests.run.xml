@@ -1,0 +1,41 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BnkFirstApplicationTests" type="GradleRunConfiguration" factoryName="Gradle">
+    <ExternalSystemSettings>
+      <option name="env">
+        <map>
+          <entry key="DBSEC_API_KEY" value="PShAIw780n6Vdy1ZJ8SjHLyenFTqdEBGE5Hc" />
+          <entry key="DBSEC_API_SECRET" value="fIdrEAefFO86SEgYxFHunj73HtMMTfWV" />
+          <entry key="KFTC_API_KEY" value="3abeca29-d333-4768-b00e-7ad65d11cc4c" />
+          <entry key="KIWOOM_APPKEY" value="tGmt2dnRgmWdZLNQMm6rynhNnQ_s7vfEB4rRwg_Fy6c" />
+          <entry key="KIWOOM_SECRET" value="-EXGXO6aW892WdCiPLZekgPxBu6ASZZqbOnt4UoLLOo" />
+          <entry key="KOREAEXIM_API_KEY" value="Tiv33LcLGUprpYXTEEw2VH7NYkCWFhRx" />
+          <entry key="MAIL_PASSWORD" value="vxzkpkjgvjkgvqsx" />
+          <entry key="MAIL_USERNAME" value="eternalsoul0635@gmail.com" />
+          <entry key="SOLAPI_API_KEY" value="NCSVDFHFDDPBAJVZ" />
+          <entry key="SOLAPI_API_SECRET" value="O9WAEKPSDTW6QUYSV4B5C4LSHBXYCDAK" />
+          <entry key="SOLAPI_NUMBER" value="01027698940" />
+        </map>
+      </option>
+      <option name="executionName" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$" />
+      <option name="externalSystemIdString" value="GRADLE" />
+      <option name="scriptParameters" value="" />
+      <option name="taskDescriptions">
+        <list />
+      </option>
+      <option name="taskNames">
+        <list>
+          <option value=":test" />
+          <option value="--tests" />
+          <option value="&quot;kr.co.bnkfirst.BnkFirstApplicationTests&quot;" />
+        </list>
+      </option>
+      <option name="vmOptions" />
+    </ExternalSystemSettings>
+    <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+    <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+    <DebugAllEnabled>false</DebugAllEnabled>
+    <RunAsTest>true</RunAsTest>
+    <method v="2" />
+  </configuration>
+</component>
