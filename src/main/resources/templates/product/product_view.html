@@ -133,11 +133,6 @@
                                     <div class="rate">4.00%</div>
                                 </div>
                             </div>
-                            <button class="btn-red" th:onclick="|window.location.href='@{/product/insertInfo}'|"
-                                    style="margin-top:8px">가입하기
-                            </button>
-                            <button class="btn-ghost btn-white" style="margin-top:8px">상담예약</button>
-                            <div class="helper">약관 동의 후 가입이 가능합니다</div>
                         </div>
                     </div>
                 </section>
@@ -225,8 +220,7 @@
 
                         <div class="row">
                             <label for="amount">예치금액</label>
-                            <input aria-describedby="amtHelp" class="input" id="amount" min="10000" step="10000"
-                                   type="number"
+                            <input aria-describedby="amtHelp" class="input" id="amount" min="10000" step="10000" type="number"
                                    value="10000000">
                             <div class="small" id="amtHelp">단위: 원</div>
                         </div>
@@ -251,8 +245,7 @@
                         <th:block th:if="${session.loginUser != null}">
                             <button class="btn-red"
                                     style="margin-top:8px"
-                                    th:onclick="'window.location.href=\''+@{/product/insertInfo/{pid}(pid=${pid})}+'\';'">
-                                가입하기
+                                    th:onclick="'window.location.href=\''+@{/product/insertInfo/{pid}(pid=${pid})}+'\';'">가입하기
                             </button>
                         </th:block>
                         <th:block th:unless="${session.loginUser != null}">
