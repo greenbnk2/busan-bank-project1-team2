@@ -37,7 +37,7 @@
                                 <ul>
                                     <li style="margin-bottom:15px;"><a th:href="@{/product/list}">예금상품</a></li>
                                     <li style="margin-bottom:15px;"><a th:href="@{/product/list}">적금상품</a></li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/product/fund/list}">펀드상품</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/product/list}">펀드상품</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -79,46 +79,32 @@
 
                 <!-- 퇴직연금 알아보기 -->
                 <li class="has-mega"><a href="#"
-                                        style="text-decoration: none; color: #374151; font-weight: 650; font-size: x-large;">퇴직연금 알아보기</a>
+                                        style="text-decoration: none; color: #374151; font-weight: 650; font-size: x-large;">퇴직연금
+                    알아보기</a>
                     <div class="mega" role="region" aria-label="외환 메뉴">
                         <div class="mega-inner">
                             <div>
-                                <h4 style="margin-bottom:27px; font-size: larger;">퇴직연금 소개</h4>
+                                <h4 style="margin-bottom:27px; font-size: larger;">환전</h4>
                                 <ul>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/intro/why-pension}">왜 퇴직연금인가?</a></li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/intro/why-pension}">퇴직연금이란?</a>
-                                    </li>
-                                    <li><a href=th:href="@{/retirement-renew/intro/why-pension}">퇴직연금 도입혜택</a></li>
+                                    <li style="margin-bottom:15px;"><a href="#">실시간 환율 조회</a></li>
+                                    <li style="margin-bottom:15px;"><a href="#">모바일 환전</a></li>
+                                    <li><a href="#">환율우대 쿠폰</a></li>
                                 </ul>
                             </div>
                             <div>
-                                <h4 style="margin-bottom:27px; font-size: larger;">퇴직연금 제도의 이해</h4>
+                                <h4 style="margin-bottom:27px; font-size: larger;">해외송금</h4>
                                 <ul>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/system/db}">확정급여형(DB)</a></li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/system/db}">확정급여형(DC)</a></li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/system/db}">개인형퇴직연금제도(IRP)</a></li>
-                                    <li><a th:href="@{/retirement-renew/system/db}">제도 일반사항</a></li>
+                                    <li style="margin-bottom:15px;"><a href="#">빠른 해외송금</a></li>
+                                    <li style="margin-bottom:15px;"><a href="#">정기송금 관리</a></li>
+                                    <li><a href="#">수취조회</a></li>
                                 </ul>
                             </div>
                             <div>
-                                <h4 style="margin-bottom:27px; font-size: larger;">도입/운영안내</h4>
+                                <h4 style="margin-bottom:27px; font-size: larger;">외화예금</h4>
                                 <ul>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/operation/intro-process}">도입과정 한눈에 보기</a></li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/operation/intro-process}">운영과정 체크포인트</a></li>
-                                    <li><a th:href="@{/retirement-renew/operation/intro-process}">적립금 운용전략</a></li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 style="margin-bottom:27px; font-size: larger;">NPS 노후설계서비스</h4>
-                                <ul>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/nps-plan/nps-plan}">NPS 노후설계서비스</a></li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 style="margin-bottom:27px; font-size: larger;">통합연금포털 오류 신고</a></h4>
-                                <ul>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/portal-error/portal-error}">오류신고 접수</a></li>
-                                    <li><a th:href="@{/retirement-renew/portal-error/portal-error}">오류신고 내역 및 결과조회</a></li>
+                                    <li style="margin-bottom:15px;"><a href="#">USD 외화예금</a></li>
+                                    <li style="margin-bottom:15px;"><a href="#">JPY 외화예금</a></li>
+                                    <li><a href="#">EUR 외화예금</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -133,10 +119,12 @@
                             <div>
                                 <h4 style="margin-bottom:27px; font-size: larger;">고객상담</h4>
                                 <ul>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/consultation/FAQ}">FAQ</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/consultation/FAQ}">FAQ</a>
+                                    </li>
                                     <li style="margin-bottom:15px;"><a th:href="@{/cs/consultation/document}">필요서류안내</a>
                                     </li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/consultation/Q&A}">Q&A</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/consultation/Q&A}">Q&A</a>
+                                    </li>
                                     <li style="margin-bottom:15px;"><a th:href="@{/cs/consultation/findStore}">영업점
                                         찾기</a></li>
                                 </ul>
@@ -144,12 +132,14 @@
                             <div>
                                 <h4 style="margin-bottom:27px; font-size: larger;">금융소비자보호</h4>
                                 <ul>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/infoProtect/financialProtection}">금융소비자보호헌장</a>
-                                    </li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/infoProtect/complaintProcessing}">민원접수
-                                        및 처리프로세스</a></li>
                                     <li style="margin-bottom:15px;"><a
-                                            th:href="@{/cs/infoProtect/protectionInformation}">소비자보호필수안내사항</a></li>
+                                            th:href="@{/cs/infoProtect/financialProtection}">금융소비자보호헌장</a></li>
+                                    <li style="margin-bottom:15px;"><a
+                                            th:href="@{/cs/infoProtect/complaintProcessing}">민원접수 및 처리프로세스</a>
+                                    </li>
+                                    <li style="margin-bottom:15px;"><a
+                                            th:href="@{/cs/infoProtect/protectionInformation}">소비자보호필수안내사항</a>
+                                    </li>
                                     <li style="margin-bottom:15px;"><a th:href="@{/cs/infoProtect/agencyGuide}">금융소비자권리행사안내</a>
                                     </li>
                                 </ul>
@@ -157,11 +147,14 @@
                             <div>
                                 <h4 style="margin-bottom:27px; font-size: larger;">이용안내</h4>
                                 <ul>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/howUse/regProcess}">가입절차</a></li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/howUse/pwInfo}">비밀번호안내</a></li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/howUse/serviceTime}">서비스 이용시간</a>
+                                    <li style="margin-bottom:15px;"><a
+                                            th:href="@{/cs/howUse/regProcess}">가입절차</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/howUse/pwInfo}">비밀번호안내</a>
                                     </li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/howUse/feeInfo}">수수료안내</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/howUse/serviceTime}">서비스
+                                        이용시간</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/cs/howUse/feeInfo}">수수료안내</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -177,7 +170,8 @@
                                 <h4 style="margin-bottom:27px; font-size: larger;">은행안내</h4>
                                 <ul>
                                     <li style="margin-bottom:15px;"><a th:href="@{/info/guide}">은행안내</a></li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/info/story}">BNK부산은행스토리</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/info/story}">BNK부산은행스토리</a>
+                                    </li>
                                     <li style="margin-bottom:15px;"><a th:href="@{/info/invest}">투자자정보</a></li>
                                 </ul>
                             </div>
@@ -189,7 +183,8 @@
                     <div style="display: flex; align-items: center;">
                         <div id="session-box"
                              style="display: flex; align-items: center; gap: 10px; white-space: nowrap; flex-shrink: 0; width: 200px">
-                            <span id="logout-btn" style="cursor:pointer; font-weight:600; flex-shrink:0;">로그아웃</span>
+                                    <span id="logout-btn"
+                                          style="cursor:pointer; font-weight:600; flex-shrink:0;">로그아웃</span>
                             <span id="session-timer" style="font-weight:600; color:#374151; flex-shrink:0;">--:--</span>
                             <button class="btn-register" type="button" id="session-extend-btn"
                                     style="cursor:pointer; border-radius:6px; border:1px solid #E5E7EB; width:65px; height:32px; flex-shrink:0;">
@@ -198,18 +193,26 @@
                         </div>
                         <div style=" width: 60px;text-align: center;">
                             <a th:href="@{/info/guide}">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10.5 6.5L5.5 10V22" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 2L15.5 5.5V12L19 14.5V22H10.5V2Z" fill="#4B5563" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M2 22H22" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.5 6.5L5.5 10V22" stroke="#4B5563" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                          d="M10.5 2L15.5 5.5V12L19 14.5V22H10.5V2Z" fill="#4B5563"
+                                          stroke="#4B5563" stroke-width="2" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M2 22H22" stroke="#4B5563" stroke-width="2" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
                                 </svg>
                             </a>
                         </div>
                         <div th:if="${session.loginUser !=  null && session.loginUser.role == 'ADMIN'}">
                             <div style="width: 60px; padding-top: 1px;text-align: center;">
                                 <a th:href="@{/admin/main}">
-                                    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M14.6825 7.75014C14.048 8.38653 13.239 8.82031 12.3578 8.99654C11.4766 9.17278 10.5629 9.08355 9.7325 8.74014L4.3225 15.2601C3.3325 16.2501 1.7325 16.2501 0.7425 15.2601C-0.2475 14.2701 -0.2475 12.6701 0.7425 11.6901L7.2625 6.27014C6.5825 4.62014 6.9125 2.66014 8.2525 1.32014C9.5325 0.0401411 11.3725 -0.299859 12.9725 0.260141L10.0825 3.15014L12.9025 5.97014L15.7625 3.10014C16.2925 4.68014 15.9425 6.49014 14.6825 7.75014ZM1.8125 14.1901C2.2125 14.5801 2.8525 14.5801 3.2425 14.1901C3.6425 13.7901 3.6425 13.1501 3.2425 12.7601C2.8525 12.3601 2.2125 12.3601 1.8125 12.7601C1.62501 12.9509 1.51994 13.2077 1.51994 13.4751C1.51994 13.7426 1.62501 13.9994 1.8125 14.1901Z" fill="#4B5563"/>
+                                    <svg width="20" height="20" viewBox="0 0 16 16" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.6825 7.75014C14.048 8.38653 13.239 8.82031 12.3578 8.99654C11.4766 9.17278 10.5629 9.08355 9.7325 8.74014L4.3225 15.2601C3.3325 16.2501 1.7325 16.2501 0.7425 15.2601C-0.2475 14.2701 -0.2475 12.6701 0.7425 11.6901L7.2625 6.27014C6.5825 4.62014 6.9125 2.66014 8.2525 1.32014C9.5325 0.0401411 11.3725 -0.299859 12.9725 0.260141L10.0825 3.15014L12.9025 5.97014L15.7625 3.10014C16.2925 4.68014 15.9425 6.49014 14.6825 7.75014ZM1.8125 14.1901C2.2125 14.5801 2.8525 14.5801 3.2425 14.1901C3.6425 13.7901 3.6425 13.1501 3.2425 12.7601C2.8525 12.3601 2.2125 12.3601 1.8125 12.7601C1.62501 12.9509 1.51994 13.2077 1.51994 13.4751C1.51994 13.7426 1.62501 13.9994 1.8125 14.1901Z"
+                                              fill="#4B5563"/>
                                     </svg>
                                 </a>
                             </div>
@@ -688,7 +691,7 @@
         top: var(--nav-h); /* 기존 68px → 변수로 */
     }
 </style>
-<script th:inline="javascript">
+<script>
     (function () {
         const root = document.querySelector('.nav-root');
         const items = Array.from(document.querySelectorAll('.gnb .has-mega'));
