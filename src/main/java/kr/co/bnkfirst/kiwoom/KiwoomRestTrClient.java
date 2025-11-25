@@ -62,7 +62,7 @@ public class KiwoomRestTrClient implements KiwoomTrClient {
                     .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
                     .block();
 
-//            log.info("ka10032={}", body);
+            log.info("ka10032={}", body);
             return extractRankRows(body, limit);
         }
 
