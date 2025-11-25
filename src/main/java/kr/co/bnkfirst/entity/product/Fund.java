@@ -12,7 +12,6 @@ import lombok.*;
 public class Fund {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String fid;
     private String fname;
     private String famc;

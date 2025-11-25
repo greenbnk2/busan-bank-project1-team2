@@ -3,6 +3,8 @@
     이름 : 강민철
     내용 : product_insert_info.html JS 작성
  */
+
+import {validateFirstAmt} from "/BNK/js/product/init_pjnfee.js";
 document.addEventListener('DOMContentLoaded', async function () {
     /*======== 스탭퍼 스크립트 ========*/
     let currentStep = 1;                 // 1~5
@@ -128,7 +130,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             return true;
         },
         4() {
-            return true;
+            const validCheck = validateFirstAmt();
+            return validCheck;
         },
         5() {
             return true;
@@ -553,36 +556,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             amtInput.focus();
             amtInput.select();
         }
-    });
-
-    // 계약기간 칩 동작
-    const months = document.getElementById('termMonths');
-    const termDate = document.getElementById('termDate');
-    document.getElementById('termChips').addEventListener('click', (e) => {
-        const chip = e.target.closest('.Chip');
-        if (!chip) return;
-        [...e.currentTarget.querySelectorAll('.Chip')].forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        const m = chip.dataset.month;
-        const isDate = chip.dataset.type === 'date';
-        if (isDate) {
-            months.style.display = 'none';
-            termDate.style.display = 'block';
-            termDate.focus();
-        } else {
-            months.style.display = 'block';
-            termDate.style.display = 'none';
-            months.value = m || months.value;
-            months.focus();
-        }
-    });
-
-    // 개월 범위 보정
-    months.addEventListener('change', () => {
-        let v = parseInt(months.value || 0, 10);
-        if (isNaN(v)) v = 6;
-        v = Math.max(6, Math.min(36, v));
-        months.value = v;
     });
 
 

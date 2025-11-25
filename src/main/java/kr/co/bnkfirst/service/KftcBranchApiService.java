@@ -1,6 +1,7 @@
 package kr.co.bnkfirst.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.co.bnkfirst.dto.KftcBranchDTO;
 import kr.co.bnkfirst.dto.KftcBranchDetailResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,14 +20,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KftcBranchApiService {
 
-    //@Value("${kftc.access-token}")
+    // application.yml 에서 불러옴
+    @Value("${kftc.access-token}")
     private String accessToken;  // application.yml에 등록한 Access Token
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
-     * 금융결제원 지점 상세조회 API 호출
+     * ① 금융결제원 지점 상세조회 API
      */
     public KftcBranchDetailResponse getBranchDetail(
             String trmsOrgCode,
@@ -42,6 +46,7 @@ public class KftcBranchApiService {
 
         log.info("📨 금융결제원 요청 Body = {}", body);
 
+
         // HTTP 헤더
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -56,4 +61,30 @@ public class KftcBranchApiService {
 
         return response.getBody();
     }
+
+    /**
+     * ② ⭐ 금융결제원 지점 목록 조회 API (BranchService가 반드시 필요로 함)
+     */
+    public List<KftcBranchDTO> getKftcBranches() {
+
+        String url = "https://openapi.finmap.or.kr/v1.0/kftc/inquiry/brch_list";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + accessToken);
+
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+
+        ResponseEntity<KftcBranchDTO[]> response =
+                restTemplate.exchange(url, HttpMethod.POST, entity, KftcBranchDTO[].class);
+
+        KftcBranchDTO[] arr = response.getBody();
+
+        if (arr == null) {
+            return new ArrayList<>();
+        }
+
+        return Arrays.asList(arr);
+    }
+
 }

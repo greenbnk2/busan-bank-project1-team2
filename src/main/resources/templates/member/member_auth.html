@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>본인인증</title>
+<!--
+    날짜 : 2025/11/24
+    이름 : 이준우
+    내용 : 공동인증서 모의 추가 작업
+-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
@@ -50,13 +55,13 @@
                     <div class="m-title">
                         <span class="m-badge1">✷</span>
                         <div>
-                            <div class="m-name">금융인증서</div>
+                            <div class="m-name">공동인증서</div>
                             <div class="m-sub">저장된 인증서로 이용</div>
                         </div>
                     </div>
                     <ul class="m-list">
+                        <li>PC에 저장된 인증서만 가능</li>
                         <li>기존 발급받은 인증서</li>
-                        <li>PC/모바일 모두 가능</li>
                         <li>즉시 인증 완료</li>
                     </ul>
                 </button>
@@ -96,7 +101,7 @@
                                     <option>선택</option>
                                     <option value="SKT" th:selected="${auth?.mcarrier == 'SKT'}">SKT</option>
                                     <option value="KT" th:selected="${auth?.mcarrier == 'KT'}">KT</option>
-                                    <option value="LGU+" th:selected="${auth?.mcarrier == 'LGU+'}">LGU+</option>
+                                    <option value="LG" th:selected="${auth?.mcarrier == 'LG'}">LG</option>
                                 </select>
                             </td>
                         </tr>
@@ -119,7 +124,6 @@
                                 </div>
                             </td>
                         </tr>
-
                         <tr>
                             <td colspan="4">
                                 <div class="note-blue" style="margin-top:20px;">
@@ -158,23 +162,85 @@
                 </div>
             </section>
 
-            <!-- 금융인증서(테이블 레이아웃) -->
+            <!-- 공동인증서(테이블 레이아웃) -->
             <section id="panel-cert" class="auth-panel" role="tabpanel" aria-labelledby="method-cert" aria-hidden="true" >
                 <div class="form-card">
                     <table class="auth-table">
                         <tbody>
                         <tr>
-                            <th scope="row" class="field-name"><h2 style="margin: 0;">금융인증서 인증</h2></th>
-                        </tr>
-                        <tr>
-                            <td><p style="color:#4b5563; margin: 0 10px 0;">PC 또는 모바일에 저장된 금융인증서를 선택하여 인증을 진행해주세요.</p></td>
+                            <td colspan="4">
+                                <h2 style="margin: 0 0 0 10px;">PC에 저장된 공동인증서를 선택하여 인증을 진행해주세요.</h2>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="4">
                                 <div class="btns">
                                     <button type="button" class="btn-register" id="btnFinanceCert" style="width:720px;">
-                                        금융인증서 선택
+                                        공동인증서 선택
                                     </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div id="jointStatus" class="joint-status" style="display:none;">
+                                    공동인증서 인증이 완료되었습니다. 아래의 정보를 입력한 후 다음 단계를 진행해 주세요.
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 처음엔 숨겨져 있다가 인증 성공 시 나타나는 영역 -->
+                        <tr class="joint-extra" style="display:none;">
+                            <th scope="row" class="field-name">이름</th>
+                            <td>
+                                <input type="text" class="input joint-visible" placeholder="이름 입력"
+                                       oninput="document.getElementById('h_mname').value = this.value;">
+                                <input type="hidden" id="h_mname" name="mname">
+                            </td>
+
+                            <th scope="row" class="field-name">생년월일</th>
+                            <td style="display:flex; align-items:center; gap:12px;">
+                                <input id="jointBirthInput" class="input joint-visible" placeholder="YYYY-MM-DD"
+                                       oninput="document.getElementById('h_mbirth').value = this.value;">
+                                <input type="hidden" id="h_mbirth" name="mbirth">
+                            </td>
+                        </tr>
+                        <tr class="joint-extra" style="display:none;">
+                            <th scope="row" class="field-name">성별</th>
+                            <td>
+                                <select class="input joint-visible"
+                                        onchange="document.getElementById('h_mgender').value = this.value;">
+                                    <option value="" hidden>선택</option>
+                                    <option value="M">남성</option>
+                                    <option value="F">여성</option>
+                                </select>
+                                <input type="hidden" id="h_mgender" name="mgender">
+                            </td>
+
+                            <th scope="row" class="field-name">통신사</th>
+                            <td>
+                                <select class="input joint-visible"
+                                        onchange="document.getElementById('h_mcarrier').value = this.value;">
+                                    <option value="" hidden>선택</option>
+                                    <option value="SKT">SKT</option>
+                                    <option value="KT">KT</option>
+                                    <option value="LG">LG</option>
+                                </select>
+                                <input type="hidden" id="h_mcarrier" name="mcarrier">
+                            </td>
+                        </tr>
+                        <tr class="joint-extra" style="display:none; width: 254px">
+                            <th scope="row" class="field-name">휴대폰번호</th>
+                            <td>
+                                <input type="text" class="input joint-visible" placeholder="010-1234-5678"
+                                       oninput="document.getElementById('h_mphone').value = this.value;">
+                                <input type="hidden" id="h_mphone" name="mphone">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="note-blue" style="margin-top:20px;">
+                                    <span class="bullet" style="background-color:#2563eb;">!</span>
+                                    인증서가 없는 경우 은행/공공기관에서 발급 후 이용해주세요.
                                 </div>
                             </td>
                         </tr>
@@ -183,23 +249,15 @@
                                 <div class="helper-box">
                                     <div class="helper-title">안내사항</div>
                                     <ul class="helper-list">
-                                        <li>입력하신 정보는 본인확인 용도로만 사용되며 저장되지 않습니다.</li>
-                                        <li>통신사 점검 또는 네트워크 상태에 따라 인증이 지연될 수 있습니다.</li>
-                                        <li>인증번호는 3분간 유효하며, 시간 초과 시 재전송을 눌러주세요.</li>
+                                        <li>입력하신 정보는 인증서 확인 목적에만 사용되며 별도로 저장되지 않습니다.</li>
+                                        <li>시스템 점검 및 네트워크 환경에 따라 인증서 확인이 지연될 수 있습니다.</li>
+                                        <li>인증 요청은 일정 시간 내 완료해야 하며, 만료 시 다시 시도해 주세요.</li>
                                     </ul>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2">
-                                <div class="note-blue" style="margin-top:20px;">
-                                    <span class="bullet" style="background-color:#2563eb;">!</span>
-                                    인증서가 없는 경우 은행/공공기관에서 발급 후 이용해주세요.
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
+                            <td colspan="4">
                                 <div class="btns">
                                     <a th:href="@{/member/main}" class="btn-pressable"
                                        style="display:inline-block;box-sizing:border-box;width:50%;height:42px;line-height:42px;border-radius:8px;border:1px solid #D1D5DB;background-color:#fff;text-align:center;color:#111;text-decoration:none;">
@@ -217,40 +275,79 @@
     </form>
 </main>
 
-<!-- ▼▼ 금융인증서 모달 현재 미구현 -->
+<!-- 공동인증서 모달 -->
 <div id="certModal" aria-hidden="true">
-  <div class="modal-backdrop" data-close-modal></div>
-  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
-    <div class="modal-header">
-      <h3 id="certModalTitle" style="margin:0;">금융인증서 로그인</h3>
-      <button type="button" class="modal-close" title="닫기" data-close-modal>&times;</button>
-    </div>
-    <div class="modal-body">
-      <div class="field" style="margin-bottom:10px;">
-        <label class="field-name" style="display:block; margin-bottom:6px;">인증서 선택</label>
-        <select class="input" id="certSelect">
-          <option value="" hidden>인증서를 선택하세요</option>
-          <option value="cert_01">홍길동 개인용 인증서</option>
-          <option value="cert_02">BNK 기업용 인증서</option>
-        </select>
-      </div>
-      <div class="field">
-        <label class="field-name" style="display:block; margin-bottom:6px;">인증서 비밀번호</label>
-        <input type="password" class="input" id="certPw" placeholder="비밀번호 입력">
-      </div>
-      <p style="margin:10px 0 0; color:#6b7280; font-size:13px;">* 데모용 임시 폼입니다. 실제 인증 연동 전까지 UI 확인용으로 사용하세요.</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn-pressable" data-close-modal
-        style="width:48%; height:42px; border:1px solid #D1D5DB; border-radius:8px; background:#fff;">
-        취소
-      </button>
-      <button type="button" class="btn-register" id="btnCertSubmit" style="width:48%;">확인</button>
-    </div>
-  </div>
-</div>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
+        <div class="modal-header">
+            <h3 id="certModalTitle" style="margin:0;">공동인증서 로그인</h3>
+            <button type="button" class="modal-close" title="닫기" data-close-modal>&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- 공동인증서 파일 선택 추가 -->
+            <div class="field" style="margin-bottom:10px;">
+                <label class="field-name" style="display:block; margin-bottom:6px;">인증서 파일</label>
+                <!-- 원래 실제 구현은 .pfx,.p12 파일  첨부 -->
+                <input type="file" class="input btn-pressable" id="jointCertFile" accept=".jpg,.jpeg,.png">
+                <p style="margin:4px 0 0; font-size:12px; color:#6b7280;">
+                    * 하드디스크에 저장된 공동인증서(.png.jpg) 파일을 선택해주세요.
+                </p>
+            </div>
 
+            <!-- 비밀번호 123456 고정-->
+            <div class="field">
+                <label class="field-name" style="display:block; margin-bottom:6px;">인증서 비밀번호</label>
+                <input type="password" class="input" id="certPw" placeholder="인증서 암호를 입력해 주세요">
+            </div>
+            <p style="margin:10px 0 0; color:#6b7280; font-size:13px;">
+                * 안전한 금융거래를 위해 6개월마다 인증서 암호를 변경하시길 바랍니다.
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-pressable" data-close-modal
+                    style="width:48%; height:42px; border:1px solid #D1D5DB; border-radius:8px; background:#fff;">
+                취소
+            </button>
+            <button type="button" class="btn-register" id="btnCertSubmit" style="width:48%;">확인</button>
+        </div>
+    </div>
+</div>
 <script>
+    document.getElementById("authForm").addEventListener("submit", (e) => {
+        if (!verifyState.phone && !verifyState.joint) {
+            e.preventDefault();
+            alert("휴대폰 인증 또는 공동인증서 인증을 완료해야 다음 단계로 이동할 수 있습니다.");
+            return;
+        }
+
+        if (verifyState.joint) {
+            const name = document.getElementById("h_mname").value.trim();
+            const birth = document.getElementById("h_mbirth").value.trim();
+            const gender = document.getElementById("h_mgender").value.trim();
+            const carrier = document.getElementById("h_mcarrier").value.trim();
+            const phone = document.getElementById("h_mphone").value.trim();
+
+            if (!name || !birth || !gender || !carrier || !phone) {
+                e.preventDefault();
+                alert("모든 정보를 입력해야 다음 단계로 이동할 수 있습니다.");
+                return;
+            }
+        }
+    });
+</script>
+<script>
+    function syncInputNames(useJoint) {
+
+        // 공동인증서 hidden 필드 name 관리
+        document.querySelectorAll('#panel-cert input[type="hidden"]').forEach(el => {
+            if (useJoint) {
+                el.name = el.id.replace('h_', '');
+            } else {
+                el.removeAttribute('name');
+            }
+        });
+    }
+
     // 인증 탭 스위치
     (function () {
         const btnPhone = document.getElementById('method-phone');
@@ -273,8 +370,15 @@
             });
         }
 
-        btnPhone.addEventListener('click', () => show(btnPhone, panelPhone));
-        btnCert.addEventListener('click',  () => show(btnCert, panelCert));
+        btnPhone.addEventListener('click', () => {
+            show(btnPhone, panelPhone);
+            syncInputNames(false);
+        });
+
+        btnCert.addEventListener('click',  () => {
+            show(btnCert, panelCert);
+            syncInputNames(true);
+        });
 
         [btnPhone, btnCert].forEach(b => {
             b.addEventListener('keydown', (e) => {
@@ -286,12 +390,12 @@
         });
 
         btnPhone.click();
+        syncInputNames(false);
     })();
 </script>
-
 <script>
     // 인증상태
-    const verifyState = { phone: false };
+    const verifyState = { phone: false, joint: false };
 
     // UI 업데이트
     function updateVerifyUI() {
@@ -372,121 +476,121 @@
                 alert("서버 오류 발생");
             }
         });
-
-        // 다음 버튼 제어
-        document.getElementById("authForm").addEventListener("submit", (e) => {
-            if (!verifyState.phone) {
-                e.preventDefault();
-                alert("휴대폰 인증을 완료해야 다음 단계로 이동할 수 있습니다.");
-            }
-        });
     });
 </script>
-
+<!-- 달력 스크립트 -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
-
 <script>
     flatpickr("#birthInput", {
         locale: "ko",
         dateFormat: "Y-m-d"
     });
 </script>
-
+<!-- 공동인증서 모달 -->
 <script>
-    // 금융인증서 버튼 → 모달 열기
+    // 공동인증서 모달 + 검증 연동
     (function () {
-        const btn = document.getElementById("btnFinanceCert");
-        const modal = document.getElementById("certModal");
-        if (!btn || !modal) return;
+        const btnOpen  = document.getElementById("btnFinanceCert");
+        const modal    = document.getElementById("certModal");
+        const btnCloseEls = document.querySelectorAll("[data-close-modal]");
+        const btnSubmit = document.getElementById("btnCertSubmit");
+        const fileInput = document.getElementById("jointCertFile");
+        const pwInput   = document.getElementById("certPw");
 
-        btn.addEventListener("click", () => {
+        if (!btnOpen || !modal || !btnSubmit || !fileInput || !pwInput) return;
+
+        // 모달 열기
+        btnOpen.addEventListener("click", () => {
             modal.setAttribute("aria-hidden", "false");
         });
-    })();
 
-    // 모달 닫기
-    document.querySelectorAll("[data-close-modal]").forEach(btn => {
-        btn.addEventListener("click", () => {
-            document.getElementById("certModal").setAttribute("aria-hidden", "true");
-        });
-    });
-
-    // 모달 내부 "확인" → 금융 인증 실행
-    document.getElementById("btnCertSubmit").addEventListener("click", async () => {
-        const certId = document.getElementById("certSelect").value;
-        const pw = document.getElementById("certPw").value;
-
-        if (!certId || !pw) {
-            alert("인증서를 선택하고 비밀번호를 입력해주세요.");
-            return;
-        }
-
-        try {
-            const res = await fetch("/BNK/member/api/finance-cert/start", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ certId, pw })
+        // 모달 닫기 (취소/× 버튼)
+        btnCloseEls.forEach(btn => {
+            btn.addEventListener("click", () => {
+                modal.setAttribute("aria-hidden", "true");
             });
+        });
 
-            const data = await res.json();
+        // 확인 버튼 → 파일 + 비밀번호 서버 검증
+        btnSubmit.addEventListener("click", async () => {
+            const file = fileInput.files && fileInput.files[0];
+            const pw   = pwInput.value.trim();
 
-            if (!data.ok) {
-                alert(data.message || "인증 실패");
+            if (!file) {
+                alert("공동인증서 파일을 선택해 주세요.");
                 return;
             }
 
-            document.querySelector("input[name='mname']").value = data.name;
-            document.querySelector("input[name='mbirth']").value = data.birth;
-            document.querySelector("select[name='mgender']").value = data.gender;
-            document.querySelector("select[name='mcarrier']").value = data.carrier;
-            document.querySelector("input[name='mphone']").value = data.phone;
+            // 프론트에서도 확장자 확인 (jpg/jpeg/png)
+            const lower = file.name.toLowerCase();
+            if (!lower.endsWith(".jpg") &&
+                !lower.endsWith(".jpeg") &&
+                !lower.endsWith(".png")) {
+                alert("jpg, jpeg, png 형식의 파일만 업로드할 수 있습니다.");
+                return;
+            }
 
-            // 모달 닫기
-            document.getElementById("certModal").setAttribute("aria-hidden", "true");
+            if (!pw) {
+                alert("인증서 비밀번호를 입력해 주세요.");
+                return;
+            }
 
-            alert("금융인증이 완료되었습니다!");
-
-        } catch (e) {
-            console.error(e);
-            alert("금융인증 처리 중 오류 발생");
-        }
-    });
-
-    // 콜백 수신 시 자동 입력 반영
-    (async function () {
-        const params = new URLSearchParams(window.location.search);
-
-        if (params.has("tx_id") && params.has("code")) {
-            const txId = params.get("tx_id");
-            const code = params.get("code");
+            const formData = new FormData();
+            formData.append("certFile", file);
+            formData.append("certPw", pw);
 
             try {
-                const res = await fetch(`/BNK/member/auth/finance-cert/callback?tx_id=${txId}&code=${code}`);
+                const res  = await fetch("/BNK/member/api/joint-cert/verify", {
+                    method: "POST",
+                    body: formData
+                });
                 const data = await res.json();
 
                 if (!data.ok) {
-                    alert("금융 인증 처리 실패");
+                    alert(data.message || "공동인증서 검증에 실패했습니다.");
+                    verifyState.joint = false;
                     return;
                 }
+                // 공동인증서 선택 버튼 숨기기
+                const btnFinance = document.getElementById("btnFinanceCert");
+                if (btnFinance) {
+                    const row = btnFinance.closest("tr");
+                    if (row) {
+                        row.style.display = "none";
+                    } else {
+                        btnFinance.style.display = "none";
+                    }
+                }
 
-                // 인증정보 자동 입력
-                document.querySelector("input[name='mname']").value = data.name;
-                document.querySelector("input[name='mbirth']").value = data.birth;
-                document.querySelector("select[name='mgender']").value = data.gender;
-                document.querySelector("select[name='mcarrier']").value = data.carrier;
-                document.querySelector("input[name='mphone']").value = data.phone;
+                // 인증 성공 → panel-cert 안의 joint-extra 행들을 보여주기
+                document.querySelectorAll("#panel-cert .joint-extra")
+                    .forEach(tr => tr.style.display = "");
 
-                alert("금융인증 완료되었습니다!");
+                const statusBox = document.getElementById("jointStatus");
+                if (statusBox) statusBox.style.display = "block";
 
-                history.replaceState({}, document.title, location.pathname);
+                verifyState.joint = true;
+
+                // 모달 닫기
+                modal.setAttribute("aria-hidden", "true");
+
+                alert("공동인증서 인증이 완료되었습니다.");
+
+                // 이름 입력칸에 포커스
+                const nameInput = document.querySelector("#panel-cert .joint-extra input[name='mname']");
+                if (nameInput) nameInput.focus();
 
             } catch (e) {
                 console.error(e);
-                alert("금융인증 콜백 처리 중 오류 발생");
+                alert("공동인증서 처리 중 오류가 발생했습니다.");
             }
-        }
+        });
     })();
+    flatpickr("#jointBirthInput", {
+        locale: "ko",
+        dateFormat: "Y-m-d"
+    });
 </script>
   <footer><div th:replace="~{layouts/footer.html}"></div></footer>
 </body>
@@ -649,5 +753,18 @@
   }
   #certModal .modal-body{ padding: 6px 2px; }
   #certModal .modal-footer{ display:flex; gap:10px; margin-top:14px; }
+  input[type="file"]::-webkit-file-upload-button { display: none; }
+  .joint-status { margin-bottom: 8px; border-radius: 10px; border: 1px solid #BBF7D0;
+      background: #ECFDF3; font-size: 13px; padding: 10px 0 10px 34px; position: relative; }
+  .joint-status::before {
+      content: "✔";
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #16a34a;
+      font-size: 16px;
+      font-weight: 700;
+  }
 </style>
 </html>

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상품 정보입력</title>
     <link rel="stylesheet" th:href="@{/css/product/product_insert_info.css}">
-    <script th:src="@{/js/product/product_insert_info.js}"></script>
+    <script type="module" th:src="@{/js/product/product_insert_info.js}"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script th:src="@{/js/product/postcode.js}"></script>
 </head>
@@ -508,7 +508,7 @@
                 <!-- 이자지급구분 -->
                 <div class="form-row">
                     <label class="label">이자지급구분 <span class="req">*</span></label>
-                    <div class="radio-row">
+                    <div id="pwtpi" class="radio-row">
                         <label class="radio"><input type="radio" name="paytype" value="만기" checked>만기일시지급</label>
                         <label class="radio"><input type="radio" name="paytype" value="월지급">월지급</label>
                     </div>
@@ -540,13 +540,13 @@
                     <div class="spacer"></div>
                     <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
                         <div class="unit-wrap" style="width:160px">
-                            <input id="termMonths" class="input unit-padding" type="number" min="6" max="36"
-                                   value="6" aria-label="개월 입력">
+                            <input id="termMonths" class="input unit-padding" type="number"
+                                   aria-label="개월 입력">
                             <span class="unit">개월</span>
                         </div>
                         <input id="termDate" class="input" type="date" aria-label="만기일자"
                                style="width:200px; display:none">
-                        <span class="help">※ 6개월 이상 ~ 36개월 이내로 입력해 주세요.</span>
+                        <span id="termHelp" class="help">※ 6개월 이상 ~ 36개월 이내로 입력해 주세요.</span>
                     </div>
                 </div>
 
@@ -636,33 +636,6 @@
                         <div class="button-wrapper">
                             <button class="btn-secondary" type="button">다시입력</button>
                         </div>
-                    </div>
-                </div>
-
-                <!-- 권유직원정보 -->
-                <div class="form-row full">
-                    <label class="label">권유직원정보 (선택)</label>
-                    <div class="search-buttons">
-                        <button type="button" class="sbtn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                                <circle cx="11" cy="11" r="7"/>
-                                <path d="m21 21-4.3-4.3"/>
-                            </svg>
-                            지역 검색
-                        </button>
-                        <button type="button" class="sbtn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                                <path d="M3 12h18M3 6h18M3 18h18"/>
-                            </svg>
-                            점 지정 검색
-                        </button>
-                        <button type="button" class="sbtn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                                <circle cx="12" cy="7" r="4"/>
-                                <path d="M5.5 21a7.5 7.5 0 0 1 13 0"/>
-                            </svg>
-                            직원 검색
-                        </button>
                     </div>
                 </div>
 

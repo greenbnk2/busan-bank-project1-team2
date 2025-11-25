@@ -25,6 +25,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+
+        // ⭐ 1) KFTC API 인증 제외
+        String path = request.getRequestURI();
+        if (path.startsWith("/BNK/api/kftc/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         try {
             String token = (String) request.getSession().getAttribute("jwtToken");
 //        String token = resolveToken(request);
@@ -49,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
         } catch (Exception ex) {
-            logger.error("JWT 필터 오류: "+ex.getMessage());
+            logger.error("JWT 필터 오류: " + ex.getMessage());
         }
 
         // 한 번만 호출하도록 해요 - 손진일
@@ -63,5 +71,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return bearer.substring(7);
         }
         return null;
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+
+        // /BNK/api/** 는 인증 없이 접근 허용
+        return path.startsWith("/BNK/api/");
     }
 }
