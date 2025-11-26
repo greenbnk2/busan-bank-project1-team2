@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.bnkfirst.dbstockrank.DbOverseasPriceDto;
 import kr.co.bnkfirst.dbstockrank.OverseasStockInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class DbApiClient {
 
     private final DbAuthService authService;
@@ -49,7 +51,7 @@ public class DbApiClient {
                 httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
-            throw new RuntimeException("해외종목 조회 실패: " + response.body());
+            log.warn("해외종목 조회 실패: {}", response.body());
         }
 
         JsonNode root = objectMapper.readTree(response.body());
@@ -128,7 +130,7 @@ public class DbApiClient {
                 httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
-            throw new RuntimeException("멀티현재가 조회 실패: " + response.body());
+            log.warn("멀티현재가 조회 실패: {}", response.body());
         }
 
         JsonNode root = objectMapper.readTree(response.body());
@@ -182,7 +184,7 @@ public class DbApiClient {
                 httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
-            throw new RuntimeException("해외단일현재가 조회 실패: " + response.body());
+            log.warn("해외단일현재가 조회 실패(code={}): {}", response.statusCode(), response.body());
         }
 
         JsonNode out = objectMapper.readTree(response.body()).path("Out");

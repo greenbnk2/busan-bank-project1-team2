@@ -320,7 +320,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     /* ====================== 상품 정보 채우기 ====================== */
-    const {initProdInfo} = await import('/BNK/js/product/fill_prod_info.js');
+    const {initProdInfo} = await import('/BNK/js/product/init_prod_info.js');
     await (async () => {
         const url = new URL(window.location.href);
         const parts = url.pathname.split('/');
@@ -336,6 +336,12 @@ document.addEventListener('DOMContentLoaded', async function () {
             console.error(e.message);
         }
 
+    })();
+
+    /* ======================= 가입자 정보 채우기 ======================== */
+    await (async () => {
+        const mid = $('#wizard').dataset.mid;
+        const res = await fetch('', {method: "GET"})
     })();
 
 

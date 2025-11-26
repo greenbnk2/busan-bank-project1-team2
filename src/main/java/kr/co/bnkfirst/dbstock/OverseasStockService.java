@@ -45,7 +45,6 @@ public class OverseasStockService {
 
             HttpResponse<String> response =
                     http.send(request, HttpResponse.BodyHandlers.ofString());
-
             log.info("DB 해외호가 raw response = {}", response.body());
 
             JsonNode root = om.readTree(response.body());

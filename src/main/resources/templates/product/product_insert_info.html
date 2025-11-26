@@ -513,18 +513,6 @@
                     </div>
                 </div>
 
-                <!-- 출금계좌번호 (우측) -->
-                <div class="form-row">
-                    <label class="label">출금계좌번호 <span class="req">*</span></label>
-                    <div class="select">
-                        <select class="input" aria-label="출금계좌번호">
-                            <option selected>계좌를 선택해 주세요</option>
-                            <option>부산은행 123-456-789012</option>
-                            <option>부산은행 555-000-111222</option>
-                        </select>
-                    </div>
-                </div>
-
                 <!-- 계약기간 -->
                 <div class="form-row">
                     <label class="label">계약기간 <span class="req">*</span></label>
@@ -549,15 +537,6 @@
                     </div>
                 </div>
 
-                <!-- 목표금액 -->
-                <div class="form-row">
-                    <label class="label">목표금액 (선택)</label>
-                    <div class="unit-wrap">
-                        <input id="goal" class="input unit-padding" placeholder="목표금액 입력">
-                        <span class="unit">원</span>
-                    </div>
-                </div>
-
                 <!-- 출금구분 -->
                 <div class="form-row">
                     <label class="label">출금구분 <span class="req">*</span></label>
@@ -567,13 +546,14 @@
                     </div>
                 </div>
 
-                <!-- 자동이체계좌 -->
+                <!-- 출금계좌번호 -->
                 <div class="form-row">
-                    <label class="label">자동이체계좌</label>
+                    <label class="label">출금계좌번호 <span class="req">*</span></label>
                     <div class="select">
-                        <select class="input" aria-label="자동이체계좌">
+                        <select class="input" aria-label="출금계좌번호">
                             <option selected>계좌를 선택해 주세요</option>
                             <option>부산은행 123-456-789012</option>
+                            <option>부산은행 555-000-111222</option>
                         </select>
                     </div>
                 </div>
@@ -595,6 +575,15 @@
                     </div>
                 </div>
 
+                <!-- 목표금액 -->
+                <div class="form-row">
+                    <label class="label">목표금액 (선택)</label>
+                    <div class="unit-wrap">
+                        <input id="goal" class="input unit-padding" placeholder="목표금액 입력">
+                        <span class="unit">원</span>
+                    </div>
+                </div>
+
                 <!-- 자동이체신청 -->
                 <div class="form-row">
                     <label class="label">자동이체신청 <span class="req">*</span></label>
@@ -602,6 +591,31 @@
                     <div class="radio-row">
                         <label class="radio"><input type="radio" name="autotrans" checked>신청</label>
                         <label class="radio"><input type="radio" name="autotrans">미신청</label>
+                    </div>
+                </div>
+
+                <!-- 자동이체일자 -->
+                <div class="form-row">
+                    <label class="label">계약기간 <span class="req">*</span></label>
+                    <div class="spacer"></div>
+                    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+                        <span style="font-size: 14px; color: #6b7280;">매월</span>
+                        <div class="unit-wrap" style="width:160px">
+                            <input id="pcAtdt" class="input unit-padding" name="pcatdt" type="number"
+                                   aria-label="일 입력" min="1", max="31">
+                            <span class="unit">일</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 자동이체계좌 -->
+                <div class="form-row">
+                    <label class="label">자동이체계좌</label>
+                    <div class="select">
+                        <select class="input" aria-label="자동이체계좌">
+                            <option selected>계좌를 선택해 주세요</option>
+                            <option>부산은행 123-456-789012</option>
+                        </select>
                     </div>
                 </div>
 
