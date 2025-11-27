@@ -414,7 +414,8 @@
                     </div>
                 </div>
                 <table id="accounts-table" style="border-collapse: collapse; width: 100%;border-top: 1px #E5E7EB solid;">
-                <tr style="color: #2B2F36; font-size: 14px; height: 52px; border-bottom: 1px #E5E7EB; ">
+                <tr style="color: #2B2F36; font-size: 14px; height: 52px; border-bottom: 1px #E5E7EB; "
+                >
                     <th style="width: 200px;">상품명</th>
                     <th style="width: 290px;">계좌번호</th>
                     <th style="width: 160px;">개설일</th>
@@ -422,12 +423,12 @@
                     <th style="width: 200px;">잔액(원)</th>
                     <th style="">작업</th>
                 </tr>
-                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;" th:each="contract:${contractList}">
-                    <td>[[${contract.pname}]]</td>
-                    <td>[[${contract.pacc}]]</td>
-                    <td><span th:text="${#temporals.format(contract.pnew, 'yyyy.MM.dd')}"></span></td>
-                    <td><span th:text="${#temporals.format(contract.pend, 'yyyy.MM.dd')}"></span></td>
-                    <td><span th:text="${#numbers.formatInteger(contract.pbalance, '3', 'COMMA')}"></span></td>
+                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;" th:each="fund:${fundList}">
+                    <td>[[${fund.fname}]]</td>
+                    <td>[[${fund.pacc}]]</td>
+                    <td><span th:text="${#temporals.format(fund.pnew, 'yyyy.MM.dd')}"></span></td>
+                    <td><span th:text="${#temporals.format(fund.pend, 'yyyy.MM.dd')}"></span></td>
+                    <td><span th:text="${#numbers.formatInteger(fund.pbalance, '3', 'COMMA')}"></span></td>
                     <td style="vertical-align: middle; text-align: center;">
                         <button th:onclick="|location.href='@{/mypage/prod}'|" class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
                     </td>

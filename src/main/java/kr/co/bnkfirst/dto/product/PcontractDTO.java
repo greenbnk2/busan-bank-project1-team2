@@ -45,5 +45,21 @@ public class PcontractDTO {
     private String pwtpi;
 
     // 추가 컬럼 - 강민철
-    private String pcwtpi;
+    private Float pcwtpi;
+    private String type;
+
+    // 추가 컬럼 - 펀드 계좌용(손진일)
+    private String fid;
+    private String fname;
+    private String famc;
+    private String frlvl;
+    private String ftype;
+    private String frefpr;
+    private String fsetdt;
+    private String ftc;
+    private String fm1pr;
+    private String fm3pr;
+    private String fm6pr;
+    private String fm12pr;
+    private String facmpr;
 }

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class UsersService {
 
     private final UsersMapper usersMapper;
-    private final PasswordEncoder passwordEncoder; // 비밀번호 암호화기 주입
+    private final PasswordEncoder passwordEncoder;
     private final UsersRepository usersRepository;
 
     // 로그인
@@ -111,17 +111,81 @@ public class UsersService {
         return tempPw;
     }
 
-    // 금융인증서
-    public Users save(UsersDTO dto) {
+    // 비밀번호 변경 내용 추가(이준우 2025.11.26)
+    // 현재 비밀번호 검증만 하는 메서드
+    public boolean checkCurrentPassword(String mid, String rawPw) {
 
-        Users entity = dto.toEntity();
+        if (rawPw == null || rawPw.isBlank()) {
+            log.warn("checkCurrentPassword 실패 - rawPw null/blank mid={}", mid);
+            return false;
+        }
 
-        return usersRepository.save(entity);
+        UsersDTO user = usersMapper.findByMid(mid);
+        if (user == null) {
+            log.warn("checkCurrentPassword 실패 - 사용자 없음 mid={}", mid);
+            return false;
+        }
+
+        String storedPw = user.getMpw();
+        if (storedPw == null || storedPw.isBlank()) {
+            log.warn("checkCurrentPassword 실패 - 저장된 비번 없음 mid={}", mid);
+            return false;
+        }
+
+        boolean matches;
+        if (storedPw.startsWith("$2a$") || storedPw.startsWith("$2b$")) {
+            matches = passwordEncoder.matches(rawPw, storedPw);
+        } else {
+            // 예전 평문 패스워드 호환
+            matches = rawPw.equals(storedPw);
+        }
+
+        log.info("checkCurrentPassword mid={}, matches={}", mid, matches);
+        return matches;
     }
 
-    public Users findById(int uid){
+    public boolean changePassword(String mid, String currentPw, String newPw){
+        // 파라미터 방어
+        if (currentPw == null || currentPw.isBlank()) {
+            log.warn("비밀번호 변경 실패 - currentPw null/blank mid={}", mid);
+            return false;
+        }
+        if (newPw == null || newPw.isBlank()) {
+            log.warn("비밀번호 변경 실패 - newPw null/blank mid={}", mid);
+            return false;
+        }
 
-        return usersRepository.findById(uid)
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원"));
+        UsersDTO user = usersMapper.findByMid(mid);
+        if (user == null) {
+            log.warn("비밀번호 변경 실패 - 사용자 없음 mid={}", mid);
+            return false;
+        }
+
+        String storedPw = user.getMpw();
+        if (storedPw == null || storedPw.isBlank()) {
+            log.warn("비밀번호 변경 실패 - DB에 저장된 비밀번호 없음 mid={}", mid);
+            return false;
+        }
+
+        // 현재 비밀번호 검증
+        boolean matches;
+        if (storedPw.startsWith("$2a$") || storedPw.startsWith("$2b$")) {
+            matches = passwordEncoder.matches(currentPw, storedPw);
+        } else {
+            // 예전 평문 DB 호환
+            matches = currentPw.equals(storedPw);
+        }
+
+        if (!matches) {
+            log.warn("비밀번호 변경 실패 - 현재 비밀번호 불일치 mid={}", mid);
+            return false;
+        }
+
+        // 새 비밀번호 암호화 후 업데이트
+        String encoded = passwordEncoder.encode(newPw);
+        int updated = usersMapper.updateMypagePassword(mid, encoded);
+        log.info("비밀번호 변경 성공 mid={}, updated={}", mid, updated);
+
+        return updated == 1;
     }
 }

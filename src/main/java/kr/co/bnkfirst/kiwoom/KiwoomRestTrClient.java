@@ -64,6 +64,19 @@ public class KiwoomRestTrClient implements KiwoomTrClient {
 
 //            log.info("ka10032={}", body);
             return extractRankRows(body, limit);
+        } else if ("ka40004".equals(trCode)) {
+            // 🔹 ETF 전체시세
+            Map<String, Object> body = webClient.post()
+                    .uri("/api/dostk/etf")
+                    .header("Content-Type", "application/json;charset=UTF-8")
+                    .header("authorization", "Bearer " + token)
+                    .header("api-id", trCode)
+                    .bodyValue(input)
+                    .retrieve()
+                    .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
+                    .block();
+
+            return extractEtfRows(body, limit);
         }
 
         // 그 밖의 TR은 필요에 따라 추가
@@ -97,6 +110,27 @@ public class KiwoomRestTrClient implements KiwoomTrClient {
         if (body == null) return List.of();
 
         Object arr = body.get("trde_prica_upper");
+        if (!(arr instanceof List<?> list)) return List.of();
+
+        List<Map<String, String>> result = new ArrayList<>();
+        for (Object o : list) {
+            if (!(o instanceof Map<?, ?> m)) continue;
+
+            Map<String, String> row = new HashMap<>();
+            m.forEach((k, v) -> row.put(String.valueOf(k),
+                    v == null ? null : String.valueOf(v)));
+            result.add(row);
+            if (result.size() >= limit) break;
+        }
+        return result;
+    }
+
+    // ====== ka40004 전용 파싱 ======
+    @SuppressWarnings("unchecked")
+    private List<Map<String, String>> extractEtfRows(Map<String, Object> body, int limit) {
+        if (body == null) return List.of();
+
+        Object arr = body.get("etfall_mrpr");
         if (!(arr instanceof List<?> list)) return List.of();
 
         List<Map<String, String>> result = new ArrayList<>();

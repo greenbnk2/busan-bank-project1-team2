@@ -29,8 +29,8 @@ public class Product {
     private String pname;
     @Column(name = "PBIRATE", columnDefinition = "NUMBER")
     private float pbirate;
-    @Column(name = "PHIRATE", columnDefinition = "NUMBER")
-    private float phirate;
+//    @Column(name = "PHIRATE", columnDefinition = "NUMBER")
+//    private float phirate;
     @Nationalized
     @Column(length = 100)
     private String pcprd;
@@ -72,7 +72,7 @@ public class Product {
                 .ptype(ptype)
                 .pname(pname)
                 .pbirate(pbirate)
-                .phirate(phirate)
+//                .phirate(phirate)
                 .pcprd(pcprd)
                 .pelgbl(pelgbl)
                 .prmthd(prmthd)

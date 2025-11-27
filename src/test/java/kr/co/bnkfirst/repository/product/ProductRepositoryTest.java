@@ -1,8 +1,6 @@
 package kr.co.bnkfirst.repository.product;
 
 import kr.co.bnkfirst.entity.product.Product;
-import kr.co.bnkfirst.fx.FxService;
-import kr.co.bnkfirst.fx.KoreaEximFxClient;
 import kr.co.bnkfirst.service.EmailService;
 import kr.co.bnkfirst.service.SmsService;
 import org.junit.jupiter.api.Test;
@@ -25,8 +23,6 @@ class ProductRepositoryTest {
     EmailService emailService;
     @MockitoBean
     SmsService smsService;
-    @MockitoBean
-    KoreaEximFxClient koreaEximFxClient;
 
     @Test
     void findTest() {

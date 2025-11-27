@@ -1,0 +1,78 @@
+<!-- templates/corporate/employee/edit.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>직원 정보 수정</title>
+    <style>
+        body { font-family:'Noto Sans KR'; background:#f4f5f9; margin:40px; }
+        .card { background:white; padding:24px; border-radius:8px; max-width:500px; margin:auto; }
+        label { font-size:14px; }
+        input, select {
+            width:100%; padding:10px; margin-bottom:16px;
+            border:1px solid #ccc; border-radius:6px; font-size:14px;
+        }
+        .btn {
+            width:100%; padding:12px; background:#d91a1a; color:white;
+            border:none; border-radius:6px; cursor:pointer; font-size:15px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>직원 정보 수정</h2>
+
+    <form id="editForm">
+        <label>이름</label>
+        <input type="text" id="name">
+
+        <label>제도</label>
+        <select id="planType">
+            <option value="DB">DB</option>
+            <option value="DC">DC</option>
+        </select>
+
+        <label>계좌번호</label>
+        <input type="text" id="accountNo">
+
+        <label>상태</label>
+        <select id="status">
+            <option value="ACTIVE">재직</option>
+            <option value="RETIRED">퇴사</option>
+        </select>
+
+        <button class="btn" type="submit">저장하기</button>
+    </form>
+</div>
+
+<script>
+    const employees = JSON.parse(localStorage.getItem("employeesData")) || [
+        {empId:1, name:"김하늘", planType:"DB", accountNo:"123-456-789012", status:"ACTIVE"}
+    ];
+
+    const empId = new URLSearchParams(window.location.search).get("empId");
+    const emp = employees.find(e => e.empId == empId);
+
+    // 초기값 채우기
+    document.getElementById("name").value = emp.name;
+    document.getElementById("planType").value = emp.planType;
+    document.getElementById("accountNo").value = emp.accountNo;
+    document.getElementById("status").value = emp.status;
+
+    // 수정 저장
+    document.getElementById("editForm").onsubmit = function(e){
+        e.preventDefault();
+
+        emp.name = document.getElementById("name").value;
+        emp.planType = document.getElementById("planType").value;
+        emp.accountNo = document.getElementById("accountNo").value;
+        emp.status = document.getElementById("status").value;
+
+        localStorage.setItem("employeesData", JSON.stringify(employees));
+
+        alert("수정이 완료되었습니다.");
+        location.href = "/corporate/employee/list.html";
+    }
+</script>
+</body>
+</html>

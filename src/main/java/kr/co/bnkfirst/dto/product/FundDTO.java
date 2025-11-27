@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,5 +26,32 @@ public class FundDTO {
     private float fm6pr;
     private float fm12pr;
     private float facmpr;
+
+    // mypage - 나의 투자용 필드 추가(손진일)
+    private String pacc;
+    private LocalDateTime pnew;
+    private LocalDateTime pend;
+    private int pbalance;
+
+    // fund_list - 모달 페이지용 필드 추가(손진일)
+    private String basedt;
+    private String evaltype;
+    private String mgmtcomp;
+    private String grade3y;
+    private String grade5y;
+    private String relatedfund;
+    private String investregion;
+    private String past2023;
+    private String past2024;
+    private String fee1y;
+    private String fee3y;
+    private String startinfo;
+    private String salesfee;
+    private String familysize;
+    private String trustfee;
+    private String aum;
+    private String redeemfee;
+    private String chart1;
+    private String chart2;
 
 }

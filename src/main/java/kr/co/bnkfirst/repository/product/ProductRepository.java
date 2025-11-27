@@ -32,22 +32,13 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
                or lower(p.pname) like lower(concat('%', :kw, '%')))
                and (:pelgbl is null or p.pelgbl = :pelgbl)
               and (:prmthd is null or p.prmthd = :prmthd)
-              and (:pprfcrt is null or p.pprfcrt = :pprfcrt)
-        order by 
-          case 
-            when function('instr', lower(p.prmthd), lower(:prefer)) > 0 then 0
-            else 1 
-          end,
-          p.phirate desc,
-          p.pname asc
+              and p.pid != "BNK-TD-1"
     """)
     Page<Product> findPrefSorted(
             @Param("kw") String kw,               // (선택) 일반 검색어
-            @Param("prefer") String prefer,       // 우선 배치하고 싶은 값 (예: "인터넷")
             @Param("pelgbl") String pelgbl,
             @Param("prmthd") String prmthd,
-            @Param("pprfcrt") String pprfcrt,
-            Pageable pageable                     // 페이지/사이즈만 사용 (Sort는 무시됨)
+            Pageable pageable
     );
 
     Optional<Product> findByPid(String pid);

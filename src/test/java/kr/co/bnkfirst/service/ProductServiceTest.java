@@ -1,7 +1,6 @@
 package kr.co.bnkfirst.service;
 
 import kr.co.bnkfirst.dto.product.ProductDTO;
-import kr.co.bnkfirst.fx.KoreaEximFxClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,8 +19,6 @@ class ProductServiceTest {
     EmailService emailService;
     @MockitoBean
     SmsService smsService;
-    @MockitoBean
-    KoreaEximFxClient koreaEximFxClient;
 
     @Autowired
     ProductService productService;

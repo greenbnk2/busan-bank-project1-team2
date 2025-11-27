@@ -40,7 +40,7 @@
                                         aria-label="현재 비밀번호 보기 전환">👁
                                 </button>
                             </div>
-                            <div class="hint">&nbsp;</div>
+                            <div id="currentPwHint" class="hint">&nbsp;</div>
                         </td>
                     </tr>
                     <tr class="field-row">
@@ -170,9 +170,11 @@
         const newPw2Input    = document.getElementById("newPwConfirm");
         const pwHint         = document.getElementById("pwHint");
         const pw2Hint        = document.getElementById("pw2Hint");
+        const currentPwHint  = document.getElementById("currentPwHint");
 
         let phoneVerified = false;
         let emailVerified = false;
+        let currentPwValid = false;
 
         function validatePasswordStrength(value) {
             const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{5,15}$/;
@@ -219,7 +221,59 @@
         newPw2Input.addEventListener("input", checkPasswords);
         currentPwInput.addEventListener("input", checkPasswords);
 
-        window.openCertModal = function () {
+        // 현재 비밀번호 서버 검증
+        async function verifyCurrentPw() {
+            const cur = currentPwInput.value.trim();
+
+            if (!cur) {
+                currentPwHint.textContent = "현재 비밀번호를 입력해주세요.";
+                currentPwHint.style.color = "#d6001c";
+                currentPwValid = false;
+                return false;
+            }
+
+            try {
+                const res = await fetch("/BNK/pw/check-current", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ currentPw: cur })
+                });
+
+                if (!res.ok) {
+                    currentPwHint.textContent = "현재 비밀번호 확인 중 오류가 발생했습니다.";
+                    currentPwHint.style.color = "#d6001c";
+                    currentPwValid = false;
+                    return false;
+                }
+
+                const data = await res.json();
+                if (data.ok) {
+                    currentPwHint.textContent = "현재 비밀번호가 일치합니다.";
+                    currentPwHint.style.color = "#059669";
+                    currentPwValid = true;
+                    return true;
+                } else {
+                    currentPwHint.textContent = "현재 비밀번호가 일치하지 않습니다.";
+                    currentPwHint.style.color = "#d6001c";
+                    currentPwValid = false;
+                    return false;
+                }
+            } catch (e) {
+                console.error(e);
+                currentPwHint.textContent = "현재 비밀번호 확인 중 오류가 발생했습니다.";
+                currentPwHint.style.color = "#d6001c";
+                currentPwValid = false;
+                return false;
+            }
+        }
+
+        // input 끝내고 빠져나갈 때 서버 검증
+        currentPwInput.addEventListener("blur", function () {
+            verifyCurrentPw();
+        });
+
+        // 다음 버튼: 최종 폼 검증 + 현재 비밀번호 서버 검증 통과 시에만 모달 오픈
+        window.openCertModal = async function () {
             const cur  = currentPwInput.value.trim();
             const npw  = newPwInput.value.trim();
             const npw2 = newPw2Input.value.trim();
@@ -241,6 +295,13 @@
             if (npw !== npw2) {
                 alert("새 비밀번호가 서로 다릅니다.");
                 newPw2Input.focus();
+                return;
+            }
+
+            const okCur = await verifyCurrentPw();
+            if (!okCur) {
+                alert("현재 비밀번호가 올바르지 않습니다.");
+                currentPwInput.focus();
                 return;
             }
 
@@ -270,7 +331,7 @@
         methodPhone.addEventListener("click", () => setMethod("phone"));
         methodEmail.addEventListener("click", () => setMethod("email"));
 
-        /* ---------------------- 휴대폰 인증 요청 ---------------------- */
+        // 휴대폰 인증 요청
         btnPhoneReq.addEventListener("click", async () => {
             const phone = document.getElementById("pwresetPhone").value.trim();
             if (!phone) {
@@ -288,11 +349,11 @@
             if (json.ok) {
                 alert("휴대폰 인증번호가 발송되었습니다.");
             } else {
-                alert(json.message);
+                alert(json.message || "인증번호 발송에 실패했습니다.");
             }
         });
 
-        /* ---------------------- 휴대폰 인증번호 검증 ---------------------- */
+        // 휴대폰 인증번호 검증
         btnPhoneVerify.addEventListener("click", async () => {
             const phone = document.getElementById("pwresetPhone").value.trim();
             const code = document.getElementById("pwresetPhoneCode").value.trim();
@@ -314,11 +375,11 @@
                 emailVerified = false;
                 alert("휴대폰 인증이 완료되었습니다.");
             } else {
-                alert(json.message);
+                alert(json.message || "인증에 실패했습니다.");
             }
         });
 
-        /* ---------------------- 이메일 인증 요청 ---------------------- */
+        // 이메일 인증 요청
         btnEmailReq.addEventListener("click", async () => {
             const email = document.getElementById("pwresetEmail").value.trim();
             if (!email) {
@@ -336,11 +397,11 @@
             if (json.send) {
                 alert("이메일 인증번호가 발송되었습니다.");
             } else {
-                alert("발송 실패: " + json.error);
+                alert("발송 실패: " + (json.error || ""));
             }
         });
 
-        /* ---------------------- 이메일 코드 검증 ---------------------- */
+        // 이메일 코드 검증
         btnEmailVerify.addEventListener("click", async () => {
             const code = document.getElementById("pwresetEmailCode").value.trim();
             if (!code) {
@@ -364,15 +425,47 @@
             }
         });
 
-        btnCertSubmit.addEventListener("click", () => {
+        // 모달에서 "확인" → 실제 비밀번호 변경 호출
+        btnCertSubmit.addEventListener("click", async () => {
             if (!phoneVerified && !emailVerified) {
                 alert("휴대폰 또는 이메일 인증을 먼저 완료해주세요.");
                 return;
             }
 
-            alert("비밀번호 변경 완료!");
-            modal.setAttribute("aria-hidden", "true");
-            window.location.href = "/BNK/mypage/main";
+            const curPw = currentPwInput.value.trim();
+            const npw   = newPwInput.value.trim();
+
+            if (!curPw || !npw) {
+                alert("현재 비밀번호와 새 비밀번호를 모두 입력해주세요.");
+                return;
+            }
+
+            try {
+                const res = await fetch("/BNK/pw/change", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        currentPw: curPw,
+                        newPw: npw
+                    })
+                });
+
+                if (!res.ok) {
+                    const text = await res.text();
+                    alert(text || "비밀번호 변경에 실패했습니다.");
+                    return;
+                }
+
+                alert("비밀번호가 변경되었습니다.");
+                modal.setAttribute("aria-hidden", "true");
+                window.location.href = "/BNK/mypage/main";
+
+            } catch (err) {
+                console.error(err);
+                alert("비밀번호 변경 중 오류가 발생했습니다.");
+            }
         });
 
         document.querySelectorAll(".pw-toggle").forEach(btn => {
@@ -391,7 +484,6 @@
         setMethod("phone");
     })();
 </script>
-
 
 <style>
     main {

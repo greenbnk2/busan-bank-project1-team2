@@ -94,4 +94,11 @@
         WHERE MID = #{mid}
     </update>
 
+    <!-- 마이페이지 비밀번호 변경 -->
+    <update id="updateMypagePassword" parameterType="map">
+        UPDATE USERS
+        SET MPW = #{mpw}
+        WHERE MID = #{mid}
+    </update>
+
 </mapper>

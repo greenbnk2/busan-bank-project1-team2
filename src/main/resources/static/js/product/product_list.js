@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* ================= 상태 ================= */
     let view = 'grid';               // 'grid' | 'list'
-    let sortKey = 'join_internet';   // 서버가 지원하도록 맞춰 주세요
+    let sortKey = 'pbirate';   // 서버가 지원하도록 맞춰 주세요
     let keyword = "";
     let page = 1;
     const pageSize = 6;
@@ -27,29 +27,22 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ================= 칩(필터) 정의/렌더: 기존 그대로 사용 ================= */
     const CHIP_GROUPS = [
         {
-            id: 'target', label: '가입대상', field: 'target', fieldType: 'scalar',
+            id: 'target', label: '제도', field: 'target', fieldType: 'scalar',
             options: [
-                {value: '개인', label: '개인'},
-                {value: '기업', label: '기업'},
-                {value: '개인사업자', label: '개인사업자'},
+                {value: 'DB', label: 'DB'},
+                {value: 'DC', label: 'DC'},
+                {value: 'IRP', label: 'IRP'},
             ]
         },
         {
-            id: 'join', label: '가입방법', field: 'join', fieldType: 'array',
+            id: 'join', label: '만기', field: 'join', fieldType: 'array',
             options: [
-                {value: '인터넷', label: '인터넷가입'},
-                {value: '영업점', label: '영업점가입'},
-                {value: '스마트폰', label: '스마트폰가입'},
+                {value: '1년', label: '1년'},
+                {value: '2년', label: '2년'},
+                {value: '3년', label: '3년'},
+                {value: '5년', label: '5년'},
             ]
-        },
-        {
-            id: 'tax', label: '세제혜택', field: 'tax', fieldType: 'scalar',
-            options: [
-                {value: '비과세', label: '비과세'},
-                {value: '세금우대', label: '세금우대'},
-                {value: '소득공제', label: '소득공제'},
-            ]
-        },
+        }
     ];
 
     const chipSelections = Object.fromEntries(CHIP_GROUPS.map(g => [g.id, new Set(['__ALL__'])]));
@@ -81,13 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const val = btn.dataset.value;
                     const set = chipSelections[gid];
 
-                    if (val === '__ALL__') {
-                        chipSelections[gid] = new Set(['__ALL__']);
-                    } else {
-                        set.delete('__ALL__');
-                        if (set.has(val)) set.delete(val); else set.add(val);
-                        if (set.size === 0) set.add('__ALL__');
-                    }
+                    // ✅ 단일 선택: 클릭한 칩만 남기고 전부 제거
+                    set.clear();
+                    set.add(val);      // "__ALL__"도 하나의 값으로 취급
 
                     renderChipBar();
                     page = 1;          // ★ 필터 바뀌면 1페이지
@@ -95,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
         });
+
     }
 
     /* ================= 서버 호출 & 렌더 ================= */
@@ -195,18 +185,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* 페이지네이션 */
     function renderPager(data) {
-        const makeBtn = (label, p, disabled = false, active = false) => `
-                        <button class="page-btn ${active ? 'active' : ''}" ${disabled ? 'disabled' : ''}
-                          aria-label="페이지 ${label}" data-page="${p}">${label}</button>`;
-
-        let html = '';
-        html += makeBtn('〈', Math.max(1, page - 1), data.first, false);
-
-        for (let i = 1; i <= data.totalPages; i++) {
-            html += makeBtn(String(i), i, false, i === page);
+        const totalPages = data.totalPages;
+        if (!totalPages || totalPages === 0) {
+            pager.innerHTML = '';
+            return;
         }
 
-        html += makeBtn('〉', Math.min(data.totalPages, page + 1), data.last, false);
+        const blockSize = 10;          // 한 번에 보여줄 페이지 수
+        const current = page;          // 현재 페이지 (1부터 시작한다고 가정)
+        const currentBlock = Math.floor((current - 1) / blockSize);
+        const startPage = currentBlock * blockSize + 1;
+        const endPage = Math.min(startPage + blockSize - 1, totalPages);
+
+        const makeBtn = (label, p, disabled = false, active = false) => `
+        <button class="page-btn ${active ? 'active' : ''}" 
+                ${disabled ? 'disabled' : ''} 
+                aria-label="페이지 ${label}" 
+                data-page="${p}">${label}</button>`;
+
+        let html = '';
+
+        // 이전 페이지 버튼 (한 칸씩 이동)
+        html += makeBtn('〈', Math.max(1, current - 1), data.first, false);
+
+        // 현재 블록(startPage ~ endPage)만 표시
+        for (let i = startPage; i <= endPage; i++) {
+            html += makeBtn(String(i), i, false, i === current);
+        }
+
+        // 다음 페이지 버튼 (한 칸씩 이동)
+        html += makeBtn('〉', Math.min(totalPages, current + 1), data.last, false);
+
         pager.innerHTML = html;
 
         pager.querySelectorAll('.page-btn').forEach(btn => {
@@ -226,13 +235,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="grid">
                               ${items.map(p => `
                                 <div class="card">
-                                  <span class="badge">${p.ptype}</span>
                                   <div class="name">${p.pname}</div>
-                                  <div class="rate-big">${p.phirate}%</div>
-                                  <div class="meta">기본금리 ${Number(p.pbirate).toFixed(2)}%<br>계약기간: ${p.pcprd}</div>
-                                  <div class="Chips">
-                                    ${(p.pprfcrt.split(",") || []).map(b => `<span class="Chip">${b}</span>`).join('')}
-                                  </div>
+                                  <div class="rate-big">${Number(p.pbirate).toFixed(2)}%</div>
                                   <div class="btns">
                                     <!--<button class="btn btn-white">자세히</button>-->
                                     <button class="btn btn-red" onclick="window.location.href='/BNK/product/view/${p.pid}'">신청하기</button>
@@ -249,11 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                               <div class="table">
                                 <div class="thead">
                                   <div class="cell">상품명</div>
-                                  <div class="cell">기본금리</div>
-                                  <div class="cell">최고금리</div>
-                                  <div class="cell">계약기간</div>
-                                  <div class="cell">가입방법</div>
-                                  <div class="cell">세제혜택</div>
+                                  <div class="cell">예정 적용금리</div>
                                   <div class="cell">신청</div>
                                 </div>
                                 ${items.map(p => `
@@ -262,27 +262,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                       <div>
                                         <div class="title">${p.pname}</div>
                                         <div class="new-prod"></div>
-                                        <div class="subtitle">${p.psubtitle}</div>
                                       </div>
                                     </div>
                                     <div class="cell rate-col">
                                       <span class="rate-base">${Number(p.pbirate).toFixed(2)}</span>
                                       <span class="rate-suffix">%</span>
-                                    </div>
-                                    <div class="cell rate-col">
-                                      <span class="rate-max">${Number(p.phirate).toFixed(2)}</span>
-                                      <span class="rate-suffix">%</span>
-                                    </div>
-                                    <div class="cell"><span class="term">${p.pcprd}</span></div>
-                                    <div class="cell">
-                                      <div class="method">
-                                        ${(p.prmthd.split(",") || []).map(j => `<span class="badge-soft">${j}</span>`).join('')}
-                                      </div>
-                                    </div>
-                                    <div class="cell">
-                                      <div class="benefits">
-                                        ${(p.pprfcrt.split(",") || []).map(b => `<span class="badge-green">${b}</span>`).join('')}
-                                      </div>
                                     </div>
                                     <div class="cell btn-apply">
                                       <button class="btn btn-red" onclick="window.location.href='/BNK/product/view/${p.pid}'">신청하기</button>
@@ -307,11 +291,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('btnGrid').classList.remove('active');
         fetchProducts();
     };
-    document.getElementById('sortSelect').onchange = (e) => {
-        sortKey = e.target.value;  // 'join_internet' | 'rate_desc' | 'release_desc' 등
-        page = 1;
-        fetchProducts();
-    };
+    // document.getElementById('sortSelect').onchange = (e) => {
+    //     sortKey = e.target.value;  // 'join_internet' | 'rate_desc' | 'release_desc' 등
+    //     page = 1;
+    //     fetchProducts();
+    // };
     // 모든 추천 키워드 버튼 선택
     const keywordButtons = document.querySelectorAll('.keywords button');
 

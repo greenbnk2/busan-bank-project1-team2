@@ -51,16 +51,14 @@ public class ProductController {
     @PermitAll
     @ResponseBody
     @GetMapping("/product/items")
-    public ResponseEntity<Page<ProductDTO>> getItems(@RequestParam String sort,
-                                                     @RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<Page<ProductDTO>> getItems(@RequestParam(defaultValue = "1") int page,
                                                      @RequestParam(defaultValue = "6") int pageSize,
                                                      @RequestParam(required = false) String target,
                                                      @RequestParam(required = false) String join,
-                                                     @RequestParam(required = false) String tax,
                                                      @RequestParam(required = false) String keyword) {
 //        log.info("args = {}, {}, {}, {}, {}, {}. {}", sort, page, pageSize,target, join, tax, keyword);
-        Pageable pageable = PageRequest.of(page-1,pageSize, Sort.by(sort).descending());
-        Page<ProductDTO> products = productService.findProducts(sort, page, pageSize,target, join, tax, keyword);
+        Pageable pageable = PageRequest.of(page-1,pageSize, Sort.by("pbirate").descending());
+        Page<ProductDTO> products = productService.findProducts(pageable,target, join, keyword);
         log.info("products total {}", products.getTotalElements());
         return ResponseEntity.ok(products);
     }
@@ -122,6 +120,17 @@ public class ProductController {
         // 로그인 기능 구현 전까지 임시 데이터 주입
         boolean exists = slfcertService.countSlfcertByMid(mid);
         return exists ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @GetMapping("/api/account/{type}")
+    public ResponseEntity<PcontractDTO> getAcc(@PathVariable String type, Principal principal) {
+        if (principal == null) {
+            throw new ErrorResponseException(HttpStatus.FORBIDDEN); // 비로그인시 403
+        }
+        String uid = principal.getName();
+        log.info("getACC uid {}", uid);
+        PcontractDTO acc = productService.getAccount(uid, type);
+        return ResponseEntity.ok(acc);
     }
 
     @GetMapping("/product/subCmpl/list")

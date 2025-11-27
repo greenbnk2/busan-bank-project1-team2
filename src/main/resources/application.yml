@@ -1,9 +1,13 @@
 # ===== common (local/prod 공통) =====
+# ===== common =====
 spring:
   application:
     name: BUSANBANK
   profiles:
     active: prod
+  devtools:
+    restart:
+      enabled: false
 
 jwt:
   issuer: eternalsoul0635@gmail.com

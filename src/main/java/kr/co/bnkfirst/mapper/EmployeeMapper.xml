@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.bnkfirst.mapper.EmployeeMapper">
+
+    <!-- 직원 목록 -->
+    <select id="findAllEmployees"
+            resultType="kr.co.bnkfirst.dto.corporate.employee.EmployeeListDto">
+        SELECT
+            EMPID AS empId,
+            NAME AS name,
+            PLANTYPE AS planType,
+            ACCOUNTNO AS accountNo,
+            STATUS AS status
+        FROM EMPLOYEE
+        ORDER BY EMPID
+    </select>
+
+    <!-- 직원 상세 -->
+    <select id="findEmployeeById"
+            parameterType="long"
+            resultType="kr.co.bnkfirst.dto.corporate.employee.EmployeeDetailDto">
+        SELECT
+            EMPID AS empId,
+            NAME AS name,
+            PLANTYPE AS planType,
+            ACCOUNTNO AS accountNo,
+            STATUS AS status
+        FROM EMPLOYEE
+        WHERE EMPID = #{empId}
+    </select>
+
+    <!-- 월별 납입 내역 -->
+    <select id="findContributionsByEmpId"
+            parameterType="long"
+            resultType="kr.co.bnkfirst.dto.corporate.employee.EmployeeContributionDto">
+        SELECT
+            EMPID AS empId,
+            YEARMONTH AS yearMonth,
+            AMOUNT AS amount
+        FROM CONTRIBUTION
+        WHERE EMPID = #{empId}
+        ORDER BY YEARMONTH
+    </select>
+
+</mapper>

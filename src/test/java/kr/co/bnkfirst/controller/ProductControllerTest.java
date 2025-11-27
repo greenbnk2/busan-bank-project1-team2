@@ -2,7 +2,6 @@ package kr.co.bnkfirst.controller;
 
 import kr.co.bnkfirst.dto.product.SlfcertDTO;
 import kr.co.bnkfirst.entity.product.Slfcert;
-import kr.co.bnkfirst.fx.KoreaEximFxClient;
 import kr.co.bnkfirst.mapper.*;
 import kr.co.bnkfirst.repository.product.SlfcertRepository;
 import kr.co.bnkfirst.service.EmailService;
@@ -39,8 +38,6 @@ class ProductControllerTest {
     EmailService emailService;
     @MockitoBean
     SmsService smsService;
-    @MockitoBean
-    KoreaEximFxClient koreaEximFxClient;
 
     @Test
     void slfcertForm() {

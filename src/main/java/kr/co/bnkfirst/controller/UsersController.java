@@ -2,11 +2,9 @@ package kr.co.bnkfirst.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import kr.co.bnkfirst.dto.FinanceCertResult;
 import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.entity.Users;
 import kr.co.bnkfirst.jwt.JwtProvider;
-import kr.co.bnkfirst.service.FinanceCertService;
 import kr.co.bnkfirst.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,7 +23,6 @@ import java.util.UUID;
 public class UsersController {
     private final JwtProvider jwtProvider;
     private final UsersService usersService;
-    private final FinanceCertService financeCertService;
 
     /*
         날짜 : 2025/11/21

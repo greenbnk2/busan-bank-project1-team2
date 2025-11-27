@@ -7,6 +7,140 @@
     <title>펀드</title>
     <link rel="stylesheet" th:href="@{/css/product/product_list_style.css}">
     <script th:src="@{/js/fund/fund_list.js}"></script>
+
+    <style>
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+        }
+
+        .modal-content {
+            width: 900px;
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        #modalClose {
+            float: right;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+        }
+        /* 섹션 타이틀 (펀드 현황 / 수익률) */
+        .fund-section-title {
+            margin-top: 16px;
+            margin-bottom: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            border-bottom: 2px solid #333;
+            padding-bottom: 6px;
+        }
+
+        .fund-section-date {
+            font-weight: 400;
+            margin-left: 6px;
+        }
+
+        /* 펀드 정보 테이블 */
+        .fund-info-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .fund-info-table th,
+        .fund-info-table td {
+            border: 1px solid #e5e7eb;
+            padding: 8px 10px;
+        }
+
+        .fund-info-table th {
+            background: #f9fafb;
+            font-weight: 600;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        /* 수익률 차트 2단 영역 */
+        .chart-area-2 {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .chart-box {
+            flex: 1;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+        }
+
+        .chart-box-title {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+            font-weight: 600;
+            background: #f9fafb;
+        }
+
+        .chart-box-body {
+            padding: 8px;
+            text-align: center;
+        }
+
+        .chart-box-body img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        /* ───────── 모달 탭 스타일 ───────── */
+        #modalTabs {
+            margin-top: 12px;
+            display: flex;
+            border-bottom: 1px solid #d1d5db; /* 아래 가로선 */
+            font-size: 13px;
+        }
+
+        #modalTabs .tab {
+            position: relative;
+            padding: 6px 20px;
+            border: 1px solid #d1d5db;
+            border-bottom: none;              /* 아래선은 공통 라인에 맡김 */
+            background: #f9fafb;
+            color: #333;
+            cursor: pointer;
+            margin-right: -1px;               /* 이중 테두리 안 보이게 */
+            white-space: nowrap;
+        }
+
+        #modalTabs .tab:first-child {
+            margin-left: 0;
+        }
+
+        #modalTabs .tab.active {
+            background: #616161;              /* 진회색 배경 */
+            color: #fff;                      /* 흰 글자 */
+            font-weight: 700;
+        }
+
+        /* 탭 아래 내용이 탭과 붙어 보이게 */
+        #modalBody {
+            padding-top: 16px;
+            font-size: 13px;
+        }
+
+
+    </style>
 </head>
 
 <body>
@@ -79,6 +213,26 @@
 <footer>
     <div id="footer" th:replace="~{layouts/footer.html}"></div>
 </footer>
+<div id="fundModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <button type="button" id="modalClose">×</button>
+        <h2 id="modalTitle"></h2>
+
+        <div id="modalTabs">
+            <button class="tab active" data-tab="overview">펀드개요</button>
+            <button class="tab" data-tab="price">일별기준가</button>
+            <button class="tab" data-tab="chart">차트분석</button>
+            <button class="tab" data-tab="performance">성과분석</button>
+            <button class="tab" data-tab="risk">위험분석</button>
+            <button class="tab" data-tab="portfolio">포트폴리오분석</button>
+            <button class="tab" data-tab="holdings">보유내역</button>
+        </div>
+
+        <div id="modalBody">
+            <!-- 동적으로 채워짐 -->
+        </div>
+    </div>
+</div>
 </body>
 
 </html>

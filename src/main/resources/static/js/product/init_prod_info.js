@@ -1,16 +1,15 @@
-import {applyFirstAmtRule} from "/BNK/js/product/init_pjnfee.js";
+// import {applyFirstAmtRule} from "/BNK/js/product/init_pjnfee.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => root.querySelectorAll(sel);
-function fillTerms(pterms) {
-    const termsTitle = [...$$('#page2 .terms-list span')];
+function fillTerms(pterms, pinfo) {
     const termsURL = [...$$('#page2 .terms-list a')];
-    for (let i = 0; i < termsTitle.length; i++) {
-        termsTitle[i].innerText = pterms[i].title;
-        termsURL[i].setAttribute('href', pterms[i].link);
+    for (let i = 0; i < termsURL.length; i++) {
         termsURL[i].setAttribute('target', '_blank');
         termsURL[i].setAttribute('rel', 'noopener noreferrer');
     }
+    termsURL[0].setAttribute('href', pterms);
+    termsURL[1].setAttribute('href', pinfo);
 }
 
 function fillPname(pname) {
@@ -297,14 +296,11 @@ function setPwtpi(pwtpi) {
 
 export function initProdInfo(data) {
     try {
-        if (data.pterms !== null) {
-            const pterms = JSON.parse(data.pterms);
-            fillTerms(pterms);
-        }
+        fillTerms(data.pterms, data.pinfo);
         fillPname(data.pname);
         initPcprdRange(data.pcprd);
         setPwtpi(data.pwtpi);
-        applyFirstAmtRule(data.pjnfee);
+        // applyFirstAmtRule(data.pjnfee);
     } catch (e) {
         console.error(e);
     }

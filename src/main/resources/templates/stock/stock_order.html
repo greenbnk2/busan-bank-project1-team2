@@ -656,7 +656,7 @@
                                                     <div class="price-tab" data-type="market">시장가</div>
                                                 </div>
                                                 <div style="position:relative;">
-                                                    <input type="text" style="width: 91%; outline: none; padding-left:10px; padding-right:10px; border:1px solid #e5e8eb;font-weight: 500; font-size: 14px; border-radius: 8px; height: 30px;">
+                                                    <input id="buyPriceInput" type="text" style="width: 91%; outline: none; padding-left:10px; padding-right:10px; border:1px solid #e5e8eb;font-weight: 500; font-size: 14px; border-radius: 8px; height: 30px;">
                                                     <span style="position: absolute; top:50%; right: 10px; transform: translateY(-50%); font-size: 14px; color:#999;">원</span>
                                                 </div>
                                             </div>
@@ -665,7 +665,7 @@
                                             <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;padding-top: 5px;">수량</div>
                                             <div style="font-weight: 500; font-size: 14px; margin-bottom: 8px; width: 75%;">
                                                 <div style="position: relative;">
-                                                    <input type="text" style="width: 91%; outline: none; padding-left:10px; padding-right:10px; border:1px solid #e5e8eb;font-weight: 500; font-size: 14px; border-radius: 8px; height: 30px;">
+                                                    <input id="buyQtyInput" type="text" style="width: 91%; outline: none; padding-left:10px; padding-right:10px; border:1px solid #e5e8eb;font-weight: 500; font-size: 14px; border-radius: 8px; height: 30px;">
                                                     <span style="position: absolute; top:50%; right: 10px; transform: translateY(-50%); font-size: 14px; color:#999;">주</span>
                                                 </div>
                                             </div>
@@ -680,7 +680,7 @@
                                 <div style="display: flex; margin-top: 14px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
                                     <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">총 주문 금액</div>
                                     <div style="text-align: end; font-weight: 500; font-size: 14px; margin-bottom: 14px; width: 75%;">
-                                        598,000원
+                                        <span id="buyTotalAmount">0원</span>
                                     </div>
                                 </div>
                                 <div style="margin-top: 10px;">
@@ -1421,6 +1421,8 @@
         if (totalBidEl) totalBidEl.textContent = totalBid ? formatNumber(totalBid) : '0';
         if (totalAskEl) totalAskEl.textContent = totalAsk ? formatNumber(totalAsk) : '0';
 
+        setBuyPriceFromBestBid(values0D);
+
         // ---- 2) 현재가/등락률: 0A가 있으면 0A 우선, 없으면 0D 값 사용 ----
         const priceEl = document.getElementById('hogaCurrentPrice');
         const rateEl  = document.getElementById('hogaCurrentRate');
@@ -1900,6 +1902,73 @@
 
     // 첫 실행 시작
     fetchRanksLoop();
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buyInput = document.getElementById('buyPriceInput');
+        const qtyInput = document.getElementById('buyQtyInput');
+        if (!buyInput) return;
+
+        // 사용자가 직접 건드린 기록 + 금액 재계산
+        ['focus', 'input', 'change'].forEach(ev => {
+            buyInput.addEventListener(ev, () => {
+                buyInput.dataset.userEdited = '1';   // 사용자가 한 번이라도 수정
+                updateBuyTotal();                   // 총액 갱신
+            });
+        });
+
+        if (qtyInput) {
+            ['input', 'change'].forEach(ev => {
+                qtyInput.addEventListener(ev, updateBuyTotal); // 수량 바뀔 때마다 총액 갱신
+            });
+        }
+    });
+</script>
+<script>
+    function setBuyPriceFromBestBid(values0D) {
+        const input = document.getElementById('buyPriceInput');
+        if (!input || !values0D) return;
+
+        // 사용자가 이미 입력/수정했으면 건드리지 않음
+        if (input.dataset.userEdited === '1') return;
+
+        const bestBidRaw = values0D['41'];    // 매도호가1
+        if (!bestBidRaw) return;
+
+        const formatted = formatNumber(bestBidRaw);
+        if (formatted === '-' || formatted === '') return;
+
+        input.value = formatted;  // 예: "101,300"
+    }
+</script>
+<script>
+    // 문자열(콤마 포함) → 숫자, 빈 문자열이면 0
+    function parseInputNumber(str) {
+        if (!str) return 0;
+        const cleaned = String(str).replace(/[^0-9]/g, ''); // 숫자만 남기기
+        if (cleaned === '') return 0;
+        return Number(cleaned);
+    }
+
+    // 구매가격 × 수량 → 총 주문 금액 갱신
+    function updateBuyTotal() {
+        const priceInput = document.getElementById('buyPriceInput');
+        const qtyInput   = document.getElementById('buyQtyInput');
+        const totalEl    = document.getElementById('buyTotalAmount');
+
+        if (!priceInput || !qtyInput || !totalEl) return;
+
+        const price = parseInputNumber(priceInput.value);
+        const qty   = parseInputNumber(qtyInput.value);
+
+        const total = price * qty;   // 둘 중 하나라도 0이면 0
+
+        if (!total) {
+            totalEl.textContent = '0원';
+        } else {
+            totalEl.textContent = formatNumber(total) + '원';
+        }
+    }
 </script>
 </body>
 </html>

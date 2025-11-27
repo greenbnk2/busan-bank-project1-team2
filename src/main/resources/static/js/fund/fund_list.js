@@ -1,4 +1,130 @@
+const RISK_LABELS = {
+    "1": "매우높은위험(1등급)",
+    "2": "높은위험(2등급)",
+    "3": "다소높은위험(3등급)",
+    "4": "보통위험(4등급)",
+    "5": "낮은위험(5등급)",
+    "6": "매우낮은위험(6등급)"
+};
+
+/* ================== 모달 여는 함수 (전역) ================== */
+async function openFundModal(fid) {
+    try {
+        const res = await fetch(`/BNK/product/fund/detail?fid=${fid}`);
+        if (!res.ok) throw new Error("서버 오류");
+        const p = await res.json();
+
+        fillModal(p);
+        document.getElementById("fundModal").style.display = "flex";
+    } catch (err) {
+        console.error(err);
+        alert("펀드 정보를 불러올 수 없습니다.");
+    }
+}
+
+function fillModal(p) {
+    // 기준일 형식 맞추기: 2025-11-26 → 2025.11.26
+    const baseDate = p.basedt
+        ? p.basedt.substring(0, 10).replace(/-/g, '.')
+        : '';
+
+    document.getElementById("modalTitle").textContent = p.fname || '';
+
+    const html = `
+        <!-- 펀드현황 섹션 타이틀 -->
+        <div class="fund-section-title">
+            펀드 현황
+            ${baseDate ? `<span class="fund-section-date">(${baseDate})</span>` : ''}
+        </div>
+
+        <!-- 펀드현황 테이블 -->
+        <table class="fund-info-table">
+            <colgroup>
+                <col style="width: 18%">
+                <col style="width: 32%">
+                <col style="width: 18%">
+                <col style="width: 32%">
+            </colgroup>
+            <tbody>
+            <tr>
+                <th>제로인 평가유형</th><td>${p.evaltype || '-'}</td>
+                <th>운용회사</th><td>${p.mgmtcomp || '-'}</td>
+            </tr>
+            <tr>
+                <th>종합등급</th><td>${p.grade3y || '-'}</td>
+                <th>관련 펀드명</th><td>${p.relatedfund || '-'}</td>
+            </tr>
+            <tr>
+                <th>5년</th><td>${p.grade5y || '-'}</td>
+                <th>투자지역</th><td>${p.investregion || '-'}</td>
+            </tr>
+            <tr>
+                <th>과거경력 (2023)</th><td>${p.past2023 || '-'}</td>
+                <th>투자비용률 1년</th><td>${p.fee1y || '-'}</td>
+            </tr>
+            <tr>
+                <th>과거경력 (2024)</th><td>${p.past2024 || '-'}</td>
+                <th>투자비용률 3년</th><td>${p.fee3y || '-'}</td>
+            </tr>
+            <tr>
+                <th>펀드출범일</th><td>${p.startinfo || '-'}</td>
+                <th>판매수수료</th><td>${p.salesfee || '-'}</td>
+            </tr>
+            <tr>
+                <th>패밀리 운용규모</th><td>${p.familysize || '-'}</td>
+                <th>신탁보수율</th><td>${p.trustfee || '-'}</td>
+            </tr>
+            <tr>
+                <th>펀드순자산액</th><td>${p.aum || '-'}</td>
+                <th>환매수수료</th><td>${p.redeemfee || '-'}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- 수익률 섹션 타이틀 -->
+        <div class="fund-section-title" style="margin-top: 32px;">
+            수익률
+        </div>
+
+        <!-- 수익률 차트 2단 레이아웃 -->
+        <div class="chart-area-2">
+            <div class="chart-box">
+                <div class="chart-box-title">수익률</div>
+                <div class="chart-box-body">
+                    <img src="/BNK/${p.chart1}" alt="수익률 차트1">
+                </div>
+            </div>
+            <div class="chart-box">
+                <div class="chart-box-title">당해연도는 연초후 수익률</div>
+                <div class="chart-box-body">
+                    <img src="/BNK/${p.chart2}" alt="수익률 차트2">
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("modalBody").innerHTML = html;
+}
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
+
+    // 🔹 모달 관련 DOM 먼저 잡기
+    const fundModal   = document.getElementById("fundModal");
+    const modalClose  = document.getElementById("modalClose");
+
+    // 닫기 버튼
+    modalClose.addEventListener("click", () => {
+        fundModal.style.display = "none";
+    });
+
+    // 바깥(검은 배경) 클릭 시 닫기
+    fundModal.addEventListener("click", (e) => {
+        if (e.target === fundModal) {
+            fundModal.style.display = "none";
+        }
+    });
     /* ---- 예시 데이터 (백엔드 연동 시 이 부분을 API 응답으로 대체) ---- */
     // const PRODUCTS = [
     //     { id: 1, type: '정기예금', name: 'BNK 플러스 정기예금', baseRate: 3.5, bonusRate: 0.7, term: '6~36개월', join: ['인터넷', '영업점'], benefits: ['자동이체 +0.3%'], releasedAt: '2024-07-10' },
@@ -75,12 +201,12 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 'grade', label: '위험등급', field: 'grade', fieldType: 'scalar',
             options: [
-                {value: '매우높은위험(1등급)', label: '매우높은위험(1등급)'},
-                {value: '높은위험(2등급)', label: '높은위험(2등급)'},
-                {value: '다소높은위험(3등급)', label: '다소높은위험(3등급)'},
-                {value: '보통위험(4등급)', label: '보통위험(4등급)'},
-                {value: '낮은위험(5등급)', label: '낮은위험(5등급)'},
-                {value: '매우낮은위험(6등급)', label: '매우낮은위험(6등급)'},
+                {value: '1', label: '매우높은위험(1등급)'},
+                {value: '2', label: '높은위험(2등급)'},
+                {value: '3', label: '다소높은위험(3등급)'},
+                {value: '4', label: '보통위험(4등급)'},
+                {value: '5', label: '낮은위험(5등급)'},
+                {value: '6', label: '매우낮은위험(6등급)'},
             ]
         },
         {
@@ -219,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
         filters.forEach((v, k) => qs.append(k, v));
 
         try {
-            const res = await fetch(`/BNK/product/items?${qs.toString()}`, {method: 'GET'});
+            const res = await fetch(`/BNK/product/fund/items?${qs.toString()}`, { method: 'GET' });
             console.log(qs.toString());
             if (!res.ok) throw new Error('Server Error');
             const data = await res.json(); // { items, total, page, pageSize }
@@ -247,17 +373,31 @@ document.addEventListener('DOMContentLoaded', () => {
     /* 페이지네이션 */
     function renderPager(data) {
         const makeBtn = (label, p, disabled = false, active = false) => `
-                        <button class="page-btn ${active ? 'active' : ''}" ${disabled ? 'disabled' : ''}
-                          aria-label="페이지 ${label}" data-page="${p}">${label}</button>`;
+        <button class="page-btn ${active ? 'active' : ''}" ${disabled ? 'disabled' : ''}
+          aria-label="페이지 ${label}" data-page="${p}">${label}</button>`;
+
+        const totalPages = data.totalPages || 1;
+        const current    = page;
+        const maxVisible = 10;   // 한 번에 보여줄 숫자 개수
+
+        // 현재 페이지가 속한 블록(0,1,2,...) 계산
+        const currentBlock = Math.floor((current - 1) / maxVisible);
+        const start = currentBlock * maxVisible + 1;                // 이 블록에서의 시작 페이지
+        const end   = Math.min(start + maxVisible - 1, totalPages); // 이 블록에서의 끝 페이지
 
         let html = '';
-        html += makeBtn('〈', Math.max(1, page - 1), data.first, false);
 
-        for (let i = 1; i <= data.totalPages; i++) {
-            html += makeBtn(String(i), i, false, i === page);
+        // 이전 페이지 버튼
+        html += makeBtn('〈', Math.max(1, current - 1), current === 1, false);
+
+        // 현재 블록(start ~ end)만 렌더링
+        for (let i = start; i <= end; i++) {
+            html += makeBtn(String(i), i, false, i === current);
         }
 
-        html += makeBtn('〉', Math.min(data.totalPages, page + 1), data.last, false);
+        // 다음 페이지 버튼
+        html += makeBtn('〉', Math.min(totalPages, current + 1), current === totalPages, false);
+
         pager.innerHTML = html;
 
         pager.querySelectorAll('.page-btn').forEach(btn => {
@@ -273,35 +413,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ───────────────── 공통: 펀드 카드 템플릿 ─────────────────
     function renderFundCard(p) {
-        // 여기서 p 객체 안에 있는 필드명을 실제 백엔드 명칭에 맞게 바꿔줘야 함
+        // FundDTO 매핑
+        const title     = p.fname || "펀드명 미제공";
+        // frlvl 숫자 → 라벨로 변환
+        const riskType = RISK_LABELS[String(p.frlvl)] || "";          // 위험등급
+        const fundType  = p.ftype || "";          // 펀드유형
+        const operator = p.famc || "";
 
-        // 실제 데이터가 오면 넣고, 없으면 하드코딩 사용하셈 ㅇㅇ
+        // 기준가, 설정일, 총보수
+        const basePrice = (p.frefpr != null)
+            ? Number(p.frefpr).toLocaleString()
+            : "-";
 
-        const title      = p.pname || "하나IT코리아증권자투자신탁(제1호)[주식]ClassC-P2E";
-        const riskType   = p.grade || "초고위험(높은위험)";
-        const fundType   = p.type  || "주식형";
-        const operator   = p.operator || "하나자산운용";
+        const rawSetupDate = p.fsetdt || "";
+        const setupDate    = rawSetupDate
+            ? rawSetupDate.substring(0, 10)       // 앞에서 10글자
+            : "-";
 
-        const basePrice  = p.basePrice != null ? Number(p.basePrice).toLocaleString() : "2,033.56";
-        const setupDate  = p.setupDate || "2007-05-03";
-        const totalFee   = p.totalFee  != null ? `${Number(p.totalFee).toFixed(4)}%` : "1.1026%";
+        const totalFee  = (p.ftc != null)
+            ? `${Number(p.ftc).toFixed(4)} %`
+            : "-";
 
-        // 수익률 하드코딩/실데이터 병합
-        const ret1m  = formatReturn(p.ret1m  ??  5.86);
-        const ret3m  = formatReturn(p.ret3m  ?? 45.25);
-        const ret6m  = formatReturn(p.ret6m  ?? 76.21);
-        const ret12m = formatReturn(p.ret12m ?? 75.92);
-        const retTot = formatReturn(p.retTotal ?? 85.17);
+        // 수익률
+        const ret1m  = formatReturn(p.fm1pr);   // 1개월
+        const ret3m  = formatReturn(p.fm3pr);   // 3개월
+        const ret6m  = formatReturn(p.fm6pr);   // 6개월
+        const ret12m = formatReturn(p.fm12pr);  // 12개월
+        const retTot = formatReturn(p.facmpr);  // 누적(합산)
 
         return `
       <article class="fund-card">
         <!-- 상단 타이틀 영역 -->
         <header class="fund-card-header">
-          <h3 class="fund-card-title">${p.pname}</h3>
+          <h3 class="fund-card-title" data-fid="${p.fid}">
+              ${title}
+            </h3>
           <p class="fund-card-subtitle">
-            초고위험(높은위험) | 주식형 | 하나자산운용
-            <!--아래는 데이터가 들어갈 영역임-->
-            ${p.grade || ''} ${p.type ? `| ${p.type}` : ''} ${p.operator ? `| ${p.operator}` : ''}
+            ${[
+            riskType && `${riskType}`,
+            fundType && `${fundType}`,
+            operator && `${operator}`
+        ].filter(Boolean).join(" | ")}
           </p>
           <div class="fund-card-meta">
             <span class="fund-meta-item">기준가 : ${basePrice}</span>
@@ -334,9 +486,8 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </section>
 
-        <!-- 하단 버튼 영역(원하면 숨겨도 됨) -->
+        <!-- 하단 버튼 영역(필요하면 사용) -->
         <footer class="fund-card-footer">
-          <!-- 비교담기 같은 버튼 쓰고 싶으면 여기에 -->
           <!-- <button type="button" class="btn btn-white">비교담기</button> -->
         </footer>
       </article>
@@ -395,6 +546,17 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ================= 초기 로드 ================= */
     renderChipBar();
     fetchProducts();
+
+    /* ================= ★ 제목 클릭 → 모달 열기 ================= */
+    document.addEventListener("click", async (e) => {
+        const titleEl = e.target.closest(".fund-card-title");
+        if (!titleEl) return;
+
+        const fid = titleEl.dataset.fid;
+        if (!fid) return;
+
+        await openFundModal(fid);
+    });
 });
 
 // 페이지 이동

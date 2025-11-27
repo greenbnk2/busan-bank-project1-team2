@@ -264,7 +264,7 @@ main {
 /* 핵심정보 */
 .kv {
     display: grid;
-    grid-template-columns: repeat(2, 2fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px
 }
 
@@ -336,6 +336,10 @@ main {
 
 .feature .dot {
     color: var(--red)
+}
+
+.pi-emph {
+    color: red;
 }
 
 /* 유의사항 박스 */

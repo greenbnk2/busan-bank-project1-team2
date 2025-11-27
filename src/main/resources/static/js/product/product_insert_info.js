@@ -100,10 +100,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert('필수 안내사항과 상품 설명 및 약관을 모두 읽고 동의해주세요.');
                 return false;
             }
-            if (input.value === '' || !input.checkVisibility()) {
-                alert('약관 및 상품설명서 수령방법을 선택, 입력해주세요.');
-                return false;
-            }
+            // if (input.value === '' || !input.checkVisibility()) {
+            //     alert('약관 및 상품설명서 수령방법을 선택, 입력해주세요.');
+            //     return false;
+            // }
             return true;
         },
         3() {
@@ -331,7 +331,36 @@ document.addEventListener('DOMContentLoaded', async function () {
             const productInfo = await res.json();
             console.log(productInfo);
             initProdInfo(productInfo);
+            const type = productInfo.pelgbl;
+            const response = await fetch(`/BNK/api/account/${type}`, {method: "GET"})
+            if (!response.ok) throw new Error('계좌 정보를 가져오는 도중 문제 발생');
+            const accObject = await response.json();
+            console.log(accObject);
 
+            const select = document.querySelector('select[aria-label="출금계좌번호"]');
+            if (!select) return;
+
+            // 기존 옵션 제거
+            select.innerHTML = '';
+
+            // placeholder 옵션
+            const placeholder = document.createElement('option');
+            placeholder.textContent = '계좌를 선택해 주세요';
+            placeholder.selected = true;
+            placeholder.disabled = true;
+            select.appendChild(placeholder);
+
+            // accObject가 배열인지 / 단일 객체인지 둘 다 처리
+            const accList = Array.isArray(accObject) ? accObject : [accObject];
+
+            accList.forEach(acc => {
+                if (!acc || !acc.pacc) return;  // pacc 없으면 스킵
+
+                const opt = document.createElement('option');
+                opt.value = acc.pacc;                         // 실제 전송 값
+                opt.textContent = `부산은행 ${acc.pacc}`;     // 화면에 보이는 값
+                select.appendChild(opt);
+            });
         } catch (e) {
             console.error(e.message);
         }
@@ -346,67 +375,67 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
     /*============== 약관 및 상품설명서 받기 스크립트 ================*/
-    const radios = document.querySelectorAll('input[name="receive"]');
-    const input = document.getElementById('contactInput');
-    const help = document.getElementById('contact-help');
-    const error = document.getElementById('contact-error');
-
-    function switchMode(mode) {
-        input.value = '';
-        error.textContent = '';
-        if (mode === 'sms') {
-            input.type = 'tel';
-            input.placeholder = "휴대폰 번호 (‘-’ 포함) 예) 010-1234-5678";
-            input.setAttribute('inputmode', 'numeric');
-            input.setAttribute('autocomplete', 'tel');
-            input.setAttribute('pattern', '^01(?:0|1|[6-9])-(?:\\d{4})-\\d{4}$');
-            help.textContent = "휴대폰 번호는 ‘-’를 넣어서 입력해 주세요.";
-        } else {
-            input.type = 'email';
-            input.placeholder = "이메일 주소";
-            input.removeAttribute('inputmode');
-            input.setAttribute('autocomplete', 'email');
-            input.removeAttribute('pattern');
-            help.textContent = "정확한 이메일 주소를 입력해 주세요.";
-        }
-    }
-
-    radios.forEach(r => r.addEventListener('change', e => switchMode(e.target.value)));
-    switchMode(document.querySelector('input[name="receive"]:checked').value);
-
-    // 간단한 실시간 유효성 안내
-    input.addEventListener('blur', () => {
-        if (!input.value) {
-            error.textContent = '';
-            return;
-        }
-        if (!input.checkValidity()) {
-            error.textContent = (input.type === 'tel')
-                ? '휴대폰 번호 형식이 올바르지 않습니다.'
-                : '이메일 형식이 올바르지 않습니다.';
-        } else {
-            error.textContent = '';
-        }
-    });
+    // const radios = document.querySelectorAll('input[name="receive"]');
+    // const input = document.getElementById('contactInput');
+    // const help = document.getElementById('contact-help');
+    // const error = document.getElementById('contact-error');
+    //
+    // function switchMode(mode) {
+    //     input.value = '';
+    //     error.textContent = '';
+    //     if (mode === 'sms') {
+    //         input.type = 'tel';
+    //         input.placeholder = "휴대폰 번호 (‘-’ 포함) 예) 010-1234-5678";
+    //         input.setAttribute('inputmode', 'numeric');
+    //         input.setAttribute('autocomplete', 'tel');
+    //         input.setAttribute('pattern', '^01(?:0|1|[6-9])-(?:\\d{4})-\\d{4}$');
+    //         help.textContent = "휴대폰 번호는 ‘-’를 넣어서 입력해 주세요.";
+    //     } else {
+    //         input.type = 'email';
+    //         input.placeholder = "이메일 주소";
+    //         input.removeAttribute('inputmode');
+    //         input.setAttribute('autocomplete', 'email');
+    //         input.removeAttribute('pattern');
+    //         help.textContent = "정확한 이메일 주소를 입력해 주세요.";
+    //     }
+    // }
+    //
+    // radios.forEach(r => r.addEventListener('change', e => switchMode(e.target.value)));
+    // switchMode(document.querySelector('input[name="receive"]:checked').value);
+    //
+    // // 간단한 실시간 유효성 안내
+    // input.addEventListener('blur', () => {
+    //     if (!input.value) {
+    //         error.textContent = '';
+    //         return;
+    //     }
+    //     if (!input.checkValidity()) {
+    //         error.textContent = (input.type === 'tel')
+    //             ? '휴대폰 번호 형식이 올바르지 않습니다.'
+    //             : '이메일 형식이 올바르지 않습니다.';
+    //     } else {
+    //         error.textContent = '';
+    //     }
+    // });
 
     // 이 폼에서 엔터 제출 금지
-    const termsForm = document.querySelector('.get-terms form');
+    // const termsForm = document.querySelector('.get-terms form');
+    //
+    // // 1) 기본 submit 자체 막기
+    // termsForm.addEventListener('submit', (e) => e.preventDefault());
+    //
+    // // 엔터 → 현재 포커스된 요소만 포커스 해제
+    // termsForm.addEventListener('keydown', (e) => {
+    //     if ((e.key === 'Enter' || e.keyCode === 13) && !e.isComposing) {
+    //         e.preventDefault();
+    //         e.stopPropagation();
+    //         const el = document.activeElement;
+    //         if (el && typeof el.blur === 'function') el.blur();
+    //     }
+    // });
 
-    // 1) 기본 submit 자체 막기
-    termsForm.addEventListener('submit', (e) => e.preventDefault());
-
-    // 엔터 → 현재 포커스된 요소만 포커스 해제
-    termsForm.addEventListener('keydown', (e) => {
-        if ((e.key === 'Enter' || e.keyCode === 13) && !e.isComposing) {
-            e.preventDefault();
-            e.stopPropagation();
-            const el = document.activeElement;
-            if (el && typeof el.blur === 'function') el.blur();
-        }
-    });
-
-    // (선택) 모바일 키보드 힌트만 ‘완료’로 바꾸기
-    input.setAttribute('enterkeyhint', 'done');
+    // // (선택) 모바일 키보드 힌트만 ‘완료’로 바꾸기
+    // input.setAttribute('enterkeyhint', 'done');
 
 
     /* ================= 상품설명서 및 약관 다운로드 표시 스크립트 ===================*/

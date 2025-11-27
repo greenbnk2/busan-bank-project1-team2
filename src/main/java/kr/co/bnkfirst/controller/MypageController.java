@@ -1,22 +1,29 @@
 package kr.co.bnkfirst.controller;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.bnkfirst.dto.MydataAccountDTO;
+import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.dto.mypage.DealDTO;
+import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.service.MydataAccountService;
 import kr.co.bnkfirst.service.MypageService;
 import kr.co.bnkfirst.service.ProductService;
 import kr.co.bnkfirst.service.UsersService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,6 +33,7 @@ public class MypageController {
     private final MypageService mypageService;
     private final MydataAccountService mydataAccountService;
     private final ProductService productService;
+    private final UsersService usersService;
 
 
     @GetMapping("/mypage/main")
@@ -34,7 +42,8 @@ public class MypageController {
         // a123은 나중에 로그인할 때 바꾸기
         model.addAttribute("usersList", mypageService.findById(principal.getName()));
         model.addAttribute("dealList", mypageService.findByDeal(principal.getName()));
-        model.addAttribute("balance", mypageService.findByBalance(principal.getName()));
+        model.addAttribute("fundList", mypageService.findByFund(principal.getName()));
+        model.addAttribute("balance", mypageService.findByBalance(principal.getName()) + mypageService.findByFundBalance(principal.getName()));
         model.addAttribute("contractList", mypageService.findByContract(principal.getName()));
         model.addAttribute("documentList", mypageService.findByDocumentList(principal.getName()));
         return "mypage/mypage_main";
@@ -44,9 +53,14 @@ public class MypageController {
         model.addAttribute("plus",mypageService.findBySumPlusDbalance(principal.getName()));
         model.addAttribute("minus",mypageService.findBySumMinusDbalance(principal.getName()));
         model.addAttribute("dealList",mypageService.findByDealList(principal.getName()));
-        model.addAttribute("contractList", mypageService.findByContract(principal.getName()));
+
+        List<PcontractDTO> totalList = new ArrayList<>();
+        totalList.addAll(mypageService.findByContract(principal.getName()));
+        totalList.addAll(mypageService.findByFundContract(principal.getName()));
+
+        model.addAttribute("contractList", totalList);
         log.info(mypageService.findByContract(principal.getName()).toString());
-        model.addAttribute("balance", mypageService.findByBalance(principal.getName()));
+        model.addAttribute("balance", mypageService.findByBalance(principal.getName()) + mypageService.findByFundBalance(principal.getName()));
 
         return "mypage/mypage_prod";
     }
@@ -101,16 +115,22 @@ public class MypageController {
     }
 
     @GetMapping("/mypage/compare")
-    public String compare(@RequestParam("myaccid") Long myaccid, Model model){
+    public String compare(@RequestParam("myaccid") Long myaccid,
+                          @RequestParam(value = "risk", required = false) String risk,
+                          Model model){
         //선택된 타행 계좌 불러오기
         MydataAccountDTO foreign = mydataAccountService.findByAccid(myaccid);
-        //BNK 퇴직연금 상품 목록 불러오기
-        List<ProductDTO> productList = productService.findRetireProducts();
+        Double foreignRate = foreign.getYieldrate();
+
+        List<Map<String, Object>> productList =
+                productService.findBetterProducts(foreignRate,risk);
 
         //타행계좌
         model.addAttribute("foreign", foreign);
         //BNK 상품
         model.addAttribute("productList", productList);
+        //필터링
+        model.addAttribute("riskFilter", risk);
 
         return "mypage/mypage_compare";
     }
@@ -120,5 +140,60 @@ public class MypageController {
     public String pwResetPage() {
 
         return "mypage/mypage_pwreset";
+    }
+    // 비밀번호 변경 관련 내용 추가 (이준우 2025.11.25)
+    @Getter
+    @Setter
+    public static class PwChangeRequest{
+        private String currentPw;
+        private String newPw;
+    }
+    // 현재 비밀번호
+    @PostMapping("/pw/check-current")
+    @ResponseBody
+    public ResponseEntity<?> checkCurrentPw(@RequestBody java.util.Map<String, String> body,
+                                            HttpSession session) {
+
+        UsersDTO loginUser = (UsersDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(java.util.Map.of("ok", false, "reason", "UNAUTHORIZED"));
+        }
+
+        String mid = loginUser.getMid();
+        String currentPw = body.get("currentPw");
+
+        boolean ok = usersService.checkCurrentPassword(mid, currentPw);
+
+        return ResponseEntity.ok(java.util.Map.of("ok", ok));
+    }
+    // 새 비밀번호
+    @PostMapping("/pw/change")
+    public ResponseEntity<?> changePassword(@RequestBody PwChangeRequest req, HttpSession session) {
+
+        UsersDTO loginUser = (UsersDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("로그인이 필요합니다.");
+        }
+        String mid = loginUser.getMid();
+
+        if (req.getNewPw() == null || req.getNewPw().isBlank()) {
+
+            return ResponseEntity.badRequest().body("새 비밀번호를 입력해주세요.");
+        }
+        boolean changed = usersService.changePassword(mid, req.getCurrentPw(), req.getNewPw());
+        if (!changed) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("현재 비밀번호가 올바르지 않습니다.");
+        }
+
+        log.info("비밀번호 변경 완료 mid={}", mid);
+
+        return ResponseEntity.ok().body(new Object(){
+            public final boolean success = true;
+        });
     }
  }

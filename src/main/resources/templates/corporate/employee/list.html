@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>퇴직연금 기업뱅킹 - 직원 조회</title>
+
+    <style>
+        /* ======================== 공통 레이아웃 ======================== */
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Noto Sans KR", system-ui, -apple-system, sans-serif;
+            background-color: #f4f5f9;
+            color: #222;
+            font-size: 15px;    /* 최소 폰트 */
+        }
+
+        .page-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 24px;
+        }
+
+        h1 {
+            margin: 0 0 16px;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #777;
+            margin-bottom: 24px;
+        }
+
+        /* ======================== 검색 / 필터 ======================== */
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .toolbar input,
+        .toolbar select {
+            font-size: 15px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .toolbar input { flex: 1; }
+
+        .toolbar button {
+            padding: 8px 14px;
+            border-radius: 6px;
+            background-color: #d91a1a;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        .toolbar button:hover { opacity: 0.9; }
+
+
+        /* ======================== 카드 공통 ======================== */
+
+        .card {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+
+        /* ======================== 그리드 ======================== */
+
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width:900px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        /* ======================== 테이블 ======================== */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            white-space: nowrap;
+        }
+
+        thead { background: #fafafa; }
+
+        tbody tr { cursor: pointer; }
+        tbody tr:hover { background-color: #f9f1f1; }
+
+        .tag {
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 15px;
+        }
+
+        .tag-db { background:#ffe4e4; color:#b01010; }
+        .tag-dc { background:#e5f2ff; color:#0b5ebf; }
+
+        .status-active { color: #0c8a3f; font-weight:600; }
+        .status-retired { color: #999; font-weight:600; }
+
+
+        /* ======================== 상세 정보 ======================== */
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .detail-label { color:#777; font-size:15px; }
+        .detail-value { font-size:15px; font-weight:500; }
+
+        .empty-text {
+            font-size: 15px;
+            color: #888;
+        }
+
+        /* 적립금 박스 */
+        .balance-box {
+            margin-top: 16px;
+            padding: 14px;
+            background: linear-gradient(135deg, #d91a1a, #ff7b6e);
+            border-radius: 8px;
+            color: white;
+        }
+
+        .balance-label {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .balance-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+
+        /* ======================== 햄버거 ======================== */
+
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 6px;
+            background: none;
+            border: none;
+            z-index: 2000;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 4px;
+            background: #222;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+
+        /* ======================== 사이드바 ======================== */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -260px;
+            width: 250px;
+            height: 100%;
+            background: white;
+            padding: 20px;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            z-index: 1500;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-title img {
+            width: 150px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-title p {
+            font-size: 15px;
+            margin: 5px 0 20px;
+        }
+
+        .sidebar a {
+            color:#222;
+            text-decoration:none;
+            font-size:15px;
+            display:block;
+            padding:8px 0;
+            transition: color 0.2s;
+        }
+        .sidebar a:hover { color:#d91a1a; }
+
+    </style>
+</head>
+
+<body>
+
+<!-- 햄버거 버튼 -->
+<button class="hamburger" id="hamburgerBtn">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- 사이드바 -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">
+        <img src="/BNK/images/BNK_english.png" alt="">
+        <p>부산은행 기업뱅킹</p>
+    </div>
+
+    <ul style="list-style:none; padding:0;">
+        <li><a href="/BNK/corporate/main">🏠 기업 메인</a></li>
+        <li><a href="/BNK/corporate/employee/list">👥 직원 관리</a></li>
+        <li><a href="/BNK/corporate/employee/detail/1">📑 직원 상세</a></li>
+        <li><a href="/BNK/corporate/cs">❓ 고객센터</a></li>
+    </ul>
+</aside>
+
+
+<!-- 페이지 내용 -->
+<div class="page-container">
+
+    <h1>퇴직연금 직원 조회</h1>
+    <div class="subtitle">
+        EMPLOYEE 테이블 기반으로 직원별 제도 유형, 계좌번호, 현재 적립금을 조회하는 화면입니다.
+    </div>
+
+    <div class="toolbar">
+        <input type="text" id="searchInput" placeholder="직원 이름 또는 계좌번호 검색">
+        <select id="planFilter">
+            <option value="">전체 제도</option>
+            <option value="DB">DB 제도만</option>
+            <option value="DC">DC 제도만</option>
+        </select>
+        <button id="resetBtn">초기화</button>
+    </div>
+
+    <div class="content">
+
+        <div class="card">
+            <div class="card-title">직원 목록</div>
+            <table>
+                <thead>
+                <tr>
+                    <th>직원ID</th>
+                    <th>이름</th>
+                    <th>제도</th>
+                    <th>계좌번호</th>
+                    <th>재직 상태</th>
+                </tr>
+                </thead>
+                <tbody id="employeeTbody"></tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <div class="card-title">직원 상세정보</div>
+            <div id="detailArea">
+                <p class="empty-text">왼쪽 목록에서 직원을 선택하면 상세정보와 현재 적립금이 표시됩니다.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    /* ===== 더미 데이터 ===== */
+    const employees = [
+        {empId: 1, name: "김하늘", planType: "DB", accountNo: "123-456-789012", status: "ACTIVE", balance: 12800000},
+        {empId: 2, name: "이준호", planType: "DC", accountNo: "987-654-321098", status: "ACTIVE", balance: 8200000},
+        {empId: 3, name: "박민지", planType: "DB", accountNo: "110-220-330044", status: "RETIRED", balance: 27600000},
+        {empId: 4, name: "정소윤", planType: "DC", accountNo: "222-333-444555", status: "ACTIVE", balance: 5600000},
+        {empId: 5, name: "최유진", planType: "DB", accountNo: "333-444-555666", status: "ACTIVE", balance: 19300000}
+    ];
+
+    const tbody = document.getElementById("employeeTbody");
+    const detailArea = document.getElementById("detailArea");
+
+
+    /* ===== 목록 렌더링 ===== */
+    function renderTable(list) {
+        tbody.innerHTML = "";
+
+        list.forEach(emp => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${emp.empId}</td>
+                <td>${emp.name}</td>
+                <td><span class="tag ${emp.planType === "DB" ? "tag-db" : "tag-dc"}">${emp.planType}</span></td>
+                <td>${emp.accountNo}</td>
+                <td class="${emp.status === "ACTIVE" ? "status-active" : "status-retired"}">
+                    ${emp.status === "ACTIVE" ? "재직" : "퇴사"}
+                </td>
+            `;
+            tr.onclick = () => renderDetail(emp);
+            tbody.appendChild(tr);
+        });
+    }
+
+    /* ===== 상세 렌더링 ===== */
+    function renderDetail(emp) {
+        detailArea.innerHTML = `
+            <div class="detail-row"><div class="detail-label">직원 ID</div><div class="detail-value">${emp.empId}</div></div>
+            <div class="detail-row"><div class="detail-label">이름</div><div class="detail-value">${emp.name}</div></div>
+            <div class="detail-row"><div class="detail-label">제도 유형</div><div class="detail-value">${emp.planType}</div></div>
+            <div class="detail-row"><div class="detail-label">계좌번호</div><div class="detail-value">${emp.accountNo}</div></div>
+            <div class="detail-row"><div class="detail-label">재직 상태</div><div class="detail-value">${emp.status==="ACTIVE" ? "재직" : "퇴사"}</div></div>
+
+            <div class="balance-box">
+                <div class="balance-label">현재 적립금</div>
+                <div class="balance-value">${emp.balance.toLocaleString()}원</div>
+            </div>
+        `;
+    }
+
+    renderTable(employees);
+
+    /* ===== 검색/필터 ===== */
+    const searchInput = document.getElementById("searchInput");
+    const planFilter = document.getElementById("planFilter");
+    const resetBtn = document.getElementById("resetBtn");
+
+    function applyFilter() {
+        const keyword = searchInput.value.trim();
+        const plan = planFilter.value;
+
+        const filtered = employees.filter(emp =>
+            (!plan || emp.planType === plan) &&
+            (!keyword || emp.name.includes(keyword) || emp.accountNo.includes(keyword))
+        );
+
+        renderTable(filtered);
+        detailArea.innerHTML = `<p class="empty-text">왼쪽 목록에서 직원을 선택하면 상세정보와 현재 적립금이 표시됩니다.</p>`;
+    }
+
+    searchInput.oninput = applyFilter;
+    planFilter.onchange = applyFilter;
+
+    resetBtn.onclick = () => {
+        searchInput.value = "";
+        planFilter.value = "";
+        renderTable(employees);
+        detailArea.innerHTML = `<p class="empty-text">왼쪽 목록에서 직원을 선택하면 상세정보와 현재 적립금이 표시됩니다.</p>`;
+    };
+
+    /* ===== 햄버거 / 사이드바 ===== */
+    const hamburgerBtn = document.getElementById("hamburgerBtn");
+    const sidebar = document.getElementById("sidebar");
+
+    hamburgerBtn.onclick = () => {
+        sidebar.classList.toggle("active");
+        hamburgerBtn.classList.toggle("open");
+    };
+</script>
+
+</body>
+</html>

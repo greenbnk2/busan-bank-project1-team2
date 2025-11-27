@@ -14,12 +14,29 @@
         select * from deal where mid = #{mid} order by ddate desc fetch first 1 rows only
     </select>
 
+<!--    회원이 가진 펀드 계좌 조회    -->
+    <select id="findByFund" resultType="kr.co.bnkfirst.dto.product.FundDTO">
+        SELECT * FROM PCONTRACT p JOIN fund f ON f.fid = p.PCPID WHERE pcuid = #{mid} AND pcpid LIKE '%FD%'
+    </select>
+
+
     <select id="findByBalance" resultType="java.lang.Integer">
         SELECT sum(c.PBALANCE) FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pcuid = #{mid}
     </select>
 
+<!--    펀드 계좌들의 합-->
+    <select id="findByFundBalance" resultType="java.lang.Integer">
+        SELECT sum(pbalance) FROM PCONTRACT WHERE pcuid = #{mid} AND pcpid LIKE '%FD%'
+    </select>
+
+<!--    계좌 찾기-->
     <select id="findByContract" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
         SELECT * FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pcuid = #{pcuid}
+    </select>
+
+<!--    펀드 계좌 찾기-->
+    <select id="findByFundContract" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        SELECT * FROM pcontract p JOIN fund f ON p.PCPID = f.fid WHERE p.pcuid = #{pcuid}
     </select>
 
     <select id="findByDocumentList" resultType="kr.co.bnkfirst.dto.DocumentDTO">

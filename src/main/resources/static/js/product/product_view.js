@@ -1,30 +1,31 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    const {initCalcFromRateTable} = await import('/BNK/js/product/init-calc.js');
+import {initCalcFromRateTable} from "/BNK/js/product/init-calc.js";
 
+document.addEventListener('DOMContentLoaded', async () => {
     // 렌더링
     fetchProduct().then(data => {
         // console.log('check1');
         renderProduct(data);
+        initCalcFromRateTable();
         // console.log('check2');
         try {
-            // console.log(JSON.parse(data.pterms));
+            // console.log(data.pirinfo);
             if (data.pterms !== null)
-                renderTerms(JSON.parse(data.pterms));
+                renderTerms(data.pterms);
             // console.log('check3');
-            if (data.pirinfo !== null)
-                renderIRInfo(JSON.parse(data.pirinfo));
+            if (data.pinfo !== null)
+                renderIRInfo(data.pinfo);
             // console.log('pdirate: '+data.pdirate);
-            if (data.pdirate !== null) {
-                const pdirate = JSON.parse(data.pdirate);
-                renderDIInfo(pdirate);
-                if (data.pirinfo !== null)
-                    initCalcFromRateTable(JSON.parse(data.pirinfo), Number(pdirate.maximum));
-            } else {
-                const diinfoCard = document.getElementById('diinfoCard');
-                diinfoCard.style.display = "none";
-                if (data.pirinfo !== null)
-                    initCalcFromRateTable(JSON.parse(data.pirinfo), 0);
-            }
+            // if (data.pdirate !== null) {
+            //     const pdirate = JSON.parse(data.pdirate);
+            //     renderDIInfo(pdirate);
+            //     if (data.pirinfo !== null)
+            //         initCalcFromRateTable(JSON.parse(data.pirinfo), Number(pdirate.maximum));
+            // } else {
+            //     const diinfoCard = document.getElementById('diinfoCard');
+            //     diinfoCard.style.display = "none";
+            //     if (data.pirinfo !== null)
+            //         initCalcFromRateTable(JSON.parse(data.pirinfo), 0);
+            // }
         } catch (e) {
             console.error(e.message);
             return null;
@@ -95,31 +96,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderProduct(productInfo) {
         const title = document.getElementsByClassName('h-title')[0];
-        const subtitle = document.getElementsByClassName('subtitle')[0];
+        // const subtitle = document.getElementsByClassName('subtitle')[0];
         const pbirate = document.getElementById('baseRate');
-        const phirate = document.getElementById('maxRate');
+        const prprbank = document.getElementById('prprbank');
+        // const phirate = document.getElementById('maxRate');
         const pcprd = document.getElementById('contractPeriod');
-        const pjnfee = document.getElementById('joinFee');
-        const prmthd = document.querySelector('div[aria-label="가입방법"]');
-        const prmthdValues = (productInfo.prmthd ?? '').split(',')
-            .map(s => s.trim()).filter(Boolean);
+        const calcRate = document.getElementById('rateBig');
+        // const pjnfee = document.getElementById('joinFee');
+        // const prmthd = document.querySelector('div[aria-label="가입방법"]');
+        // const prmthdValues = (productInfo.prmthd ?? '').split(',')
+        //     .map(s => s.trim()).filter(Boolean);
+        const calcPeriod = document.getElementById('period');
 
-        title.innerText = productInfo.pname;
-        subtitle.innerText = productInfo.psubtitle;
+        const pnameValue = productInfo.pname
+        title.innerText = pnameValue;
+        prprbank.innerText = pnameValue.substring(0, pnameValue.indexOf(" "));
         pbirate.innerText = productInfo.pbirate.toFixed(2) + '%';
-        phirate.innerText = productInfo.phirate.toFixed(2) + '%';
-        pcprd.innerText = productInfo.pcprd;
-        pjnfee.innerText = productInfo.pjnfee;
+        // phirate.innerText = productInfo.phirate.toFixed(2) + '%';
+        const periodValue = productInfo.prmthd;
+        pcprd.innerText = periodValue;
+        calcPeriod.innerText = periodValue;
+        calcPeriod.dataset.months = String(periodValue.substring(0,periodValue.indexOf("년")) * 12);
+        // pjnfee.innerText = productInfo.pjnfee;
+        calcRate.innerText = productInfo.pbirate + '%';
+        calcRate.dataset.rate = productInfo.pbirate;
 
-        if (prmthdValues.length) {
-            prmthd.style.display = "flex";
-            for (const prmthdValue of prmthdValues) {
-                const pill = `<span class="pill">${prmthdValue}</span>`
-                prmthd.insertAdjacentHTML("beforeend", pill);
-            }
-        } else {
-            prmthd.style.display = "none";
-        }
+        // if (prmthdValues.length) {
+        //     prmthd.style.display = "flex";
+        //     for (const prmthdValue of prmthdValues) {
+        //         const pill = `<span class="pill">${prmthdValue}</span>`
+        //         prmthd.insertAdjacentHTML("beforeend", pill);
+        //     }
+        // } else {
+        //     prmthd.style.display = "none";
+        // }
     }
 
     // 약관 데이터 (원하면 URL을 실제 파일로 교체)
@@ -131,30 +141,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ];
 
     function renderTerms(terms) {
-        const ul = document.getElementById('termsList');
-        if (!ul) return;
-        ul.innerHTML = terms.map(t => `
-      <li class="doc-item" tabindex="0" data-link="${t.link}">
-        <span class="title">${t.title}</span>
-        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="currentColor" d="M9 6l6 6-6 6"></path>
-        </svg>
-      </li>
-    `).join('');
+
+        const div = document.querySelector('#panel-terms .card .inner');
+        if (!div) return;
+        div.innerHTML = `<div>
+                            <iframe src="${terms}" style="width: 100%;height:70vh;border:none;" title="약관 페이지">
+                            </iframe>
+                         </div>`;
 
         // 클릭/엔터 시 열기
-        ul.querySelectorAll('.doc-item').forEach(li => {
-            const open = () => {
-                const href = li.dataset.link;
-                if (href && href !== '#') window.open(href, '_blank');
-                // 데모일 땐 알림만
-                else alert(li.querySelector('.title').textContent + ' 문서를 연결해주세요.');
-            };
-            li.addEventListener('click', open);
-            li.addEventListener('keydown', e => {
-                if (e.key === 'Enter') open();
-            });
-        });
+        // ul.querySelectorAll('.doc-item').forEach(li => {
+        //     const open = () => {
+        //         const href = li.dataset.link;
+        //         if (href && href !== '#') window.open(href, '_blank');
+        //         // 데모일 땐 알림만
+        //         else alert(li.querySelector('.title').textContent + ' 문서를 연결해주세요.');
+        //     };
+        //     li.addEventListener('click', open);
+        //     li.addEventListener('keydown', e => {
+        //         if (e.key === 'Enter') open();
+        //     });
+        // });
     }
 
     // 초기 렌더 한 번 실행
@@ -369,7 +376,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // console.log(htmls);
     }
 
-    renderInfo(JSON.stringify(DUMMY_PINFO));
+    // renderInfo(JSON.stringify(DUMMY_PINFO));
 
     const DUMMY_IRINFO = [
         [
@@ -406,19 +413,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     ];
 
     function renderIRInfo(pirinfo) {
-        const prodIrinfo = document.getElementById('rateTable');
-        let html = '';
-        for (const tr of pirinfo) {
-            html += '<tr>';
-            for (const td of tr) {
-                html += `<td ${td.colspan ? 'colspan="' + td.colspan + '"' : ''}`
-                    + `${td.rowspan ? 'rowspan="' + td.rowspan + '"' : ''}>`
-                    + `${td.content}</td>`;
-            }
-            html += `</tr>`;
-            // console.log(html);
-        }
-        prodIrinfo.innerHTML = html;
+        const div = document.querySelector('#panel-rate .card .inner');
+        if (!div) return;
+        div.innerHTML = `<div>
+                            <iframe src="${pirinfo}" style="width: 100%;height:70vh;border:none;" title="약관 페이지">
+                            </iframe>
+                         </div>`;
     }
 
     // renderIRInfo(DUMMY_IRINFO);
