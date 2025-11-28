@@ -37,15 +37,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         const pwtpi = document.getElementById('pwtpi');
         const nowSpan1 = document.getElementById('getNowDateTimeV1');
         const nowSpan2 = document.getElementById('getNowDateTimeV2');
+        const pbalance = document.querySelector('.money-list .li:first-child .v');
+        const interestValue = document.querySelector('.money-list .li:nth-child(2) .v');
+        const expectation = document.querySelector('.money-list .li:last-child .v');
 
         mname.innerText = cmplInfo.mname;
 
-        const [p1, p2, p3] = cmplInfo.mphone.split('-');
-        const p2Masked = '*'.repeat(p2.length);
+        // const [p1, p2, p3] = cmplInfo.mphone.split('-');
+        // const p2Masked = '*'.repeat(p2.length);
 
-        const pMasked = `${p1}-${p2Masked}-${p3}`;
+        // const pMasked = `${p1}-${p2Masked}-${p3}`;
 
-        mphone.innerText = pMasked;
+        // mphone.innerText = pMasked;
 
         pname.innerText = cmplInfo.pname;
 
@@ -60,8 +63,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         pend.innerText = formattedPend;
         console.log(formattedPend);
 
-        pccprd.innerText = cmplInfo.pccprd;
-        pcntcs.innerText = cmplInfo.pcntcs;
+        pccprd.innerText = cmplInfo.pend.slice(0,4) - cmplInfo.pnew.slice(0,4);
+        // pcntcs.innerText = cmplInfo.pcntcs;
         const [a1, b1, c1] = cmplInfo.pacc.split('-');
         const bMask = '*'.repeat(b1.length);
         const cMask = '**' + c1.slice(2);
@@ -70,28 +73,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         pacc.innerText = masked;
 
-        pcatapp.innerText = cmplInfo.pcatapp;
+        // pcatapp.innerText = cmplInfo.pcatapp;
 
-        if (cmplInfo.pcatapp === 'true'){
-            pcatapp.innerText = '신청완료';
-        }else{
-            pcatapp.innerText = '미신청';
-        }
+        // if (cmplInfo.pcatapp === 'true'){
+        //     pcatapp.innerText = '신청완료';
+        // }else{
+        //     pcatapp.innerText = '미신청';
+        // }
 
-        pcatdt.innerText = cmplInfo.pcatdt;
+        // pcatdt.innerText = cmplInfo.pcatdt;
 
-        const [a2, b2, c2] = cmplInfo.pcatac.split('-');
-        const bMasked2 = '*'.repeat(b2.length);
-        const cMasked2 = '**' + c2.slice(2);
+        // const [a2, b2, c2] = cmplInfo.pcatac.split('-');
+        // const bMasked2 = '*'.repeat(b2.length);
+        // const cMasked2 = '**' + c2.slice(2);
 
-        const masked2 = `${a2}-${bMasked2}-${cMasked2}`;
+        // const masked2 = `${a2}-${bMasked2}-${cMasked2}`;
 
-        pcatac.innerText = masked2;
+        // pcatac.innerText = masked2;
 
-        pccns.innerText = cmplInfo.pccns;
-        pwtpi.innerText = cmplInfo.pwtpi;
+        // pccns.innerText = cmplInfo.pccns;
+        pwtpi.innerText = cmplInfo.pcwtpi.toFixed(2) + '% (연 기준)';
         nowSpan1.innerText = getNowDateTimeV1();
         nowSpan2.innerText = getNowDateTimeV2();
+
+        pbalance.innerText = cmplInfo.pbalance.toLocaleString('ko-KR') + '원';
+        interestValue.innerText = (Math.floor(cmplInfo.pbalance * cmplInfo.pcwtpi / 100)).toLocaleString('ko-KR') + '원';
+        expectation.innerText = (Math.floor(cmplInfo.pbalance * (cmplInfo.pcwtpi+100) / 100)).toLocaleString('ko-KR') + '원';
     }
 
     function getNowDateTimeV1() {

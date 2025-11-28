@@ -5,6 +5,7 @@ import kr.co.bnkfirst.dto.mypage.DealDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
+import kr.co.bnkfirst.kiwoomETF.EtfDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,4 +29,10 @@ public interface MypageMapper {
     Integer findBySumMinusDbalance(String mid);
     void updateRecvContract(@Param("pbalance") int pbalance, @Param("pacc") String pacc);
     void deleteContract(String pacc);
+
+    // ETF 주식 불러오기
+    List<PcontractDTO> selectEtf(@Param("pcuid") String pcuid);
+
+    // IRP 계좌만 불러오기
+    PcontractDTO findByIRP(@Param("pcuid") String pcuid);
 }

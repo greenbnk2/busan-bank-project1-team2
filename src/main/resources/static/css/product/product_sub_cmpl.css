@@ -246,7 +246,7 @@ main {
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /*grid-template-columns: repeat(2, 1fr);*/
     gap: 14px
 }
 
@@ -757,19 +757,20 @@ main {
     padding: 0;
     color: #6B7280;
     /* gray-500 */
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 600;
     line-height: 1.4;
 }
 
 /* 값(아래) */
 .card.card-product .row .cell:not(.k) {
-    display: block;
+    display: flex;
+    justify-content: right;
     padding: 0;
     margin-top: 4px;
     /* 라벨과 간격 */
     color: #111827;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 700;
     line-height: 1.55;
     word-break: keep-all;
@@ -831,7 +832,7 @@ main {
     display: block;
     /* gray-400  */
     color: #9CA3AF;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 700;
     margin-bottom: 4px;
 }
@@ -842,7 +843,7 @@ main {
     color: #111827;
     font-weight: 700;
     line-height: 1.45;
-    text-align: left;
+    text-align: right;
 }
 
 /* 각 값별 톤 */
@@ -868,7 +869,7 @@ main {
 .card.card-amount .money-list .li:nth-child(3) {
     padding-bottom: 12px;
     margin-bottom: 6px;
-    border-bottom: 1px solid #EEF2F7;
+    border-top: 1px solid #EEF2F7;
 }
 
 /* (i) 정보 점 아이콘 */

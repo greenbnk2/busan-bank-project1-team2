@@ -39,7 +39,7 @@
                 <a th:href="@{/retirement-renew/nps-plan/nps-plan}">NPS 노후설계서비스</a>
             </li>
             <li>
-                <a th:href="@{/retirement-renew/portal-error/portal-error}">통합연금포털</a>
+                <a th:href="@{/retirement-renew/portal-error/portal-error}">통합연금포털 오류신고</a>
             </li>
         </ul>
 
@@ -59,9 +59,10 @@
 
     <!--메인 컨텐츠-->
     <main class="Pension-content">
+        <!--
         <div class="bnk-cta-wrap">
             <p class="bnk-cta-text">"부산은행 퇴직연금, 지금 바로 시작하세요."</p>
-        </div>
+        </div>-->
 
         <!-- 헤더 -->
         <div class="Pension-header">
@@ -120,8 +121,8 @@
             <!-- 퇴직급여 계산법-->
             <section class="pension-structure">
                 <h3>퇴직급여 계산법</h3>
-                <div class="pyramid-wrap">
-                    <img th:src="@{/images/pension-004.png}" alt="3층 연금구조 도표">
+                <div class="pension-text">
+                    <img th:src="@{/images/pension-004.png}" alt=" 퇴직급여 계산법 : 확정기여형(DB) ">
                 </div>
             </section>
         </div>
@@ -133,14 +134,14 @@
                 <h2>확정기여형(DC)</h2>
 
                 <p class="pension-text">
-                    확정급여형(DB : Defined Benefit)
+                    확정기여형(DC : Defined Contribution)
                 </p>
             </section>
 
-            <!-- 확정급여형 이미지 -->
+            <!-- 확정기여형 이미지 -->
             <section class="population-container">
                 <div class="pyramid-wrap">
-                    <img th:src="@{/images/pension-003.png}" alt="3층 연금구조 도표">
+                    <img th:src="@{/images/pension-000.png}" alt="3층 연금구조 도표">
                 </div>
             </section>
 
@@ -149,9 +150,11 @@
             <section class="pension-structure">
                 <h3>제도 특징</h3>
                 <p class="pension-text">
-                <ul class="li">- 회사는 퇴직급여를 금융회사에 사외 적립하여 책임지고 직접 운용</ul>
-                <ul class="li">- 근로자가 퇴직할 때 수령할 퇴직급여가 정해진 방법으로 계산되어 사전에 확정됨</ul>
-                <ul class="li">- DB형 가입자는 추가납입, 중도인출 불가</ul>
+                <ul class="li">- 회사는 납입할 부담금(매년 연간 임금총액의 1/12이상)이 사전에 확정</ul>
+                <ul class="li">- 근로자 개별 계좌에 부담금이 정기적으로 납입되면, 근로자가 책임지고 직접 적립금을 운용하며, 근로자 본인의 추가 부담금 납입* 도 가능</ul>
+                <ul class="li">- 납입한도는 연간 1,800만원 한도(전 금융기관의 개인형IRP, 연금저축계좌, DC/기업형IRP 개인부담금 합산)이며, 연간납입액 합산 900만원까지
+                    세액공제 가능
+                </ul>
                 </p>
             </section>
 
@@ -160,19 +163,30 @@
             <section class="pension-structure">
                 <h3>퇴직급여 계산식</h3>
                 <p class="pension-text">
-                <ul class="li">퇴직 시 평균임금* × 근속년수</ul>
-                <ul class="li">* 퇴직 시 평균임금 : 계속근로기간 1년에 대하여 30일분의 평균임금</ul>
+                <ul class="li">회사부담금 * ± 운용수익</ul>
+                <ul class="li">* 연간 임금총액의 1/12 이상</ul>
                 </p>
             </section>
 
 
-            <!-- 퇴직급여 계산법-->
+            <!-- 수수료 부담주체 -->
+            <section class="pension-structure">
+                <h3>수수료 부담주체</h3>
+                <p class="pension-text">
+                <ul class="li">회사부담금 : 회사</ul>
+                <ul class="li">개인추가부담금 : 가입자 (단, 규약에서 회사가 부담하기로 정한 경우 그에 따름)</ul>
+                </p>
+            </section>
+
+
+            <!-- 퇴직급여 계산법 : 확정기여형(DC) -->
             <section class="pension-structure">
                 <h3>퇴직급여 계산법</h3>
-                <div class="pyramid-wrap">
-                    <img th:src="@{/images/pension-004.png}" alt="3층 연금구조 도표">
+                <div class="pension-text">
+                    <img th:src="@{/images/pension-004.png}" alt=" 퇴직급여 계산법 : 확정기여형(DC) ">
                 </div>
             </section>
+
         </div>
 
         <!--===================== TAB 3 : 개인형퇴직연금제도(IRP) =====================-->
@@ -182,98 +196,61 @@
                 <h2>개인형퇴직연금제도(IRP)</h2>
 
                 <p class="pension-text">
-                    확정급여형(DB : Defined Benefit)
+                    개인형퇴직연금제도(IRP : Individual Retirement Pension)
                 </p>
             </section>
 
             <!-- 확정급여형 이미지 -->
             <section class="population-container">
-                <div class="pyramid-wrap">
-                    <img th:src="@{/images/pension-003.png}" alt="3층 연금구조 도표">
-                </div>
-            </section>
-
-
-            <!-- 제도 특징-->
-            <section class="pension-structure">
-                <h3>제도 특징</h3>
                 <p class="pension-text">
-                <ul class="li">- 회사는 퇴직급여를 금융회사에 사외 적립하여 책임지고 직접 운용</ul>
-                <ul class="li">- 근로자가 퇴직할 때 수령할 퇴직급여가 정해진 방법으로 계산되어 사전에 확정됨</ul>
-                <ul class="li">- DB형 가입자는 추가납입, 중도인출 불가</ul>
-                </p>
-            </section>
-
-
-            <!-- 퇴직급여 계산식-->
-            <section class="pension-structure">
-                <h3>퇴직급여 계산식</h3>
-                <p class="pension-text">
-                <ul class="li">퇴직 시 평균임금* × 근속년수</ul>
-                <ul class="li">* 퇴직 시 평균임금 : 계속근로기간 1년에 대하여 30일분의 평균임금</ul>
-                </p>
-            </section>
-
-
-            <!-- 퇴직급여 계산법-->
-            <section class="pension-structure">
-                <h3>퇴직급여 계산법</h3>
-                <div class="pyramid-wrap">
-                    <img th:src="@{/images/pension-004.png}" alt="3층 연금구조 도표">
-                </div>
-            </section>
+                    <img th:src="@{/images/pension-000.png}" alt="개인형퇴직연금제도(IRP : Individual Retirement Pension)">
         </div>
-
-        <!--===================== TAB 4 : 제도 일반사항 =====================-->
-        <!-- 본문 -->
-        <div id="db4" class="tab-content">
-            <section class="pension-section">
-                <h2>제도 일반사항</h2>
-
-                <p class="pension-text">
-                    확정급여형(DB : Defined Benefit)
-                </p>
-            </section>
-
-            <!-- 확정급여형 이미지 -->
-            <section class="population-container">
-                <div class="pyramid-wrap">
-                    <img th:src="@{/images/pension-003.png}" alt="3층 연금구조 도표">
-                </div>
-            </section>
+        </section>
 
 
-            <!-- 제도 특징-->
-            <section class="pension-structure">
-                <h3>제도 특징</h3>
-                <p class="pension-text">
-                <ul class="li">- 회사는 퇴직급여를 금융회사에 사외 적립하여 책임지고 직접 운용</ul>
-                <ul class="li">- 근로자가 퇴직할 때 수령할 퇴직급여가 정해진 방법으로 계산되어 사전에 확정됨</ul>
-                <ul class="li">- DB형 가입자는 추가납입, 중도인출 불가</ul>
-                </p>
-            </section>
+        <!-- 제도 특징-->
+        <section class="pension-structure">
+            <h3>제도 특징</h3>
+            <p class="pension-text">
+            <ul class="li">- 취업자가 재직 중에 자율로 가입하거나 퇴직 또는 이직시 받은 퇴직급여를 계속해서 적립∙운용할 수 있는 퇴직연금 제도</ul>
+            <ul class="li">- DC형 퇴직연금 근로자는 동일한 금융기관의 IRP 현물이전* 가능</ul>
+            <ul class="li">* 현물이전 : DC형에서 퇴직급여를 지급할 때 운용중인 상품을 현금화하지 않고 상품 그대로 IRP에 지급하는 형태</ul>
+            </p>
+        </section>
 
 
-            <!-- 퇴직급여 계산식-->
-            <section class="pension-structure">
-                <h3>퇴직급여 계산식</h3>
-                <p class="pension-text">
-                <ul class="li">퇴직 시 평균임금* × 근속년수</ul>
-                <ul class="li">* 퇴직 시 평균임금 : 계속근로기간 1년에 대하여 30일분의 평균임금</ul>
-                </p>
-            </section>
+        <!-- IRP로 이전 예외 사유-->
+        <section class="pension-structure">
+            <h3>IRP로 이전 예외 사유</h3>
+            <p class="pension-text">
+            <ul class="li">① 55세 이후에 퇴직하여 급여 수령</ul>
+            <ul class="li">② 퇴직연금수급권 담보대출 상환</ul>
+            <ul class="li">③ 퇴직급여액이 300만원 이하인 경우</ul>
+            </p>
+        </section>
+
+        <!-- 수수료 부담주체-->
+        <section class="pension-structure">
+            <h3>수수료 부담주체</h3>
+            <p class="pension-text">
+            <ul class="li">- 가입자</ul>
+            </p>
+        </section>
 
 
-            <!-- 퇴직급여 계산법-->
-            <section class="pension-structure">
-                <h3>퇴직급여 계산법</h3>
-                <div class="pyramid-wrap">
-                    <img th:src="@{/images/pension-004.png}" alt="3층 연금구조 도표">
-                </div>
-            </section>
-        </div>
+        <!-- IRP의 세제혜택 -->
+        <section class="pension-structure">
+            <h3>IRP의 세제혜택</h3>
+            <p class="pension-text">
+            <ul class="li">- 연간납입액 최대 900만원까지 16.5% 세액공제 가능</ul>
+            </p>
+        </section>
 
-    </main>
+</div>
+
+</div>
+
+</main>
 </div>
 
 <script>

@@ -54,4 +54,6 @@ public class FundDTO {
     private String chart1;
     private String chart2;
 
+    // 필드 추가 - 손진일
+    private String pname;
 }

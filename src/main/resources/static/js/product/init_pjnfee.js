@@ -244,18 +244,18 @@ export function validateFirstAmt() {
     const max = input.dataset.max ? parseInt(input.dataset.max, 10) : null;
 
     if (isNaN(val)) {
-        alert('최초불입금액을 입력해 주세요.');
+        alert('매수금액을 입력해 주세요.');
         input.focus();
         return false;
     }
 
     if (min != null && val < min) {
-        alert(`최초불입금액은 최소 ${formatNumber(min)}원 이상이어야 합니다.`);
+        alert(`매수금액은 최소 ${formatNumber(min)}원 이상이어야 합니다.`);
         input.focus();
         return false;
     }
     if (max != null && val > max) {
-        alert(`최초불입금액은 최대 ${formatNumber(max)}원 이하여야 합니다.`);
+        alert(`매수금액은 최대 ${formatNumber(max)}원 이하여야 합니다.`);
         input.focus();
         return false;
     }
@@ -263,7 +263,7 @@ export function validateFirstAmt() {
     // (원 단위 강제하고 싶으면 step 체크도 가능)
     const step = input.dataset.step ? parseInt(input.dataset.step, 10) : null;
     if (step && step > 1 && val % step !== 0) {
-        alert(`최초불입금액은 ${formatNumber(step)}원 단위로 입력해 주세요.`);
+        alert(`매수금액은 ${formatNumber(step)}원 단위로 입력해 주세요.`);
         input.focus();
         return false;
     }

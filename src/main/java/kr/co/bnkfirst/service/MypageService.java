@@ -6,6 +6,7 @@ import kr.co.bnkfirst.dto.mypage.DealDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
+import kr.co.bnkfirst.kiwoomETF.EtfDTO;
 import kr.co.bnkfirst.mapper.MypageMapper;
 import kr.co.bnkfirst.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -103,5 +104,10 @@ public class MypageService{
     public void deleteContractProcess(int pbalance, String pacc, String recvAcc) {
         updateRecvContract(pbalance, recvAcc);
         deleteContract(pacc);
+    }
+
+    // ETF 주식 불러오기
+    public List<PcontractDTO> selectEtf(@Param("pcuid") String pcuid){
+        return mypageMapper.selectEtf(pcuid);
     }
 }

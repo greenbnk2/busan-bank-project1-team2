@@ -170,7 +170,7 @@
         </form>
     </section>
     <section class="step-page" id="page2" hidden>
-        <h1 style="margin-bottom: 5px;">신규가입</h1>
+        <h1 style="margin-bottom: 5px;">매수신청</h1>
         <ul style="padding: 10px 25px 10px;color: #606060;margin-top: 0;">
             <li>아래의 [예금거래 약관 동의 및 개별약관 동의]를 확인하신 후 동의하시면 "동의함" 버튼을 클릭하시기 바랍니다.</li>
         </ul>
@@ -471,7 +471,7 @@
         </article>
     </section>
     <section class="step-page" id="page4" hidden>
-        <h1>신규가입</h1>
+        <h1>매수신청</h1>
         <div class="warning-info card-white">
             <p>
                 비과세종합저축으로 전환하고자 할 경우에는 신규일 포함 15일 이내에 본인이 신분증과 자격서류를 지참하여 영업점에서 신청하
@@ -485,7 +485,7 @@
             <h2>가입자정보</h2>
             <div class="form-row" style="width: 50%;">
                 <label class="label">가입자명</label>
-                <input class="input" name="mname" value="홍길동" readonly>
+                <input class="input" name="mname" th:value="${userInfo.mname}" readonly>
             </div>
         </article>
         <article class="insert-info card-white">
@@ -504,12 +504,6 @@
                 <!-- 빈칸(정렬 맞춤) -->
                 <div></div>
 
-                <!-- 이자지급구분 -->
-
-                <!-- 계약기간 -->
-
-                <!-- 출금구분 -->
-
                 <!-- 출금계좌번호 -->
                 <div class="form-row">
                     <label class="label">출금계좌번호 <span class="req">*</span></label>
@@ -522,9 +516,9 @@
                     </div>
                 </div>
 
-                <!-- 최초불입금액 -->
                 <div class="form-row">
-                    <label class="label">최초불입금액 <span class="req">*</span></label>
+                    <label class="label">매수금액 <span class="req">*</span></label>
+
                     <div class="Chips" id="firstAmtChips">
                         <button type="button" class="Chip" data-won="10000">1만원</button>
                         <button type="button" class="Chip" data-won="100000">10만원</button>
@@ -532,33 +526,38 @@
                         <button type="button" class="Chip" data-won="1000000">100만원</button>
                         <button type="button" class="Chip" data-won="">직접입력</button>
                     </div>
+
                     <div class="unit-wrap" style="margin-top:8px">
-                        <input id="firstAmt" class="input unit-padding" placeholder="1만원 - 1천만원"
-                               inputmode="numeric">
+                        <!-- ⚠ name 속성은 실제 DB에 저장될 필드명으로 맞춰줘 -->
+                        <input id="firstAmt" name="firstAmt" class="input unit-padding"
+                               placeholder="1만원 - 1천만원" inputmode="numeric">
                         <span class="unit">원</span>
                     </div>
+
+                    <!-- 선택한 계좌 잔액 안내 -->
+                    <div class="small" id="firstAmtBalanceHelp" style="margin-top:4px">
+                        출금계좌를 선택하면 잔액이 표시됩니다.
+                    </div>
+
+                    <!-- 잔액 기준 비율(%) 입력 -->
+                    <div class="unit-wrap" style="margin-top:4px">
+                        <input id="firstAmtPercent" class="input unit-padding"
+                               placeholder="잔액에서 사용할 비율(%)" inputmode="numeric">
+                        <span class="unit">%</span>
+                    </div>
+
+                    <!-- ✅ 비율로 계산된 금액 표시 -->
+                    <div class="small" id="firstAmtPercentHelp" style="margin-top:4px; color:#80868B;">
+                        비율을 입력하면 사용할 금액이 표시됩니다.
+                    </div>
                 </div>
-
-                <!-- 목표금액 -->
-
-                <!-- 자동이체신청 -->
-
-                <!-- 자동이체일자 -->
-
-                <!-- 자동이체계좌 -->
-
-                <!-- 고객 알림 서비스 -->
-
-                <!-- 비과세종합저축 선택 -->
-
-                <!-- 안내 배너들 -->
 
             </div>
         </article>
     </section>
     <section class="step-page" id="page5" hidden>
         <div class="page">
-            <h1>신규상품 개설 신청</h1>
+            <h1>매수신청</h1>
             <p class="sub">입력하신 정보를 확인하고 신청을 완료해주세요.</p>
 
             <!-- 신청 정보 요약 -->
@@ -582,35 +581,13 @@
                     <div class="srow">
                         <div class="cell label">상품명</div>
                         <div class="cell value">BNK정기예금</div>
-                        <div class="cell label">자동이체 여부</div>
-                        <div class="cell value">신청</div>
-                    </div>
-                    <div class="srow">
-                        <div class="cell label">이자지급구분</div>
-                        <div class="cell value">만기일시지급</div>
-                        <div class="cell label">자동이체 일자</div>
-                        <div class="cell value">매월 25일</div>
-                    </div>
-                    <div class="srow">
-                        <div class="cell label">계약기간</div>
-                        <div class="cell value">12개월</div>
-                        <div class="cell label">과세구분</div>
-                        <div class="cell value">일반과세</div>
-                    </div>
-                    <div class="srow">
                         <div class="cell label">출금계좌</div>
                         <div class="cell value">123-456-789012</div>
-                        <div class="cell label">알림서비스</div>
-                        <div class="cell value">SMS 신청</div>
-                    </div>
-                    <div class="srow two-col">
-                        <div class="cell label">자동이체 계좌</div>
-                        <div class="cell value">부산은행 123-456-789012</div>
                     </div>
                 </div>
             </section>
 
-            <!-- 보안 정보 설정 -->
+            <!-- 출금계좌 비밀번호 확인 -->
             <section class="card">
                 <div class="title-row">
                     <!-- 방패 경고 -->
@@ -620,48 +597,36 @@
                         <path d="M12 8v4"/>
                         <path d="M12 16h.01"/>
                     </svg>
-                    <h2>보안 정보 설정</h2>
-                </div>
-
-                <div class="field">
-                    <div class="labelline">신규추진 비밀번호 (숫자 4자리)</div>
-                    <div class="pin-wrap" id="pin1">
-                        <div class="pin-box"><input class="pin" inputmode="numeric" maxlength="1"
-                                                    autocomplete="one-time-code" aria-label="첫째 자리"></div>
-                        <div class="pin-box"><input class="pin" inputmode="numeric" maxlength="1"
-                                                    aria-label="둘째 자리"></div>
-                        <div class="pin-box"><input class="pin" inputmode="numeric" maxlength="1"
-                                                    aria-label="셋째 자리"></div>
-                        <div class="pin-box"><input class="pin" inputmode="numeric" maxlength="1"
-                                                    aria-label="넷째 자리"></div>
-                    </div>
-                    <div class="hint" id="pin1Hint">연속되거나 반복되는 숫자는 사용할 수 없습니다.</div>
-                </div>
-
-                <div class="field">
-                    <div class="labelline">신규추진 비밀번호 확인</div>
-                    <div class="pin-wrap" id="pin2">
-                        <div class="pin-box"><input class="pin" inputmode="numeric" maxlength="1"
-                                                    aria-label="첫째 자리 확인"></div>
-                        <div class="pin-box"><input class="pin" inputmode="numeric" maxlength="1"
-                                                    aria-label="둘째 자리 확인"></div>
-                        <div class="pin-box"><input class="pin" inputmode="numeric" maxlength="1"
-                                                    aria-label="셋째 자리 확인"></div>
-                        <div class="pin-box"><input class="pin" inputmode="numeric" maxlength="1"
-                                                    aria-label="넷째 자리 확인"></div>
-                    </div>
+                    <h2>출금계좌 비밀번호 확인</h2>
                 </div>
 
                 <div class="field">
                     <div class="labelline">출금계좌 비밀번호</div>
-                    <div class="soft-box">
-                        <div class="pin-wrap" aria-disabled="true">
-                            <div class="pin-box" style="background:#f3f4f6"></div>
-                            <div class="pin-box" style="background:#f3f4f6"></div>
-                            <div class="pin-box" style="background:#f3f4f6"></div>
-                            <div class="pin-box" style="background:#f3f4f6"></div>
+                    <p class="sub" style="margin-top:4px;color:#6b7280;font-size:12px">
+                        4단계에서 선택한 출금계좌의 비밀번호(숫자 4자리)를 입력해주세요.
+                    </p>
+
+                    <div class="pin-wrap" id="accPin">
+                        <div class="pin-box">
+                            <input class="pin" inputmode="numeric" maxlength="1"
+                                   autocomplete="one-time-code" aria-label="비밀번호 첫째 자리">
                         </div>
-                        <div class="hint" style="margin-top:8px">이전 단계에서 입력된 비밀번호가 적용됩니다.</div>
+                        <div class="pin-box">
+                            <input class="pin" inputmode="numeric" maxlength="1"
+                                   aria-label="비밀번호 둘째 자리">
+                        </div>
+                        <div class="pin-box">
+                            <input class="pin" inputmode="numeric" maxlength="1"
+                                   aria-label="비밀번호 셋째 자리">
+                        </div>
+                        <div class="pin-box">
+                            <input class="pin" inputmode="numeric" maxlength="1"
+                                   aria-label="비밀번호 넷째 자리">
+                        </div>
+                    </div>
+
+                    <div class="hint" id="accPinHint" style="margin-top:8px">
+                        출금계좌 비밀번호 4자리를 입력해주세요.
                     </div>
                 </div>
             </section>
@@ -676,8 +641,8 @@
                         <path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4"/>
                         <path d="M12 17h.01"/>
                     </svg>
-                    <b>신규상품 개설을 신청하시겠습니까?</b>
-                    <div class="desc">위 정보로 신규상품 개설 신청이 진행됩니다.</div>
+                    <b>상품 매수를 신청하시겠습니까?</b>
+                    <div class="desc">위 정보로 상품 매수 신청이 진행됩니다.</div>
                 </div>
             </section>
         </div>

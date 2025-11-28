@@ -385,7 +385,7 @@
                 </tr>
                 <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;" th:each="contract:${contractList}">
                     <td>[[${contract.pname}]]</td>
-                    <td>[[${contract.pacc}]]</td>
+                    <td>[[${contract.pacc} ?: '-']]</td>
                     <td><span th:text="${#temporals.format(contract.pnew, 'yyyy.MM.dd')}"></span></td>
                     <td><span th:text="${#temporals.format(contract.pend, 'yyyy.MM.dd')}"></span></td>
                     <td><span th:text="${#numbers.formatInteger(contract.pbalance, '3', 'COMMA')}"></span></td>
@@ -398,7 +398,7 @@
             <div style="margin-top:25px;border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
                 <div>
                     <div style="height: 70px; display: flex; justify-content: end; background-color: white; align-items: flex-end;">
-                        <div style="color: #13263A; font-size: 20px; margin-bottom: 20px; margin-left: 30px;">나의 투자</div>
+                        <div style="color: #13263A; font-size: 20px; margin-bottom: 20px; margin-left: 30px;">나의 상품</div>
                         <button th:onclick="|location.href='@{/product/main}'|" class="btn-register" style="margin-left:auto; height: 35px !important; width: 100px !important; margin-bottom: 17px; margin-right: 40px;">
                             <div style="display: flex; justify-content: center;">
                                 <div style="margin-top: 2.5px; margin-right: 5px;">
@@ -407,7 +407,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    계좌추가
+                                    상품추가
                                 </div>
                             </div>
                         </button>
@@ -416,21 +416,83 @@
                 <table id="accounts-table" style="border-collapse: collapse; width: 100%;border-top: 1px #E5E7EB solid;">
                 <tr style="color: #2B2F36; font-size: 14px; height: 52px; border-bottom: 1px #E5E7EB; "
                 >
-                    <th style="width: 200px;">상품명</th>
+                    <th style="width: 290px;">상품명</th>
                     <th style="width: 290px;">계좌번호</th>
-                    <th style="width: 160px;">개설일</th>
-                    <th style="width: 160px;">만기일</th>
-                    <th style="width: 200px;">잔액(원)</th>
+                    <th style="width: 130px;">개설일</th>
+                    <th style="width: 130px;">만기일</th>
+                    <th style="width: 170px;">잔액(원)</th>
                     <th style="">작업</th>
                 </tr>
                 <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;" th:each="fund:${fundList}">
-                    <td>[[${fund.fname}]]</td>
-                    <td>[[${fund.pacc}]]</td>
+                    <td>[[${!#strings.isEmpty(fund.fname) ? fund.fname : fund.pname}]]</td>
+                    <td>[[${fund.pacc} ?: '-']]</td>
                     <td><span th:text="${#temporals.format(fund.pnew, 'yyyy.MM.dd')}"></span></td>
                     <td><span th:text="${#temporals.format(fund.pend, 'yyyy.MM.dd')}"></span></td>
                     <td><span th:text="${#numbers.formatInteger(fund.pbalance, '3', 'COMMA')}"></span></td>
                     <td style="vertical-align: middle; text-align: center;">
                         <button th:onclick="|location.href='@{/mypage/prod}'|" class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
+                    </td>
+                </tr>
+            </table>
+            </div>
+            <div style="margin-top:25px;border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
+                <div>
+                    <div style="height: 70px; display: flex; justify-content: end; background-color: white; align-items: flex-end;">
+                        <div style="color: #13263A; font-size: 20px; margin-bottom: 20px; margin-left: 30px;">나의 ETF</div>
+                        <button th:onclick="|location.href='@{/stock/mainEtf}'|" class="btn-register" style="margin-left:auto; height: 35px !important; width: 100px !important; margin-bottom: 17px; margin-right: 40px;">
+                            <div style="display: flex; justify-content: center;">
+                                <div style="margin-top: 2.5px; margin-right: 5px;">
+                                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 2.1875C7 1.70352 6.60898 1.3125 6.125 1.3125C5.64102 1.3125 5.25 1.70352 5.25 2.1875V6.125H1.3125C0.828516 6.125 0.4375 6.51602 0.4375 7C0.4375 7.48398 0.828516 7.875 1.3125 7.875H5.25V11.8125C5.25 12.2965 5.64102 12.6875 6.125 12.6875C6.60898 12.6875 7 12.2965 7 11.8125V7.875H10.9375C11.4215 7.875 11.8125 7.48398 11.8125 7C11.8125 6.51602 11.4215 6.125 10.9375 6.125H7V2.1875Z" fill="white"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    투자하기
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <table id="accounts-table" style="border-collapse: collapse; width: 100%;border-top: 1px #E5E7EB solid;">
+                <tr style="color: #2B2F36; font-size: 14px; height: 52px; border-bottom: 1px #E5E7EB; "
+                >
+                    <th style="width: 200px;">종목명</th>
+                    <th style="width: 290px;">총 금액</th>
+                    <th style="width: 160px;">평가금액</th>
+                    <th style="width: 160px;">현재 수익</th>
+                    <th style="width: 200px;">수익률</th>
+                    <th style="">작업</th>
+                </tr>
+                <tr th:attr="data-pname=${ETF.pname},
+                             data-pstock=${ETF.pstock},
+                             data-pprice=${ETF.pprice},
+                             data-psum=${ETF.psum}"
+                    style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;" th:each="ETF:${ETFList}">
+                    <!-- 종목명 -->
+                    <td class="etf-name">
+                        [[${ETF.pname}]]
+                    </td>
+
+                    <!-- 총 금액(매수금액) -->
+                    <td class="etf-total-amount"></td>
+
+                    <!-- 평가금액 -->
+                    <td class="etf-current-amount"></td>
+
+                    <!-- 현재 수익 -->
+                    <td class="etf-profit"></td>
+
+                    <!-- 수익률 -->
+                    <td class="etf-profit-rate"></td>
+
+                    <!-- 조회 버튼 -->
+                    <td style="vertical-align: middle; text-align: center;">
+                        <button
+                                th:onclick="|location.href='@{/stock/orderEtf(code=${ETF.code}, name=${ETF.pname})}'|"
+                                class="btn-register"
+                                style="width: 55px !important; height: 30px !important;">
+                            조회
+                        </button>
                     </td>
                 </tr>
             </table>
@@ -869,5 +931,119 @@
     });
   });
 </script>
+<script>
+    // ETF 테이블 행 1개 업데이트
+    function updateEtfTableRow(tr, nowPrice) {
+        const psum   = Number(tr.dataset.psum   || 0); // 총 매수금액(DB)
+        const pprice = Number(tr.dataset.pprice || 0); // 매수 단가
+        const pstock = Number(tr.dataset.pstock || 0); // 수량(주)
+
+        const buyAmount     = psum || (pprice * pstock);
+        const currentAmount = nowPrice * pstock;
+        const profit        = currentAmount - buyAmount;
+        const profitRate    = buyAmount ? (profit / buyAmount) * 100 : 0;
+
+        const totalEl   = tr.querySelector('.etf-total-amount');
+        const currentEl = tr.querySelector('.etf-current-amount');
+        const profitEl  = tr.querySelector('.etf-profit');
+        const rateEl    = tr.querySelector('.etf-profit-rate');
+
+        // 총 금액 / 평가금액
+        if (totalEl)   totalEl.textContent   = buyAmount.toLocaleString('ko-KR') + '원';
+        if (currentEl) currentEl.textContent = currentAmount.toLocaleString('ko-KR') + '원';
+
+        // 현재 수익
+        if (profitEl) {
+            const abs  = Math.abs(profit);
+            const sign = profit > 0 ? '+' : (profit < 0 ? '-' : '');
+            profitEl.textContent = sign + abs.toLocaleString('ko-KR') + '원';
+            profitEl.style.color =
+                profit > 0 ? '#b91c1c' :
+                    profit < 0 ? '#1d4ed8' :
+                        '#6b7280';
+        }
+
+        // 수익률
+        if (rateEl) {
+            const sign    = profitRate > 0 ? '+' : (profitRate < 0 ? '-' : '');
+            const absRate = Math.abs(profitRate).toFixed(2);
+            rateEl.textContent = `${sign}${absRate}%`;
+            rateEl.style.color =
+                profitRate > 0 ? '#b91c1c' :
+                    profitRate < 0 ? '#1d4ed8' :
+                        '#6b7280';
+        }
+    }
+</script>
+<script>
+    // /BNK/api/etf 에서 실시간 현재가 가져와서 ETF 카드들 갱신 (pname 기준 매칭)
+    async function refreshEtfCardsFromApi() {
+        console.log('[ETF] refresh 호출', new Date().toLocaleTimeString());
+
+        try {
+            const res = await fetch('/BNK/api/etf', { cache: 'no-store' });
+            if (!res.ok) {
+                console.error('/BNK/api/etf 실패', res.status);
+                return;
+            }
+
+            const list = await res.json();
+            if (!Array.isArray(list)) return;
+
+            const mapByName = new Map();
+            list.forEach(item => {
+                const n = item.pname || item.name;
+                if (!n) return;
+                mapByName.set(n.trim(), item);
+            });
+
+            // 1) 카드 업데이트
+            document
+                .querySelectorAll('.menu-card[data-product-type="ETF"]')
+                .forEach(card => {
+                    const pname = (card.dataset.pname || '').trim();
+                    if (!pname) return;
+
+                    const item = mapByName.get(pname);
+                    if (!item) return;
+
+                    const nowPrice = Number(item.price);
+                    if (isNaN(nowPrice)) return;
+
+                    console.log('[ETF] 카드:', pname, '현재가:', nowPrice);
+                    updateEtfCardMetrics(card, nowPrice);
+                });
+
+            // 2) 상단 보유 ETF 테이블 업데이트
+            document
+                .querySelectorAll('#accounts-table tr[data-pname]')
+                .forEach(tr => {
+                    const pname = (tr.dataset.pname || '').trim();
+                    if (!pname) return;
+
+                    const item = mapByName.get(pname);
+                    if (!item) return;
+
+                    const nowPrice = Number(item.price);
+                    if (isNaN(nowPrice)) return;
+
+                    console.log('[ETF] 테이블 행:', pname, '현재가:', nowPrice);
+                    updateEtfTableRow(tr, nowPrice);
+                });
+
+        } catch (e) {
+            console.error('refreshEtfCardsFromApi 에러', e);
+        }
+    }
+</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 페이지 로드되면 한 번 ETF 데이터 반영
+            refreshEtfCardsFromApi();
+
+            // 선택: 주기적으로 갱신하고 싶으면 (예: 1.5초마다)
+            setInterval(refreshEtfCardsFromApi, 1500);
+        });
+    </script>
 </body>
 </html>

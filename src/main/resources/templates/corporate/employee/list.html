@@ -5,8 +5,250 @@
     <title>퇴직연금 기업뱅킹 - 직원 조회</title>
 
     <style>
-        /* ======================== 공통 레이아웃 ======================== */
+        /* ---------------------- 공통 레이아웃 ---------------------- */
+        * {
+            box-sizing: border-box;
+        }
 
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Noto Sans KR", system-ui, -apple-system, sans-serif;
+            background-color: #f4f5f9;
+            color: #222;
+        }
+
+        .page-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 24px;
+        }
+
+        h1 {
+            margin: 0 0 16px;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            font-size: 15px; /* 기존 13px → 15px */
+            color: #777;
+            margin-bottom: 24px;
+        }
+
+        /* ---------------------- 검색/필터 영역 ---------------------- */
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .toolbar input[type="text"],
+        .toolbar select {
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px; /* 기존 14px → 15px */
+        }
+
+        .toolbar input[type="text"] {
+            flex: 1;
+        }
+
+        .toolbar button {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            font-size: 15px; /* 기존 14px → 15px */
+            cursor: pointer;
+            background-color: #d91a1a;
+            color: white;
+        }
+
+        .toolbar button:hover {
+            opacity: 0.9;
+        }
+
+        /* ---------------------- 카드 공통 ---------------------- */
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+            margin-bottom: 20px;
+        }
+
+        .summary-wrapper {
+            display: flex;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .summary-card {
+            flex: 1;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .summary-title {
+            font-size: 15px; /* 기존 14px → 15px */
+            color: #777;
+            margin-bottom: 6px;
+        }
+
+        .summary-icon {
+            font-size: 26px;
+            margin: 6px 0;
+        }
+
+        .summary-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        /* ---------------------- 2단 그리드 ---------------------- */
+        .section-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .card-box {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .news-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px; /* 기존 13px → 15px */
+            padding: 6px 0;
+        }
+
+        .tag-notice {
+            padding: 2px 8px;
+            font-size: 15px; /* 기존 11px → 15px */
+            border-radius: 999px;
+            background: #ffe4e4;
+            color: #d91a1a;
+            margin-right: 6px;
+        }
+
+        /* ---------------------- 고객센터 ---------------------- */
+        .contact-box {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+            margin-top: 16px;
+            gap: 20px;
+        }
+
+        .contact-col {
+            flex: 1;
+            border-right: 1px solid #eee;
+        }
+
+        .contact-title {
+            font-size: 15px; /* 기존 14px → 15px */
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .contact-number {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        /* ---------------------- 반응형 ---------------------- */
+        @media (max-width: 900px) {
+            .summary-wrapper,
+            .section-row,
+            .contact-box {
+                flex-direction: column;
+            }
+
+            .contact-col {
+                border-right: none !important;
+            }
+        }
+
+
+        /* 고객지원 카드 6칸 */
+        .support-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        /* 각 박스 */
+        .support-item {
+            padding: 26px 10px;
+            font-size: 15px; /* 최소 15px 유지 */
+            text-align: center;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            background: #fff;
+        }
+
+        /* 오른쪽 끝 border 제거 */
+        .support-item:nth-child(2n) {
+            border-right: none;
+        }
+
+        /* 마지막 두 칸 border 제거 (하단) */
+        .support-item:nth-last-child(-n + 2) {
+            border-bottom: none;
+        }
+
+        /* hover 효과 */
+        .support-item:hover {
+            background: #fff5f5; /* 연한 빨강 배경 */
+            color: #d91a1a; /* 빨간 글자 */
+        }
+
+        /* ================= 자동완성 박스 ================= */
+        .auto-box {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 100%; /* 🔥 input 너비 그대로 */
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 5000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            font-size: 15px;
+            top: 42px; /* 🔥 input 바로 아래 */
+            left: 0; /* 🔥 input 기준으로 정렬 */
+        }
+
+
+        .auto-item {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .auto-item:hover {
+            background: #fff5f5;
+            color: #d91a1a;
+        }
+
+
+        /* ======================== 공통 레이아웃 ======================== */
         * { box-sizing: border-box; }
 
         body {
@@ -15,7 +257,8 @@
             font-family: "Noto Sans KR", system-ui, -apple-system, sans-serif;
             background-color: #f4f5f9;
             color: #222;
-            font-size: 15px;    /* 최소 폰트 */
+
+            font-size: 15px;
         }
 
         .page-container {
@@ -36,7 +279,6 @@
         }
 
         /* ======================== 검색 / 필터 ======================== */
-
         .toolbar {
             display: flex;
             gap: 12px;
@@ -63,11 +305,10 @@
             cursor: pointer;
             font-size: 15px;
         }
+
         .toolbar button:hover { opacity: 0.9; }
 
-
         /* ======================== 카드 공통 ======================== */
-
         .card {
             background: white;
             padding: 16px;
@@ -82,24 +323,7 @@
             margin-bottom: 12px;
         }
 
-
-        /* ======================== 그리드 ======================== */
-
-        .content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 16px;
-        }
-
-        @media (max-width:900px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-
         /* ======================== 테이블 ======================== */
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -120,7 +344,7 @@
         .tag {
             padding: 2px 8px;
             border-radius: 999px;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .tag-db { background:#ffe4e4; color:#b01010; }
@@ -129,280 +353,157 @@
         .status-active { color: #0c8a3f; font-weight:600; }
         .status-retired { color: #999; font-weight:600; }
 
-
-        /* ======================== 상세 정보 ======================== */
-
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .detail-label { color:#777; font-size:15px; }
-        .detail-value { font-size:15px; font-weight:500; }
-
-        .empty-text {
-            font-size: 15px;
-            color: #888;
-        }
-
-        /* 적립금 박스 */
-        .balance-box {
-            margin-top: 16px;
-            padding: 14px;
-            background: linear-gradient(135deg, #d91a1a, #ff7b6e);
-            border-radius: 8px;
-            color: white;
-        }
-
-        .balance-label {
-            font-size: 15px;
-            opacity: 0.9;
-        }
-
-        .balance-value {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-
-        /* ======================== 햄버거 ======================== */
-
-        .hamburger {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
-            padding: 6px;
-            background: none;
-            border: none;
-            z-index: 2000;
-        }
-
-        .hamburger span {
-            width: 100%;
-            height: 4px;
-            background: #222;
-            border-radius: 4px;
-            transition: 0.3s;
-        }
-
-        .hamburger.open span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .hamburger.open span:nth-child(2) { opacity: 0; }
-        .hamburger.open span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-
-
-        /* ======================== 사이드바 ======================== */
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -260px;
-            width: 250px;
-            height: 100%;
-            background: white;
-            padding: 20px;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
-            transition: 0.3s;
-            z-index: 1500;
-        }
-
-        .sidebar.active {
+        .auto-box {
+            position: absolute;
+            top: 42px;
             left: 0;
+            width: 300px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            display: none;
+            z-index: 2000;
+            max-height: 260px;
+            overflow-y: auto;
         }
 
-        .sidebar-title img {
-            width: 150px;
-            margin-bottom: 10px;
+        .auto-item {
+            padding: 8px 10px;
+            cursor: pointer;
         }
 
-        .sidebar-title p {
-            font-size: 15px;
-            margin: 5px 0 20px;
+        .auto-item:hover {
+            background: #f1f1f1;
         }
-
-        .sidebar a {
-            color:#222;
-            text-decoration:none;
-            font-size:15px;
-            display:block;
-            padding:8px 0;
-            transition: color 0.2s;
-        }
-        .sidebar a:hover { color:#d91a1a; }
 
     </style>
 </head>
 
 <body>
 
-<!-- 햄버거 버튼 -->
-<button class="hamburger" id="hamburgerBtn">
-    <span></span>
-    <span></span>
-    <span></span>
-</button>
 
-<!-- 사이드바 -->
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar-title">
-        <img src="/BNK/images/BNK_english.png" alt="">
-        <p>부산은행 기업뱅킹</p>
-    </div>
+<div th:replace="~{layouts/corporate_header :: corpHeader}"></div>
 
-    <ul style="list-style:none; padding:0;">
-        <li><a href="/BNK/corporate/main">🏠 기업 메인</a></li>
-        <li><a href="/BNK/corporate/employee/list">👥 직원 관리</a></li>
-        <li><a href="/BNK/corporate/employee/detail/1">📑 직원 상세</a></li>
-        <li><a href="/BNK/corporate/cs">❓ 고객센터</a></li>
-    </ul>
-</aside>
-
+<script>
+    initCorporateHeader("employee");
+</script>
 
 <!-- 페이지 내용 -->
 <div class="page-container">
 
     <h1>퇴직연금 직원 조회</h1>
     <div class="subtitle">
-        EMPLOYEE 테이블 기반으로 직원별 제도 유형, 계좌번호, 현재 적립금을 조회하는 화면입니다.
+        EMPLOYEE 테이블 기반 직원별 제도, 계좌번호, 적립금 등을 조회합니다.
     </div>
 
-    <div class="toolbar">
-        <input type="text" id="searchInput" placeholder="직원 이름 또는 계좌번호 검색">
-        <select id="planFilter">
-            <option value="">전체 제도</option>
-            <option value="DB">DB 제도만</option>
-            <option value="DC">DC 제도만</option>
-        </select>
-        <button id="resetBtn">초기화</button>
-    </div>
+    <!-- 검색창 영역 -->
+    <form method="get" th:action="@{/corporate/employee/list}">
 
-    <div class="content">
+        <div class="toolbar" style="position:relative;">   <!-- 자동완성 Box 올리기 위해 relative -->
 
-        <div class="card">
-            <div class="card-title">직원 목록</div>
-            <table>
-                <thead>
-                <tr>
-                    <th>직원ID</th>
-                    <th>이름</th>
-                    <th>제도</th>
-                    <th>계좌번호</th>
-                    <th>재직 상태</th>
-                </tr>
-                </thead>
-                <tbody id="employeeTbody"></tbody>
-            </table>
+            <!-- 🔍 검색창 -->
+            <input type="text"
+                   name="keyword"
+                   id="searchKeyword"
+                   th:value="${keyword}"
+                   placeholder="직원 이름 또는 계좌번호 검색">
+
+            <!-- 🔥 자동완성 박스 (여기 추가!) -->
+            <div id="autoBox" class="auto-box" style="display:none;"></div>
+
+            <select name="planType">
+                <option value="" th:selected="${planType == ''}">전체 제도</option>
+                <option value="DB" th:selected="${planType == 'DB'}">DB 제도만</option>
+                <option value="DC" th:selected="${planType == 'DC'}">DC 제도만</option>
+            </select>
+
+            <button type="submit">검색</button>
+            <button type="button" onclick="location.href='/BNK/corporate/employee/list'">초기화</button>
+
         </div>
+    </form>
 
-        <div class="card">
-            <div class="card-title">직원 상세정보</div>
-            <div id="detailArea">
-                <p class="empty-text">왼쪽 목록에서 직원을 선택하면 상세정보와 현재 적립금이 표시됩니다.</p>
-            </div>
-        </div>
 
+    <div class="card">
+        <div class="card-title">직원 목록</div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>직원ID</th>
+                <th>이름</th>
+                <th>제도</th>
+                <th>계좌번호</th>
+                <th>재직 상태</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="emp : ${employees}"
+                th:onclick="|location.href='/BNK/corporate/employee/detail/${emp.empId}'|"
+                style="cursor:pointer">
+
+                <td th:text="${emp.empId}"></td>
+                <td th:text="${emp.name}"></td>
+                <td>
+                    <span th:class="'tag ' + (${emp.planType} == 'DB' ? 'tag-db' : 'tag-dc')"
+                          th:text="${emp.planType}"></span>
+                </td>
+                <td th:text="${emp.accountNo}"></td>
+                <td th:class="${emp.status == 'ACTIVE'} ? 'status-active' : 'status-retired'"
+                    th:text="${emp.status == 'ACTIVE' ? '재직' : '퇴사'}"></td>
+            </tr>
+            </tbody>
+
+        </table>
     </div>
+
 </div>
 
 
 <script>
-    /* ===== 더미 데이터 ===== */
-    const employees = [
-        {empId: 1, name: "김하늘", planType: "DB", accountNo: "123-456-789012", status: "ACTIVE", balance: 12800000},
-        {empId: 2, name: "이준호", planType: "DC", accountNo: "987-654-321098", status: "ACTIVE", balance: 8200000},
-        {empId: 3, name: "박민지", planType: "DB", accountNo: "110-220-330044", status: "RETIRED", balance: 27600000},
-        {empId: 4, name: "정소윤", planType: "DC", accountNo: "222-333-444555", status: "ACTIVE", balance: 5600000},
-        {empId: 5, name: "최유진", planType: "DB", accountNo: "333-444-555666", status: "ACTIVE", balance: 19300000}
-    ];
+    const input = document.getElementById("searchKeyword");
+    const autoBox = document.getElementById("autoBox");
+    let autoList = [];
 
-    const tbody = document.getElementById("employeeTbody");
-    const detailArea = document.getElementById("detailArea");
+    async function loadAuto(keyword) {
+        if (!keyword || keyword.length < 1) {
+            autoBox.style.display = "none";
+            return;
+        }
 
+        const res = await fetch(`/BNK/corporate/employee/autocomplete?keyword=${keyword}`);
 
-    /* ===== 목록 렌더링 ===== */
-    function renderTable(list) {
-        tbody.innerHTML = "";
+        const list = await res.json();
+        autoList = list;
 
-        list.forEach(emp => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${emp.empId}</td>
-                <td>${emp.name}</td>
-                <td><span class="tag ${emp.planType === "DB" ? "tag-db" : "tag-dc"}">${emp.planType}</span></td>
-                <td>${emp.accountNo}</td>
-                <td class="${emp.status === "ACTIVE" ? "status-active" : "status-retired"}">
-                    ${emp.status === "ACTIVE" ? "재직" : "퇴사"}
-                </td>
-            `;
-            tr.onclick = () => renderDetail(emp);
-            tbody.appendChild(tr);
-        });
+        autoBox.innerHTML = list.map(emp =>
+            `<div class="auto-item" onclick="selectAuto(${emp.empId})">
+            ${emp.name} (${emp.accountNo})
+        </div>`
+        ).join("");
+
+        autoBox.style.display = list.length > 0 ? "block" : "none";
     }
 
-    /* ===== 상세 렌더링 ===== */
-    function renderDetail(emp) {
-        detailArea.innerHTML = `
-            <div class="detail-row"><div class="detail-label">직원 ID</div><div class="detail-value">${emp.empId}</div></div>
-            <div class="detail-row"><div class="detail-label">이름</div><div class="detail-value">${emp.name}</div></div>
-            <div class="detail-row"><div class="detail-label">제도 유형</div><div class="detail-value">${emp.planType}</div></div>
-            <div class="detail-row"><div class="detail-label">계좌번호</div><div class="detail-value">${emp.accountNo}</div></div>
-            <div class="detail-row"><div class="detail-label">재직 상태</div><div class="detail-value">${emp.status==="ACTIVE" ? "재직" : "퇴사"}</div></div>
-
-            <div class="balance-box">
-                <div class="balance-label">현재 적립금</div>
-                <div class="balance-value">${emp.balance.toLocaleString()}원</div>
-            </div>
-        `;
+    function selectAuto(empId) {
+        location.href = `/corporate/employee/detail/${empId}`;
     }
 
-    renderTable(employees);
+    let debounceTimer = null;
+    input.addEventListener("input", () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            loadAuto(input.value.trim());
+        }, 300);
+    });
 
-    /* ===== 검색/필터 ===== */
-    const searchInput = document.getElementById("searchInput");
-    const planFilter = document.getElementById("planFilter");
-    const resetBtn = document.getElementById("resetBtn");
-
-    function applyFilter() {
-        const keyword = searchInput.value.trim();
-        const plan = planFilter.value;
-
-        const filtered = employees.filter(emp =>
-            (!plan || emp.planType === plan) &&
-            (!keyword || emp.name.includes(keyword) || emp.accountNo.includes(keyword))
-        );
-
-        renderTable(filtered);
-        detailArea.innerHTML = `<p class="empty-text">왼쪽 목록에서 직원을 선택하면 상세정보와 현재 적립금이 표시됩니다.</p>`;
-    }
-
-    searchInput.oninput = applyFilter;
-    planFilter.onchange = applyFilter;
-
-    resetBtn.onclick = () => {
-        searchInput.value = "";
-        planFilter.value = "";
-        renderTable(employees);
-        detailArea.innerHTML = `<p class="empty-text">왼쪽 목록에서 직원을 선택하면 상세정보와 현재 적립금이 표시됩니다.</p>`;
-    };
-
-    /* ===== 햄버거 / 사이드바 ===== */
-    const hamburgerBtn = document.getElementById("hamburgerBtn");
-    const sidebar = document.getElementById("sidebar");
-
-    hamburgerBtn.onclick = () => {
-        sidebar.classList.toggle("active");
-        hamburgerBtn.classList.toggle("open");
-    };
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".auto-box") && e.target.id !== "searchKeyword") {
+            autoBox.style.display = "none";
+        }
+    });
 </script>
 
 </body>

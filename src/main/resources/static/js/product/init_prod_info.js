@@ -298,8 +298,8 @@ export function initProdInfo(data) {
     try {
         fillTerms(data.pterms, data.pinfo);
         fillPname(data.pname);
-        initPcprdRange(data.pcprd);
-        setPwtpi(data.pwtpi);
+        // initPcprdRange(data.pcprd);
+        // setPwtpi(data.pwtpi);
         // applyFirstAmtRule(data.pjnfee);
     } catch (e) {
         console.error(e);

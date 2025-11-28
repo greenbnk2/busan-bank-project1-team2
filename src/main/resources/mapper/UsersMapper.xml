@@ -24,16 +24,30 @@
         INSERT INTO USERS (
             "uId", MID, MPW, MNAME, MGENDER, MJUMIN,
             MPHONE, MCARRIER, MBIRTH, MEMAIL, MADDRESS,
-            MDATE, MGRADE, MCOND
+            MDATE, MGRADE, MCOND,
+            MNUM, MACCESS, MLIMIT,
+            "ROLE"
         )
         VALUES (
                    SEQ_USERS.NEXTVAL,
                    #{mid}, #{mpw}, #{mname}, #{mgender}, #{mjumin},
                    #{mphone}, #{mcarrier}, #{mbirth, jdbcType=DATE},
                    #{memail, jdbcType=VARCHAR}, #{maddress, jdbcType=VARCHAR},
-                   SYSDATE, 'Family', '활동중'
+                   SYSDATE, 'Family', '활동중',
+                   '1234-' || SUBSTR(LPAD(SEQ_MNUM.NEXTVAL, 8, '0'), 1, 4)
+                           || '-' || SUBSTR(LPAD(SEQ_MNUM.CURRVAL, 8, '0'), 5, 4),
+                   SYSDATE,
+                   1000000,
+                   'USER'
                )
     </insert>
+
+    <!-- 최근접속 일자 업데이트 -->
+    <update id="updateLastAccess" parameterType="string">
+        UPDATE USERS
+        SET MACCESS = SYSDATE
+        WHERE MID = #{mid}
+    </update>
 
     <!-- 아이디 중복확인(info) -->
     <select id="existsByMid" parameterType="string" resultType="int">
@@ -69,7 +83,7 @@
             MGRADE  AS mgrade
         FROM USERS
         WHERE MID = #{mid}
-            AND REPLACE(MPHONE, '-', '') = #{phone}
+          AND REPLACE(MPHONE, '-', '') = #{phone}
     </select>
 
     <!-- 비밀번호 찾기(findpw) : Id + Email -->
@@ -101,4 +115,31 @@
         WHERE MID = #{mid}
     </update>
 
+    <!-- 회원 탈퇴 -->
+    <delete id="deletePcontractByMid" parameterType="string">
+        DELETE FROM PCONTRACT
+        WHERE UID = (
+            SELECT UID FROM USERS WHERE MID = #{mid}
+        )
+    </delete>
+    <delete id="deleteUserByMid" parameterType="string">
+        DELETE FROM USERS
+        WHERE MID = #{mid}
+    </delete>
+
+    <!-- 회원가입 완료 시 기본 계좌도 개설 -->
+    <insert id="insertDefaultAccount" parameterType="kr.co.bnkfirst.dto.product.PcontractDTO">
+
+        <selectKey keyProperty="pacc" resultType="string" order="BEFORE">
+            SELECT '321-654-' || LPAD(PACC_SEQ.NEXTVAL, 5, '0')
+            FROM DUAL
+        </selectKey>
+
+        INSERT INTO PCONTRACT (
+            PCUID, PCPID, PACC, PCNAPW, PBALANCE, PNEW, PEND, "TYPE"
+        ) VALUES (
+            #{pcuid}, #{pcpid}, #{pacc}, #{pcnapw}, #{pbalance},
+            SYSDATE,  ADD_MONTHS(SYSDATE, 24), 'COMMON'
+        )
+    </insert>
 </mapper>

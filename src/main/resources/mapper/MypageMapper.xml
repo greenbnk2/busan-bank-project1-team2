@@ -14,9 +14,12 @@
         select * from deal where mid = #{mid} order by ddate desc fetch first 1 rows only
     </select>
 
-<!--    회원이 가진 펀드 계좌 조회    -->
+<!--    회원이 가진 펀드, IRP, DC 계좌 조회    -->
     <select id="findByFund" resultType="kr.co.bnkfirst.dto.product.FundDTO">
-        SELECT * FROM PCONTRACT p JOIN fund f ON f.fid = p.PCPID WHERE pcuid = #{mid} AND pcpid LIKE '%FD%'
+        SELECT * FROM PCONTRACT p LEFT JOIN fund f ON f.fid = p.PCPID
+                                  LEFT JOIN product pr
+                                            ON pr.pid = p.pcpid
+        WHERE pcuid = #{pcuid} AND (p.pcpid LIKE '%FD%' or p.type like '%TD%')
     </select>
 
 
@@ -31,12 +34,21 @@
 
 <!--    계좌 찾기-->
     <select id="findByContract" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
-        SELECT * FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pcuid = #{pcuid}
+        SELECT * FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pcuid = #{pcuid} and (c.type not like '%TD%' and c.type != 'FUND')
     </select>
+
+<!--    IRP 계좌 찾기-->
+    <select id="findByIRP" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        select * from pcontract c JOIN PRODUCT p ON c.pcpid = p.pid where pcuid = #{pcuid} and type = 'IRP'
+    </select>
+
 
 <!--    펀드 계좌 찾기-->
     <select id="findByFundContract" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
-        SELECT * FROM pcontract p JOIN fund f ON p.PCPID = f.fid WHERE p.pcuid = #{pcuid}
+        SELECT * FROM PCONTRACT p LEFT JOIN fund f ON f.fid = p.PCPID
+                                  LEFT JOIN product pr
+                                            ON pr.pid = p.pcpid
+        WHERE pcuid = #{pcuid} AND (p.type like '%TD%' or p.type = 'FUND')
     </select>
 
     <select id="findByDocumentList" resultType="kr.co.bnkfirst.dto.DocumentDTO">
@@ -87,4 +99,17 @@
         delete from pcontract where pacc = #{pacc}
     </delete>
 
+<!--    ETF 상품 불러오기-->
+    <select id="selectEtf" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        select
+            pcuid,
+            pstock,
+            pprice,
+            psum,
+            pname,
+            pacc,
+            code,
+            'ETF' AS ptype          -- DTO의 ptype 필드에 ETF 고정 주입
+            from etf where pcuid = #{pcuid}
+    </select>
 </mapper>

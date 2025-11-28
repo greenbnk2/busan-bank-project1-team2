@@ -511,7 +511,7 @@
                 <a th:href="@{/retirement-renew/nps-plan/nps-plan}">NPS 노후설계서비스</a>
             </li>
             <li>
-                <a th:href="@{/retirement-renew/portal-error/portal-error}">통합연금포털</a>
+                <a th:href="@{/retirement-renew/portal-error/portal-error}">통합연금포털 오류신고</a>
             </li>
         </ul>
 
@@ -531,9 +531,11 @@
 
     <!--메인 컨텐츠-->
     <main class="Pension-content">
+        <!--
         <div class="bnk-cta-wrap">
             <p class="bnk-cta-text">"부산은행 퇴직연금, 지금 바로 시작하세요."</p>
         </div>
+        -->
 
         <!-- 헤더 -->
         <div class="Pension-header">
@@ -541,54 +543,148 @@
             <p></p>
         </div>
 
-        <!-- 탭 -->
+        <!-- 탭
         <div class="pension-tab">
             <button class="active" data-tab="tab1">기업측면 세제혜택</button>
             <button data-tab="tab2">근로자측면 세제혜택</button>
+        </div> -->
+
+
+        <!--===================== TAB 1 : 기업측면 세제혜택 (여기를 전체 교체) =====================-->
+        <div id="tab1" class="tab-content active">
+
+            <div class="wrap">
+
+                <h2 style="font-size:24px; font-weight:700; margin-bottom:10px;">
+                    국민연금공단에서 제공하는 <span style="color:#ff8a00;">노후설계서비스</span>입니다.
+                </h2>
+
+                <p class="pension-text" style="margin-bottom:20px;">
+                    국민의 체계적 노후준비와 노후생활을 할 수 있도록 국민연금을 기반으로
+                    노후생활에 대한 종합적인 정보와 서비스를 제공합니다.
+                </p>
+
+                <!-- 상단 바로가기 버튼 -->
+                <a href="#" class="top-link" style="
+            display:inline-block;
+            margin:20px 0; padding:10px 18px;
+            background:#f5f5f5; border-radius:6px;
+            border:1px solid #ddd; font-size:14px;
+            color:#333; text-decoration:none;">
+                    국민연금 노후설계서비스 바로가기
+                    <i class="fa-solid fa-arrow-up-right-from-square" style="margin-left:6px;"></i>
+                </a>
+
+                <!-- 큰 영역 박스 -->
+                <div class="big-box" style="
+            display:flex; justify-content:space-between; gap:30px;
+            border:1px solid #eee; border-radius:8px;
+            padding:30px; background:#fafafa; margin-bottom:40px;
+        ">
+
+                    <!-- 좌측 텍스트 -->
+                    <div class="big-left" style="flex:1;">
+                        <h3 style="font-size:20px; font-weight:700; margin-bottom:10px;">
+                            국민 · 퇴직 · 개인연금 시뮬레이션
+                        </h3>
+
+                        <p style="font-size:15px; color:#555; line-height:1.6; margin-bottom:20px;">
+                            노후의 안정적인 소득보장을 위하여
+                            우리나라는 “국민연금, 퇴직연금, 개인연금” 제도를 완비하여
+                            노후 3층 보장체계의 틀을 갖췄습니다.<br><br>
+                            본 시뮬레이션을 통해 연금을 통한 노후에 필요한 자금을
+                            알아보실 수 있습니다.
+                        </p>
+
+                        <a href="#" style="font-weight:600; color:#0088cc; text-decoration:none; font-size:14px;">
+                            국민 · 퇴직 · 개인연금 시뮬레이션 바로가기
+                            <i class="fa-solid fa-arrow-up-right-from-square" style="margin-left:4px;"></i>
+                        </a>
+                    </div>
+
+                    <!-- 우측 이미지 -->
+                    <div class="big-right">
+                        <img src="https://cdn-icons-png.flaticon.com/512/6670/6670131.png"
+                             style="width:260px; border:1px solid #ddd; border-radius:6px;">
+                    </div>
+
+                </div>
+
+                <!-- 하단 3개 박스 -->
+                <div class="three-box" style="display:flex; gap:20px;">
+
+                    <!-- 박스 1 -->
+                    <div class="box" style="
+                flex:1; border:1px solid #eee; border-radius:8px;
+                background:#fff; padding:24px;">
+
+                        <h3 style="margin:0; font-size:18px; color:#0088cc;">노후준비 종합진단</h3>
+                        <p style="font-size:14px; color:#555; margin:15px 0;">
+                            현재의 노후준비 수준과 유형을 진단하여<br>
+                            균형있는 노후준비를 지원합니다.
+                        </p>
+
+                        <a href="#" style="font-size:14px; color:#0088cc; font-weight:600; text-decoration:none;">
+                            노후준비 종합진단 실행하기
+                            <i class="fa-solid fa-arrow-up-right-from-square" style="margin-left:4px;"></i>
+                        </a>
+
+                        <div class="box-icon" style="font-size:40px; margin-top:10px; color:#444;">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+                    </div>
+
+                    <!-- 박스 2 -->
+                    <div class="box" style="
+                flex:1; border:1px solid #eee; border-radius:8px;
+                background:#fff; padding:24px;">
+
+                        <h3 style="margin:0; font-size:18px; color:#0088cc;">내 연금 알아보기</h3>
+                        <p style="font-size:14px; color:#555; margin:15px 0;">
+                            고객님께서 납부한 국민연금 보험료 및<br>
+                            향후 받을 수 있는 예상연금액을 조회할 수 있습니다.
+                        </p>
+
+                        <a href="#" style="font-size:14px; color:#0088cc; font-weight:600; text-decoration:none;">
+                            내 연금 알아보기 실행하기
+                            <i class="fa-solid fa-arrow-up-right-from-square" style="margin-left:4px;"></i>
+                        </a>
+
+                        <div class="box-icon" style="font-size:40px; margin-top:10px; color:#444;">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                    </div>
+
+                    <!-- 박스 3 -->
+                    <div class="box" style="
+                flex:1; border:1px solid #eee; border-radius:8px;
+                background:#fff; padding:24px;">
+
+                        <h3 style="margin:0; font-size:18px; color:#0088cc;">목적자금 설계</h3>
+                        <p style="font-size:14px; color:#555; margin:15px 0;">
+                            다양한 목적의 자금설계를 통해<br>
+                            자가진단을 받아보실 수 있습니다.
+                        </p>
+
+                        <a href="#" style="font-size:14px; color:#0088cc; font-weight:600; text-decoration:none;">
+                            목적자금 설계 실행하기
+                            <i class="fa-solid fa-arrow-up-right-from-square" style="margin-left:4px;"></i>
+                        </a>
+
+                        <div class="box-icon" style="font-size:40px; margin-top:10px; color:#444;">
+                            <i class="fa-solid fa-pen-ruler"></i>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
 
-        <!--===================== TAB 1 :기업측면 세제혜택 =====================-->
-        <div id="tab1" class="tab-content active">
-            <section class="pension-section">
-                <h2>확정기여형(DC형) 퇴직연금 가입 시</h2>
 
-                <p class="pension-text">
-                    회사의 적립금액 전액 손비 인정 → "적립금액 × 법인세율" 만큼 법인세 절감
-                </p>
-            </section>
-
-
-            <!-- 확정기여형(DB형) -->
-            <section class="pension-section">
-                <h2>확정급여형(DB형) 퇴직연금 가입 시</h2>
-
-                <p class="pension-text">
-                    추계액(이미 손비로 인정받은 부분은 제외) 범위 내에서 적립금액 손비로 인정 → 법인세 절감
-                </p>
-            </section>
-
-            <!-- 확정기여형(DB형) -->
-            <section class="pension-section">
-                <h2>사례 예시(DB형)</h2>
-
-                <p class="pension-text">
-                    추계액(이미 손비로 인정받은 부분은 제외) 범위 내에서 적립금액 손비로 인정 → 법인세 절감
-                </p>
-            </section>
-
-            <!-- 그래프: 동영상 -->
-            <video src="/BNK/images/retirement-renew/bg02.mp4"
-                   autoplay muted loop controls
-                   style="width:100%; margin-top:20px;">
-            </video>
-
-
-
-
-
-
- </section>
+        </section>
         </div>
 
         <!--===================== TAB 2 :근로자 세제혜택 =====================-->

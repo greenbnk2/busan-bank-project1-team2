@@ -5,11 +5,13 @@
  */
 
 import {validateFirstAmt} from "/BNK/js/product/init_pjnfee.js";
+
 document.addEventListener('DOMContentLoaded', async function () {
     /*======== 스탭퍼 스크립트 ========*/
     let currentStep = 1;                 // 1~5
     const totalSteps = 5;
     const state = {};                    // 모든 단계의 입력값을 여기에 저장(필요 시)
+    let accPinValue = '';                // step5: 출금계좌 비밀번호 4자리
 
     /* 유효성 검사 정규표현식 */
     const reName = /^[가-힣]{2,10}$/;
@@ -122,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const firstUnchecked = requiredChecks.find(chk => !chk.checked);
                 if (firstUnchecked) {
                     alert('모든 중요사항을 확인 후 체크해주세요.');
-                    firstUnchecked.scrollIntoView({ behavior: "smooth", block: "center" });
+                    firstUnchecked.scrollIntoView({behavior: "smooth", block: "center"});
                     firstUnchecked.focus();
                 }
                 return false;
@@ -130,10 +132,61 @@ document.addEventListener('DOMContentLoaded', async function () {
             return true;
         },
         4() {
-            const validCheck = validateFirstAmt();
-            return validCheck;
+            if (!validateFirstAmt())
+                return false;
+            const accSelector = $('select[aria-label="출금계좌번호"]');
+            const ok = accSelector.value !== '계좌를 선택해 주세요';
+            if (!ok) {
+                alert('출금계좌를 선택해 주세요');
+                return false;
+            }
+            return validateFirstAmt();
         },
-        5() {
+        async 5() {
+            // 1) 출금계좌 선택 여부 확인 (4단계에서 선택한 계좌)
+            const select = document.querySelector('select[aria-label="출금계좌번호"]');
+            if (!select || select.value === '계좌를 선택해 주세요') {
+                alert('출금계좌를 먼저 선택해 주세요.');
+                return false;
+            }
+
+            // 2) 비밀번호 4자리 입력 여부 확인
+            if (!accPinValue || accPinValue.length !== 4) {
+                alert('출금계좌 비밀번호 4자리를 입력해 주세요.');
+                const firstPin = document.querySelector('#accPin input.pin');
+                if (firstPin) firstPin.focus();
+                return false;
+            }
+
+            // 3) (선택) 실제 계좌 비밀번호 검증 API 연동
+            // TODO: 계좌 비밀번호 검증이 필요하면 아래 주석을 참고해서 실제 API에 맞게 수정
+            try {
+                const res = await fetch('/BNK/api/account/verify-pin', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        pacc: select.value,   // 출금계좌번호
+                        pin: accPinValue,     // 입력한 비밀번호 4자리
+                        type: state.productInfo.pelgbl // 제도구분
+                    })
+                });
+                console.log('pacc:', select.value, ' pin:', accPinValue);
+
+                if (!res.ok) throw new Error('비밀번호 검증 요청 실패');
+
+                const data = await res.json();  // 예: { valid: true/false }
+                console.log('data:', data);
+                if (!data) {
+                    alert('출금계좌 비밀번호가 일치하지 않습니다. 다시 입력해 주세요.');
+                    return false;
+                }
+            } catch (e) {
+                console.error(e);
+                alert('출금계좌 비밀번호 확인 중 오류가 발생했습니다.');
+                return false;
+            }
+            console.log('검증 모두 통과');
+            // 여기까지 통과하면 step5 통과
             return true;
         } // 제출 단계라면 서버 전송 등 처리
     };
@@ -218,10 +271,102 @@ document.addEventListener('DOMContentLoaded', async function () {
         prevBtn.hidden = (n === 1) || (n === 2);
 
         nextBtn.textContent = (n === totalSteps) ? '신청' : '다음';
+
+        // ✅ 5단계 진입 시 요약 카드 내용 채우기
+        if (n === 5) {
+            updateSummaryCard();
+        }
+
         // 스크롤 보정
         document.querySelector('html').scrollIntoView({behavior: 'smooth', block: 'start'});
     }
 
+    // ====================== step5 전송 payload 생성 ======================
+    function collectStep5Payload() {
+        // 1) 고객ID: wizard data-mid
+        const wizard = document.getElementById('wizard');
+        const cusid = wizard?.dataset.mid || '';
+
+        // 2) 상품ID: url 변수
+        const url = new URL(window.location.href);
+        const parts = url.pathname.split('/');
+        const pid = decodeURIComponent(parts[parts.length - 1]);
+
+        // 3) 출금계좌번호: 4단계에서 선택한 select의 value (pacc)
+        const accSelect = document.querySelector('#page4 select[aria-label="출금계좌번호"]');
+        let pacc = '';
+        if (accSelect && accSelect.value) {
+            // initAccountAndFirstAmt에서 opt.value = acc.pacc 로 세팅하고 있으므로 그대로 사용
+            pacc = accSelect.value;
+        }
+
+        // 4) 매수금액: firstAmt input의 숫자만 추출
+        const firstAmtInput = document.getElementById('firstAmt');
+        let firstAmt = 0;
+        if (firstAmtInput && firstAmtInput.value) {
+            const raw = firstAmtInput.value.replace(/[^\d]/g, '');
+            if (raw) firstAmt = Number(raw);
+        }
+
+        // 5) 제도구분 / 금리: 상품 상세 응답에서 가져온다고 가정
+        const productInfo = state.productInfo || {};
+
+        // 제도구분(예: DC, DB, IRP…)  ← 필드명은 실제 DTO에 맞게 변경 필요
+        // 추측입니다.
+        const schemeType = productInfo.pelgbl || '';
+
+        // 금리: 어떤 필드가 금리인지 명확히 보이지 않아서 몇 가지 후보를 두고 있음
+        // 예: productInfo.intrate, productInfo.prate, productInfo.baseRate 등
+        // 아래는 예시이므로 실제 필드명에 맞게 수정해야 함. (추측입니다.)
+        const rate =
+            productInfo.pbirate ??
+            null;
+
+        // 6) 계약일/만기일
+        // 화면에 날짜 입력 필드가 없으므로 "신청 시각 = 계약일"로 잡는다고 가정
+        // → 추측입니다. 계약일/만기일을 서버에서 계산한다면 여기서 굳이 보낼 필요는 없음.
+        const today = new Date();
+        const signdt = today.toISOString().slice(0, 19); // 'YYYY-MM-DD' 형식
+
+        // 만기일 계산은 상품 정보에 계약기간 정보가 있어야 정확히 가능
+        // 예: productInfo.periodMonth(개월), productInfo.periodDay(일수) 등이 있다고 가정
+        // 아래는 "개월 수" 기준 예시 코드. 실제 필드명/로직에 맞게 수정 필요. (추측입니다.)
+        let expdt = null;
+        const yearPeriod = productInfo.prmthd.substring(0, productInfo.prmthd.indexOf("년"));
+        const mdate = new Date(today);
+        mdate.setFullYear(mdate.getFullYear() + Number(yearPeriod || 0));
+        expdt = mdate.toISOString().slice(0, 19);
+
+        // 서버에 전송할 payload (필드명은 백엔드 DTO/파라미터 이름에 맞춰 수정)
+        return {
+            // 고객ID
+            "pcuid": cusid,
+
+            // 상품ID
+            "pcpid": pid,
+
+            // 계좌 비밀번호
+            "pcnapw": accPinValue,
+
+            // 계좌번호
+            "pacc": pacc,
+
+            // 제도구분
+            "type": schemeType,
+
+            // 매수금액
+            "pbalance": firstAmt,
+
+            // 계약일
+            "pnew": signdt,
+
+            // 만기일
+            "pend": expdt,
+
+            // 금리
+            "pcwtpi": rate
+        };
+    }
 
     /* 다음/제출 */
     nextBtn.addEventListener('click', async () => {
@@ -229,16 +374,49 @@ document.addEventListener('DOMContentLoaded', async function () {
         const validator = validators[currentStep];
         const ok = validator ? await validator() : true; // 없는 검증은 통과
 
-        // 마지막이면 제출 동작
+        // 검증 실패하면 바로 중단
+        if (!ok) return;
+
+        // 마지막(step5)이면 서버로 전송
         if (currentStep === totalSteps) {
-            // 예: 서버 제출 (fetch) or 확인 모달
-            alert('제출했습니다!');
-            window.location.href = "/BNK/product/subCmpl/list";
+            // step5에서 모은 값들
+            const payload = collectStep5Payload();
+            console.log('step5 payload:', payload);
+
+            try {
+                const res = await fetch('/BNK/api/product/buy', {   // ← 실제 API URL로 변경
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) {
+                    // 서버에서 에러 메세지 내려주면 여기서 처리해도 됨
+                    alert('신청 처리 중 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                    return;
+                }
+
+                // 필요하다면 응답 body 활용
+                const result = await res.json();
+                console.log(result);
+                if (!result) {
+                    alert('신청에 실패했습니다. 입력 정보를 다시 확인해 주세요');
+                    return;
+                }
+
+                // 정상 처리 후 완료 페이지로 이동
+                window.location.href = `/BNK/product/subCmpl/list?pid=${payload.pcpid}`;
+            } catch (e) {
+                console.error(e);
+                alert('신청 처리 중 통신 오류가 발생했습니다.');
+            }
             return;
         }
 
-        if (ok)
-            showStep(currentStep + 1);
+        // 그 외 단계는 다음 step으로 이동
+        showStep(currentStep + 1);
     });
 
     // 본인확인서 제출 함수
@@ -318,60 +496,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
         return false;
     }
-
-    /* ====================== 상품 정보 채우기 ====================== */
-    const {initProdInfo} = await import('/BNK/js/product/init_prod_info.js');
-    await (async () => {
-        const url = new URL(window.location.href);
-        const parts = url.pathname.split('/');
-        const pid = decodeURIComponent(parts[parts.length - 1]);
-        try {
-            const res = await fetch(`/BNK/product/details/${pid}`, {method: "GET"});
-            if (!res.ok) throw new Error('상품 정보를 가져오는 도중 문제 발생');
-            const productInfo = await res.json();
-            console.log(productInfo);
-            initProdInfo(productInfo);
-            const type = productInfo.pelgbl;
-            const response = await fetch(`/BNK/api/account/${type}`, {method: "GET"})
-            if (!response.ok) throw new Error('계좌 정보를 가져오는 도중 문제 발생');
-            const accObject = await response.json();
-            console.log(accObject);
-
-            const select = document.querySelector('select[aria-label="출금계좌번호"]');
-            if (!select) return;
-
-            // 기존 옵션 제거
-            select.innerHTML = '';
-
-            // placeholder 옵션
-            const placeholder = document.createElement('option');
-            placeholder.textContent = '계좌를 선택해 주세요';
-            placeholder.selected = true;
-            placeholder.disabled = true;
-            select.appendChild(placeholder);
-
-            // accObject가 배열인지 / 단일 객체인지 둘 다 처리
-            const accList = Array.isArray(accObject) ? accObject : [accObject];
-
-            accList.forEach(acc => {
-                if (!acc || !acc.pacc) return;  // pacc 없으면 스킵
-
-                const opt = document.createElement('option');
-                opt.value = acc.pacc;                         // 실제 전송 값
-                opt.textContent = `부산은행 ${acc.pacc}`;     // 화면에 보이는 값
-                select.appendChild(opt);
-            });
-        } catch (e) {
-            console.error(e.message);
-        }
-
-    })();
-
-    /* ======================= 가입자 정보 채우기 ======================== */
-    await (async () => {
-        const mid = $('#wizard').dataset.mid;
-        const res = await fetch('', {method: "GET"})
-    })();
 
 
     /*============== 약관 및 상품설명서 받기 스크립트 ================*/
@@ -536,7 +660,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 // UX 향상: 첫 번째 미체크 요소로 스크롤 이동
                 const firstUnchecked = requiredChecks.find(chk => !chk.checked);
                 if (firstUnchecked) {
-                    firstUnchecked.scrollIntoView({ behavior: "smooth", block: "center" });
+                    firstUnchecked.scrollIntoView({behavior: "smooth", block: "center"});
                     firstUnchecked.focus();
                 }
 
@@ -555,45 +679,317 @@ document.addEventListener('DOMContentLoaded', async function () {
     })();
 
 
-    /*================== 4단계 정보입력 스크립트 =====================*/
+    /* ====================== 상품 정보 채우기 ====================== */
+    const {initProdInfo} = await import('/BNK/js/product/init_prod_info.js');
 
-    // 숫자 포맷
+    await (async () => {
+        const url = new URL(window.location.href);
+        const parts = url.pathname.split('/');
+        const pid = decodeURIComponent(parts[parts.length - 1]);
+
+        try {
+            const res = await fetch(`/BNK/product/details/${pid}`, {method: "GET"});
+            if (!res.ok) throw new Error('상품 정보를 가져오는 도중 문제 발생');
+
+            const productInfo = await res.json();
+            console.log(productInfo);
+            initProdInfo(productInfo);
+
+            // step5에서 쓰기 위한 정보 보관
+            state.productInfo = productInfo;
+
+            // 상품 유형으로 계좌 목록 조회
+            const type = productInfo.pelgbl;
+            const response = await fetch(`/BNK/api/account/${type}`, {method: "GET"});
+            if (!response.ok) throw new Error('계좌 정보를 가져오는 도중 문제 발생');
+            const accObject = await response.json();
+            console.log(accObject);
+
+            // 🔗 출금계좌 select + 잔액 + 최초불입금액 연동
+            initAccountAndFirstAmt(accObject);
+        } catch (e) {
+            console.error(e.message);
+        }
+    })();
+
+    /* ====================== 4단계 최초불입금액 UI + 계좌/비율 세팅 ====================== */
+
+    /* 공통 숫자 포맷 */
     function formatNumber(v) {
-        const n = String(v).replace(/[^\d]/g, '');
+        const n = String(v ?? '').replace(/[^\d]/g, '');
         if (!n) return '';
         return n.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
     function setCurrencyInput(el) {
+        if (!el) return;
         el.addEventListener('input', () => {
-            const pos = el.selectionStart;
+            const pos = el.selectionStart ?? el.value.length;
             const beforeLen = el.value.length;
             el.value = formatNumber(el.value);
-            // best-effort caret keep
             const afterLen = el.value.length;
-            el.selectionEnd = el.selectionStart = pos + (afterLen - beforeLen);
+            const diff = afterLen - beforeLen;
+            const newPos = pos + diff;
+            el.selectionStart = el.selectionEnd = newPos < 0 ? 0 : newPos;
         });
     }
 
-    setCurrencyInput(document.getElementById('firstAmt'));
-    setCurrencyInput(document.getElementById('goal'));
+    /* ---------- (1) 금액/목표금액 포맷 ---------- */
+    const firstAmtInput = document.getElementById('firstAmt');   // 금액 직접 입력
+    const goalInput = document.getElementById('goal');       // 목표금액(있으면)
 
-    // 최초불입금액 칩 동작
-    const amtInput = document.getElementById('firstAmt');
-    document.getElementById('firstAmtChips').addEventListener('click', (e) => {
-        const btn = e.target.closest('.Chip');
-        if (!btn) return;
-        [...e.currentTarget.querySelectorAll('.Chip')].forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        const won = btn.getAttribute('data-won');
-        if (won) {
-            amtInput.value = formatNumber(won);
-            amtInput.blur();
+    setCurrencyInput(firstAmtInput);
+    setCurrencyInput(goalInput);
+
+    /* ---------- (2) 최초불입금액 모드 전환(직접입력 / 비율입력) + 토글 버튼 ---------- */
+    const firstAmtWrap = firstAmtInput ? firstAmtInput.closest('.unit-wrap') : null;
+    const percentInput = document.getElementById('firstAmtPercent');
+    const percentWrap = percentInput ? percentInput.closest('.unit-wrap') : null;
+    const percentHelp = document.getElementById('firstAmtPercentHelp');
+
+    // 🔐 비율 입력창 기본 설정 & 기존 제약 제거
+    if (percentInput) {
+        // 혹시 HTML에 maxlength="1" 같은 거 달려 있으면 제거
+        percentInput.removeAttribute('maxlength');
+
+        // 인라인 oninput="..." 같은 거 달려 있으면 제거
+        percentInput.removeAttribute('oninput');
+        percentInput.oninput = null;
+
+        // 우리가 원하는 설정으로 다시 세팅
+        percentInput.type = 'text';
+        percentInput.inputMode = 'numeric';
+        percentInput.pattern = '\\d*';  // 숫자만
+        // 길이는 JS에서 0~100으로 클램프하니까 따로 maxLength 안 줘도 됨
+    }
+
+    let firstAmtMode = 'direct';  // 'direct' | 'percent'
+
+// 토글 버튼 (직접입력 <-> 비율입력 전환용)
+    const modeToggleBtn = document.createElement('button');
+    modeToggleBtn.type = 'button';
+    modeToggleBtn.style.marginTop = '4px';
+    modeToggleBtn.style.background = 'none';
+    modeToggleBtn.style.border = 'none';
+    modeToggleBtn.style.padding = '0';
+    modeToggleBtn.style.color = '#467abd';
+    modeToggleBtn.style.cursor = 'pointer';
+    modeToggleBtn.style.fontSize = '12px';
+
+    function renderModeToggleText() {
+        modeToggleBtn.textContent =
+            firstAmtMode === 'direct'
+                ? '잔액 비율(%)로 입력하기'
+                : '금액으로 직접 입력하기';
+    }
+
+    function setFirstAmtMode(mode) {
+        if (!firstAmtWrap || !percentWrap || !percentHelp) return;
+
+        firstAmtMode = (mode === 'percent') ? 'percent' : 'direct';
+
+        if (firstAmtMode === 'direct') {
+            // 금액 입력만 보이기
+            firstAmtWrap.style.display = '';
+            percentWrap.style.display = 'none';
+            percentHelp.style.display = 'none';
+
+            // 비율 값/텍스트 초기화
+            if (percentInput) percentInput.value = '';
+            percentHelp.textContent = '비율을 입력하면 사용할 금액이 표시됩니다.';
+
+            // 토글 버튼을 금액 입력 아래로
+            firstAmtWrap.after(modeToggleBtn);
         } else {
-            amtInput.focus();
-            amtInput.select();
+            // 비율 입력만 보이기
+            firstAmtWrap.style.display = 'none';
+            percentWrap.style.display = '';
+            percentHelp.style.display = '';
+
+            // 토글 버튼을 비율 입력 아래로
+            percentWrap.after(modeToggleBtn);
         }
-    });
+
+        renderModeToggleText();
+    }
+
+// 초기 상태: 직접입력 모드
+    if (firstAmtWrap && percentWrap && percentHelp) {
+        setFirstAmtMode('direct');
+
+        modeToggleBtn.addEventListener('click', () => {
+            setFirstAmtMode(firstAmtMode === 'direct' ? 'percent' : 'direct');
+        });
+    }
+
+    /* ---------- (3) 최초불입금액 칩 동작 ---------- */
+    const chipsWrap = document.getElementById('firstAmtChips');
+
+    if (chipsWrap && firstAmtInput) {
+        chipsWrap.addEventListener('click', (e) => {
+            const btn = e.target.closest('.Chip');
+            if (!btn) return;
+
+            // 칩 활성화 표시
+            [...chipsWrap.querySelectorAll('.Chip')].forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+
+            const won = btn.getAttribute('data-won');
+
+            // 칩을 누르면 무조건 "직접입력" 모드로 전환
+            setFirstAmtMode('direct');
+
+            if (won) {
+                // 정해진 금액 칩
+                firstAmtInput.value = formatNumber(won);
+                firstAmtInput.blur();
+            } else {
+                // "직접입력" 칩
+                firstAmtInput.value = '';
+                firstAmtInput.focus();
+                firstAmtInput.select();
+            }
+        });
+    }
+
+    /* ---------- (4) 입력 포커스로도 모드 전환 ---------- */
+    if (percentInput) {
+        percentInput.addEventListener('focus', () => {
+            setFirstAmtMode('percent');
+        });
+    }
+
+    if (firstAmtInput) {
+        firstAmtInput.addEventListener('focus', () => {
+            setFirstAmtMode('direct');
+        });
+    }
+
+    /* ---------- (5) 계좌/비율 세팅 + 금액 계산 (비율로 입력 시 사용할 금액 표시) ---------- */
+    function initAccountAndFirstAmt(accData) {
+        const select = document.querySelector('select[aria-label="출금계좌번호"]');
+        const balanceHelp = document.getElementById('firstAmtBalanceHelp');
+        const firstAmtInput = document.getElementById('firstAmt');
+        const percentInput = document.getElementById('firstAmtPercent');
+        const percentHelpText = document.getElementById('firstAmtPercentHelp');
+
+        if (!select || !firstAmtInput) return;
+
+        const accounts = Array.isArray(accData) ? accData : [accData];
+        let currentBalance = 0;   // 선택된 계좌 잔액 (pbalance)
+
+        const formatWon = (n) =>
+            isNaN(n) ? '-' : Number(n).toLocaleString('ko-KR') + '원';
+
+        // 1) 출금계좌 select 옵션 세팅
+        select.innerHTML = '';
+        const placeholder = document.createElement('option');
+        placeholder.textContent = '계좌를 선택해 주세요';
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        select.appendChild(placeholder);
+
+        accounts.forEach(acc => {
+            if (!acc || !acc.pacc) return;
+            const opt = document.createElement('option');
+            opt.value = acc.pacc;
+            opt.textContent = `부산은행 ${acc.pacc}`;
+            select.appendChild(opt);
+        });
+
+        // 2) 비율을 기반으로 실제 사용할 금액 계산
+        function applyPercent() {
+            if (!percentInput) return;
+
+            // 1) 입력값에서 숫자만 남기기
+            let raw = (percentInput.value || '').replace(/[^\d]/g, '');
+
+            // 아무 것도 없으면 초기화
+            if (!raw) {
+                firstAmtInput.value = '';
+                if (percentHelpText) {
+                    percentHelpText.textContent = '비율을 입력하면 사용할 금액이 표시됩니다.';
+                }
+                return;
+            }
+
+            // 2) 최대 3자리까지만 허용
+            if (raw.length > 3) raw = raw.slice(0, 3);
+
+            // 숫자로 변환
+            let pct = Number(raw);
+
+            // 3) 0 ~ 100 사이로 클램프
+            if (pct > 100) pct = 100;
+            if (pct < 0) pct = 0;
+
+            // 🔁 입력창에 실제 보여줄 값 (여기서 한 번 더 세팅해 줘야 "안 보이는" 문제 방지)
+            percentInput.value = pct ? String(pct) : '';
+
+            // 계좌 잔액이 없거나, 비율이 0이면 금액 초기화
+            if (!currentBalance || !pct) {
+                firstAmtInput.value = '';
+                if (percentHelpText) {
+                    percentHelpText.textContent = '비율을 입력하면 사용할 금액이 표시됩니다.';
+                }
+                return;
+            }
+
+            // 4) 실제 사용할 금액 (원) 계산
+            const amount = Math.floor(currentBalance * pct / 100);
+
+            // 금액 input에 실제 금액 세팅 + 포맷 적용
+            firstAmtInput.value = String(amount);
+            firstAmtInput.dispatchEvent(new Event('input')); // setCurrencyInput로 3자리 콤마 적용
+
+            // 안내 문구 갱신
+            if (percentHelpText) {
+                percentHelpText.textContent =
+                    `잔액의 ${pct}% = ${formatWon(amount)} (최초불입금액에 자동 반영)`;
+                percentHelpText.style.display = '';
+            }
+        }
+
+        // 3) 계좌 선택 시 잔액 표시 + 비율 재계산
+        select.addEventListener('change', () => {
+            const pacc = select.value;
+            const acc = accounts.find(a => a && a.pacc === pacc);
+            currentBalance = acc ? Number(acc.pbalance || 0) : 0;
+
+            if (balanceHelp) {
+                if (currentBalance) {
+                    balanceHelp.textContent =
+                        `선택한 계좌 잔액: ${formatWon(currentBalance)}`;
+                } else {
+                    balanceHelp.textContent = '잔액 정보를 가져올 수 없습니다.';
+                }
+            }
+
+            // 이미 비율이 입력돼 있으면, 계좌 바꾸자마자 다시 계산
+            if (percentInput && percentInput.value) {
+                applyPercent();
+            }
+        });
+
+        // 4) 비율 입력 시마다 금액 계산
+        if (percentInput) {
+            percentInput.addEventListener('input', applyPercent);
+            percentInput.addEventListener('change', applyPercent);
+        }
+
+        // 5) 사용자가 금액을 직접 바꾸면 비율 안내 초기화
+        if (firstAmtInput && percentInput && percentHelpText) {
+            firstAmtInput.addEventListener('input', () => {
+                // applyPercent()에서 발생시킨 인위적인 input 이벤트는 무시
+                if (!e.isTrusted) return;
+
+                percentInput.value = '';
+                percentHelpText.textContent = '비율을 입력하면 사용할 금액이 표시됩니다.';
+            });
+        }
+    }
+
+    //
 
 
     /*================== 5단계 pin 입력 스크립트 ==================*/
@@ -753,23 +1149,83 @@ document.addEventListener('DOMContentLoaded', async function () {
         return () => inputs.map(i => i.value).join('');
     }
 
-    // 1차 PIN
-    const pin1Get = setupPin('pin1', (v) => {
-        const hint = document.getElementById('pin1Hint');
-        if (isSequentialOrRepeat(v)) {
-            hint.textContent = '연속되거나 반복되는 숫자는 사용할 수 없습니다.';
-            hint.classList.add('error');
-        } else {
-            hint.textContent = '사용 가능한 비밀번호입니다.';
+    // 출금계좌 비밀번호 PIN (id="accPin")
+    const accPinGet = setupPin('accPin', (v) => {
+        // 입력된 4자리 값을 전역 상태에 저장
+        accPinValue = v;
+
+        const hint = document.getElementById('accPinHint');
+        if (!hint) return;
+
+        if (v && v.length === 4) {
+            hint.textContent = '출금계좌 비밀번호 입력이 완료되었습니다.';
             hint.classList.remove('error');
+        } else {
+            hint.textContent = '출금계좌 비밀번호 4자리를 입력해주세요.';
+            hint.classList.add('error');
         }
     });
 
-    // 확인 PIN
-    const pin2Get = setupPin('pin2', () => {
-        const v1 = pin1Get(), v2 = pin2Get();
-        if (v1 && v2 && v1 !== v2) {
-            alert('신규추진 비밀번호가 일치하지 않습니다.');
+    /* ====================== 5단계 요약 카드 채우기 ====================== */
+    function updateSummaryCard() {
+        // 1) 가입자명: 1단계 입력값 우선, 없으면 4단계 값
+        const nameInput1 = document.querySelector('#customerForm input[name="name"]');
+        const nameInput4 = document.querySelector('#page4 input[name="mname"]');
+        const userName =
+            (nameInput1 && nameInput1.value.trim()) ||
+            (nameInput4 && nameInput4.value.trim()) ||
+            '';
+
+        // 2) 최초불입금(매수금액): 4단계 firstAmt input 값 사용
+        const firstAmtInput = document.getElementById('firstAmt');
+        let firstAmtText = '';
+        if (firstAmtInput && firstAmtInput.value.trim()) {
+            // 숫자만 추출해서 다시 포맷
+            const raw = firstAmtInput.value.replace(/[^\d]/g, '');
+            if (raw) {
+                const num = Number(raw);
+                firstAmtText = num.toLocaleString('ko-KR') + '원';
+            }
         }
-    });
+
+        // 3) 상품명: 4단계 input → 없으면 2단계 제목
+        const pnameInput = document.querySelector('#page4 input[name="pname"]');
+        const pnameFromTitle = document.querySelector('#page2 .product-name');
+        const productName =
+            (pnameInput && pnameInput.value.trim()) ||
+            (pnameFromTitle && pnameFromTitle.textContent.trim()) ||
+            '';
+
+        // 4) 출금계좌: 4단계 select에서 선택된 option 텍스트
+        const accSelect = document.querySelector('#page4 select[aria-label="출금계좌번호"]');
+        let accText = '';
+        if (accSelect && accSelect.selectedIndex > 0) {
+            accText = accSelect.options[accSelect.selectedIndex].textContent.trim();
+        }
+
+        // 5) 실제 요약 카드 DOM에 반영
+        const summary = document.querySelector('#page5 .summary');
+        if (!summary) return;
+
+        const rows = summary.querySelectorAll('.srow');
+        if (rows.length < 2) return;
+
+        const row1Values = rows[0].querySelectorAll('.cell.value');
+        const row2Values = rows[1].querySelectorAll('.cell.value');
+
+        if (row1Values.length >= 2) {
+            // 가입자명
+            row1Values[0].textContent = userName || '-';
+            // 최초불입금
+            row1Values[1].textContent = firstAmtText || '-';
+        }
+
+        if (row2Values.length >= 2) {
+            // 상품명
+            row2Values[0].textContent = productName || '-';
+            // 출금계좌
+            row2Values[1].textContent = accText || '-';
+        }
+    }
+
 });

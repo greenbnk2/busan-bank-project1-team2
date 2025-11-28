@@ -38,7 +38,7 @@ public class ProductDTO {
                 .ptype(ptype)
                 .pname(pname)
                 .pbirate(pbirate)
-//                .phirate(phirate)
+                .phirate(phirate)
                 .pcprd(pcprd)
                 .pelgbl(pelgbl)
                 .pprfcrt(pprfcrt)

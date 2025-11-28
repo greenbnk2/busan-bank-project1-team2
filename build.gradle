@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'kr.co.bnkfirst'
-version = '0.1.0-SNAPSHOT'
+version = '0.0.8-SNAPSHOT'
 description = 'BNKFirst'
 
 java {
@@ -31,6 +31,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.5'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    // ★ 여기에 추가
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

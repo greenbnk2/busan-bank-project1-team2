@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         calcPeriod.innerText = periodValue;
         calcPeriod.dataset.months = String(periodValue.substring(0,periodValue.indexOf("년")) * 12);
         // pjnfee.innerText = productInfo.pjnfee;
-        calcRate.innerText = productInfo.pbirate + '%';
+        calcRate.innerText = productInfo.pbirate.toFixed(2) + '%';
         calcRate.dataset.rate = productInfo.pbirate;
 
         // if (prmthdValues.length) {

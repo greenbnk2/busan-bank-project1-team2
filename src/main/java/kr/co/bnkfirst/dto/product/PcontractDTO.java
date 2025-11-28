@@ -38,6 +38,7 @@ public class PcontractDTO {
     private String pname;
     private String ptype;
     private float phirate;
+    private float pbirate;
 
     // 추가 컬럼 - 손진일
     private String mname;
@@ -62,4 +63,10 @@ public class PcontractDTO {
     private String fm6pr;
     private String fm12pr;
     private String facmpr;
+
+    // 추가 컬럼 - ETF 조회용 필드 추가
+    private Integer pstock; // 보유 수량
+    private Integer pprice; // 매수 단가
+    private Integer psum; // 평가 금액(또는 매수 금액)
+    private String code; // 해당 종목 code
 }

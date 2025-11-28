@@ -576,12 +576,50 @@
     .icon-item.purple:hover .circle h3 {
         color: #8B5CF6;   /* 퍼플 포인트 */
     }
+    /* 로그인시 5초 유지되는 토스트 추가 (이준우 2025.11.28) */
+    .toast {
+        position: fixed;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
+        background: #181e27;
+        color: #ffffff;
+        border-radius: 12px;
+        padding: 8px 18px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        z-index: 10000;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+    .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    .toast-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #22c55e;
+        margin-right: 8px;
+    }
   </style>
 </head>
 <body>
   <!-- 헤더  -->
   <div th:replace="~{layouts/header}"></div>
 
+  <!-- 토스트 관련 -->
+  <div th:if="${loginSuccessMsg}" id="loginToast" class="toast show">
+      <span class="toast-icon">✔</span>
+      <span th:text="${loginSuccessMsg}"></span>
+  </div>
 
   <!-- 배너 (슬라이드) -->
   <section class="banner">
@@ -663,7 +701,7 @@
           </div>
       </a>
 
-      <a th:href="@{/stock/main}" style="text-decoration: none;">
+      <a th:href="@{/irp/account/main}" style="text-decoration: none;">
           <div class="icon-item blue">
               <div class="circle">
                   <img th:src="@{/images/main_investment.png}" alt="투자">
@@ -1007,4 +1045,15 @@ if (slides.length > 0) {
 showSlide(0);
 startAuto();
 }
+</script>
+<script>
+    // 토스트 관련
+    document.addEventListener('DOMContentLoaded', function () {
+        const loginToast = document.getElementById('loginToast');
+        if (loginToast) {
+            setTimeout(function () {
+                loginToast.classList.remove('show');
+            }, 5000);
+        }
+    });
 </script>

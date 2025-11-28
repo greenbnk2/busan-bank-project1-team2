@@ -1,24 +1,24 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>본인인증</title>
-<!--
-    날짜 : 2025/11/24
-    이름 : 이준우
-    내용 : 공동인증서 모의 추가 작업
--->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>본인인증</title>
+    <!--
+        날짜 : 2025/11/24
+        이름 : 이준우
+        내용 : 공동인증서 모의 추가 작업
+    -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
-    <div th:replace="~{layouts/header.html}"></div>
+<div th:replace="~{layouts/header.html}"></div>
 
 <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
-<div id="bnk-chatbot-slot"></div>
+    <div id="bnk-chatbot-slot"></div>
 </div>
 <main>
-    <h1 style="text-align: center;">회원가입</h1>
+    <h1 style="text-align: center;">신규가입</h1>
     <div class="stepper">
         <div class="step"><span class="dot">1</span>약관동의</div>
         <div class="sep"></div>
@@ -33,7 +33,7 @@
     <p style="color: #6b7280; margin: 5px 180px 10px;">안전한 서비스를 이용을 위해 본인인증을 진행해주세요.</p>
 
     <form id="authForm" method="post" th:action="@{/member/auth/save}">
-    <div class="form-card">
+        <div class="form-card">
             <!-- 인증 방식(카드형) -->
             <div class="verify-methods" role="tablist" aria-label="인증 방식 선택">
                 <button type="button" id="method-phone" class="method-card" role="tab" aria-selected="false" aria-controls="panel-phone" aria-pressed="false">
@@ -75,8 +75,9 @@
                         <!-- 이름 / 생년월일 -->
                         <tr class="field">
                             <th scope="row" class="field-name">이름</th>
-                            <td><input type="text" name="mname" class="input" placeholder="이름 입력"
-                                       th:value="${auth?.mname}"></td>
+                            <td><input type="text" id="p_mname" name="mname" class="input" placeholder="이름 입력"
+                                       th:value="${auth?.mname}">
+                            </td>
                             <th scope="row"><label for="birthInput" class="field-label">생년월일</label></th>
                             <td style="display:flex; align-items:center; gap:12px;">
                                 <input id="birthInput" name="mbirth" type="text" class="input"
@@ -88,7 +89,7 @@
                         <tr class="field">
                             <th scope="row" class="field-name">성별</th>
                             <td>
-                                <select name="mgender" class="input" required>
+                                <select id="p_mgender" name="mgender" class="input" required>
                                     <option>선택</option>
                                     <option value="M" th:selected="${auth?.mgender == 'M'}">남성</option>
                                     <option value="F" th:selected="${auth?.mgender == 'F'}">여성</option>
@@ -97,7 +98,7 @@
 
                             <th scope="row" class="field-name">통신사</th>
                             <td>
-                                <select name="mcarrier" class="input" required>
+                                <select id="p_mcarrier" name="mcarrier" class="input" required>
                                     <option>선택</option>
                                     <option value="SKT" th:selected="${auth?.mcarrier == 'SKT'}">SKT</option>
                                     <option value="KT" th:selected="${auth?.mcarrier == 'KT'}">KT</option>
@@ -111,11 +112,10 @@
                             <th scope="row"><label class="field-label">휴대폰번호</label></th>
                             <td>
                                 <div class="field-row" style="display:flex; gap:8px;">
-                                    <input type="text" name="mphone" class="input" placeholder="010-1234-5678">
+                                    <input type="text" id="p_mphone" name="mphone" class="input" placeholder="010-1234-5678">
                                     <button type="button" class="btn-register" id="btnPhoneReq" style="width:90px;">인증요청</button>
                                 </div>
                             </td>
-
                             <th scope="row"><label class="field-label">인증번호</label></th>
                             <td>
                                 <div class="field-row" style="display:flex; gap:8px;">
@@ -194,14 +194,14 @@
                             <td>
                                 <input type="text" class="input joint-visible" placeholder="이름 입력"
                                        oninput="document.getElementById('h_mname').value = this.value;">
-                                <input type="hidden" id="h_mname" name="mname">
+                                <input type="hidden" id="h_mname">
                             </td>
 
                             <th scope="row" class="field-name">생년월일</th>
                             <td style="display:flex; align-items:center; gap:12px;">
                                 <input id="jointBirthInput" class="input joint-visible" placeholder="YYYY-MM-DD"
                                        oninput="document.getElementById('h_mbirth').value = this.value;">
-                                <input type="hidden" id="h_mbirth" name="mbirth">
+                                <input type="hidden" id="h_mbirth">
                             </td>
                         </tr>
                         <tr class="joint-extra" style="display:none;">
@@ -213,7 +213,7 @@
                                     <option value="M">남성</option>
                                     <option value="F">여성</option>
                                 </select>
-                                <input type="hidden" id="h_mgender" name="mgender">
+                                <input type="hidden" id="h_mgender">
                             </td>
 
                             <th scope="row" class="field-name">통신사</th>
@@ -225,7 +225,7 @@
                                     <option value="KT">KT</option>
                                     <option value="LG">LG</option>
                                 </select>
-                                <input type="hidden" id="h_mcarrier" name="mcarrier">
+                                <input type="hidden" id="h_mcarrier">
                             </td>
                         </tr>
                         <tr class="joint-extra" style="display:none; width: 254px">
@@ -233,7 +233,7 @@
                             <td>
                                 <input type="text" class="input joint-visible" placeholder="010-1234-5678"
                                        oninput="document.getElementById('h_mphone').value = this.value;">
-                                <input type="hidden" id="h_mphone" name="mphone">
+                                <input type="hidden" id="h_mphone">
                             </td>
                         </tr>
                         <tr>
@@ -338,14 +338,36 @@
 <script>
     function syncInputNames(useJoint) {
 
-        // 공동인증서 hidden 필드 name 관리
-        document.querySelectorAll('#panel-cert input[type="hidden"]').forEach(el => {
-            if (useJoint) {
+        const phoneFields = [
+            { id: 'p_mname',   name: 'mname'   },
+            { id: 'birthInput',name: 'mbirth'  },
+            { id: 'p_mgender', name: 'mgender' },
+            { id: 'p_mcarrier',name: 'mcarrier'},
+            { id: 'p_mphone',  name: 'mphone'  }
+        ];
+
+        const jointHidden = document.querySelectorAll('#panel-cert input[type="hidden"]');
+
+        if (useJoint) {
+            phoneFields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (el) el.removeAttribute('name');
+            });
+
+            jointHidden.forEach(el => {
                 el.name = el.id.replace('h_', '');
-            } else {
+            });
+
+        } else {
+            phoneFields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (el) el.name = f.name;
+            });
+
+            jointHidden.forEach(el => {
                 el.removeAttribute('name');
-            }
-        });
+            });
+        }
     }
 
     // 인증 탭 스위치
@@ -575,8 +597,6 @@
                 // 모달 닫기
                 modal.setAttribute("aria-hidden", "true");
 
-                alert("공동인증서 인증이 완료되었습니다.");
-
                 // 이름 입력칸에 포커스
                 const nameInput = document.querySelector("#panel-cert .joint-extra input[name='mname']");
                 if (nameInput) nameInput.focus();
@@ -592,179 +612,179 @@
         dateFormat: "Y-m-d"
     });
 </script>
-  <footer><div th:replace="~{layouts/footer.html}"></div></footer>
+<footer><div th:replace="~{layouts/footer.html}"></div></footer>
 </body>
 
 <style>
-  main {
-    width: 1200px;
-    background: #F6F6F8;
-    padding: 80px 20px;
-    margin: 0 auto;
-  }
-  body {
-    font-family: 'Noto Sans KR', '맑은 고딕', sans-serif;
-    background: #F6F6F8;
-    color: #111827;
-    line-height: 1.5;
-  }
-  .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 28px 16px 40px;
-  }
-  /* stepper */
-  .stepper {
-    width: 800px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f7f7f9;
-    border: 1px solid #e5e7eb;
-    border-radius: 999px;
-    padding: 10px 20px;
-  }
-  .step {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #6b7280;
-    font-weight: 600;
-  }
-  .step .dot {
-    width: 28px;
-    height: 28px;
-    border-radius: 999px;
-    display: grid;
-    place-items: center;
-    border: 1px solid #d1d5db;
-    background: #fff;
-    color: #6b7280;
-    font-weight: 700;
-  }
-  .step.active {
-    color: #111;
-  }
-  .step.active .dot {
-    background: #d6001c;
-    border-color: #d6001c;
-    color: #fff;
-  }
-  .sep {
-    width: 28px;
-    height: 2px;
-    background: #e5e7eb;
-    border-radius: 2px;
-  }
-  /* input */
-  .input {
-    width: 100%;
-    height: 44px;
-    box-sizing: border-box;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    background: #fff;
-    padding: 10px 12px;
-    font-size: 14px;
-    color: #111827;
-    outline: none;
-    transition: box-shadow .15s ease, border-color .15s ease;
-  }
-  .input:focus {
-    border-color: #d1d5db;
-    box-shadow: 0 0 0 3px rgba(214, 0, 28, .12);
-  }
-  /* buttons */
-  .btns {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 22px;
-  }
+    main {
+        width: 1200px;
+        background: #F6F6F8;
+        padding: 80px 20px;
+        margin: 0 auto;
+    }
+    body {
+        font-family: 'Noto Sans KR', '맑은 고딕', sans-serif;
+        background: #F6F6F8;
+        color: #111827;
+        line-height: 1.5;
+    }
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 28px 16px 40px;
+    }
+    /* stepper */
+    .stepper {
+        width: 800px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f7f7f9;
+        border: 1px solid #e5e7eb;
+        border-radius: 999px;
+        padding: 10px 20px;
+    }
+    .step {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #6b7280;
+        font-weight: 600;
+    }
+    .step .dot {
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        border: 1px solid #d1d5db;
+        background: #fff;
+        color: #6b7280;
+        font-weight: 700;
+    }
+    .step.active {
+        color: #111;
+    }
+    .step.active .dot {
+        background: #d6001c;
+        border-color: #d6001c;
+        color: #fff;
+    }
+    .sep {
+        width: 28px;
+        height: 2px;
+        background: #e5e7eb;
+        border-radius: 2px;
+    }
+    /* input */
+    .input {
+        width: 100%;
+        height: 44px;
+        box-sizing: border-box;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        background: #fff;
+        padding: 10px 12px;
+        font-size: 14px;
+        color: #111827;
+        outline: none;
+        transition: box-shadow .15s ease, border-color .15s ease;
+    }
+    .input:focus {
+        border-color: #d1d5db;
+        box-shadow: 0 0 0 3px rgba(214, 0, 28, .12);
+    }
+    /* buttons */
+    .btns {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 22px;
+    }
 
-  a{ text-decoration:none; color:inherit; }
+    a{ text-decoration:none; color:inherit; }
 
-  .form-card{ background:#fff; border:1px solid #e5e7eb; border-radius:20px; box-shadow:0 10px 20px rgba(2,6,23,.06); padding:30px 20px 30px; margin:0 auto; max-width:800px; }
+    .form-card{ background:#fff; border:1px solid #e5e7eb; border-radius:20px; box-shadow:0 10px 20px rgba(2,6,23,.06); padding:30px 20px 30px; margin:0 auto; max-width:800px; }
 
-  .verify-methods{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
-  .method-card{ appearance:none; border:1px solid #E5E7EB; background:#fff; border-radius:12px; padding:30px; text-align:left; cursor:pointer; position:relative; transition:box-shadow .15s, border-color .15s; }
-  .method-card:hover{ box-shadow:0 6px 18px rgba(2,6,23,.06); }
-  .method-card.active{ border:2px solid #D6001C; box-shadow:0 6px 16px rgba(214,0,28,.12); }
-  .m-title{ display:flex; gap:10px; align-items:center; margin-bottom:6px; }
-  .m-badge,.m-badge1{ width:32px; height:32px; border-radius:8px; display:grid; place-items:center; color:#fff; font-size:16px; }
-  .m-badge{ background:#F95654; }   /* 아이콘 배경 */
-  .m-badge1{ background:#095399; }
-  .m-name{ font-weight:700; font-size:16px; }
-  .m-sub{ font-weight:600; }
-  .m-list{ margin:6px 0 28px 0; padding-left:18px; color:#4B5563; font-size:15px; line-height:1.4; }
-  .m-list li{ list-style:disc; padding-top:5px; }
+    .verify-methods{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
+    .method-card{ appearance:none; border:1px solid #E5E7EB; background:#fff; border-radius:12px; padding:30px; text-align:left; cursor:pointer; position:relative; transition:box-shadow .15s, border-color .15s; }
+    .method-card:hover{ box-shadow:0 6px 18px rgba(2,6,23,.06); }
+    .method-card.active{ border:2px solid #D6001C; box-shadow:0 6px 16px rgba(214,0,28,.12); }
+    .m-title{ display:flex; gap:10px; align-items:center; margin-bottom:6px; }
+    .m-badge,.m-badge1{ width:32px; height:32px; border-radius:8px; display:grid; place-items:center; color:#fff; font-size:16px; }
+    .m-badge{ background:#F95654; }   /* 아이콘 배경 */
+    .m-badge1{ background:#095399; }
+    .m-name{ font-weight:700; font-size:16px; }
+    .m-sub{ font-weight:600; }
+    .m-list{ margin:6px 0 28px 0; padding-left:18px; color:#4B5563; font-size:15px; line-height:1.4; }
+    .m-list li{ list-style:disc; padding-top:5px; }
 
-  /* 테이블 폼 공통 */
-  .auth-table {
-    width: 730px;
-    height: 530px;
-    border-collapse: separate;
-    border-spacing: 0 12px;
-  }
+    /* 테이블 폼 공통 */
+    .auth-table {
+        width: 730px;
+        height: 530px;
+        border-collapse: separate;
+        border-spacing: 0 12px;
+    }
 
-  .auth-table th {
-    text-align: left;
-    vertical-align: middle;
-    padding: 4px 0 4px 10px;
-    width: 90px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #374151;
-  }
+    .auth-table th {
+        text-align: left;
+        vertical-align: middle;
+        padding: 4px 0 4px 10px;
+        width: 90px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+    }
 
-  .auth-table td {
-    padding-right: 10px;
-    vertical-align: middle;
-  }
+    .auth-table td {
+        padding-right: 10px;
+        vertical-align: middle;
+    }
 
-  .field-label{ font-weight:700; }
+    .field-label{ font-weight:700; }
 
-  .note-blue{ display:flex; align-items:center; gap:8px; min-height:44px; padding:10px 12px; border:1px solid #C7D2FE; background:#EFF6FF; color:#1E40AF; border-radius:10px; font-size:13px; }
-  .bullet{ width:18px; height:18px; border-radius:50%; color:#fff; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:12px; }
+    .note-blue{ display:flex; align-items:center; gap:8px; min-height:44px; padding:10px 12px; border:1px solid #C7D2FE; background:#EFF6FF; color:#1E40AF; border-radius:10px; font-size:13px; }
+    .bullet{ width:18px; height:18px; border-radius:50%; color:#fff; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:12px; }
 
-  .helper-box{ margin-top:20px; background:#FFFBEB; border:1px solid #FDE68A; border-radius:12px; padding:14px 16px; }
-  .helper-title{ font-weight:700; color:#92400E; margin-bottom:6px; }
-  .helper-list{ margin:0; padding-left:18px; color:#92400E; font-size:13px; }
-  .helper-list li{ list-style:disc; line-height:1.5; }
+    .helper-box{ margin-top:20px; background:#FFFBEB; border:1px solid #FDE68A; border-radius:12px; padding:14px 16px; }
+    .helper-title{ font-weight:700; color:#92400E; margin-bottom:6px; }
+    .helper-list{ margin:0; padding-left:18px; color:#92400E; font-size:13px; }
+    .helper-list li{ list-style:disc; line-height:1.5; }
 
-  /* 모달 */
-  #certModal[aria-hidden="true"] { display:none; }
-  #certModal[aria-hidden="false"] { display:block; }
-  #certModal .modal-backdrop{
-    position:fixed; inset:0; background:rgba(0,0,0,.45); backdrop-filter: blur(2px);
-  }
-  #certModal .modal-dialog{
-    position:fixed; left:50%; top:50%; transform:translate(-50%,-50%);
-    width: 520px; max-width: 92vw;
-    background:#fff; border:1px solid #e5e7eb; border-radius:16px;
-    box-shadow: 0 20px 60px rgba(2,6,23,.2); padding: 18px;
-  }
-  #certModal .modal-header{
-    display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;
-  }
-  #certModal .modal-close{
-    width:32px; height:32px; border-radius:8px; border:1px solid #e5e7eb; background:#fff; cursor:pointer;
-  }
-  #certModal .modal-body{ padding: 6px 2px; }
-  #certModal .modal-footer{ display:flex; gap:10px; margin-top:14px; }
-  input[type="file"]::-webkit-file-upload-button { display: none; }
-  .joint-status { margin-bottom: 8px; border-radius: 10px; border: 1px solid #BBF7D0;
-      background: #ECFDF3; font-size: 13px; padding: 10px 0 10px 34px; position: relative; }
-  .joint-status::before {
-      content: "✔";
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #16a34a;
-      font-size: 16px;
-      font-weight: 700;
-  }
+    /* 모달 */
+    #certModal[aria-hidden="true"] { display:none; }
+    #certModal[aria-hidden="false"] { display:block; }
+    #certModal .modal-backdrop{
+        position:fixed; inset:0; background:rgba(0,0,0,.45); backdrop-filter: blur(2px);
+    }
+    #certModal .modal-dialog{
+        position:fixed; left:50%; top:50%; transform:translate(-50%,-50%);
+        width: 520px; max-width: 92vw;
+        background:#fff; border:1px solid #e5e7eb; border-radius:16px;
+        box-shadow: 0 20px 60px rgba(2,6,23,.2); padding: 18px;
+    }
+    #certModal .modal-header{
+        display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;
+    }
+    #certModal .modal-close{
+        width:32px; height:32px; border-radius:8px; border:1px solid #e5e7eb; background:#fff; cursor:pointer;
+    }
+    #certModal .modal-body{ padding: 6px 2px; }
+    #certModal .modal-footer{ display:flex; gap:10px; margin-top:14px; }
+    input[type="file"]::-webkit-file-upload-button { display: none; }
+    .joint-status { margin-bottom: 8px; border-radius: 10px; border: 1px solid #BBF7D0;
+        background: #ECFDF3; font-size: 13px; padding: 10px 0 10px 34px; position: relative; }
+    .joint-status::before {
+        content: "✔";
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #16a34a;
+        font-size: 16px;
+        font-weight: 700;
+    }
 </style>
 </html>

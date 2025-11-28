@@ -546,7 +546,7 @@
                     </a>
                 </div>
                 <div style="margin-top: 15px; box-sizing: border-box;">
-                    <a href="#" style="text-decoration: none;">
+                    <a href="#" id="withdraw-open" style="text-decoration: none;">
                         <div style="box-sizing: border-box; background-color: #fdf2f2; width: 100%; height: 90px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #FECACA;">
                             <div style="padding: 21px;">
                                 <div>
@@ -566,8 +566,8 @@
                                             </svg>
                                             </div>
                                             <div style="margin-left: 15px;">
-                                                <div style="color: #B91C1C; font-size: 16px;">회원 탈퇴</div>
-                                                <div style="color: #DC2626; font-size: 14px;">계정 및 모든 데이터가 삭제됩니다</div>
+                                                    <div style="color: #B91C1C; font-size: 16px;">회원 탈퇴</div>
+                                                    <div style="color: #DC2626; font-size: 14px;">계정 및 모든 데이터가 삭제됩니다</div>
                                             </div>
                                             <div style="display: flex; align-items: center; margin-left: auto;">
                                                 <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1236,5 +1236,262 @@ document.querySelectorAll('a[href="#"]').forEach(a=>{
 });
 </script>
 
+<!-- 회원 탈퇴 모달 -->
+<div id="withdraw-backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="withdraw-title">
+    <div class="modal">
+        <form id="withdraw-form" th:action="@{/member/withdraw}" method="post">
+            <div class="modal-header">
+                <span id="withdraw-title">회원 탈퇴</span>
+                <button type="button" class="btn" id="withdraw-close" aria-label="닫기">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="withdraw-field">
+                    <label for="wd-mid">아이디</label>
+                    <input type="text" id="wd-mid" name="mid"
+                           th:value="${session.loginUser != null ? session.loginUser.mid : ''}"readonly />
+                </div>
+                <div class="withdraw-field">
+                    <label for="wd-pw">비밀번호</label>
+                    <input type="password" id="wd-pw" name="mpw" placeholder="현재 비밀번호를 입력하세요." required />
+                </div>
+                <div class="withdraw-field">
+                    <label for="wd-phone">휴대폰</label>
+                    <div class="withdraw-phone-row">
+                        <input type="text" id="wd-phone" name="mphone"
+                               th:value="${session.loginUser != null ? session.loginUser.mphone : ''}"
+                               placeholder="휴대폰 번호" />
+                        <button type="button" id="wd-phone-req">인증요청</button>
+                    </div>
+                    <div class="withdraw-phone-row">
+                        <input type="text" id="wd-phone-code" placeholder="인증번호 입력" />
+                        <button type="button" id="wd-phone-verify">인증확인</button>
+                    </div>
+                    <div id="wd-phone-status" class="withdraw-help">
+                        휴대폰 번호로 인증을 진행해주세요.
+                    </div>
+                </div>
+                <div id="withdraw-confirm-box" class="withdraw-danger">
+                    <strong>정말 삭제 하시겠습니까?</strong><br/>
+                    계정 및 모든 데이터가 삭제되며 복구할 수 없습니다.
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: center">
+                <button type="button" class="btn" id="withdraw-cancel" style="width: 90px; height: 42px">취소</button>
+                <button type="submit" class="btn-register" id="withdraw-submit" disabled>확인</button>
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+    .withdraw-field{
+        margin-bottom: 12px;
+        font-size: 14px;
+    }
+    .withdraw-field label{
+        display:block;
+        margin-bottom: 4px;
+        font-weight:500;
+        color:#374151;
+    }
+    .withdraw-field input{
+        width:100%;
+        box-sizing:border-box;
+        padding:8px 10px;
+        border-radius:8px;
+        border:1px solid #D1D5DB;
+        font-size:14px;
+    }
+    .withdraw-phone-row{
+        display:flex;
+        gap:8px;
+        margin-top:4px;
+    }
+    .withdraw-phone-row input{
+        flex:1 1 auto;
+    }
+    .withdraw-phone-row button{
+        flex:0 0 auto;
+        padding:8px 12px;
+        border-radius:8px;
+        border:1px solid #D1D5DB;
+        background:#F9FAFB;
+        font-size:13px;
+        cursor:pointer;
+    }
+    .withdraw-phone-row button:hover{
+        background:#E5E7EB;
+    }
+    .withdraw-help{
+        margin-top:6px;
+        font-size:12px;
+        color:#6B7280;
+    }
+    .withdraw-danger{
+        display:none;
+        margin-top:12px;
+        padding:10px 12px;
+        border-radius:8px;
+        background:#FEF2F2;
+        border:1px solid #FECACA;
+        font-size:13px;
+        color:#991B1B;
+    }
+</style>
+<script>
+    (function(){
+        const withdrawLink = document.getElementById('withdraw-open');
+
+        const backdrop  = document.getElementById('withdraw-backdrop');
+        const form      = document.getElementById('withdraw-form');
+        const closeBtn  = document.getElementById('withdraw-close');
+        const cancelBtn = document.getElementById('withdraw-cancel');
+        const submitBtn = document.getElementById('withdraw-submit');
+
+        const phoneInput   = document.getElementById('wd-phone');
+        const codeInput    = document.getElementById('wd-phone-code');
+        const phoneReqBtn  = document.getElementById('wd-phone-req');
+        const phoneVerBtn  = document.getElementById('wd-phone-verify');
+        const phoneStatus  = document.getElementById('wd-phone-status');
+        const confirmBox   = document.getElementById('withdraw-confirm-box');
+
+        let phoneVerified = false;
+
+        const CTX = (function () {
+            const path = window.location.pathname;
+            return path.startsWith('/BNK') ? '/BNK' : '';
+        })();
+
+        function openModal(){
+            phoneVerified = false;
+            codeInput.value = '';
+            phoneStatus.textContent = '휴대폰 번호로 인증을 진행해주세요.';
+            phoneStatus.style.color = '#6B7280';
+            confirmBox.style.display = 'none';
+            submitBtn.disabled = true;
+
+            backdrop.classList.add('show');
+        }
+        function closeModal(){
+            backdrop.classList.remove('show');
+        }
+
+        withdrawLink?.addEventListener('click', (e)=>{
+            e.preventDefault();
+            openModal();
+        });
+
+        closeBtn?.addEventListener('click', closeModal);
+        cancelBtn?.addEventListener('click', closeModal);
+        backdrop?.addEventListener('click', e=>{
+            if (e.target === backdrop) closeModal();
+        });
+
+        // 인증번호 요청
+        phoneReqBtn?.addEventListener('click', async ()=>{
+            const phone = phoneInput.value.trim();
+            if (!phone){
+                alert('휴대폰 번호를 입력해주세요.');
+                phoneInput.focus();
+                return;
+            }
+
+            try{
+                const res = await fetch(CTX + '/api/verification/sms/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type':'application/json' },
+                    // ★ 서버는 phoneNumber 라는 키를 기대함
+                    body: JSON.stringify({ phoneNumber: phone })
+                });
+
+                const data = await res.json().catch(() => null);
+
+                if (res.ok && data && data.ok){
+                    // VerificationController.sendSms 에서 ok:true / message:"인증번호 전송 완료"
+                    phoneStatus.textContent = data.message || '인증번호를 전송했습니다. 문자메시지를 확인해주세요.';
+                    phoneStatus.style.color = '#16A34A';
+                } else {
+                    const msg = data && data.message
+                        ? data.message
+                        : '인증번호 전송에 실패했습니다.';
+                    phoneStatus.textContent = msg;
+                    phoneStatus.style.color = '#DC2626';
+                }
+            }catch(err){
+                console.error(err);
+                phoneStatus.textContent = '통신 중 오류가 발생했습니다.';
+                phoneStatus.style.color = '#DC2626';
+            }
+        });
+
+        // 인증번호 확인
+        phoneVerBtn?.addEventListener('click', async ()=>{
+            const phone = phoneInput.value.trim();
+            const code  = codeInput.value.trim();
+            if (!phone || !code){
+                alert('휴대폰 번호와 인증번호를 모두 입력해주세요.');
+                return;
+            }
+
+            try{
+                const res = await fetch(CTX + '/api/verification/sms/verify', {
+                    method:'POST',
+                    headers:{ 'Content-Type':'application/json' },
+                    // ★ 마찬가지로 phoneNumber + code
+                    body: JSON.stringify({ phoneNumber: phone, code })
+                });
+
+                const data = await res.json().catch(() => null);
+
+                if (res.ok && data && data.ok){
+                    // 인증 성공
+                    phoneVerified = true;
+                    phoneStatus.textContent = data.message || '휴대폰 인증이 완료되었습니다.';
+                    phoneStatus.style.color = '#16A34A';
+
+                    // 필요하면 토큰 hidden으로 폼에 심어두기
+                    if (data.verificationToken) {
+                        let hidden = form.querySelector('input[name="smsToken"]');
+                        if (!hidden) {
+                            hidden = document.createElement('input');
+                            hidden.type = 'hidden';
+                            hidden.name = 'smsToken';
+                            form.appendChild(hidden);
+                        }
+                        hidden.value = data.verificationToken;
+                    }
+
+                    confirmBox.style.display = 'block';
+                    submitBtn.disabled = false;
+                } else {
+                    phoneVerified = false;
+                    const msg = data && data.message
+                        ? data.message
+                        : '인증번호가 일치하지 않습니다.';
+                    phoneStatus.textContent = msg;
+                    phoneStatus.style.color = '#DC2626';
+                    confirmBox.style.display = 'none';
+                    submitBtn.disabled = true;
+                }
+            }catch(err){
+                console.error(err);
+                phoneVerified = false;
+                phoneStatus.textContent = '통신 중 오류가 발생했습니다.';
+                phoneStatus.style.color = '#DC2626';
+                confirmBox.style.display = 'none';
+                submitBtn.disabled = true;
+            }
+        });
+
+        // 3) 폼 submit 가드
+        form?.addEventListener('submit', (e)=>{
+            if (!phoneVerified){
+                e.preventDefault();
+                alert('휴대폰 인증을 먼저 완료해주세요.');
+            } else if (!confirm('정말 계정을 삭제하시겠습니까?')){
+                e.preventDefault();
+            }
+        });
+    })();
+</script>
 </body>
 </html>

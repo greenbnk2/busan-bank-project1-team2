@@ -23,9 +23,10 @@
 
     <!--메인 컨텐츠-->
     <main class="Pension-content">
+        <!--
         <div class="bnk-cta-wrap">
             <p class="bnk-cta-text">"부산은행 퇴직연금, 지금 바로 시작하세요."</p>
-        </div>
+        </div>-->
 
         <!-- 헤더 -->
         <div class="Pension-header">
@@ -75,13 +76,13 @@
 
             </section>
             <p></p>
-            <!--본문4 : 동영상 -->
+            <!--본문4 : 동영상
             <section class="pension-structure">
                 <video src="/BNK/images/retirement-renew/bg01.mp4"
                        autoplay muted loop controls
                        style="width:100%; margin-top:20px;">
                 </video>
-            </section>
+            </section>-->
 
         </div>
         <!--===================== TAB 2 : 노후준비의 중요성 =====================-->
@@ -113,33 +114,151 @@
 
             </section>
 
-            <!-- 그래프: 동영상 -->
+            <!-- 그래프: 동영상
             <section class="pension-structure">
                 <video src="/BNK/images/retirement-renew/bg04.mp4"
                        autoplay muted loop controls
                        style="width:100%; margin-top:20px;">
                 </video>
             </section>
+            -->
 
         </div>
 
         <!--===================== TAB 3 : 생애설계 시 고려사항 =====================-->
         <div id="tab3" class="tab-content">
+
+            <!-- 설명 -->
             <section class="pension-section">
-                <h2>라이프사이클과 자산관리</h2>
+                <h3>라이프사이클과 자산관리</h3>
                 <p class="pension-text">
                     한 개인의 라이프사이클은 크게 연령대별 4단계로 구분되고, 각 단계별 맞춤형 투자설계가 이뤄져야 합니다.
                     특히 결혼이나 자녀교육, 내집마련 등의 이벤트성 재무이슈를 고려하여 자산과 부채를 관리함으로써 편안한 노후를 설계할 수 있습니다.
                 </p>
             </section>
-            <section class="pension-structure">
-                <!-- 그래프: 동영상 -->
-                <video src="/BNK/images/retirement-renew/bg03.mp4"
-                       autoplay muted loop controls
-                       style="width:100%; margin-top:20px;">
-                </video>
+
+            <!-- ◆◆◆ 라이프사이클 곡선 그래프 ◆◆◆ -->
+            <section class="pension-section">
+                <h3>라이프사이클 그래프</h3>
+
+                <div class="life-graph-wrap" style="margin-top:20px;">
+                    <!-- SVG 그래프 그대로 사용 -->
+                    <svg viewBox="0 0 1200 500" width="100%">
+                        <!-- 전체 배경 단계 구간 -->
+                        <rect x="0" y="260" width="350" height="160" fill="#f2e7d5"/>
+                        <rect x="350" y="260" width="350" height="160" fill="#efe4d2"/>
+                        <rect x="700" y="260" width="200" height="160" fill="#f7f0dc"/>
+                        <rect x="900" y="260" width="300" height="160" fill="#f4eccf"/>
+
+                        <text x="120" y="445" fill="#7b6f62" font-size="14">양육/교육의 단계</text>
+                        <text x="470" y="445" fill="#7b6f62" font-size="14">자산축적의 단계</text>
+                        <text x="740" y="445" fill="#7b6f62" font-size="14">소득 공백기</text>
+                        <text x="1020" y="445" fill="#7b6f62" font-size="14">소비의 단계</text>
+
+                        <!-- 곡선 -->
+                        <path d="M150 350
+                         C 250 330, 350 270, 450 230
+                         C 520 200, 600 170, 700 150"
+                              stroke="#7a6a59" stroke-width="3" fill="transparent"/>
+
+                        <!-- Wealth -->
+                        <rect x="130" y="315" width="70" height="28" rx="6" fill="#7a6a59"/>
+                        <text x="143" y="334" fill="#fff" font-size="13" font-weight="600">Wealth</text>
+
+                        <circle cx="450" cy="230" r="6" fill="#fff" stroke="#7a6a59" stroke-width="2"/>
+
+                        <!-- Transition -->
+                        <rect x="690" y="90" width="90" height="28" rx="6" fill="#6b5d4a"/>
+                        <text x="710" y="109" fill="#fff" font-size="13">Transition</text>
+
+                        <!-- Management -->
+                        <rect x="690" y="125" width="110" height="28" rx="6" fill="#a67939"/>
+                        <text x="705" y="144" fill="#fff" font-size="13">Management</text>
+
+                        <!-- 나이 눈금 -->
+                        <line x1="100" y1="260" x2="1100" y2="260" stroke="#ccc"/>
+
+                        <text x="120" y="250" fill="#555" font-size="13">10</text>
+                        <text x="220" y="250" fill="#555" font-size="13">20</text>
+                        <text x="320" y="250" fill="#555" font-size="13">30</text>
+                        <text x="420" y="250" fill="#555" font-size="13">40</text>
+                        <text x="520" y="250" fill="#555" font-size="13">50</text>
+                        <text x="620" y="250" fill="#555" font-size="13">60</text>
+                        <text x="720" y="250" fill="#555" font-size="13">70</text>
+                        <text x="820" y="250" fill="#555" font-size="13">80</text>
+                        <text x="920" y="250" fill="#555" font-size="13">90</text>
+
+                        <!-- 55세 -->
+                        <circle cx="560" cy="260" r="18" fill="#fff" stroke="#7a6a59" stroke-width="2"/>
+                        <text x="552" y="266" fill="#555" font-size="13" font-weight="700">55</text>
+                        <text x="535" y="290" fill="#555" font-size="13">퇴직</text>
+                        <text x="525" y="310" fill="#555" font-size="13">평균연령</text>
+
+                        <!-- 65세 -->
+                        <circle cx="660" cy="260" r="18" fill="#fff" stroke="#7a6a59" stroke-width="2"/>
+                        <text x="652" y="266" fill="#555" font-size="13" font-weight="700">65</text>
+                        <text x="642" y="290" fill="#555" font-size="13">국민연금</text>
+                        <text x="652" y="310" fill="#555" font-size="13">수령</text>
+                    </svg>
+                </div>
             </section>
+
+            <!-- ◆◆◆ 생애주기별 자산관리 표 ◆◆◆ -->
+            <section class="pension-section" style="margin-top:60px;">
+                <h3>생애주기별 자산관리 전략</h3>
+                <table style="width:100%; border-collapse: collapse; background:#fff; margin-top:20px;">
+                    <tr style="background:#fafafa;">
+                        <th style="padding:14px;border:1px solid #eee;">구분</th>
+                        <th style="padding:14px;border:1px solid #eee;">청년기</th>
+                        <th style="padding:14px;border:1px solid #eee;">신혼기</th>
+                        <th style="padding:14px;border:1px solid #eee;">중장년기</th>
+                        <th style="padding:14px;border:1px solid #eee;">노년기</th>
+                    </tr>
+
+                    <tr>
+                        <th style="padding:14px;border:1px solid #eee;">이슈</th>
+                        <td style="padding:14px;border:1px solid #eee;">결혼자금</td>
+                        <td style="padding:14px;border:1px solid #eee;">출산/자녀교육</td>
+                        <td style="padding:14px;border:1px solid #eee;">부채 상환/은퇴</td>
+                        <td style="padding:14px;border:1px solid #eee;">노후생활</td>
+                    </tr>
+
+                    <tr>
+                        <th style="padding:14px;border:1px solid #eee;">투자목적</th>
+                        <td style="padding:14px;border:1px solid #eee;">자산축적</td>
+                        <td style="padding:14px;border:1px solid #eee;">자산축적</td>
+                        <td style="padding:14px;border:1px solid #eee;">자산관리</td>
+                        <td style="padding:14px;border:1px solid #eee;">소비</td>
+                    </tr>
+
+                    <tr>
+                        <th style="padding:14px;border:1px solid #eee;">자산관리</th>
+                        <td style="padding:14px;border:1px solid #eee;">대출설계</td>
+                        <td style="padding:14px;border:1px solid #eee;">보험설계</td>
+                        <td style="padding:14px;border:1px solid #eee;">은퇴설계</td>
+                        <td style="padding:14px;border:1px solid #eee;">상속설계</td>
+                    </tr>
+
+                    <tr>
+                        <th style="padding:14px;border:1px solid #eee;">투자성향</th>
+                        <td style="padding:14px;border:1px solid #eee;">적극투자형</td>
+                        <td style="padding:14px;border:1px solid #eee;">위험중립형</td>
+                        <td style="padding:14px;border:1px solid #eee;">위험중립형</td>
+                        <td style="padding:14px;border:1px solid #eee;">안정추구형</td>
+                    </tr>
+
+                    <tr>
+                        <th style="padding:14px;border:1px solid #eee;">위험자산 비중</th>
+                        <td style="padding:14px;border:1px solid #eee;">70%</td>
+                        <td style="padding:14px;border:1px solid #eee;">60%</td>
+                        <td style="padding:14px;border:1px solid #eee;">50%</td>
+                        <td style="padding:14px;border:1px solid #eee;">30%</td>
+                    </tr>
+                </table>
+            </section>
+
         </div>
+
 
     </main>
 </div>

@@ -5,13 +5,16 @@ import jakarta.servlet.http.HttpSession;
 import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.entity.Users;
 import kr.co.bnkfirst.jwt.JwtProvider;
+import kr.co.bnkfirst.security.MyUserDetails;
 import kr.co.bnkfirst.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,27 +34,25 @@ public class UsersController {
      */
 
     @PostMapping("/login")
-    public String login(
-            @RequestParam String mid,
-            @RequestParam String mpw,
-            HttpSession session
-    ) {
+    public String login(@RequestParam String mid,
+                        @RequestParam String mpw,
+                        HttpSession session, RedirectAttributes ra) {
 
         log.info("로그인 시도 ID: {}", mid);
 
         UsersDTO dto = usersService.login(mid, mpw);
-        log.info("비밀번호 암호화 체크 : "+mpw);
-        log.info("dto 체크 : "+dto);
 
         if (dto == null) {
-            log.warn("로그인 실패 - 존재하지 않거나 비밀번호 불일치: {}", mid);
+
             return "redirect:/member/main?error=fail";
         }
+
+        // 최근 접속일자
+        usersService.updateLastAccess(dto.getMid());
 
         // JWT 생성
         Users user = dto.toEntity();
         String role = dto.getRole();
-
         String token = jwtProvider.createToken(user, role);
         log.info("token: {}", token);
 
@@ -64,6 +65,8 @@ public class UsersController {
         session.setMaxInactiveInterval(1200);
 
         log.info("로그인 성공 - ID: {}, JWT 발급됨, 세션 시작시간: {}", mid, now);
+
+        ra.addFlashAttribute("loginSuccessMsg", dto.getMname() + "님 반갑습니다. 환영합니다");
 
         return "redirect:/main/main";
     }
@@ -80,8 +83,7 @@ public class UsersController {
             log.info("로그아웃 요청: 로그인된 사용자 없음");
         }
 
-        session.invalidate(); // 세션 삭제
-//        log.info("세션 체크: {}", session.getAttribute("loginUser"));
+        session.invalidate();
         return "redirect:/member/main";
     }
 
@@ -146,7 +148,9 @@ public class UsersController {
             UsersDTO savedUser = usersService.findByMid(usersDTO.getMid());
             session.setAttribute("newUser", savedUser);
 
-            // 인증 정보 소멸
+            String accountNo = usersService.openDefaultAccount(savedUser.getMid());
+            session.setAttribute("newAccountNo", accountNo);
+
             session.removeAttribute("authData");
 
             return "redirect:/member/active";
@@ -165,11 +169,11 @@ public class UsersController {
     public String memberActive(HttpSession session, Model model) {
 
         UsersDTO newUser = (UsersDTO) session.getAttribute("newUser");
+        String newAccountNo = (String) session.getAttribute("newAccountNo");
 
-        if (newUser == null) {
+        if (newUser == null || newAccountNo == null) {
             return "redirect:/member/info";
         }
-        // XML로 추가 정보만 전달 (SYSDATE, Family)
         String xml =
                 "<extra>" +
                         "   <grade>Family</grade>" +
@@ -179,8 +183,13 @@ public class UsersController {
         model.addAttribute("member", newUser);
         model.addAttribute("xml", xml);
 
+        // 계좌 및 비밀번호 추가 (2025.11.27 이준우)
+        model.addAttribute("accountNo", newAccountNo);
+        model.addAttribute("initAccountPw", "1234");
+
         // 회원가입 완료 후 세션 초기화
         session.removeAttribute("newUser");
+        session.removeAttribute("newAccountNo");
 
         return "member/member_active";
     }
@@ -308,11 +317,11 @@ public class UsersController {
             @RequestParam("certFile")MultipartFile certFile,
             @RequestParam("certPw") String certPw,
             HttpSession session
-            ){
+    ){
         // 파일 선택 조건
         if (certFile == null || certFile.isEmpty()) {
 
-           return Map.of("ok", false, "message", "공동인증서 파일을 선택해 주세요.");
+            return Map.of("ok", false, "message", "공동인증서 파일을 선택해 주세요.");
         }
         String originalName = certFile.getOriginalFilename();
         if (originalName == null || originalName.isBlank()) {
@@ -339,5 +348,34 @@ public class UsersController {
         session.setAttribute("JOINT_CERT_AUTH", true);
 
         return Map.of("ok", true, "fileName", originalName);
+    }
+
+    // 회원 탈퇴 추가 (이준우 2025.11.28)
+    @PostMapping("/withdraw")
+    public String withdraw(@AuthenticationPrincipal MyUserDetails principal,
+                           @RequestParam("mpw")   String mpw,
+                           @RequestParam("mphone") String mphone,
+                           HttpSession session,
+                           RedirectAttributes rttr) {
+
+        String mid = principal.getUsername();
+
+        try {
+            boolean ok = usersService.withdrawUser(mid, mpw, mphone);
+
+            if (!ok) {
+                rttr.addFlashAttribute("msg", "탈퇴 조건이 맞지 않습니다. (비밀번호/휴대폰 번호 확인)");
+                return "redirect:/member/mypage";
+            }
+
+            session.invalidate();
+            rttr.addFlashAttribute("msg", "회원 탈퇴가 완료되었습니다.");
+            return "redirect:/member/main";
+
+        } catch (Exception e) {
+            log.error("회원 탈퇴 중 오류", e);
+            rttr.addFlashAttribute("msg", "탈퇴 처리 중 오류가 발생했습니다.");
+            return "redirect:/member/mypage";
+        }
     }
 }

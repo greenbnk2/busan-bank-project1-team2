@@ -21,7 +21,6 @@
     <aside th:replace="~{layouts/retirement/_sidebar.html}"></aside>
 
 
-
     <!--메인 컨텐츠-->
     <main class="Pension-content">
         <div class="bnk-cta-wrap">
@@ -44,10 +43,9 @@
         <!--===================== TAB 1 : 연금으로 준비하는 노후 =====================-->
         <div id="tab1" class="tab-content active">
 
-            <!-- 본문 -->
+            <!-- 본문1 : 3층 연금구조를 통한 은퇴설계가 반드시 필요합니다.-->
             <section class="pension-section">
                 <h2>3층 연금구조를 통한 은퇴설계가 반드시 필요합니다.</h2>
-
                 <p class="pension-text">
                     공적연금은 가장 기본적인 노후준비의 시작입니다. 그러나 국민연금의 소득대체율 감소,
                     노인부양비 증가 등으로 국민연금만으로는 안정적인 노후를 보장할 수 없습니다.
@@ -55,15 +53,15 @@
                 </p>
             </section>
 
-            <!-- 그래프 -->
+            <!--본문2 :  그래프 -->
             <section class="population-container">
-                <img th:src="@{/images/pension-001.png}" alt="2010 생산가능 인구">
+                <img th:src="@{/images/pension-001.png}" alt="3층 연금구조">
             </section>
+            <p></p>
 
-            <!-- 3층 연금구조 -->
+            <!--본문3 : 3층 연금구조란? -->
             <section class="pension-structure">
                 <h3>3층 연금구조란?</h3>
-
                 <p class="pension-text">
                     고령화 사회를 먼저 겪은 국가들은 오랫동안 3층 연금구조를 통해 근로자의 노후를 대비해왔습니다.
                     3층 연금구조는 국가(공적연금), 기업(퇴직연금), 개인(개인연금) 3단계 보장을 통해
@@ -73,10 +71,12 @@
                 <div class="pyramid-wrap">
                     <img th:src="@{/images/pension-002.png}" alt="3층 연금구조 도표">
                 </div>
-            </section>
 
+
+            </section>
+            <p></p>
+            <!--본문4 : 동영상 -->
             <section class="pension-structure">
-                <!-- 그래프: 동영상 -->
                 <video src="/BNK/images/retirement-renew/bg01.mp4"
                        autoplay muted loop controls
                        style="width:100%; margin-top:20px;">
@@ -86,24 +86,51 @@
         </div>
         <!--===================== TAB 2 : 노후준비의 중요성 =====================-->
         <div id="tab2" class="tab-content">
+
+            <!--부족한 노후생활비를 보완하기 위해 완전한 은퇴의 시기가 늦어지고 있습니다.-->
             <section class="pension-section">
-                <h2>노후준비의 중요성</h2>
-                <p class="pension-text">내용</p>
+                <h2>부족한 노후생활비를 보완하기 위해 완전한 은퇴의 시기가 늦어지고 있습니다.</h2>
+                <p class="pension-text">
+                    은퇴 전 응답자가 희망하는 은퇴 평균 연령은 평균 65세이나, 실제 완전 은퇴연령은 약 75세로 추정되어, 희망하는 은퇴연령과 실제 완전 은퇴 연령 사이에는 10세 정도의 차이를
+                    보이는 것으로 나타났습니다.
+                    현재 25세 ~ 74세의 절반가량은 부족한 노후생활비를 보완하거나 삶의 활력 등의 이유로 75세 이후에나 일에서 완전히 은퇴할 것으로 추정되며, 55세 ~ 69세에 완전 은퇴가
+                    가능한 경우는 30% 정도로 낮게 나타났습니다.
+                </p>
             </section>
+
+            <!--실제 은퇴가구가 노후를 위한 재무준비 과정에서 가장 후회하는 점은 '더 저축하지 못한 것' 입니다.-->
+            <section class="pension-section">
+                <h2>실제 은퇴가구가 노후를 위한 재무준비 과정에서 가장 후회하는 점은 '더 저축하지 못한 것' 입니다.</h2>
+                <p class="pension-text">
+                    한국인이 생각하는 행복한 노후를 위한 양대 축은 '건강'(35.1%)과 '돈'(30.4%)입니다. '인간관계', '여가활동', '사회활동'에 대해서는 중요도가 상대적으로 낮게
+                    나타났습니다.
+                    은퇴 후 가구도 은퇴 전에 '건강관리를 제대로 못한 것'과 '재무준비를 제대로 못한 것'을 가장 후회하고 있는 것으로 볼때 '건강'과 '돈'이 노후에 있어 매우 중요한 과제입니다.
+                </p>
+                <p class="pension-text">
+                    은퇴 후 가구가 경제적 노후준비 과정에서 가장 후회하는점은 '노후자금 마련을 위해 저축을 하지 못한 것'(56.0%)입니다.
+                    그 뒤를 이어 '일찍부터 창업이나 재취업을 준비하지 못한것'(11.3%)과 '투자형 금융상품에 더 투자하지 못한 점'(11.3%)을 아쉬워하고 있는 것으로 나타났습니다.
+                </p>
+
+            </section>
+
+            <!-- 그래프: 동영상 -->
             <section class="pension-structure">
-                <!-- 그래프: 동영상 -->
-                <video src="/BNK/images/retirement-renew/bg02.mp4"
+                <video src="/BNK/images/retirement-renew/bg04.mp4"
                        autoplay muted loop controls
                        style="width:100%; margin-top:20px;">
                 </video>
             </section>
+
         </div>
 
         <!--===================== TAB 3 : 생애설계 시 고려사항 =====================-->
         <div id="tab3" class="tab-content">
             <section class="pension-section">
-                <h2>생애설계 시 고려사항</h2>
-                <p class="pension-text">내용</p>
+                <h2>라이프사이클과 자산관리</h2>
+                <p class="pension-text">
+                    한 개인의 라이프사이클은 크게 연령대별 4단계로 구분되고, 각 단계별 맞춤형 투자설계가 이뤄져야 합니다.
+                    특히 결혼이나 자녀교육, 내집마련 등의 이벤트성 재무이슈를 고려하여 자산과 부채를 관리함으로써 편안한 노후를 설계할 수 있습니다.
+                </p>
             </section>
             <section class="pension-structure">
                 <!-- 그래프: 동영상 -->
@@ -169,9 +196,9 @@
     }
 
 
-    .Pension-page{
-        display:flex;
-        gap:40px;
+    .Pension-page {
+        display: flex;
+        gap: 40px;
         width: 1200px;
         margin: 60px auto;
         padding: 40px 20px;
@@ -181,43 +208,42 @@
     }
 
 
-
     /*----------------------------------*/
     /*--왼쪽 사이드바--*/
     /*----------------------------------*/
-    .all-sidebar{
+    .all-sidebar {
         width: 250px;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
     }
 
-    .all-sidebar h2{
+    .all-sidebar h2 {
         font-size: 20px;
         margin-bottom: 20px;
         color: #333;
     }
 
     .sidebar-menu {
-        list-style:none;
+        list-style: none;
         padding: 20px;
         margin: 0 0 40px 0;
         border: 1px solid #eee;
         border-radius: 8px;
         background: #fff;
-        box-shadow: 0 4px 4px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
     }
 
-    .sidebar-menu h2{
+    .sidebar-menu h2 {
         font-size: 17px;
         font-weight: 700;
         color: #333;
         margin-bottom: 16px;
     }
 
-    .sidebar-menu li{
+    .sidebar-menu li {
         padding: 12px 16px;
-        border-radius:  6px;
+        border-radius: 6px;
         color: #555;
         font-weight: 500;
         transition: all 0.2s ease;
@@ -230,47 +256,47 @@
         background: #f2f2f2;
     }
 
-    .sidebar-menu li.active{
+    .sidebar-menu li.active {
         background: #ffe6e6;
         border-left: 4px solid #d91a1a;
         color: #d91a1a;;
-        font-weight:  600;
+        font-weight: 600;
         padding-left: 12px;
     }
 
-    .sidebar-menu li:last-child{
+    .sidebar-menu li:last-child {
         border-bottom: none;
     }
 
     /*----------------------------------*/
     /*--추가 도움--*/
     /*----------------------------------*/
-    .all-help{
-        background: linear-gradient(135deg,#e62b2b, #7e2020);
+    .all-help {
+        background: linear-gradient(135deg, #e62b2b, #7e2020);
         color: #fff;
         border-radius: 12px;
         padding: 24px 20px;
         text-align: center;
-        box-shadow: 0 4px 4px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
     }
 
-    .help-box h3{
+    .help-box h3 {
         font-size: 17px;
         margin-bottom: 6px;
     }
 
-    .help-box p{
+    .help-box p {
         font-size: 14px;
         margin-bottom: 16px;
     }
 
-    .help-buttons{
+    .help-buttons {
         display: flex;
         justify-content: center;
         gap: 10px;
     }
 
-    .btn-call, .btn-chat{
+    .btn-call, .btn-chat {
         padding: 8px 14px;
         border: none;
         border-radius: 6px;
@@ -278,13 +304,13 @@
         cursor: pointer;
     }
 
-    .btn-call{
+    .btn-call {
         background: #fff;
         color: #d91a1a;
     }
 
-    .btn-chat{
-        background:  transparent;
+    .btn-chat {
+        background: transparent;
         border: 1px solid #fff;
         color: #fff;
     }
@@ -293,18 +319,18 @@
     /*--메인 컨텐츠--*/
     /*----------------------------------*/
 
-    .Pension-content{
+    .Pension-content {
         flex: 1;
     }
 
-    .Pension-header h1{
+    .Pension-header h1 {
         font-size: 24px;
         margin-bottom: 8px;
     }
 
-    .Pension-header p{
+    .Pension-header p {
         color: #666;
-        margin-bottom:  20px;
+        margin-bottom: 20px;
     }
 
     .Pension-search {
@@ -325,16 +351,16 @@
         font-size: 18px;
     }
 
-    .Pension-search input{
-        border:none;
-        flex:1;
+    .Pension-search input {
+        border: none;
+        flex: 1;
         background: transparent;
         padding: 8px;
         outline: none;
         font-size: medium;
     }
 
-    .Pension-search button{
+    .Pension-search button {
         background: none;
         border: none;
         cursor: pointer;
@@ -362,7 +388,7 @@
     }
 
     /*리스트*/
-    .Pension-list details{
+    .Pension-list details {
         border: 1px soild #e6e6e6;
         border-radius: 8px;
         margin-bottom: 10px;
@@ -370,19 +396,19 @@
         background: #fff;
     }
 
-    .Pension-list summary{
+    .Pension-list summary {
         cursor: pointer;
         font-weight: 500;
     }
 
-    .Pension-list p{
+    .Pension-list p {
         margin-top: 10px;
         color: #555;
         font-size: 14px;
-        line-height:  1.6;
+        line-height: 1.6;
     }
 
-    .Pension-more{
+    .Pension-more {
         margin: 30px auto 0;
         display: block;
         padding: 10px 24px;
@@ -397,7 +423,7 @@
     /* 전체 페이지 */
     /******************************************/
     body {
-        font-family: 'Pretendard','Noto Sans KR',sans-serif;
+        font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
         background: #F6F6F8;
         margin: 0;
         color: #222;
@@ -434,7 +460,7 @@
         background: #fff;
         border-radius: 8px;
         border: 1px solid #eee;
-        box-shadow: 0 4px 4px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
     }
 
     .sidebar-menu li {
@@ -465,12 +491,12 @@
     /* 상담 박스 */
     /******************************************/
     .all-help {
-        background: linear-gradient(135deg,#e62b2b,#7e2020);
+        background: linear-gradient(135deg, #e62b2b, #7e2020);
         color: #fff;
         padding: 24px 20px;
         text-align: center;
         border-radius: 12px;
-        box-shadow: 0 4px 4px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
     }
 
     .help-buttons {
@@ -655,13 +681,13 @@
     .sidebar-menu a {
         display: block;
         padding: 0px 0;
-        text-decoration: none;   /* 밑줄 제거 */
-        color: #222;             /* 파란색 제거 → 기본 텍스트 색 */
+        text-decoration: none; /* 밑줄 제거 */
+        color: #222; /* 파란색 제거 → 기본 텍스트 색 */
     }
 
     /* hover 효과 */
     .sidebar-menu a:hover {
-        color: #DE0000;          /* BNK 레드 */
+        color: #DE0000; /* BNK 레드 */
         text-decoration: underline;
     }
 
@@ -680,7 +706,120 @@
         display: block;
     }
 
-</style>
 
+    .wrap {
+        border-radius: 16px;
+    }
+
+    .row {
+        display: flex;
+        gap: 60px;
+        align-items: center;
+    }
+
+    /* ===== 피라미드 컨테이너 ===== */
+    .pyramid {
+        position: relative;
+        width: 380px;
+        height: 300px;
+    }
+
+    .layer {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) translateY(25px);
+        opacity: 0;
+        transition: all .7s ease-out;
+    }
+
+    .layer.visible {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    /* 삼각형 크기 — 큰 삼각형이 맨 아래 */
+    .layer.level-1 svg {
+        width: 380px;
+    }
+
+    .layer.level-2 svg {
+        width: 280px;
+    }
+
+    .layer.level-3 svg {
+        width: 180px;
+    }
+
+    /* 삼각형 색상 (원본 이미지 베이지 계열) */
+    .level-1 polygon {
+        fill: #8e7c67;
+    }
+
+    .level-2 polygon {
+        fill: #b7a791;
+    }
+
+    .level-3 polygon {
+        fill: #d5cbbd;
+    }
+
+    /* ===== 오른쪽 정보 ===== */
+    .info {
+        flex: 1;
+    }
+
+    .item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: .6s ease-out;
+    }
+
+    .item.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .linebox {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .line {
+        height: 1px;
+        background: #c8c0b5;
+        flex: 1;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #8e7c67;
+    }
+
+    .labelwrap {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 210px;
+    }
+
+    .floor {
+        font-weight: 700;
+        color: #6f5e4b;
+    }
+
+    .txt {
+        color: #333;
+    }
+
+
+</style>
 
 </html>
