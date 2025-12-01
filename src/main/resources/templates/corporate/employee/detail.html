@@ -220,6 +220,31 @@
         }
 
     </style>
+    <style>
+        :root {
+            --sidebar-width: 240px;   /* 사이드바 너비 */
+            --page-left: -4px;        /* .page-wrapper의 실제 left 값 (JS에서 세팅) */
+        }
+
+        /* 햄버거 버튼: 카드의 왼쪽 + 18px */
+        .hamburger {
+            left: calc(var(--page-left) + 18px) !important;
+        }
+
+        /* 사이드바 기본(닫힘): 카드 왼쪽 기준으로 완전히 밖에 숨기기 */
+        .sidebar {
+            width: var(--sidebar-width) !important;
+            /*left: calc(var(--page-left) - var(--sidebar-width)) !important;*/
+        }
+
+        /* 열렸을 때: 카드의 왼쪽에 딱 맞추기 */
+        .sidebar.active {
+            left: var(--page-left) !important;
+        }
+        .sidebar{
+            left: -320px !important;
+        }
+    </style>
 </head>
 
 <body>

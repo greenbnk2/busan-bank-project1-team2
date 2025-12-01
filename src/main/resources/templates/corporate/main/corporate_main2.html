@@ -184,108 +184,6 @@
             }
         }
 
-        /* ---------------------- 햄버거 / 사이드바 ---------------------- */
-        .hamburger {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
-            z-index: 2000;
-            background: none;
-            border: none;
-            padding: 6px;
-        }
-
-        .hamburger span {
-            width: 100%;
-            height: 4px;
-            background: #222;
-            border-radius: 4px;
-            transition: 0.3s;
-        }
-
-        .hamburger.open span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .hamburger.open span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.open span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -260px;
-            width: 250px;
-            height: 100%;
-            background: white;
-            padding: 20px;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-            transition: 0.3s;
-            z-index: 1500;
-        }
-
-        .sidebar.active {
-            left: 0;
-        }
-
-        /* 기존 a 기본 스타일 (유지) */
-        .sidebar a {
-            color: #222;
-            text-decoration: none;
-            font-size: 15px;
-            display: block;
-            padding: 6px 0;
-            transition: color 0.2s;
-        }
-
-        .sidebar a:hover {
-            color: #d91a1a;
-        }
-
-        /* ------------------------------- */
-        /*        🔥 여기부터 추가          */
-        /* ------------------------------- */
-
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin-top: 20px;
-        }
-
-        .sidebar-menu li {
-            margin-bottom: 12px;
-        }
-
-        .sidebar-menu a {
-            display: block;
-            padding: 14px 18px;
-            background: #ffffff;
-            color: #222;
-            text-decoration: none;
-            border-radius: 10px;
-            border: 1px solid #eee;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
-            font-size: 15px;
-            transition: all .18s ease-in-out;
-        }
-
-        .sidebar-menu a:hover {
-            background: #fff5f5;
-            color: #d91a1a;
-            border-color: #ffd2d2;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-        }
-
 
         /* 고객지원 카드 6칸 */
         .support-card {
@@ -353,28 +251,24 @@
             color: #d91a1a;
         }
 
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #d91a1a;
+            text-decoration: none;
+        }
 
     </style>
 </head>
 
 <body>
 
-<!-- ⭐ 햄버거 버튼 -->
-<button class="hamburger" id="menuBtn"><span></span><span></span><span></span></button>
+<!-- 🔥 corporate_header.html 로드 (사이드바+햄버거 포함) -->
+<div th:replace="~{layouts/corporate_header.html}"></div>
 
-<header>
-    <div th:replace="~{layouts/corporate_header.html}"></div>
-</header>
-
-<script>
-    const menuBtn = document.getElementById('menuBtn');
-    const sidebar = document.getElementById('sidebar');
-
-    menuBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('active');
-        menuBtn.classList.toggle('open');
-    });
-</script>
 
 <!-- ---------------------- 메인 컨텐츠 ---------------------- -->
 <div class="page-container">
@@ -455,28 +349,28 @@
             <div class="card-box">
 
                 <div class="news-item">
-                    <div><span class="tag-notice">공지</span> 장기 미사용계좌 기한통지 안내</div>
+                    <div><span class="tag-notice">공지</span> <a href="#">장기 미사용계좌 기한통지 안내</a></div>
                     <div>2025-11-20</div>
                 </div>
 
                 <hr>
 
                 <div class="news-item">
-                    <div><span class="tag-notice">공지</span> 전자어음 수수료 변경 안내</div>
+                    <div><span class="tag-notice">공지</span> <a href="#">전자어음 수수료 변경 안내</a></div>
                     <div>2025-11-03</div>
                 </div>
 
                 <hr>
 
                 <div class="news-item">
-                    <div><span class="tag-notice">공지</span> 보안프로그램 오류 해결 (142버전)</div>
+                    <div><span class="tag-notice">공지</span> <a href="#">보안프로그램 오류 해결 (142버전)</a></div>
                     <div>2025-10-31</div>
                 </div>
 
                 <hr>
 
                 <div class="news-item">
-                    <div>[일시중단] 지방세 입금 업무 중단 안내</div>
+                    <div><a href="#">[일시중단] 지방세 입금 업무 중단 안내</a></div>
                     <div>2025-11-21</div>
                 </div>
 
@@ -488,17 +382,17 @@
             <h3>고객지원</h3>
 
             <div class="support-card">
-                <div class="support-item">기업뱅킹 이용가이드</div>
-                <div class="support-item">자주하는 질문</div>
-                <div class="support-item">퇴직연금 공시</div>
-                <div class="support-item">수수료 안내</div>
-                <div class="support-item">서식자료실</div>
-                <div class="support-item">약관자료실</div>
+                <div class="support-item"><a href="/BNK/cs/howUse/regProcess">기업뱅킹 이용가이드</a></div>
+                <div class="support-item"><a href="/BNK/cs/consultation/FAQ">자주하는 질문</a></div>
+                <div class="support-item"><a href="/BNK/cs/data_room/loan">퇴직연금 공시</a></div>
+                <div class="support-item"><a href="/BNK/cs/consultation/FAQ">수수료 안내</a></div>
+                <div class="support-item"><a href="/BNK/cs/data_room/deposit">서식자료실</a></div>
+                <div class="support-item"><a href="/BNK/cs/data_room/fund">약관자료실</a></div>
             </div>
         </div>
 
-
     </div>
+
 
     <!-- 고객센터 -->
     <h3 style="margin-top:60px;">고객센터</h3>
@@ -531,7 +425,8 @@
 
 </div>
 
-</body>
+
+<!-- ================= 자동완성 스크립트 ================= -->
 <script>
     const searchInput = document.getElementById("searchKeyword");
     const autoBox = document.getElementById("autoBox");
@@ -539,20 +434,18 @@
 
     let timer;
 
-    // 🔥 키 입력 시 자동완성 (디바운스 적용)
     searchInput.addEventListener("keyup", function () {
         clearTimeout(timer);
         timer = setTimeout(fetchAuto, 150);
     });
 
-    // 🔥 엔터 누르면 자동완성 첫 번째 선택
     searchInput.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
             const firstItem = document.querySelector(".auto-item");
             if (firstItem) {
-                e.preventDefault();  // 폼 기본 제출 막기
-                searchInput.value = firstItem.dataset.name;   // name만 추출
-                form.submit();       // 자동 검색
+                e.preventDefault();
+                searchInput.value = firstItem.dataset.name;
+                form.submit();
             }
         }
     });
@@ -566,7 +459,6 @@
         }
 
         fetch(`/BNK/corporate/employee/autocomplete?keyword=` + keyword)
-
             .then(res => res.json())
             .then(list => {
 
@@ -575,18 +467,17 @@
                     return;
                 }
 
-                autoBox.innerHTML = ""; // 초기화
+                autoBox.innerHTML = "";
 
                 list.forEach(item => {
                     const div = document.createElement("div");
                     div.classList.add("auto-item");
-                    div.dataset.name = item.name;  // 🔥 엔터 처리할 때 name만 쓰기
+                    div.dataset.name = item.name;
                     div.innerHTML = `
-                    <strong>${item.name}</strong><br>
-                    <span style="font-size:13px;color:#666;">${item.accountNo}</span>
-                `;
+                        <strong>${item.name}</strong><br>
+                        <span style="font-size:13px;color:#666;">${item.accountNo}</span>
+                    `;
 
-                    // 🔥 항목 클릭 시 즉시 검색 실행
                     div.addEventListener("click", () => {
                         searchInput.value = item.name;
                         autoBox.style.display = "none";
@@ -599,12 +490,12 @@
                 autoBox.style.display = "block";
             });
     }
-
 </script>
 
-<!-- 🔻 페이지 끝에서 호출한다 -->
+<!-- 🔥 현재 메뉴 활성화 -->
 <script>
-    initCorporateHeader("main")
+    initCorporateHeader("main");
 </script>
 
+</body>
 </html>

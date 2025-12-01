@@ -22,4 +22,12 @@ public interface ProductMapper {
     public int savePcontract(PcontractDTO pcontract);
     // 2025.11.28. 강민철 : 상품 구매시 구매 금액 인출
     public int drawPcontract(PcontractDTO pcontract);
+    // 2025.11.30. 강민철 : 상품 판매시 판매 금액 입금
+    public int depositPcontract(PcontractDTO pcontract);
+    // 2025.11.30. 강민철 : 상품 일부 매도(판매)하기
+    public int partSellPcontract(PcontractDTO pcontract);
+    // 2025.11.30. 강민철 : 상품 전부 매도(판매)하기
+    public int fullSellPcontract(PcontractDTO pcontract);
+    // 2025.11.30. 강민철 : 보유 상품 추가 매수(구매)하기
+    public int extraBuyPcontract(PcontractDTO pcontract);
 }

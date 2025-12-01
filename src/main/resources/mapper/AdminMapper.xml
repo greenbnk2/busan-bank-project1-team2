@@ -175,4 +175,24 @@
     <select id="countWithdrawal" resultType="int">
         SELECT count(*) FROM users WHERE mcond = '탈퇴'
     </select>
+
+    <!--    IRP, DC, DB 상품 개수 출력-->
+    <select id="countByItem" resultType="Integer">
+        SELECT count(*) FROM product where pelgbl = #{pelgbl}
+    </select>
+
+    <!--    Fund 상품 개수 출력-->
+    <select id="countByFund" resultType="Integer">
+        SELECT count(*) FROM fund
+    </select>
+
+<!--  막대그래프용 pbirate(IRP, DC, DB) -->
+    <select id="avgByItem" resultType="Double">
+        SELECT round(avg(pbirate),2) FROM product WHERE pelgbl = #{pelgbl}
+    </select>
+
+<!--    파이차트용 fund 위험등급 (1~6등급) -->
+    <select id="countByDanger" resultType="Integer">
+        SELECT count(*) FROM fund WHERE frlvl = #{frlvl}
+    </select>
 </mapper>

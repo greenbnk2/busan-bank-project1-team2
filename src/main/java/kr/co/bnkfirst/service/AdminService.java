@@ -208,4 +208,24 @@ public class AdminService {
         return adminMapper.countWithdrawal();
     };
 
+    // IRP,DC,DB 상품 개수 출력
+    public int countByItem(String pelgbl){
+        return adminMapper.countByItem(pelgbl);
+    };
+
+    // Fund 상품 개수 출력
+    public int countByFund(){
+        return adminMapper.countByFund();
+    }
+
+    // 막대그래프용 pbirate(IRP, DC, DB)
+    public Double avgByItem(String pelgbl){
+        return adminMapper.avgByItem(pelgbl);
+    };
+
+    // 파이차트용 fund 위험등급 (1~6등급)
+    public int countByDanger(int frlvl){
+        return adminMapper.countByDanger(frlvl);
+    };
+
 }

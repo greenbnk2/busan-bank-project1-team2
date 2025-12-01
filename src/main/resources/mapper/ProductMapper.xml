@@ -96,4 +96,27 @@
         WHERE PACC = #{pacc}
           AND "TYPE" = #{type}
     </update>
+    <update id="depositPcontract" parameterType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        UPDATE PCONTRACT SET
+            pbalance = pbalance + #{pbalance}
+        WHERE PACC = #{pacc}
+          AND "TYPE" = #{type}
+    </update>
+    <update id="partSellPcontract" parameterType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        UPDATE PCONTRACT
+        SET PBALANCE = PBALANCE - #{pbalance}
+        WHERE PCUID = #{pcuid}
+          AND PCPID = #{pcpid}
+    </update>
+    <delete id="fullSellPcontract" parameterType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        DELETE FROM PCONTRACT
+        WHERE PCUID = #{pcuid}
+          AND PCPID = #{pcpid}
+    </delete>
+    <update id="extraBuyPcontract" parameterType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        UPDATE PCONTRACT
+        SET PBALANCE = PBALANCE + #{pbalance}
+        WHERE PCUID = #{pcuid}
+          AND PCPID = #{pcpid}
+    </update>
 </mapper>

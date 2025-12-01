@@ -667,9 +667,9 @@
     <div class="search-container">
       <select class="category-select">
         <option>전체상품</option>
-        <option>적금</option>
-        <option>주택대출</option>
-        <option>신용카드</option>
+        <option>원리금 보장상품</option>
+        <option>퇴직연금 알아보기</option>
+        <option>ETF</option>
       </select>
        
       <div class="search-inner">
@@ -682,9 +682,9 @@
 
     <div class="tag-container">
       <span>추천 검색어:</span>
-      <a href="#">적금</a>
-      <a href="#">주택대출</a>
-      <a href="#">신용카드</a>
+      <a th:href="@{/product/main}">원리금 보장상품</a>
+      <a th:href="@{/retirement-renew/intro/why-pension}">퇴직연금 알아보기</a>
+      <a th:href="@{/stock/mainEtf}">ETF</a>
     </div>
 
     <div id="search-result-area"></div>
@@ -704,8 +704,8 @@
       <a th:href="@{/irp/account/main}" style="text-decoration: none;">
           <div class="icon-item blue">
               <div class="circle">
-                  <img th:src="@{/images/main_investment.png}" alt="투자">
-                  <h3>투자</h3>
+                  <img th:src="@{/images/main_investment.png}" alt="계좌개설">
+                  <h3>계좌개설</h3>
               </div>
           </div>
       </a>
@@ -740,41 +740,51 @@
 
   <!-- 카테고리 -->
   <section class="category">
-    <div class="category-item" style="">
-      <div class="icon-wrap">
-        <img th:src="@{/images/main_best_seller.png}" alt="">
-      </div>
-      <h3>베스트 상품</h3>
-      <p>인기 높은 추천상품</p>
-    </div>
-    <div class="category-item">
-      <div class="icon-wrap">
-        <img th:src="@{/images/main_target.png}" alt="">
-      </div>
-      <h3>목적별 상품</h3>
-      <p>목적에 맞는 상품</p>
-    </div>
-    <div class="category-item">
-      <div class="icon-wrap">
-        <img th:src="@{/images/main_customer_age.png}" alt="">
-      </div>
-      <h3>생애주기별 상품</h3>
-      <p>연령대별 맞춤상품</p>
-    </div>
-    <div class="category-item">
-      <div class="icon-wrap">
-        <img th:src="@{/images/main_each_customer.png}" alt="">
-      </div>
-      <h3>고객별 상품</h3>
-      <p>고객 유형별 상품</p>
-    </div>
-    <div class="category-item">
-      <div class="icon-wrap">
-        <img th:src="@{/images/main_new.png}" alt="">
-      </div>
-      <h3>신규상품</h3>
-      <p>새로 출시된 상품</p>
-    </div>
+      <a th:href="@{/product/main}" class="category-item"  style="text-decoration: none;">
+        <div>
+          <div class="icon-wrap">
+            <img th:src="@{/images/main_best_seller.png}" alt="">
+          </div>
+          <h3>베스트 상품</h3>
+          <p>인기 높은 추천상품</p>
+        </div>
+      </a>
+      <a th:href="@{/product/main}" class="category-item" style="text-decoration: none;">
+        <div>
+          <div class="icon-wrap">
+            <img th:src="@{/images/main_target.png}" alt="">
+          </div>
+          <h3>목적별 상품</h3>
+          <p>목적에 맞는 상품</p>
+        </div>
+      </a>
+      <a th:href="@{/product/main}" class="category-item" style="text-decoration: none;">
+        <div>
+          <div class="icon-wrap">
+            <img th:src="@{/images/main_customer_age.png}" alt="">
+          </div>
+          <h3>생애주기별 상품</h3>
+          <p>연령대별 맞춤상품</p>
+        </div>
+      </a>
+      <a th:href="@{/product/main}" class="category-item" style="text-decoration: none;">
+        <div>
+          <div class="icon-wrap">
+            <img th:src="@{/images/main_each_customer.png}" alt="">
+          </div>
+          <h3>고객별 상품</h3>
+          <p>고객 유형별 상품</p>
+        </div>
+      </a>
+      <a th:href="@{/product/main}" class="category-item" style="text-decoration: none;">
+        <div>
+          <div class="icon-wrap">
+            <img th:src="@{/images/main_new.png}" alt="">
+          </div>
+          <h3>신규상품</h3>
+          <p>새로 출시된 상품</p>
+        </div>
+      </a>
   </section>
 
   <!-- 공지사항 -->
@@ -782,7 +792,7 @@
     <div class="notice">
       <div class="notice-header">
         <h3>공지 / 새 소식</h3>
-        <a href="#">전체보기</a>
+        <a th:href="@{/cs/data_room/trust}">전체보기</a>
       </div>
       <ul>
         <li th:each="doc : ${latestDocs}">
@@ -809,7 +819,7 @@
     <div class="event">
       <div class="event-header">
         <h3>이벤트 / 혜택</h3>
-        <a href="#">전체보기</a>
+        <a href="https://m.busanbank.co.kr/ib20/mnu/WBMBST042001001#none">전체보기</a>
       </div>
 
       <div th:each="ev : ${events}" class="event-item">

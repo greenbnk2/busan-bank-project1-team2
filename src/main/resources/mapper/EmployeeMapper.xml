@@ -158,4 +158,104 @@
         FETCH FIRST 10 ROWS ONLY  <!-- 성능 최적화: 자동완성은 상위 10개만 -->
     </select>
 
+
+    <!-- ⭐⭐⭐ 여기에 아래 두 개 추가 ⭐⭐⭐ -->
+
+    <!-- 직원 상태 변경 -->
+    <update id="updateStatus">
+        UPDATE EMPLOYEE
+        SET STATUS = #{status}
+        WHERE EMPID = #{empId}
+    </update>
+
+    <!-- 직원 퇴사 처리 -->
+    <update id="updateRetire">
+        UPDATE EMPLOYEE
+        SET
+            STATUS = #{status},
+            RETIREDATE = #{retireDate}
+        WHERE EMPID = #{empId}
+    </update>
+
+
+    <!-- ===================================================== -->
+    <!-- ⭐⭐ 페이지네이션 SQL 추가 (핵심) ⭐⭐ -->
+    <!-- ===================================================== -->
+
+    <!-- 직원 목록 (검색 + 페이징) -->
+    <select id="selectEmployeePage"
+            resultType="kr.co.bnkfirst.dto.corporate.employee.EmployeeListDto">
+        SELECT
+        EMPID       AS empId,
+        NAME        AS name,
+        PLANTYPE    AS planType,
+        ACCOUNTNO   AS accountNo,
+        STATUS      AS status
+        FROM EMPLOYEE
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                LOWER(NAME) LIKE LOWER('%' || #{keyword} || '%')
+                OR ACCOUNTNO LIKE '%' || #{keyword} || '%'
+                OR TO_CHAR(EMPID) LIKE '%' || #{keyword} || '%'
+                )
+            </if>
+
+            <if test="planType != null and planType != '' and planType != 'ALL'">
+                AND PLANTYPE = #{planType}
+            </if>
+        </where>
+        ORDER BY EMPID
+        OFFSET #{offset} ROWS
+        FETCH NEXT #{size} ROWS ONLY
+    </select>
+
+    <!-- 총 직원 수 -->
+    <select id="countEmployeeList" resultType="int">
+        SELECT COUNT(*)
+        FROM EMPLOYEE
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                LOWER(NAME) LIKE LOWER('%' || #{keyword} || '%')
+                OR ACCOUNTNO LIKE '%' || #{keyword} || '%'
+                OR TO_CHAR(EMPID) LIKE '%' || #{keyword} || '%'
+                )
+            </if>
+
+            <if test="planType != null and planType != '' and planType != 'ALL'">
+                AND PLANTYPE = #{planType}
+            </if>
+        </where>
+    </select>
+
+    <!-- ========================================================= -->
+    <!-- ⭐ 직원 등록 (INSERT) ⭐ -->
+    <!-- ========================================================= -->
+    <insert id="insertEmployee"
+            parameterType="kr.co.bnkfirst.dto.corporate.employee.EmployeeCreateDto">
+
+        INSERT INTO EMPLOYEE (
+            EMPID,
+            NAME,
+            PLANTYPE,
+            ACCOUNTNO,
+            STATUS,
+            DEPARTMENT,
+            POSITION,
+            HIREDATE
+        ) VALUES (
+                     EMP_SEQ.NEXTVAL,
+                     #{name},
+                     #{planType},
+                     #{accountNo},
+                     #{status},
+                     #{department},
+                     #{position},
+                     TO_DATE(#{hireDate}, 'YYYY-MM-DD')
+                 )
+    </insert>
+
+
+
 </mapper>

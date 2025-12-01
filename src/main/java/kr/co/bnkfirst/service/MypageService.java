@@ -96,18 +96,27 @@ public class MypageService{
         mypageMapper.updateRecvContract(pbalance, pacc);
     }
 
-    public void deleteContract(String pacc) {
-        mypageMapper.deleteContract(pacc);
+    public void deleteContract(String pcuid, String pcpid) {
+        mypageMapper.deleteContract(pcuid, pcpid);
     }
 
     @Transactional
-    public void deleteContractProcess(int pbalance, String pacc, String recvAcc) {
+    public void deleteContractProcess(int pbalance, String recvAcc, String pcuid, String pcpid) {
         updateRecvContract(pbalance, recvAcc);
-        deleteContract(pacc);
+        deleteContract(pcuid, pcpid);
     }
 
     // ETF 주식 불러오기
     public List<PcontractDTO> selectEtf(@Param("pcuid") String pcuid){
         return mypageMapper.selectEtf(pcuid);
+    }
+
+    /*
+        날짜 : 2025.11.28.
+        이름 : 강민철
+        내용 : 변경 상품 목록 불러오기
+     */
+    public List<PcontractDTO> getProdEditList(@Param("pcuid") String pcuid) {
+        return mypageMapper.findByUidAndType(pcuid);
     }
 }

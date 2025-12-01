@@ -125,7 +125,16 @@ public interface AdminMapper {
     // 상태가 탈퇴인 회원 수 출력
     public int countWithdrawal();
 
+    // IRP,DC,DB 상품 개수 출력
+    public int countByItem(String pelgbl);
 
+    // Fund 상품 개수 출력
+    public int countByFund();
 
+    // 막대그래프용 pbirate(IRP, DC, DB)
+    public Double avgByItem(String pelgbl);
+
+    // 파이차트용 fund 위험등급 (1~6등급)
+    public int countByDanger(int frlvl);
 
 }

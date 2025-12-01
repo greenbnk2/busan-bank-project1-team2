@@ -26,8 +26,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        // ⭐ 1) KFTC API 인증 제외
         String path = request.getRequestURI();
+
+        // ⭐ 기업뱅킹 화면 접근은 인증 제외
+        if (path.startsWith("/BNK/corporate/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // ⭐ KFTC API 인증 제외
         if (path.startsWith("/BNK/api/kftc/")) {
             filterChain.doFilter(request, response);
             return;
@@ -35,17 +42,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             String token = (String) request.getSession().getAttribute("jwtToken");
-//        String token = resolveToken(request);
 
             if (token != null && jwtProvider.validateToken(token)) {
 
-                // 토큰에서 mid 꺼냄
                 String mid = jwtProvider.getMidFromToken(token);
-
-                // DB에서 사용자 조회
                 UserDetails userDetails = myUserDetailsService.loadUserByUsername(mid);
 
-                // Authentication 생성
                 Authentication auth = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -55,29 +57,37 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
 
-
         } catch (Exception ex) {
             logger.error("JWT 필터 오류: " + ex.getMessage());
         }
 
-        // 한 번만 호출하도록 해요 - 손진일
         filterChain.doFilter(request, response);
     }
 
+
     private String resolveToken(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");
-
         if (bearer != null && bearer.startsWith("Bearer ")) {
             return bearer.substring(7);
         }
         return null;
     }
 
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
 
-        // /BNK/api/** 는 인증 없이 접근 허용
-        return path.startsWith("/BNK/api/");
+        // ⭐ 기업뱅킹(corporate)은 필터 자체를 아예 적용하지 않음
+        if (path.startsWith("/BNK/corporate/")) {
+            return true;
+        }
+
+        // ⭐ KFTC API 인증 제외
+        if (path.startsWith("/BNK/api/")) {
+            return true;
+        }
+
+        return false;
     }
 }

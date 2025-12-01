@@ -21,6 +21,13 @@ public class InfoBoardController {
 
     private final EventService eventService;
 
+    /** 투자자정보 */
+    @GetMapping("/info/invest")
+    public String invest() {
+        return "info/invest/info_invest";
+    }
+
+
     /** ✅ 임시 테스트용 */
     @GetMapping("/check")
     @ResponseBody

@@ -16,8 +16,8 @@ public class AdminProductRowDTO {
     private String productId;     // 상품ID  : product.pid / fund.fid
     private String name;          // 상품명  : pname / fname
     private String rateOrFee;     // 최고금리 / 총보수 : phirate / ftc
-    private String periodOrRisk;  // 기간 / 위험등급  : pcprd / frlvl
-    private String statusOrType;  // 상태 / 유형     : pcond / ftype
+    private String periodOrRisk;  // 기간 / 위험등급  : prmthd / frlvl
+    private String statusOrType;  // 유형     : pcond / ftype
     private String regOrSetDate;  // 등록일 / 설정일 : pupdate / fsetdt (yyyy-MM-dd 형태 권장)
 
     /** 관리 버튼용 URL */
@@ -35,15 +35,15 @@ public class AdminProductRowDTO {
         }
 
         // 최고금리: 소수점 2자리 + % 표시 (원하는대로 포맷 수정 가능)
-        String hiRateStr = String.format("%.2f", p.getPhirate());
+        String hiRateStr = String.format("%.2f", p.getPbirate());
 
         return AdminProductRowDTO.builder()
                 .kind("PRODUCT")
                 .productId(p.getPid())
                 .name(p.getPname())
                 .rateOrFee(hiRateStr)
-                .periodOrRisk(p.getPcprd())       // "3~36개월" 같은 문자열 그대로 사용
-                .statusOrType(p.getPcond())       // "활성 / 대기 / 종료"
+                .periodOrRisk(p.getPrmthd())       // "3~36개월" 같은 문자열 그대로 사용
+                .statusOrType(p.getPelgbl())       // DC, DB, IRP인지
                 .regOrSetDate(date)
                 .modifyUrl("/BNK/admin/prod/modify?pid=" + p.getPid())
                 .deleteUrl("/BNK/admin/prod/delete?pid=" + p.getPid())

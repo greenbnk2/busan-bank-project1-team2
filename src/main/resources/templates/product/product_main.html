@@ -547,72 +547,7 @@
             </div>
         </article>
     </section>
-    <section class="recommend">
-        <article>
-            <h2>추천 상품</h2>
-            <div>
-                <div data-filter="new" , class="tab active">신규 인기</div>
-                <div data-filter="rate" , class="tab">금리 높은</div>
-                <div data-filter="bonus" , class="tab">우대 좋은</div>
-            </div>
-            <div class="prod-wrapper">
-                <div class="product-card">
-                    <span class="badge">정기예금</span>
-                    <div class="title">BNK희망적금</div>
-                    <div class="desc">매월 일정금액 적립으로 목돈 마련</div>
 
-                    <div class="rates">
-                        <div class="rate-row">
-                            <span>기본금리</span>
-                            <span class="value">2.30%</span>
-                        </div>
-                        <div class="rate-row high">
-                            <span>최고금리</span>
-                            <span class="value">3.20%</span>
-                        </div>
-                    </div>
-
-                    <button class="view-btn btn-red">상품 보기</button>
-                </div>
-                <div class="product-card">
-                    <span class="badge">정기예금</span>
-                    <div class="title">BNK정기적금</div>
-                    <div class="desc">안정적인 수익을 보장하는 기본상품</div>
-
-                    <div class="rates">
-                        <div class="rate-row">
-                            <span>기본금리</span>
-                            <span class="value">3.10%</span>
-                        </div>
-                        <div class="rate-row high">
-                            <span>최고금리</span>
-                            <span class="value">3.80%</span>
-                        </div>
-                    </div>
-
-                    <button class="view-btn btn-red">상품 보기</button>
-                </div>
-                <div class="product-card">
-                    <span class="badge">자유예금</span>
-                    <div class="title">BNK자유적금</div>
-                    <div class="desc">언제든지 자유로운 입출금</div>
-
-                    <div class="rates">
-                        <div class="rate-row">
-                            <span>기본금리</span>
-                            <span class="value">1.80%</span>
-                        </div>
-                        <div class="rate-row high">
-                            <span>최고금리</span>
-                            <span class="value">2.50%</span>
-                        </div>
-                    </div>
-
-                    <button class="view-btn btn-red">상품 보기</button>
-                </div>
-            </div>
-        </article>
-    </section>
     <section class="interest-chart">
         <h2>금리 한눈에 보기</h2>
         <article>
@@ -684,14 +619,19 @@
         </article>
     </section>
     <section class="tools">
-        <h2>유용한 도구</h2>
+        <h2 style="margin-top: 60px;">유용한 도구</h2>
         <article>
-            <!-- 만기 계산기 -->
+            <!-- 퇴직연금 계산기 -->
             <div class="card">
                 <img th:src="@{/images/product/calculator.png}" alt="만기 계산기">
-                <h3>만기 계산기</h3>
+                <h3>퇴직연금 계산기</h3>
+
                 <label>예치금액</label>
                 <input type="text" id="amount" placeholder="1,000,000"/>
+
+                <label>연 이자율(%)</label>
+                <input type="text" id="rate" placeholder="3.2"/>
+
                 <label>예치기간</label>
                 <select id="period">
                     <option value="12">12개월</option>
@@ -699,8 +639,9 @@
                     <option value="36">36개월</option>
                 </select>
 
-                <div class="result-box" id="result">예상 이자<br><strong>32,000원</strong></div>
-                <button class="btn btn-red" onclick="alert('자세히 계산하기 기능은 준비 중입니다.')">자세히 계산하기</button>
+                <div class="result-box" id="result">예상 이자<br><strong>0원</strong></div>
+                <button class="btn btn-red"
+                        th:onclick="|location.href='@{/mypage/calc}'|">자세히 계산하기</button>
             </div>
 
             <!-- 영업점 찾기 -->
@@ -709,7 +650,9 @@
                 <h3>영업점 찾기</h3>
                 <p class="info-text">가까운 BNK부산은행 영업점을 찾아보세요</p>
                 <p class="info-text">🏦 평일 09:00 - 16:00<br>📞 1588-6200</p>
-                <button class="btn btn-red">영업점 찾기</button>
+                <button type="button"
+                        th:onclick="|location.href='@{/cs/consultation/findStore}'|"
+                        class="btn btn-red">영업점 찾기</button>
             </div>
 
             <!-- 자주 묻는 질문 -->
@@ -721,7 +664,9 @@
                     <li>중도해지 시 이자는 어떻게?</li>
                     <li>우대금리 조건은?</li>
                 </ul>
-                <button class="btn btn-red">FAQ 더보기</button>
+                <button type="button"
+                        th:onclick="|location.href='@{/cs/consultation/FAQ}'|"
+                        class="btn btn-red">FAQ 더보기</button>
             </div>
         </article>
     </section>
@@ -732,9 +677,10 @@
 </body>
 
 </html>
-<!-- 추천 상품 탭 스크립트 -->
+<!-- 추천 상품 탭 + 퇴직연금 계산기 스크립트 -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        /* ===== 추천 상품 탭 ===== */
         const tabs = document.querySelectorAll(".tab");
         const cards = document.querySelectorAll(".product-card");
 
@@ -746,17 +692,56 @@
                 tabs.forEach(t => t.classList.remove("active"));
                 tab.classList.add("active");
 
-                // 카드 필터링
+                // 필요하면 카드 필터링 로직 다시 사용
                 // cards.forEach(card => {
                 //     const cardCategory = card.getAttribute("data-category");
-
                 //     if (filterValue === "all" || cardCategory === filterValue) {
-                //         card.style.display = "block";  // 해당 카드는 보이게
+                //         card.style.display = "block";
                 //     } else {
-                //         card.style.display = "none";   // 나머지는 숨김
+                //         card.style.display = "none";
                 //     }
                 // });
             });
         });
+
+        /* ===== 퇴직연금 계산기 ===== */
+        const amountInput = document.getElementById("amount");
+        const rateInput   = document.getElementById("rate");
+        const periodSelect = document.getElementById("period");
+        const resultBox   = document.getElementById("result");
+
+        // 숫자/콤마만 허용해서 금액 파싱
+        function parseCurrency(value) {
+            if (!value) return 0;
+            return parseFloat(value.toString().replace(/,/g, "")) || 0;
+        }
+
+        // 이자 계산: 예치금액 × (연이율/100) × (개월수/12)
+        function calculateInterest() {
+            const principal = parseCurrency(amountInput.value);
+            const rate = parseFloat(rateInput.value);   // % 단위 (예: 3.2)
+            const months = parseInt(periodSelect.value, 10);
+
+            if (!principal || !rate || !months) {
+                resultBox.innerHTML = "예상 이자<br><strong>0원</strong>";
+                return;
+            }
+
+            const interest = principal * (rate / 100) * (months / 12);
+            const formatted = Math.floor(interest).toLocaleString();
+
+            resultBox.innerHTML = `예상 이자<br><strong>${formatted}원</strong>`;
+        }
+
+        // 입력 변경 시마다 계산
+        amountInput.addEventListener("input", calculateInterest);
+        rateInput.addEventListener("input", calculateInterest);
+        periodSelect.addEventListener("change", calculateInterest);
+
+        // 기본값 세팅 (원하면 수정)
+        amountInput.value = "1000000";
+        rateInput.value = "3.2";
+        periodSelect.value = "12";
+        calculateInterest();
     });
 </script>

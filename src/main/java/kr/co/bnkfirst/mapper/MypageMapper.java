@@ -27,12 +27,17 @@ public interface MypageMapper {
     List<DealDTO> findByDealList(String mid);
     Integer findBySumPlusDbalance(String mid);
     Integer findBySumMinusDbalance(String mid);
-    void updateRecvContract(@Param("pbalance") int pbalance, @Param("pacc") String pacc);
-    void deleteContract(String pacc);
+    void updateRecvContract(@Param("pbalance") int pbalance,
+                            @Param("pacc") String pacc);
+    void deleteContract(@Param("pcuid") String pcuid,
+                        @Param("pcpid") String pcpid);
 
     // ETF 주식 불러오기
     List<PcontractDTO> selectEtf(@Param("pcuid") String pcuid);
 
     // IRP 계좌만 불러오기
     PcontractDTO findByIRP(@Param("pcuid") String pcuid);
+
+    // 2025.11.28. 강민철 - 변경 상품 목록 가져오기
+    List<PcontractDTO> findByUidAndType(String pcuid);
 }

@@ -1,5 +1,6 @@
 package kr.co.bnkfirst.service;
 
+import kr.co.bnkfirst.dto.mypage.EditRequestDTO;
 import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -299,5 +301,87 @@ public class ProductService {
         if (count > 0)
             productMapper.drawPcontract(pc);
         return count > 0;
+    }
+    
+    /*
+        날짜 : 2025.11.30.
+        이름 : 강민철
+        내용 : 변경 상품 매도
+     */
+    @Transactional
+    public boolean editSellProduct(String pcuid, String pacc, EditRequestDTO editRequestDTO) {
+        List<String> sellTypes =  editRequestDTO.getSellTypes();
+        List<PcontractDTO> pcList = editRequestDTO.getProducts();
+
+        if (sellTypes.size() != pcList.size()) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return false;
+        }
+
+        PcontractDTO depositDTO = PcontractDTO.builder()
+                .pcuid(pcuid)
+                .pacc(pacc)
+                .pbalance(editRequestDTO.getTotalAmount().intValue())
+                .type("IRP")
+                .build();
+        int checkError = 0;
+
+        checkError = productMapper.depositPcontract(depositDTO);
+        if(checkError == 0) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return false;
+        }
+
+        for (int i = 0; i < sellTypes.size(); i++) {
+            pcList.get(i).setPcuid(pcuid);
+            if (sellTypes.get(i).equals("PART")) {
+                checkError = productMapper.partSellPcontract(pcList.get(i));
+            } else if (sellTypes.get(i).equals("FULL")) {
+                checkError = productMapper.fullSellPcontract(pcList.get(i));
+            } else {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return false;
+            }
+            if (checkError < 1) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /*
+        날짜 : 2025.11.30.
+        이름 : 강민철
+        내용 : 변경 상품 매수S
+     */
+    @Transactional
+    public boolean editBuyProduct(String pcuid, String pacc, EditRequestDTO editRequestDTO) {
+        List<PcontractDTO> pcList = editRequestDTO.getProducts();
+        PcontractDTO drawDTO = PcontractDTO.builder()
+                .pcuid(pcuid)
+                .pacc(pacc)
+                .pbalance(editRequestDTO.getTotalAmount().intValue())
+                .type("IRP")
+                .build();
+        int checkError = 0;
+
+        checkError = productMapper.drawPcontract(drawDTO);
+        if(checkError == 0) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return false;
+        }
+
+        for (int i = 0; i < pcList.size(); i++) {
+            pcList.get(i).setPcuid(pcuid);
+            checkError = productMapper.extraBuyPcontract(pcList.get(i));
+            if (checkError < 1) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return false;
+            }
+        }
+
+        return true;
     }
 }

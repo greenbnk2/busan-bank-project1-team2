@@ -253,7 +253,6 @@
 
                                     <!-- IRP / DC / DB 공통 아이콘 -->
                                     <svg th:if="${!isFund
-                                                              and i + 1 < #lists.size(contractList)
                                                               and contractList[i].ptype != null
                                                               and (
                                                                     #strings.containsIgnoreCase(contractList[i].ptype, 'IRP')
@@ -268,7 +267,6 @@
 
                                     <!-- 적금 -->
                                     <svg th:if="${!isFund
-                                                                and i + 1 < #lists.size(contractList)
                                                                 and contractList[i].ptype != null
                                                                 and #strings.contains(contractList[i].ptype, '적금')}" width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M2 7C2 6.44687 1.55313 6 1 6C0.446875 6 0 6.44687 0 7V17.5C0 18.8813 1.11875 20 2.5 20H15C15.5531 20 16 19.5531 16 19C16 18.4469 15.5531 18 15 18H2.5C2.225 18 2 17.775 2 17.5V7ZM14.7063 9.70625C15.0969 9.31563 15.0969 8.68125 14.7063 8.29063C14.3156 7.9 13.6812 7.9 13.2906 8.29063L10 11.5844L8.20625 9.79063C7.81563 9.4 7.18125 9.4 6.79063 9.79063L3.29063 13.2906C2.9 13.6812 2.9 14.3156 3.29063 14.7063C3.68125 15.0969 4.31563 15.0969 4.70625 14.7063L7.5 11.9156L9.29375 13.7094C9.68437 14.1 10.3188 14.1 10.7094 13.7094L14.7094 9.70937L14.7063 9.70625Z" fill="#10B981"/>
@@ -281,7 +279,6 @@
 
                                     <!-- ETF -->
                                     <svg th:if="${!isFund
-                                                                and i + 1 < #lists.size(contractList)
                                                                 and contractList[i].ptype != null
                                                                 and #strings.contains(contractList[i].ptype, 'ETF')}"
                                          width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -308,6 +305,7 @@
                                      th:data-balance="${contractList[i].pbalance}"
                                      th:data-pcnapw="${contractList[i].pcnapw}"
                                      th:data-pacc="${contractList[i].pacc}"
+                                     th:data-pcpid="${contractList[i].pcpid}"
                                      style="scale: calc(1.7); cursor: pointer;">
                             </div>
                           </div>
@@ -315,34 +313,56 @@
                             <div>현재 잔액</div>
                             <div style="margin-left: auto;"><span th:text="${#numbers.formatInteger(contractList[i].pbalance, 3, 'COMMA')}"></span>원</div>
                           </div>
-                          <div style="display: flex; margin-top: 15px;">
-                              <!-- 라벨: pbirate 있으면 '연 이자율', 없고 frefpr 있으면 '기준가' -->
-                              <div th:text="${
-                                     contractList[i].pbirate != null
-                                     ? '연 이자율'
-                                     : (contractList[i].frefpr != null ? '기준가' : '')
-                                   }">
-                                                              연 이자율
-                                                          </div>
+                              <div style="margin-top: 15px;">
+                                  <!-- pbirate 있을 때: 연 이자율 -->
+                                  <div th:if="${contractList[i].pbirate != null and contractList[i].pbirate != 0}"
+                                       style="display: flex;">
+                                      <div>연 이자율</div>
+                                      <div style="margin-left: auto;">
+                                          <span th:text="${contractList[i].pbirate}">0.0</span>
+                                          <span>%</span>
+                                      </div>
+                                  </div>
 
-                                                          <!-- 값 + 단위: pbirate면 % , frefpr면 원 -->
-                                                          <div style="margin-left: auto;">
-                                <span th:text="${
-                                       contractList[i].pbirate != null
-                                       ? contractList[i].pbirate
-                                       : (contractList[i].frefpr != null ? contractList[i].frefpr : '')
-                                     }">0.0</span>
-                                                              <span th:text="${
-                                       contractList[i].pbirate != null
-                                       ? '%'
-                                       : (contractList[i].frefpr != null ? '원' : '')
-                                     }">%</span>
+                                  <!-- frefpr 있을 때: 기준가 -->
+                                  <div th:if="${contractList[i].frefpr != null}"
+                                       style="display: flex; margin-top: 4px;">
+                                      <div>기준가</div>
+                                      <div style="margin-left: auto;">
+                                          <span th:text="${#numbers.formatInteger(contractList[i].frefpr, 3, 'COMMA')}">0</span>
+                                          <span>원</span>
+                                      </div>
+                                  </div>
                               </div>
-                          </div>
                           </label>
-                          <div style="text-align: center; margin-top: 20px;">
-                            <div><a href="#" style="text-decoration: none; color: red;">자세히 보기</a></div>
-                          </div>
+                            <div style="text-align: center; margin-top: 20px;">
+                                <div>
+                                    <!-- 펀드인 경우: 펀드 상세(또는 주문) 화면 -->
+                                    <a th:if="${
+                                                #strings.equalsIgnoreCase(contractList[i].ptype, 'FUND')
+                                                or #strings.equalsIgnoreCase(contractList[i].ptype, '펀드')
+                                                or (contractList[i].fid != null and #strings.contains(contractList[i].fid, 'FD'))
+                                              }"
+                                       th:href="@{/product/fund/list}"
+                                       style="text-decoration: none; color: #3B82F6; font-size: 14px;">
+                                        자세히 보기
+                                    </a>
+                                </div>
+
+                                <div>
+                                    <!-- 나머지 상품(예금, 적금 등): 일반 상품 리스트 -->
+                                    <a th:if="${!(
+                                                    #strings.equalsIgnoreCase(contractList[i].ptype, 'ETF')
+                                                    or #strings.equalsIgnoreCase(contractList[i].ptype, 'FUND')
+                                                    or #strings.equalsIgnoreCase(contractList[i].ptype, '펀드')
+                                                    or (contractList[i].fid != null and #strings.contains(contractList[i].fid, 'FD'))
+                                                  )}"
+                                       th:href="@{/product/list}"
+                                       style="text-decoration: none; color: #3B82F6; font-size: 14px;">
+                                        자세히 보기
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                       </div>
                     </div>
@@ -380,7 +400,6 @@
 
                                     <!-- IRP / DC / DB 공통 아이콘 -->
                                     <svg th:if="${!isFund
-                                                              and i + 1 < #lists.size(contractList)
                                                               and contractList[i+1].ptype != null
                                                               and (
                                                                     #strings.containsIgnoreCase(contractList[i+1].ptype, 'IRP')
@@ -395,7 +414,6 @@
 
                                     <!-- 적금 -->
                                     <svg th:if="${!isFund
-                                                                and i + 1 < #lists.size(contractList)
                                                                 and contractList[i+1].ptype != null
                                                                 and #strings.contains(contractList[i+1].ptype, '적금')}" width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M2 7C2 6.44687 1.55313 6 1 6C0.446875 6 0 6.44687 0 7V17.5C0 18.8813 1.11875 20 2.5 20H15C15.5531 20 16 19.5531 16 19C16 18.4469 15.5531 18 15 18H2.5C2.225 18 2 17.775 2 17.5V7ZM14.7063 9.70625C15.0969 9.31563 15.0969 8.68125 14.7063 8.29063C14.3156 7.9 13.6812 7.9 13.2906 8.29063L10 11.5844L8.20625 9.79063C7.81563 9.4 7.18125 9.4 6.79063 9.79063L3.29063 13.2906C2.9 13.6812 2.9 14.3156 3.29063 14.7063C3.68125 15.0969 4.31563 15.0969 4.70625 14.7063L7.5 11.9156L9.29375 13.7094C9.68437 14.1 10.3188 14.1 10.7094 13.7094L14.7094 9.70937L14.7063 9.70625Z" fill="#10B981"/>
@@ -408,7 +426,6 @@
 
                                     <!-- ETF -->
                                     <svg th:if="${!isFund
-                                                                and i + 1 < #lists.size(contractList)
                                                                 and contractList[i+1].ptype != null
                                                                 and #strings.contains(contractList[i+1].ptype, 'ETF')}"
                                          width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -435,6 +452,7 @@
                                      th:data-balance="${contractList[i+1].pbalance}"
                                      th:data-pcnapw="${contractList[i+1].pcnapw}"
                                      th:data-pacc="${contractList[i+1].pacc}"
+                                     th:data-pcpid="${contractList[i+1].pcpid}"
                                      style="scale: calc(1.7); cursor: pointer;">
                             </div>
                           </div>
@@ -442,30 +460,55 @@
                             <div>현재 잔액</div>
                             <div style="margin-left: auto;"><span th:text="${#numbers.formatInteger(contractList[i+1].pbalance, 3, 'COMMA')}"></span>원</div>
                           </div>
-                          <div style="display: flex; margin-top: 15px;">
-                              <div th:text="${
-                                                 contractList[i+1].pbirate != null
-                                                 ? '연 이자율'
-                                                 : (contractList[i+1].frefpr != null ? '기준가' : '')
-                                               }">
-                                                                          연 이자율
-                                                                      </div>
-                                                                      <div style="margin-left: auto;">
-                                            <span th:text="${
-                                                   contractList[i+1].pbirate != null
-                                                   ? contractList[i+1].pbirate
-                                                   : (contractList[i+1].frefpr != null ? contractList[i+1].frefpr : '')
-                                                 }">0.0</span>
-                                                                          <span th:text="${
-                                                   contractList[i+1].pbirate != null
-                                                   ? '%'
-                                                   : (contractList[i+1].frefpr != null ? '원' : '')
-                                                 }">%</span>
+                              <div style="margin-top: 15px;">
+                                  <!-- pbirate 있을 때: 연 이자율 -->
+                                  <div th:if="${contractList[i+1].pbirate != null and contractList[i+1].pbirate != 0}"
+                                       style="display: flex;">
+                                      <div>연 이자율</div>
+                                      <div style="margin-left: auto;">
+                                          <span th:text="${contractList[i+1].pbirate}">0.0</span>
+                                          <span>%</span>
+                                      </div>
+                                  </div>
+
+                                  <!-- frefpr 있을 때: 기준가 -->
+                                  <div th:if="${contractList[i+1].frefpr != null}"
+                                       style="display: flex; margin-top: 4px;">
+                                      <div>기준가</div>
+                                      <div style="margin-left: auto;">
+                                          <span th:text="${#numbers.formatInteger(contractList[i+1].frefpr, 3, 'COMMA')}">0</span>
+                                          <span>원</span>
+                                      </div>
+                                  </div>
                               </div>
-                          </div>
                           </label>
                           <div style="text-align: center; margin-top: 20px;">
-                            <div><a href="#" style="text-decoration: none; color: red;">자세히 보기</a></div>
+                              <div>
+                                  <!-- 펀드인 경우: 펀드 상세(또는 주문) 화면 -->
+                                  <a th:if="${
+                                                #strings.equalsIgnoreCase(contractList[i+1].ptype, 'FUND')
+                                                or #strings.equalsIgnoreCase(contractList[i+1].ptype, '펀드')
+                                                or (contractList[i+1].fid != null and #strings.contains(contractList[i+1].fid, 'FD'))
+                                              }"
+                                     th:href="@{/product/fund/list}"
+                                     style="text-decoration: none; color: #3B82F6; font-size: 14px;">
+                                      자세히 보기
+                                  </a>
+                              </div>
+
+                              <div>
+                                  <!-- 나머지 상품(예금, 적금 등): 일반 상품 리스트 -->
+                                  <a th:if="${!(
+                                                    #strings.equalsIgnoreCase(contractList[i+1].ptype, 'ETF')
+                                                    or #strings.equalsIgnoreCase(contractList[i+1].ptype, 'FUND')
+                                                    or #strings.equalsIgnoreCase(contractList[i+1].ptype, '펀드')
+                                                    or (contractList[i+1].fid != null and #strings.contains(contractList[i+1].fid, 'FD'))
+                                                  )}"
+                                     th:href="@{/product/list}"
+                                     style="text-decoration: none; color: #3B82F6; font-size: 14px;">
+                                      자세히 보기
+                                  </a>
+                              </div>
                           </div>
                         </div>
                       </div>
@@ -504,7 +547,6 @@
 
                                     <!-- IRP / DC / DB 공통 아이콘 -->
                                     <svg th:if="${!isFund
-                                                              and i + 1 < #lists.size(contractList)
                                                               and contractList[i+2].ptype != null
                                                               and (
                                                                     #strings.containsIgnoreCase(contractList[i+2].ptype, 'IRP')
@@ -519,7 +561,6 @@
 
                                     <!-- 적금 -->
                                     <svg th:if="${!isFund
-                                                                and i + 1 < #lists.size(contractList)
                                                                 and contractList[i+2].ptype != null
                                                                 and #strings.contains(contractList[i+2].ptype, '적금')}" width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M2 7C2 6.44687 1.55313 6 1 6C0.446875 6 0 6.44687 0 7V17.5C0 18.8813 1.11875 20 2.5 20H15C15.5531 20 16 19.5531 16 19C16 18.4469 15.5531 18 15 18H2.5C2.225 18 2 17.775 2 17.5V7ZM14.7063 9.70625C15.0969 9.31563 15.0969 8.68125 14.7063 8.29063C14.3156 7.9 13.6812 7.9 13.2906 8.29063L10 11.5844L8.20625 9.79063C7.81563 9.4 7.18125 9.4 6.79063 9.79063L3.29063 13.2906C2.9 13.6812 2.9 14.3156 3.29063 14.7063C3.68125 15.0969 4.31563 15.0969 4.70625 14.7063L7.5 11.9156L9.29375 13.7094C9.68437 14.1 10.3188 14.1 10.7094 13.7094L14.7094 9.70937L14.7063 9.70625Z" fill="#10B981"/>
@@ -532,7 +573,6 @@
 
                                     <!-- ETF -->
                                     <svg th:if="${!isFund
-                                                                and i + 1 < #lists.size(contractList)
                                                                 and contractList[i+2].ptype != null
                                                                 and #strings.contains(contractList[i+2].ptype, 'ETF')}"
                                          width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -559,6 +599,7 @@
                                      th:data-balance="${contractList[i+2].pbalance}"
                                      th:data-pcnapw="${contractList[i+2].pcnapw}"
                                      th:data-pacc="${contractList[i+2].pacc}"
+                                     th:data-pcpid="${contractList[i+2].pcpid}"
                                      style="scale: calc(1.7); cursor: pointer;">
                             </div>
                           </div>
@@ -566,30 +607,55 @@
                             <div>현재 잔액</div>
                             <div style="margin-left: auto;"><span th:text="${#numbers.formatInteger(contractList[i+2].pbalance, 3, 'COMMA')}"></span>원</div>
                           </div>
-                          <div style="display: flex; margin-top: 15px;">
-                              <div th:text="${
-                                                 contractList[i+2].pbirate != null
-                                                 ? '연 이자율'
-                                                 : (contractList[i+2].frefpr != null ? '기준가' : '')
-                                               }">
-                                                                          연 이자율
-                                                                      </div>
-                                                                      <div style="margin-left: auto;">
-                                            <span th:text="${
-                                                   contractList[i+2].pbirate != null
-                                                   ? contractList[i+2].pbirate
-                                                   : (contractList[i+2].frefpr != null ? contractList[i+2].frefpr : '')
-                                                 }">0.0</span>
-                                                                          <span th:text="${
-                                                   contractList[i+2].pbirate != null
-                                                   ? '%'
-                                                   : (contractList[i+2].frefpr != null ? '원' : '')
-                                                 }">%</span>
+                              <div style="margin-top: 15px;">
+                                  <!-- pbirate 있을 때: 연 이자율 -->
+                                  <div th:if="${contractList[i+2].pbirate != null and contractList[i+2].pbirate != 0}"
+                                       style="display: flex;">
+                                      <div>연 이자율</div>
+                                      <div style="margin-left: auto;">
+                                          <span th:text="${contractList[i+2].pbirate}">0.0</span>
+                                          <span>%</span>
+                                      </div>
+                                  </div>
+
+                                  <!-- frefpr 있을 때: 기준가 -->
+                                  <div th:if="${contractList[i+2].frefpr != null}"
+                                       style="display: flex; margin-top: 4px;">
+                                      <div>기준가</div>
+                                      <div style="margin-left: auto;">
+                                          <span th:text="${#numbers.formatInteger(contractList[i+2].frefpr, 3, 'COMMA')}">0</span>
+                                          <span>원</span>
+                                      </div>
+                                  </div>
                               </div>
-                          </div>
                           </label>
                           <div style="text-align: center; margin-top: 20px;">
-                            <div><a href="#" style="text-decoration: none; color: red;">자세히 보기</a></div>
+                              <div>
+                                  <!-- 펀드인 경우: 펀드 상세(또는 주문) 화면 -->
+                                  <a th:if="${
+                                                #strings.equalsIgnoreCase(contractList[i+2].ptype, 'FUND')
+                                                or #strings.equalsIgnoreCase(contractList[i+2].ptype, '펀드')
+                                                or (contractList[i+2].fid != null and #strings.contains(contractList[i+2].fid, 'FD'))
+                                              }"
+                                     th:href="@{/product/fund/list}"
+                                     style="text-decoration: none; color: #3B82F6; font-size: 14px;">
+                                      자세히 보기
+                                  </a>
+                              </div>
+
+                              <div>
+                                  <!-- 나머지 상품(예금, 적금 등): 일반 상품 리스트 -->
+                                  <a th:if="${!(
+                                                    #strings.equalsIgnoreCase(contractList[i+2].ptype, 'ETF')
+                                                    or #strings.equalsIgnoreCase(contractList[i+2].ptype, 'FUND')
+                                                    or #strings.equalsIgnoreCase(contractList[i+2].ptype, '펀드')
+                                                    or (contractList[i+2].fid != null and #strings.contains(contractList[i+2].fid, 'FD'))
+                                                  )}"
+                                     th:href="@{/product/list}"
+                                     style="text-decoration: none; color: #3B82F6; font-size: 14px;">
+                                      자세히 보기
+                                  </a>
+                              </div>
                           </div>
                         </div>
                       </div>
@@ -710,6 +776,7 @@
             <input type="hidden" name="pacc" id="fPacc">
             <input type="hidden" name="pbalance" id="fAmount">
             <input type="hidden" name="recvAcc" id="fRecvAcct" value="321-654-78901">
+            <input type="hidden" name="pcpid" id="fpcpid">
         </form>
       <div style="display: flex; gap: 20px; margin-top: 25px;">
         <div>
@@ -1210,6 +1277,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fPacc    = document.getElementById('fPacc');
     const fAmount  = document.getElementById('fAmount');
     const fRecvAcct= document.getElementById('fRecvAcct'); // 기본값 이미 세팅됨
+    const fPcpid    = document.getElementById('fpcpid');
 
     if (!btnFinal) return;
 
@@ -1272,6 +1340,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // hidden 값 채우기 (서버로 보낼 원시값)
     const pacc   = selectedProd.dataset.pacc || '';
+        const pcpid  = selectedProd.dataset.pcpid || '';
     const amount = (selectedProd.dataset.balance || '0').replace(/[, ]/g, ''); // 숫자만
 
     if (!pacc) {
@@ -1281,6 +1350,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fPacc.value   = pacc;      // name=pacc
     fAmount.value = amount;    // name=pbalance (해지 금액)
+    fPcpid.value  = pcpid;
     // fRecvAcct 는 value="321-654-78901" 이미 설정됨
 
     // ✅ 비밀번호 일치 → 진행

@@ -1,6 +1,5 @@
-<!-- templates/corporate/employee/delete.html -->
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>직원 삭제</title>
@@ -12,28 +11,20 @@
         .cancel { background:#555; color:white; }
     </style>
 </head>
+
 <body>
 <div class="card">
     <h2 style="color:#b01010;">삭제하시겠습니까?</h2>
     <p>삭제된 직원 정보는 복구할 수 없습니다.</p>
 
-    <button class="btn delete" id="deleteBtn">삭제하기</button>
-    <button class="btn cancel" onclick="location.href='/corporate/employee/list.html'">취소</button>
+    <!-- 삭제 요청(Form POST) -->
+    <form th:action="@{'/corporate/employee/delete/' + ${employee.empId}}" method="post">
+        <button class="btn delete" type="submit">삭제하기</button>
+    </form>
+
+    <!-- 취소 -->
+    <button class="btn cancel" onclick="location.href='/corporate/employee/list'">취소</button>
 </div>
-
-<script>
-    const employees = JSON.parse(localStorage.getItem("employeesData")) || [];
-    const empId = new URLSearchParams(window.location.search).get("empId");
-
-    document.getElementById("deleteBtn").onclick = () => {
-        const idx = employees.findIndex(e => e.empId == empId);
-        employees.splice(idx, 1);
-
-        localStorage.setItem("employeesData", JSON.stringify(employees));
-        alert("삭제 완료");
-        location.href = "/corporate/employee/list.html";
-    };
-</script>
 
 </body>
 </html>

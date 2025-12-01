@@ -14,14 +14,15 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 //                pattern = {
 //                        "kr\\.co\\.bnkfirst\\.kiwoom\\..*",
 //                        "kr\\.co\\.bnkfirst\\.kiwoomRank\\..*",
-//                        "kr\\.co\\.bnkfirst\\.config\\.WebSocketConfig"
+//                        "kr\\.co\\.bnkfirst\\.config\\.WebSocketConfig",
+//                        "kr\\.co\\.bnkfirst\\.kiwoomETF\\..*"
 //                }
 //        ),
 //        @ComponentScan.Filter(
 //                type = FilterType.ASSIGNABLE_TYPE,
 //                classes = {
 //                        kr.co.bnkfirst.controller.StockController.class,
-//                        kr.co.bnkfirst.controller.KiwoomTestController.class
+//                        kr.co.bnkfirst.controller.KiwoomTestController.class,
 //                }
 //        )
 //})

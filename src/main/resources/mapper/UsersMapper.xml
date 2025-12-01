@@ -118,9 +118,7 @@
     <!-- 회원 탈퇴 -->
     <delete id="deletePcontractByMid" parameterType="string">
         DELETE FROM PCONTRACT
-        WHERE UID = (
-            SELECT UID FROM USERS WHERE MID = #{mid}
-        )
+        WHERE PCUID = #{mid}
     </delete>
     <delete id="deleteUserByMid" parameterType="string">
         DELETE FROM USERS

@@ -84,8 +84,8 @@
               <div>
                 <div style="display: flex; ">
                   <div>
-                    <div style="font-size: 14px; color: #6B7280;">예금상품</div>
-                    <div style="font-size: 24px; color: #2B2F36;">24</div>
+                    <div style="font-size: 14px; color: #6B7280;">IRP 상품</div>
+                    <div style="font-size: 24px; color: #2B2F36;"><span th:text="${IRP}">24</span></div>
                   </div>
                   <div style="display: flex; align-items: center; justify-content: center; margin-left: auto;border-radius: 8px; background-color: #f8e6e6; width: 48px; height: 48px;">
                     <svg width="23" height="20" viewBox="0 0 23 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -113,8 +113,8 @@
               <div>
                 <div style="display: flex; ">
                   <div>
-                    <div style="font-size: 14px; color: #6B7280;">적금상품</div>
-                    <div style="font-size: 24px; color: #2B2F36;">18</div>
+                    <div style="font-size: 14px; color: #6B7280;">DB 상품</div>
+                    <div style="font-size: 24px; color: #2B2F36;"><span th:text="${DB}">18</span></div>
                   </div>
                   <div style="display: flex; justify-content: center; align-items: center; margin-left: auto;border-radius: 8px; background-color: #f8e6e6; width: 48px; height: 48px;">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -131,7 +131,7 @@
                 </div>
                 <div style="display: flex; align-items: center; margin-top: 20px;">
                   <div style="width: 6px; height: 6px; background-color: #D91A1A; border-radius: 100%; margin-right: 7px;"></div> 
-                  <div style="font-size: 12px; color: #4B5563;">활성 상품</div>
+                  <div style="font-size: 12px; color: #4B5563;">운용 중 상품</div>
                 </div>
               </div>
             </div>
@@ -142,8 +142,8 @@
               <div>
                 <div style="display: flex; ">
                   <div>
-                    <div style="font-size: 14px; color: #6B7280;">신규상품</div>
-                    <div style="font-size: 24px; color: #2B2F36;">6</div>
+                    <div style="font-size: 14px; color: #6B7280;">DC 상품</div>
+                    <div style="font-size: 24px; color: #2B2F36;"><span th:text="${DC}">6</span></div>
                   </div>
                   <div style="display: flex; justify-content: center; align-items: center; margin-left: auto;border-radius: 8px; background-color: #f8ebda; width: 48px; height: 48px;">
                     <svg width="23" height="20" viewBox="0 0 23 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -160,7 +160,7 @@
                 </div>
                 <div style="display: flex; align-items: center; margin-top: 20px;">
                   <div style="width: 6px; height: 6px; background-color: #FF8B00; border-radius: 100%; margin-right: 7px;"></div>
-                  <div style="font-size: 12px; color: #4B5563;">이번 달 출시</div>
+                  <div style="font-size: 12px; color: #4B5563;">보유 DC 상품</div>
                 </div>
               </div>
             </div>
@@ -171,8 +171,8 @@
               <div>
                 <div style="display: flex; ">
                   <div>
-                    <div style="font-size: 14px; color: #6B7280;">전체상품</div>
-                    <div style="font-size: 24px; color: #2B2F36;">48</div>
+                    <div style="font-size: 14px; color: #6B7280;">펀드 상품</div>
+                    <div style="font-size: 24px; color: #2B2F36;"><span th:text="${Fund}">48</span></div>
                   </div>
                   <div style="display: flex; justify-content: center; align-items: center; margin-left: auto;border-radius: 8px; background-color: #ddfced; width: 48px; height: 48px;">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -182,153 +182,187 @@
                 </div>
                 <div style="display: flex; align-items: center; margin-top: 20px;">
                   <div style="width: 6px; height: 6px; background-color: #1CB26C; border-radius: 100%; margin-right: 7px;"></div>
-                  <div style="font-size: 12px; color: #4B5563;">운영 중</div>
+                  <div style="font-size: 12px; color: #4B5563;">등록된 펀드</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- 1) Chart.js -->
-      <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+        <!-- 1) Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
 
-      <!-- 2) 차트 카드 (1200px 컨테이너 안에 넣으세요) -->
-      <div class="chart-card" style="
-        background:#fff; border:1px solid #E5E7EB; border-radius:16px;
-        box-shadow:0 2px 8px rgba(0,0,0,.05); padding:16px; margin-top:24px;
-        width:100%;box-sizing:border-box;
-      ">
-        <div class="chart-head" style="display:flex; align-items:center;">
-          <div style="margin-left: 30px; margin-top: 10px; margin-bottom: 10px;">
-            <div style="font-size:20px; color:#2B2F36;">상품 통계</div>
-            <div style="margin-top:7px;font-size:12px; color:#9CA3AF;">최근 6개월 추이</div>
-          </div>
-          <div style="margin-left:auto; margin-right: 45px; display:flex; gap:16px; align-items:center; font-size:14px; color:#4B5563;">
-            <span style="display:inline-flex; align-items:center; gap:6px;">
-              <span style="width:8px; height:8px; border-radius:50%; background:#D91A1A; display:inline-block;"></span> 가입
-            </span>
-            <span style="display:inline-flex; align-items:center; gap:6px;">
-              <span style="width:8px; height:8px; border-radius:50%; background:#2B2F36; display:inline-block;"></span> 해지
-            </span>
-          </div>
-        </div>
+        <!-- 2) IRP / DC / DB 평균 금리 막대그래프 -->
+            <div class="chart-card" style="
+      background:#fff; border:1px solid #E5E7EB; border-radius:16px;
+      box-shadow:0 2px 8px rgba(0,0,0,.05); padding:16px; margin-top:24px;
+      width:100%; box-sizing:border-box;
+    ">
+                <div style="display: flex;">
+                    <div style="width:582.9px;">
+                        <div class="chart-head" style="display:flex; align-items:center;">
+                            <div style="margin-left: 30px; margin-top: 10px; margin-bottom: 10px;">
+                                <div style="font-size:20px; color:#2B2F36;">IRP / DC / DB 평균 금리 비교</div>
+                                <div style="margin-top:7px;font-size:12px; color:#9CA3AF;">상품군별 평균 기본금리(%)</div>
+                            </div>
+                        </div>
 
-        <!-- 고정 폭/높이로 이미지 느낌 살림 (1200x270) -->
-        <div style="margin-top:8px; width:100%; overflow:hidden; margin-bottom: 10px;">
-          <canvas id="productChart" width="1200" height="270" style="display:block;"></canvas>
-        </div>
-      </div>
+                        <div style="margin-top:8px; width:100%; overflow:hidden; margin-bottom:10px;">
+                            <canvas id="rateBarChart" width="550" height="270" style="display:block;"></canvas>
+                        </div>
+                    </div>
+                    <div style="width:582.9px;">
+                        <div class="chart-head" style="display:flex; align-items:center;">
+                            <div style="margin-left: 30px; margin-top: 10px; margin-bottom: 10px;">
+                                <div style="font-size:20px; color:#2B2F36;">펀드 위험등급 분포</div>
+                                <div style="margin-top:7px;font-size:12px; color:#9CA3AF;">위험등급별 펀드 상품 개수</div>
+                            </div>
+                        </div>
 
-      <script>
-        // ====== 초기 차트 셋업 ======
-        const ctx = document.getElementById('productChart').getContext('2d');
+                        <div style="margin-top:8px; width:100%; overflow:hidden; margin-bottom:10px; display:flex; justify-content:center;">
+                            <!-- 크기는 적당히 조절 가능 -->
+                            <canvas id="riskPieChart" width="400" height="260" style="display:block;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        const initialData = {
-          labels: ['7월','8월','9월','10월','11월','12월'],
-          joinValues:  [180, 220, 200, 240, 280, 320], // 가입
-          cancelValues:[ 40,  50,  35,  45,  55,  42]  // 해지
-        };
+        <script th:inline="javascript">
+            const avgIrp = /*[[${pbIRP}]]*/ 0;
+            const avgDc  = /*[[${pbDC}]]*/ 0;
+            const avgDb  = /*[[${pbDB}]]*/ 0;
 
-        let productChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: initialData.labels,
-            datasets: [
-              {
-                label: '가입',
-                data: initialData.joinValues,
-                borderColor: '#D91A1A',
-                backgroundColor: 'rgba(217,26,26,0.10)',
-                pointBackgroundColor: '#D91A1A',
-                pointBorderColor: '#D91A1A',
-                pointRadius: 4,
-                tension: 0.3,
-                borderWidth: 2
-              },
-              {
-                label: '해지',
-                data: initialData.cancelValues,
-                borderColor: '#2B2F36',
-                backgroundColor: 'rgba(43,47,54,0.10)',
-                pointBackgroundColor: '#2B2F36',
-                pointBorderColor: '#2B2F36',
-                pointRadius: 4,
-                tension: 0.3,
-                borderWidth: 2
-              }
-            ]
-          },
-          options: {
-            responsive: false,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { display: false },
-              tooltip: { mode: 'index', intersect: false }
-            },
-            // 오른쪽 살짝 패딩(범례/라벨 여유)
-            layout: { padding: { left:16, right:80, top:16, bottom:16 } },
+            const ctxRate = document.getElementById('rateBarChart').getContext('2d');
 
-            scales: {
-              x: {
-                // ✅ 양 끝에 1/2 step 여백 추가 (첫/마지막 라벨, 포인트 안 잘림)
-                offset: true,
-                // 첫/마지막 눈금 기준으로 차트 영역을 잡음
-                bounds: 'ticks',
-                grid: { display: false },
-                ticks: {
-                  color: '#6B7280',
-                  font: { size: 12 },
-                  // 라벨끼리 붙으면 간격 조금 더 벌려줌
-                  autoSkipPadding: 12,
-                  padding: 6
+            // 데이터 중 최대값 기준으로 y축 상한 계산 (0.5 여유)
+            const maxRate = Math.max(avgIrp, avgDc, avgDb);
+            const yMax = Math.ceil(maxRate + 0.5);   // 예: 최대가 2.7 → 3으로 설정
+
+            new Chart(ctxRate, {
+                type: 'bar',
+                data: {
+                    labels: ['IRP', 'DC', 'DB'],
+                    datasets: [{
+                        label: '평균 기본금리(%)',
+                        data: [avgIrp, avgDc, avgDb],
+                        backgroundColor: ['#D91A1A', '#FF8B00', '#1CB26C'],
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
                 },
-              },
-              y: {
-                title: { display: true, text: '건수', color: '#6B7280', font: { size: 12, weight: '600' } },
-                min: 0,
-                max: 400,
-                ticks: { stepSize: 100, color: '#6B7280', font: { size: 12 } },
-                grid: { color: '#F0F0F3' }
-              }
-            },
+                options: {
+                    responsive: false,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display:false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    const v = ctx.parsed.y ?? 0;
+                                    return ` ${v.toFixed(2)} %`;
+                                }
+                            }
+                        }
+                    },
+                    layout: { padding: { left:16, right:16, top:16, bottom:16 } },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                color: '#6B7280',
+                                font: { size: 12 }
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '금리(%)',
+                                color: '#6B7280',
+                                font: { size: 12, weight: '600' }
+                            },
+                            beginAtZero: true,
+                            max: yMax,                 // ✅ 축 상한을 직접 지정
+                            ticks: {
+                                color: '#6B7280',
+                                font: { size: 12 }
+                            },
+                            grid: { color: '#F0F0F3' }
+                        }
+                    }
+                }
+            });
+        </script>
 
-            // (옵션) 라인/포인트가 가장자리에서 잘리지 않게 살짝 허용
-            elements: { line: { borderWidth: 2 }, point: { radius: 4 } }
-          }
-        });
+        <script th:inline="javascript">
+            // 등급별 펀드 개수 (컨트롤러에서 온 값)
+            const danger1 = /*[[${Danger1Fund}]]*/ 0;
+            const danger2 = /*[[${Danger2Fund}]]*/ 0;
+            const danger3 = /*[[${Danger3Fund}]]*/ 0;
+            const danger4 = /*[[${Danger4Fund}]]*/ 0;
+            const danger5 = /*[[${Danger5Fund}]]*/ 0;
+            const danger6 = /*[[${Danger6Fund}]]*/ 0;
 
-        // ====== DB 연동 시 사용할 업데이트 함수 ======
-        /**
-         * setChartData({
-         *   labels: ['7월','8월',...],
-         *   joinValues:  [..가입수..],
-         *   cancelValues:[..해지수..]
-         * })
-         */
-        function setChartData({ labels, joinValues, cancelValues }) {
-          if (!productChart) return;
-          productChart.data.labels = labels;
-          productChart.data.datasets[0].data = joinValues;
-          productChart.data.datasets[1].data = cancelValues;
-          productChart.update();
-        }
+            const ctxRisk = document.getElementById('riskPieChart').getContext('2d');
 
-        // ====== 예: API로 불러오기 (DB 연동) ======
-        // 실제로는 서버에서 제공하는 엔드포인트를 호출하세요.
-        async function loadFromApi() {
-          // const res = await fetch('/api/admin/product-stats?months=6');
-          // const json = await res.json();
-          // setChartData({
-          //   labels: json.labels,
-          //   joinValues: json.join,
-          //   cancelValues: json.cancel
-          // });
-        }
+            const riskData = [danger1, danger2, danger3, danger4, danger5, danger6];
+            const riskLabels = [
+                '1등급 (매우높은위험)',
+                '2등급 (높은위험)',
+                '3등급 (다소높은위험)',
+                '4등급 (보통위험)',
+                '5등급 (낮은위험)',
+                '6등급 (매우낮은위험)'
+            ];
 
-        // 필요 시 호출
-        // loadFromApi();
-      </script>
-      <div style="display: flex; margin-top: 24px;">
+            new Chart(ctxRisk, {
+                type: 'pie',
+                data: {
+                    labels: riskLabels,
+                    datasets: [{
+                        data: riskData,
+                        backgroundColor: [
+                            '#EF4444', // 1등급
+                            '#FB923C', // 2등급
+                            '#FACC15', // 3등급
+                            '#A3E635', // 4등급
+                            '#22C55E', // 5등급
+                            '#0EA5E9'  // 6등급
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 10,
+                                boxHeight: 10,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                color: '#4B5563',
+                                font: { size: 11 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    const label = ctx.label || '';
+                                    const value = ctx.parsed;
+                                    const dataArr = ctx.dataset.data || [];
+                                    const total = dataArr.reduce((a, b) => a + b, 0);
+                                    const percent = total ? (value / total * 100).toFixed(1) : 0;
+                                    return ` ${label}: ${value}개 (${percent}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+        <div style="display: flex; margin-top: 24px;">
         <a th:href="@{/admin/env}" style="text-decoration: none;" class="menu-link">
             <div class="menu-card" style="background-color: white; width: 280px; height: 200px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
               <div style="padding: 21px;">

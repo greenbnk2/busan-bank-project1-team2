@@ -3,9 +3,8 @@ package kr.co.bnkfirst.controller;
 import jakarta.servlet.http.HttpSession;
 import kr.co.bnkfirst.dto.MydataAccountDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
-import kr.co.bnkfirst.dto.mypage.DealDTO;
+import kr.co.bnkfirst.dto.mypage.EditRequestDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
-import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.service.MydataAccountService;
 import kr.co.bnkfirst.service.MypageService;
 import kr.co.bnkfirst.service.ProductService;
@@ -82,10 +81,10 @@ public class MypageController {
         return "mypage/mypage_prodCancel";
     }
     @PostMapping("/mypage/prod/cancel")
-    public String ProdCancel(String pacc, int pbalance, String recvAcc){
+    public String ProdCancel(String pacc, int pbalance, String recvAcc, Principal principal, String pcpid){
         log.info("pacc = "+pacc+"  pbalance="+pbalance+"  recvAcc="+recvAcc);
 
-        mypageService.deleteContractProcess(pbalance, pacc, recvAcc);
+        mypageService.deleteContractProcess(pbalance, recvAcc, principal.getName(), pcpid);
         return "redirect:/mypage/prod";
     }
     @GetMapping("/mypage/setup")
@@ -197,5 +196,72 @@ public class MypageController {
         return ResponseEntity.ok().body(new Object(){
             public final boolean success = true;
         });
+    }
+
+    /*
+        날짜 : 2025.11.28.
+        이름 : 강민철
+        내용 : 상품 변경 페이지 불러오기
+     */
+    @GetMapping("mypage/prod/edit")
+    public String prodEditPage() {
+        return "mypage/mypage_prodEdit";
+    }
+
+    /*
+        날짜 : 2025.11.28.
+        이름 : 강민철
+        내용 : 변경 상품 목록 가져오기
+     */
+    @GetMapping("api/mypage/editList")
+    public ResponseEntity<List<PcontractDTO>> editList(Principal principal) {
+        if (principal == null) {
+            throw new NullPointerException("principal is null");
+        }
+        String mid = principal.getName();
+        log.info(mypageService.getProdEditList(mid).toString());
+        return ResponseEntity.ok(mypageService.getProdEditList(mid));
+    }
+
+    /*
+        날짜 : 2025.11. 30.
+        이름 : 강민철
+        내용 : 변경 상품 매도
+     */
+    @PostMapping("api/mypage/editSell")
+    public ResponseEntity<?> editSell(@RequestBody EditRequestDTO request, Principal principal) {
+        if (principal == null) {
+            throw new NullPointerException("principal is null");
+        }
+        String mid = principal.getName();
+        String acc = request.getPacc();
+        List<String> sellTypes = request.getSellTypes();
+        List<PcontractDTO> dtoList = request.getProducts();
+        log.info("editsell dtolist {}", dtoList);
+        log.info("editsell selltypes {}", sellTypes);
+        log.info("editsell totalAmount {}", request.getTotalAmount());
+        Boolean checkSuccess = productService.editSellProduct(mid, acc, request);
+
+        return ResponseEntity.ok(checkSuccess);
+    }
+
+    /*
+        날짜 : 2025.11. 30.
+        이름 : 강민철
+        내용 : 변경 상품 매수
+     */
+    @PostMapping("api/mypage/editBuy")
+    public ResponseEntity<?> editBuy(@RequestBody EditRequestDTO request, Principal principal) {
+        if (principal == null) {
+            throw new NullPointerException("principal is null");
+        }
+        String mid = principal.getName();
+        String acc = request.getPacc();
+        List<PcontractDTO> dtoList = request.getProducts();
+        log.info("editbuy dtolist {}", dtoList);
+        log.info("editbuy totalAmount {}", request.getTotalAmount());
+        Boolean checkSuccess = productService.editBuyProduct(mid, acc, request);
+
+        return ResponseEntity.ok(checkSuccess);
     }
  }

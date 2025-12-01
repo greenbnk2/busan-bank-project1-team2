@@ -36,7 +36,24 @@ public class AdminController {
 
 
     @GetMapping("/admin/main")
-    public String main(){
+    public String main(Model model){
+
+        model.addAttribute("IRP", adminService.countByItem("IRP"));
+        model.addAttribute("DC", adminService.countByItem("DC"));
+        model.addAttribute("DB", adminService.countByItem("DB"));
+        model.addAttribute("Fund", adminService.countByFund());
+
+        model.addAttribute("pbIRP", adminService.avgByItem("IRP"));
+        model.addAttribute("pbDC", adminService.avgByItem("DC"));
+        model.addAttribute("pbDB", adminService.avgByItem("DB"));
+
+        model.addAttribute("Danger1Fund", adminService.countByDanger(1));
+        model.addAttribute("Danger2Fund", adminService.countByDanger(2));
+        model.addAttribute("Danger3Fund", adminService.countByDanger(3));
+        model.addAttribute("Danger4Fund", adminService.countByDanger(4));
+        model.addAttribute("Danger5Fund", adminService.countByDanger(5));
+        model.addAttribute("Danger6Fund", adminService.countByDanger(6));
+
         return "admin/admin_main";
     }
     @GetMapping("/admin/member")
@@ -88,6 +105,17 @@ public class AdminController {
 
         log.info("pageRequestDTO={}", pageRequestDTO);
         PageResponseAdminProductDTO pageResponseDTO = adminService.selectAllProduct(pageRequestDTO);
+
+        model.addAttribute("pbIRP", adminService.avgByItem("IRP"));
+        model.addAttribute("pbDC", adminService.avgByItem("DC"));
+        model.addAttribute("pbDB", adminService.avgByItem("DB"));
+
+        model.addAttribute("Danger1Fund", adminService.countByDanger(1));
+        model.addAttribute("Danger2Fund", adminService.countByDanger(2));
+        model.addAttribute("Danger3Fund", adminService.countByDanger(3));
+        model.addAttribute("Danger4Fund", adminService.countByDanger(4));
+        model.addAttribute("Danger5Fund", adminService.countByDanger(5));
+        model.addAttribute("Danger6Fund", adminService.countByDanger(6));
 
         model.addAttribute("pageResponseDTO", pageResponseDTO);
         return "admin/admin_prod";
