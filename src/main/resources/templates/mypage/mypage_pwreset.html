@@ -18,18 +18,25 @@
         <form>
             <!-- 테이블 감싸기 -->
             <div>
-                <table class="table-wrap">
+                <table class="table-wrap" >
                     <tr>
-                        <td><h2 style="margin-bottom: 15px; text-align: center">🔒비밀번호 변경</h2></td>
+                        <td><h2 style="margin-bottom: 15px; text-align: center">비밀번호 변경</h2></td>
                     </tr>
-                    <tr>
-                        <td style="padding-left: 5px; color: #16a34a">✔ 안전한 서비스 이용을 위해 비밀번호를 강화해 주세요</td>
+                    <tr class="pw-tip">
+                        <td>
+                            <div class="pw-tip-inner">
+                                <span class="tip-check">✔</span>
+                                안전한 서비스 이용을 위해 비밀번호를 강화해 주세요
+                            </div>
+                        </td>
                     </tr>
-                    <tr>
-                        <td style="padding-left: 5px; color: #16a34a">✔ 다른 계정과 중복되지 않는 비밀번호를 사용해 주세요</td>
-                    </tr>
-                    <tr>
-                        <td style="padding-left: 5px; color: #16a34a">✔ 이전에 사용한 비밀번호는 피하는 것이 안전합니다</td>
+                    <tr class="pw-tip">
+                        <td>
+                            <div class="pw-tip-inner">
+                                <span class="tip-check">✔</span>
+                                다른 계정과 중복되지 않는 비밀번호를 사용해 주세요
+                            </div>
+                        </td>
                     </tr>
                     <tr class="field-row">
                         <td class="field-label">현재 비밀번호</td>
@@ -633,6 +640,24 @@
         font-size: 16px;
         line-height: 1;
         padding: 0;
+    }
+    .pw-tip td {
+        display: flex;
+        justify-content: center;
+        padding: 4px 0;
+    }
+    .pw-tip-inner {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-align: left;
+        color: #16a34a;
+        font-size: 14px;
+    }
+    .tip-check {
+        font-size: 15px;
+        color: #16a34a;
+        flex-shrink: 0;
     }
 </style>
 </html>

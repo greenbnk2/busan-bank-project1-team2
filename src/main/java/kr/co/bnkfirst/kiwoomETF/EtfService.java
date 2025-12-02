@@ -71,11 +71,12 @@ public class EtfService {
             String code = row.get("stk_cd");
             String name = row.get("stk_nm");
 
-            long price = parseLong(row.get("close_pric"));
-            double changeRate = parseDouble(row.get("pre_rt"));
-            double nav = parseDouble(row.get("nav"));
-            double premiumRate = 0.0;
+            // 🔥 가격 / NAV 는 절대값
+            long   price       = parsePriceAbs(row.get("close_pric"));
+            double changeRate  = parseDoubleSigned(row.get("pre_rt"));  // 부호 유지
+            double nav         = parseDoubleAbs(row.get("nav"));        // NAV도 절대값
 
+            double premiumRate = 0.0;
             if (nav != 0.0) {
                 premiumRate = (price - nav) / nav * 100.0;
             }
@@ -93,7 +94,7 @@ public class EtfService {
                     .traceIndexName(traceIndexName)
                     .build();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("ETF toDto 변환 실패 row={}", row, e);
             return null;
         }
     }
@@ -136,5 +137,45 @@ public class EtfService {
                 .filter(e -> code.equals(e.getCode()))
                 .findFirst()
                 .orElse(null);
+    }
+
+    // 가격용: 항상 양수 (부호 제거)
+    private long parsePriceAbs(String s) {
+        if (s == null) return 0L;
+        String cleaned = s.trim().replace(",", ""); // " -102,880" → "-102880"
+        if (cleaned.isEmpty()) return 0L;
+        try {
+            long v = Long.parseLong(cleaned);
+            return Math.abs(v);                      // -102880 → 102880
+        } catch (NumberFormatException e) {
+            log.warn("parsePriceAbs 실패: '{}'", s);
+            return 0L;
+        }
+    }
+
+    // 등락률처럼 부호가 의미 있는 값
+    private double parseDoubleSigned(String s) {
+        if (s == null) return 0.0;
+        String cleaned = s.trim().replace(",", "");
+        if (cleaned.isEmpty()) return 0.0;
+        try {
+            return Double.parseDouble(cleaned);      // -0.05 → -0.05
+        } catch (NumberFormatException e) {
+            log.warn("parseDoubleSigned 실패: '{}'", s);
+            return 0.0;
+        }
+    }
+
+    // NAV 같은 ‘가격’ 값: 절대값으로
+    private double parseDoubleAbs(String s) {
+        if (s == null) return 0.0;
+        String cleaned = s.trim().replace(",", "");
+        if (cleaned.isEmpty()) return 0.0;
+        try {
+            return Math.abs(Double.parseDouble(cleaned));
+        } catch (NumberFormatException e) {
+            log.warn("parseDoubleAbs 실패: '{}'", s);
+            return 0.0;
+        }
     }
 }

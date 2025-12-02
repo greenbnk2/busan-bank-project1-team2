@@ -335,13 +335,13 @@ function computeBuyAmount(card) {
 function updateSellSummary() {
     const cards = document.querySelectorAll('.sell-card');
 
-    let fundCount = 0;   // 투자상품 선택 건수
-    let fundQty = 0;   // 투자상품 매도좌수 (실제 매도금액 > 0 인 상품 수)
+    let fundCount = 0;   // 투자상품 선택 건수(실제로 매도금액 > 0 인 상품 수)
+    let fundQty   = 0;   // 투자상품 매도좌수 (지금은 건수와 동일하게 사용)
     let fundAmount = 0;  // 투자상품 매도금액 합계
 
-    let tdCount = 0;   // 원리금보장상품 선택 건수
-    let tdQty = 0;   // 원리금보장상품 매도좌수
-    let tdAmount = 0;   // 원리금보장상품 매도금액 합계
+    let tdCount   = 0;   // 원리금보장상품 선택 건수
+    let tdQty     = 0;   // 원리금보장상품 매도좌수
+    let tdAmount  = 0;   // 원리금보장상품 매도금액 합계
 
     cards.forEach(card => {
         const checkbox = card.querySelector('.prod-check');
@@ -350,30 +350,35 @@ function updateSellSummary() {
             return;
         }
 
+        const sellAmt = computeSellAmount(card);
+        const hasQty  = sellAmt > 0;
+
+        // ✅ 금액/비중이 하나도 없으면(= sellAmt === 0) 아예 집계에서 제외
+        if (!hasQty) {
+            return;
+        }
+
         const typeRaw = card.dataset.type || '';
         const type = typeRaw.toUpperCase();
 
-        const sellAmt = computeSellAmount(card);
-        const hasQty = sellAmt > 0; // 실제 매도금액이 있을 때만 매도좌수 카운트
-
         if (type === 'FUND') {
             fundCount += 1;
+            fundQty   += 1;
             fundAmount += sellAmt;
-            if (hasQty) fundQty += 1;
         } else if (type.endsWith('TD')) {
-            tdCount += 1;
-            tdAmount += sellAmt;
-            if (hasQty) tdQty += 1;
+            tdCount   += 1;
+            tdQty     += 1;
+            tdAmount  += sellAmt;
         } else {
             // 기타 타입은 일단 투자상품으로 취급
             fundCount += 1;
+            fundQty   += 1;
             fundAmount += sellAmt;
-            if (hasQty) fundQty += 1;
         }
     });
 
-    const totalCount = fundCount + tdCount;
-    const totalQty = fundQty + tdQty;
+    const totalCount  = fundCount + tdCount;
+    const totalQty    = fundQty + tdQty;
     const totalAmount = fundAmount + tdAmount;
 
     // 전역 합계 상태 저장 (모달에서도 사용)
@@ -389,24 +394,24 @@ function updateSellSummary() {
         totalAmount
     };
 
-    const elFundCount = document.getElementById('sumFundCount');
-    const elFundQty = document.getElementById('sumFundQty');
-    const elFundAmount = document.getElementById('sumFundAmount');
-    const elTdCount = document.getElementById('sumTdCount');
-    const elTdQty = document.getElementById('sumTdQty');
-    const elTdAmount = document.getElementById('sumTdAmount');
-    const elTotalCount = document.getElementById('sumTotalCount');
-    const elTotalQty = document.getElementById('sumTotalQty');
+    const elFundCount   = document.getElementById('sumFundCount');
+    const elFundQty     = document.getElementById('sumFundQty');
+    const elFundAmount  = document.getElementById('sumFundAmount');
+    const elTdCount     = document.getElementById('sumTdCount');
+    const elTdQty       = document.getElementById('sumTdQty');
+    const elTdAmount    = document.getElementById('sumTdAmount');
+    const elTotalCount  = document.getElementById('sumTotalCount');
+    const elTotalQty    = document.getElementById('sumTotalQty');
     const elTotalAmount = document.getElementById('sumTotalAmount');
 
-    if (elFundCount) elFundCount.textContent = `${fundCount}`;
-    if (elFundQty) elFundQty.textContent = `${fundQty}`;
-    if (elFundAmount) elFundAmount.textContent = `${formatCurrency(fundAmount)}원`;
-    if (elTdCount) elTdCount.textContent = `${tdCount}`;
-    if (elTdQty) elTdQty.textContent = `${tdQty}`;
-    if (elTdAmount) elTdAmount.textContent = `${formatCurrency(tdAmount)}원`;
-    if (elTotalCount) elTotalCount.textContent = `${totalCount}`;
-    if (elTotalQty) elTotalQty.textContent = `${totalQty}`;
+    if (elFundCount)   elFundCount.textContent   = `${fundCount}`;
+    if (elFundQty)     elFundQty.textContent     = `${fundQty}`;
+    if (elFundAmount)  elFundAmount.textContent  = `${formatCurrency(fundAmount)}원`;
+    if (elTdCount)     elTdCount.textContent     = `${tdCount}`;
+    if (elTdQty)       elTdQty.textContent       = `${tdQty}`;
+    if (elTdAmount)    elTdAmount.textContent    = `${formatCurrency(tdAmount)}원`;
+    if (elTotalCount)  elTotalCount.textContent  = `${totalCount}`;
+    if (elTotalQty)    elTotalQty.textContent    = `${totalQty}`;
     if (elTotalAmount) elTotalAmount.textContent = `${formatCurrency(totalAmount)}원`;
 }
 
@@ -1121,7 +1126,7 @@ async function loadEditList() {
                 </dl>
 
                 <div class="card-actions">
-                    <button type="button" class="btn btn-outline btn-full-sell">전부매도</button>
+                    <button type="button" class="btn btn-sheen btn-pressable btn-full-sell">전부매도</button>
                     <button type="button" class="btn btn-main btn-partial-toggle">일부매도</button>
                 </div>
 
@@ -1141,7 +1146,7 @@ async function loadEditList() {
                         </dd>
                     </div>
                     <div class="card-actions">
-                        <button type="button" class="btn btn-outline btn-partial-cancel">취소</button>
+                        <button type="button" class="btn btn-sheen btn-pressable btn-partial-cancel">취소</button>
                     </div>
                 </div>
             `;
@@ -1204,7 +1209,7 @@ async function loadEditList() {
                         </dd>
                     </div>
                     <div class="card-actions">
-                        <button type="button" class="btn btn-outline btn-cancel-buy">취소</button>
+                        <button type="button" class="btn btn-sheen btn-pressable btn-cancel-buy">취소</button>
                     </div>
                 </div>
             `;

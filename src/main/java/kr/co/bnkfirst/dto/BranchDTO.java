@@ -11,22 +11,29 @@ import lombok.NoArgsConstructor;
 @Builder
 public class BranchDTO {
 
-    // ====== 내부 DB용 =====
-    private int brid;           // 내부 지점 ID
-    private String brname;      // 내부 지점명
-    private String braddr;      // 내부 주소
-    private String brtel;       // 내부 전화번호
-    private String brfax;       // 내부 팩스
+    /* =========================
+       내부 DB용 (BRANCH TABLE)
+       ========================= */
+    private int brid;
+    private String brname;
+    private String braddr;
+    private String brtel;
+    private String brfax;
 
-    // ==== KFTC API 용 ====
+    // ★ 반드시 필요 : 지점 분류용 TYPE
+    private String type;     // 영업점 / 365코너 / 24/365코너 / 대여금고 / 외화ATM
+
+
+    /* =========================
+       외부 API (KFTC용)
+       ========================= */
     private String bankCode;
     private String bankName;
     private String branchCode;
     private String branchName;
-    private String address;     // 외부 주소
-    private String tel;         // 외부 전화번호
+    private String address;
+    private String tel;
     private String latitude;
     private String longitude;
-
 
 }

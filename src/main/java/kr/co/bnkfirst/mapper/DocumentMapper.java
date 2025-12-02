@@ -39,9 +39,9 @@ public interface DocumentMapper {
         *
     from DOCUMENT
     order by DOCUPDATE desc
-    fetch first 4 rows only
+    fetch first 2 rows only
     """)
-    List<DocumentDTO> selectLatestDocuments4();
+    List<DocumentDTO> selectLatestDocuments2();
 
     // 메인페이지용 이벤트 조회 메서드 추가
     @Select("""

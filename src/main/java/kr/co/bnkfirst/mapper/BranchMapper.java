@@ -8,13 +8,34 @@ import java.util.List;
 @Mapper
 public interface BranchMapper {
 
-    //전체조회
-    @Select("SELECT * FROM BRANCH ORDER BY BRID ASC")
+    /* ============================================
+        1) 전체 조회 (TYPE TRIM)
+       ============================================ */
+    @Select("""
+        SELECT 
+            BRID,
+            BRNAME,
+            BRADDR,
+            BRTEL,
+            BRFAX,
+            TRIM(TYPE) AS TYPE
+        FROM BRANCH
+        ORDER BY BRID ASC
+    """)
     List<BranchDTO> findAllBranches();
 
-    // ✅ 페이징 조회용
+
+    /* ============================================
+        2) 페이징 조회
+       ============================================ */
     @Select("""
-        SELECT *
+        SELECT 
+            BRID,
+            BRNAME,
+            BRADDR,
+            BRTEL,
+            BRFAX,
+            TRIM(TYPE) AS TYPE
         FROM BRANCH
         ORDER BY BRID ASC
         OFFSET #{offset} ROWS
@@ -25,46 +46,87 @@ public interface BranchMapper {
             @Param("size")   int size
     );
 
-    // ✅ 전체 개수(페이지 계산용, 나중에 쓸 수도 있음)
+
+    /* ============================================
+        3) 총 개수
+       ============================================ */
     @Select("SELECT COUNT(*) FROM BRANCH")
     int countBranches();
 
-    //검색기능 ( all, 지역명, 영업점명, 지점코드, 주소)
+
+    /* ============================================
+        4) 검색 기능 (NULL 안전 + TYPE 포함)
+       ============================================ */
     @Select("""
-            SELECT * FROM BRANCH
-            WHERE LOWER(BRNAME) LIKE '%' || LOWER(#{keyword}) || '%'
-               OR LOWER(BRADDR) LIKE '%' || LOWER(#{keyword}) || '%'
-               OR LOWER(BRTEL) LIKE '%' || LOWER(#{keyword}) || '%'
-               OR LOWER(BRFAX) LIKE '%' || LOWER(#{keyword}) || '%'
-               OR TO_CHAR(BRID) LIKE '%' || #{keyword} || '%'
-            ORDER BY BRID ASC
+        SELECT
+            BRID,
+            BRNAME,
+            BRADDR,
+            BRTEL,
+            BRFAX,
+            TRIM(TYPE) AS TYPE
+        FROM BRANCH
+        WHERE (
+                LOWER(BRNAME) LIKE '%' || LOWER(#{keyword}) || '%'
+             OR LOWER(BRADDR) LIKE '%' || LOWER(#{keyword}) || '%'
+             OR LOWER(BRTEL)  LIKE '%' || LOWER(#{keyword}) || '%'
+             OR LOWER(BRFAX)  LIKE '%' || LOWER(#{keyword}) || '%'
+             OR LOWER(COALESCE(TYPE, '')) LIKE '%' || LOWER(#{keyword}) || '%'
+             OR TO_CHAR(BRID) LIKE '%' || #{keyword} || '%'
+        )
+        ORDER BY BRID ASC
     """)
     List<BranchDTO> searchBranches(@Param("keyword") String keyword);
 
-    // 🔥 영업점 삭제
-    @Delete("DELETE FROM BRANCH WHERE BRID = #{brid}")
-    int deleteBranch(@Param("brid") int brid);
 
-    // 🔎 단일 영업점 조회
-    @Select("SELECT * FROM BRANCH WHERE BRID = #{brid}")
+    /* ============================================
+        5) 단일 조회
+       ============================================ */
+    @Select("""
+        SELECT
+            BRID,
+            BRNAME,
+            BRADDR,
+            BRTEL,
+            BRFAX,
+            TRIM(TYPE) AS TYPE
+        FROM BRANCH
+        WHERE BRID = #{brid}
+    """)
     BranchDTO findBranchById(@Param("brid") int brid);
 
-    // ✏️ 영업점 수정
+
+    /* ============================================
+        6) INSERT (TYPE TRIM 보정)
+       ============================================ */
+    @Insert("""
+        INSERT INTO BRANCH 
+        (BRID, BRNAME, BRADDR, BRTEL, BRFAX, TYPE)
+        VALUES 
+        (BRANCH_SEQ.NEXTVAL, #{brname}, #{braddr}, #{brtel}, #{brfax}, TRIM(#{type}))
+    """)
+    int insertBranch(BranchDTO dto);
+
+
+    /* ============================================
+        7) UPDATE (TYPE TRIM 보정)
+       ============================================ */
     @Update("""
         UPDATE BRANCH
-        SET BRNAME = #{brname},
+        SET 
+            BRNAME = #{brname},
             BRADDR = #{braddr},
             BRTEL  = #{brtel},
-            BRFAX  = #{brfax}
+            BRFAX  = #{brfax},
+            TYPE   = TRIM(#{type})
         WHERE BRID = #{brid}
     """)
     int updateBranch(BranchDTO dto);
 
-    @Insert("""
-    INSERT INTO BRANCH (BRID, BRNAME, BRADDR, BRTEL, BRFAX)
-    VALUES (BRANCH_SEQ.NEXTVAL, #{brname}, #{braddr}, #{brtel}, #{brfax})
-""")
-    int insertBranch(BranchDTO dto);
 
-
+    /* ============================================
+        8) DELETE
+       ============================================ */
+    @Delete("DELETE FROM BRANCH WHERE BRID = #{brid}")
+    int deleteBranch(@Param("brid") int brid);
 }

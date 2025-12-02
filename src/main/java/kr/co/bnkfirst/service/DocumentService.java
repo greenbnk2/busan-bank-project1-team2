@@ -27,8 +27,8 @@ public class DocumentService {
         return documentMapper.searchDocuments(keyword);
     }
 
-    public List<DocumentDTO> getLatestDocuments4() {
-        return documentMapper.selectLatestDocuments4();
+    public List<DocumentDTO> getLatestDocuments2() {
+        return documentMapper.selectLatestDocuments2();
     }
 
     // 메인페이지 이벤트용

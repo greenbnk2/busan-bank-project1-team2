@@ -28,7 +28,7 @@ public class MainpageController {
 
     @GetMapping({"/main/main","/"})
     public String mainpage(Model model) {
-        List<DocumentDTO> latestDocs = documentService.getLatestDocuments4();
+        List<DocumentDTO> latestDocs = documentService.getLatestDocuments2();
         List<MainEventDTO> eventList = documentService.getMainEvents();
 
         model.addAttribute("latestDocs", latestDocs);

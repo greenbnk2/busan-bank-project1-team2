@@ -1,6 +1,7 @@
 :root {
-    --main: #8F792A; /* 메인 컬러 */
-    --point: #FBD736; /* 포인트 컬러 */
+    --main: #8B0305; /* 메인 컬러 */
+    --point: #d61a1a; /* 포인트 컬러 */
+    --shadow: rgba(217,26,26,.45);
     --bg: #F6F6F8;
     --card: #FFFFFF;
     --line: #E5E7EB;
@@ -61,9 +62,11 @@ main {
 }
 
 .tab-btn.is-active {
-    background: linear-gradient(180deg, #FFE375, var(--point));
-    color: #3B2F08;
-    box-shadow: 0 3px 8px rgba(143, 121, 42, 0.3);
+    background: linear-gradient(180deg, #f24a4a, #d61a1a);
+    box-shadow: 0 8px 18px -12px var(--shadow);
+    transform: none;
+    color: white;
+    font-weight: 500;
 }
 
 /* 패널 공통 */
@@ -106,7 +109,7 @@ main {
 }
 
 .summary-item.highlight {
-    background: #FFF8D6;
+    background: #FDEEEE;
     border-color: var(--point);
 }
 
@@ -178,7 +181,7 @@ main {
 
 .product-card {
     background: #fff;
-    border: 1px solid #F3EAD0;
+    border: 1px solid var(--line);
     border-radius: 16px;
     padding: 16px 16px 14px;
     display: flex;
@@ -203,7 +206,7 @@ main {
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: #FFF8E0;
+    background: #FDEEEE;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -295,7 +298,7 @@ main {
 .btn {
     flex: 1;
     height: 36px;
-    border-radius: 999px;
+    border-radius: 999px !important;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
@@ -307,13 +310,15 @@ main {
 }
 
 .btn-main {
-    background: linear-gradient(180deg, #FFE375, var(--point));
-    color: #3B2F08;
-    box-shadow: 0 4px 10px rgba(143, 121, 42, 0.25);
+    background: linear-gradient(180deg, #F6555C, var(--point));
+    color: white;
+    box-shadow: 0 8px 18px -12px var(--shadow);
 }
 
 .btn-main:hover {
-    background: linear-gradient(180deg, #FFE88D, #FACC15);
+    background: linear-gradient(180deg, #f24a4a, #d61a1a);
+    box-shadow: 0 8px 18px -12px var(--shadow);
+    transform: none; /* 확실하게 떠오르지 않도록 고정 */
 }
 
 .btn-outline {
@@ -566,7 +571,7 @@ main {
 }
 
 .pin-input-wrap input:focus {
-    outline: 2px solid #FBD736;
+    outline: 2px solid #B1141B;
     outline-offset: 1px;
 }
 
