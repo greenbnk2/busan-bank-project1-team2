@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'kr.co.bnkfirst'
-version = '1.0.0-SNAPSHOT'
+version = '1.0.0-RELEASE'
 description = 'BNKFirst'
 
 java {
