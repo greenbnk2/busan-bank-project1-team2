@@ -182,13 +182,15 @@
 
     <!-- 직원 목록 -->
     <div class="card">
-        <div class="card-title">직원 목록</div>
+        <div class="card-title"></div>
 
-        <table>
+        <table style="text-align: center;">
             <thead>
             <tr>
                 <th>직원ID</th>
                 <th>이름</th>
+                <th>부서</th>
+                <th>직급</th>
                 <th>제도</th>
                 <th>계좌번호</th>
                 <th>재직 상태</th>
@@ -205,6 +207,14 @@
                        style="text-decoration:none; color:#222; font-weight:600;">
                         <span th:text="${emp.name}"></span>
                     </a>
+                </td>
+
+                <td>
+                    <span th:text="${emp.department}"></span>
+                </td>
+
+                <td>
+                    <span th:text="${emp.position}"></span>
                 </td>
 
                 <td>

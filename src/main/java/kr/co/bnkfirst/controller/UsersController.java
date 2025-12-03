@@ -44,7 +44,8 @@ public class UsersController {
 
         if (dto == null) {
 
-            return "redirect:/member/main?error=fail";
+            ra.addFlashAttribute("loginErrorMsg", "회원 정보가 일치하지 않습니다.");
+            return "redirect:/member/main";
         }
 
         // 최근 접속일자
@@ -369,7 +370,8 @@ public class UsersController {
             }
 
             session.invalidate();
-            rttr.addFlashAttribute("msg", "회원 탈퇴가 완료되었습니다.");
+
+            rttr.addFlashAttribute("msg", "회원이 탈퇴되었습니다. 이용해 주셔서 감사합니다.");
             return "redirect:/member/main";
 
         } catch (Exception e) {

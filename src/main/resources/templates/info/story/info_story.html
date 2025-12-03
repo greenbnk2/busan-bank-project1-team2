@@ -19,22 +19,40 @@
     <section class="press-grid">
       <!-- 왼쪽 -->
       <div class="card press">
-        <div class="press-main">
-          <div><img th:src="@{/images/assets/img/press-hero.jpg}" alt="BNK부산은행 타이틀스폰서 조인식"></div>
-          <div>
-            <a href="#" class="mini" style="margin-bottom: 10px;">
-              <img th:src="@{/images/assets/img/press-1.jpg}" alt="">
-              <div><div style="font-size:12px;color:#666">2025-11-10</div><div style="font-size:13px">WKL 여자프로농구 후원</div></div>
-            </a>
-            <a href="#" class="mini" style="margin-bottom: 10px;">
-              <img th:src="@{/images/assets/img/press-2.jpg}" alt="">
-              <div><div style="font-size:12px;color:#666">2025-11-08</div><div style="font-size:13px">지역 상생 금융 발표</div></div>
-            </a>
-            <a href="#" class="mini">
-              <img th:src="@{/images/assets/img/press-3.jpg}" alt="">
-              <div><div style="font-size:12px;color:#666">2025-11-05</div><div style="font-size:13px">청년 창업 금융패키지</div></div>
-            </a>
-          </div>
+        <div class="press-main"><a href="#">
+            <div>
+                <img th:src="@{/images/assets/img/press-hero.jpg}" alt="BNK부산은행 타이틀스폰서 조인식">
+            </div>
+        </a>
+
+            <div>
+
+                <a href="#" class="mini" style="margin-bottom: 10px;">
+                    <img th:src="@{/images/assets/img/press-1.jpg}" alt="">
+                    <div>
+                        <div style="font-size:12px;color:#666">2025-11-10</div>
+                        <div style="font-size:13px">WKL 여자프로농구 후원</div>
+                    </div>
+                </a>
+
+                <a href="#" class="mini" style="margin-bottom: 10px;">
+                    <img th:src="@{/images/assets/img/press-2.jpg}" alt="">
+                    <div>
+                        <div style="font-size:12px;color:#666">2025-11-08</div>
+                        <div style="font-size:13px">지역 상생 금융 발표</div>
+                    </div>
+                </a>
+
+                <a href="#" class="mini">
+                    <img th:src="@{/images/assets/img/press-3.jpg}" alt="">
+                    <div>
+                        <div style="font-size:12px;color:#666">2025-11-05</div>
+                        <div style="font-size:13px">청년 창업 금융패키지</div>
+                    </div>
+                </a>
+
+            </div>
+
         </div>
         <h3>BNK부산은행 WKL 여자프로농구 2025~2026 타이틀 스폰서 조인식</h3>
         <div class="subtitle">BNK금융그룹, 여자프로농구 2025~2026시즌 타이틀 스폰서 체결</div>
@@ -45,11 +63,31 @@
       <div class="stack" style="display:flex;flex-direction:column;gap:20px;">
         <div class="card">
           <div class="headline"><div class="bar"></div><h2 class="section-title">공지사항</h2></div>
-          <ul class="notice" style="list-style:none;margin:0;padding:0;">
-            <li><span class="muted">2025-11-11</span><span>영업시간 변경 공지 <span class="new"></span></span></li>
-            <li><span class="muted">2025-11-10</span><span>홈페이지 점검 안내 <span class="new"></span></span></li>
-            <li><span class="muted">2025-11-09</span><span>인터넷뱅킹 일시 중단 <span class="new"></span></span></li>
-          </ul>
+            <ul class="notice" style="list-style:none;margin:0;padding:0;">
+
+                <li>
+                    <a href="#" style="text-decoration:none;color:inherit;">
+                        <span class="muted">2025-11-11</span>
+                        <span>영업시간 변경 공지 <span class="new"></span></span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" style="text-decoration:none;color:inherit;">
+                        <span class="muted">2025-11-10</span>
+                        <span>홈페이지 점검 안내 <span class="new"></span></span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" style="text-decoration:none;color:inherit;">
+                        <span class="muted">2025-11-09</span>
+                        <span>인터넷뱅킹 일시 중단 <span class="new"></span></span>
+                    </a>
+                </li>
+
+            </ul>
+
         </div>
 
         <div class="card">
@@ -112,10 +150,21 @@
         </div>
         <div style="height:12px;"></div>
         <div class="ticker">
-          <div class="tick-item"><div style="font-size:12px;color:#666;">2025-11-10</div>채용설명 드로잉</div>
-          <div class="tick-item"><div style="font-size:12px;color:#666;">2025-11-09</div>사회공헌 스쿨 2기 모집</div>
-          <div class="tick-item"><div style="font-size:12px;color:#666;">2025-11-08</div>청년금융 아카데미 안내</div>
-        </div>
+            <a href="#" class="tick-item">
+                <div style="font-size:12px;color:#666;">2025-11-10</div>
+                채용설명 드로잉
+            </a>
+
+            <a href="#" class="tick-item">
+                <div style="font-size:12px;color:#666;">2025-11-09</div>
+                사회공헌 스쿨 2기 모집
+            </a>
+
+            <a href="#" class="tick-item">
+                <div style="font-size:12px;color:#666;">2025-11-08</div>
+                청년금융 아카데미 안내
+            </a>
+</div>
       </aside>
     </section>
   </main>
@@ -204,6 +253,40 @@
       .press-grid{grid-template-columns:1fr;}
       main{width:90%;margin:40px auto;}
     }
+    .tick-item {
+        display: block;
+        text-decoration: none;
+        color: #111;
+        margin-bottom: 10px;
+        padding: 4px 0;
+        transition: color 0.2s ease;
+    }
+
+    /* hover 시 글자 빨간색 */
+    .tick-item:hover {
+        color: #DE0000;
+    }
+
+    .notice li a:hover {
+        color: #DE0000;
+    }
+
+    .notice li a {
+        display: block;
+        padding: 6px 0;
+        text-decoration: none;
+        color: #111;
+        transition: color 0.2s ease-in-out;
+    }
+
+    .notice li a:hover {
+        color: #DE0000; /* BNK 레드 */
+    }
+
+
+
+
+
   </style>
 </body>
 <footer>

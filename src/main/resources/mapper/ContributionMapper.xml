@@ -35,7 +35,7 @@
     <select id="getExpectedContributionForMonth" resultType="long">
         SELECT NVL(SUM(AMOUNT), 0)
         FROM CONTRIBUTION
-        WHERE YEARMONTH = TO_CHAR(SYSDATE, 'YYYYMM')
+        WHERE YEARMONTH = '202511'
     </select>
 
 </mapper>

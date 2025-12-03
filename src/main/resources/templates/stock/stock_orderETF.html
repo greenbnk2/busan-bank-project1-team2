@@ -2129,35 +2129,35 @@
 
         document.getElementById('tickerContent').innerHTML = html + html;
 
-            // 👇 현재 화면 종목이 리스트에 있으면 상단 가격/수익률 갱신
-            if (currentItem) {
-                const nowPrice = Number(currentItem.price);
-                if (!isNaN(nowPrice)) {
-                    const nowPriceEl = document.getElementById('topCurrentPrice');
-                    if (nowPriceEl) {
-                        nowPriceEl.textContent = nowPrice.toLocaleString('ko-KR') + '원';
-                    }
-                    // ✅ 여기서 현재 수익 계산
-                    updateCurrentProfit(nowPrice);
-                }
-
-                const changeEl = document.getElementById('topChangeInfo');
-                if (changeEl && currentItem.changeRate != null) {
-                    const rate = Number(currentItem.changeRate);
-                    const sign = rate > 0 ? '+' : (rate < 0 ? '-' : '');
-                    const absRate = Math.abs(rate).toFixed(2);
-
-                    let color = '#555555';
-                    if (rate > 0) color = '#d60000';
-                    else if (rate < 0) color = '#0051c7';
-                    changeEl.style.color = color;
-
-                    changeEl.innerHTML = `${sign}${absRate}%`;
-
-                    // 필요하면 여기도 -7% 토스트 재사용 가능
-                    // checkToastByChangeRate(rate);
-                }
-            }
+            // // 👇 현재 화면 종목이 리스트에 있으면 상단 가격/수익률 갱신
+            // if (currentItem) {
+            //     const nowPrice = Number(currentItem.price);
+            //     if (!isNaN(nowPrice)) {
+            //         const nowPriceEl = document.getElementById('topCurrentPrice');
+            //         if (nowPriceEl) {
+            //             nowPriceEl.textContent = nowPrice.toLocaleString('ko-KR') + '원';
+            //         }
+            //         // ✅ 여기서 현재 수익 계산
+            //         updateCurrentProfit(nowPrice);
+            //     }
+            //
+            //     const changeEl = document.getElementById('topChangeInfo');
+            //     if (changeEl && currentItem.changeRate != null) {
+            //         const rate = Number(currentItem.changeRate);
+            //         const sign = rate > 0 ? '+' : (rate < 0 ? '-' : '');
+            //         const absRate = Math.abs(rate).toFixed(2);
+            //
+            //         let color = '#555555';
+            //         if (rate > 0) color = '#d60000';
+            //         else if (rate < 0) color = '#0051c7';
+            //         changeEl.style.color = color;
+            //
+            //         changeEl.innerHTML = `${sign}${absRate}%`;
+            //
+            //         // 필요하면 여기도 -7% 토스트 재사용 가능
+            //         // checkToastByChangeRate(rate);
+            //     }
+            // }
     }
 </script>
 

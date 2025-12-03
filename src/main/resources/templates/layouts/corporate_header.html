@@ -117,11 +117,19 @@
 
             // 바깥 클릭 시 닫기
             document.addEventListener("click", (e) => {
+
+                // ★ 폼 내부 클릭은 절대 가로채지 않음 (submit 보호)
+                if (e.target.closest("form")) {
+                    return;
+                }
+
+                // 사이드바 바깥 영역 클릭 시 닫기
                 if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
                     sidebar.classList.remove("active");
                     hamburger.classList.remove("active");
                 }
             });
+
 
             // 메뉴 활성화
             window.initCorporateHeader = function(key) {

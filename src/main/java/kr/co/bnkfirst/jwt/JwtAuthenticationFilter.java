@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         // ⭐ 기업뱅킹 화면 접근은 인증 제외
-        if (path.startsWith("/BNK/corporate/")) {
+        if (path.startsWith("/corporate/")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -79,9 +79,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         // ⭐ 기업뱅킹(corporate)은 필터 자체를 아예 적용하지 않음
-        if (path.startsWith("/BNK/corporate/")) {
+        if (path.startsWith("/corporate/")) {
             return true;
         }
+
 
         // ⭐ KFTC API 인증 제외
         if (path.startsWith("/BNK/api/")) {

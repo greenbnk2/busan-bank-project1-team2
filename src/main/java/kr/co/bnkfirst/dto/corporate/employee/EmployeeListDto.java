@@ -9,4 +9,6 @@ public class EmployeeListDto {
     private String planType;
     private String accountNo;
     private String status;
+    private String position;
+    private String department;
 }

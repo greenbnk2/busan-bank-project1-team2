@@ -13,38 +13,42 @@
   </section>
 
   <!-- Card Menu -->
-  <section class="info-section">
-    <div class="info-card social">
-      <h3><a href="#">사회공헌</a></h3>
-    </div>
-    <div class="info-card invest">
-      <h3><a href="#">투자자정보</a></h3>
-    </div>
-    <div class="info-card hr">
-      <h3><a href="#">인재채용</a></h3>
-    </div>
-    <div class="info-card family">
-      <h3><a href="#">부은가족</a></h3>
-    </div>
-  </section>
+    <section class="info-section">
+        <a href="https://www.happybnk.co.kr/Home/Main" class="info-card social">
+            <h3>사회공헌</h3>
+        </a>
+
+        <a href="https://www.busanbank.co.kr/ib20/mnu/BHPBKI412000001" class="info-card invest">
+            <h3>투자자정보</h3>
+        </a>
+
+        <a href="https://www.busanbank.co.kr/ib20/mnu/BHPBKI438001001" class="info-card hr">
+            <h3>인재채용</h3>
+        </a>
+
+        <a href="/family" class="info-card family">
+            <h3>부은가족</h3>
+        </a>
+    </section>
+
 
   <!-- Notice + News 통합 영역 -->
   <section class="board">
     <div class="board-column">
       <h3 class="board-section">공지사항</h3>
       <ul>
-        <li><a href="#">(오픈소스 소프트웨어 관리시스템 구축) ... </a><span class="new-icon">N</span></li>
-        <li><a href="#">(기업뱅킹 법인 비대면실명확인 프로세스 개선) ... </a><span class="new-icon">N</span></li>
-        <li><a href="#">(침입방지시스템(IPS) 노후화 교체) ... </a><span class="new-icon">N</span></li>
+        <li><a href="https://www.busanbank.co.kr/ib20/mnu/BHPBKI392002003">(오픈소스 소프트웨어 관리시스템 구축) ... </a><span class="new-icon">N</span></li>
+        <li><a href="https://www.busanbank.co.kr/ib20/mnu/BHPBKI392002003">(기업뱅킹 법인 비대면실명확인 프로세스 개선) ... </a><span class="new-icon">N</span></li>
+        <li><a href="https://www.busanbank.co.kr/ib20/mnu/BHPBKI392002003">(침입방지시스템(IPS) 노후화 교체) ... </a><span class="new-icon">N</span></li>
       </ul>
     </div>
 
     <div class="board-column">
       <h3 class="board-section">보도자료</h3>
       <ul>
-        <li><a href="#">BNK부산은행, 서민금융 대표상품 ‘새희망홀씨’ 지원 확대... </a><span class="new-icon">N</span></li>
-        <li><a href="#">BNK부산은행, 부산은행 육상실업 최기만 선수 금메달... </a><span class="new-icon">N</span></li>
-        <li><a href="#">BNK부산은행, 임직원 재능으로 지역과 함께... </a><span class="new-icon">N</span></li>
+        <li><a href="https://www.busanbank.co.kr/ib20/mnu/BHPBKI391002001">BNK부산은행, 서민금융 대표상품 ‘새희망홀씨’ 지원 확대... </a><span class="new-icon">N</span></li>
+        <li><a href="https://www.busanbank.co.kr/ib20/mnu/BHPBKI391002001">BNK부산은행, 부산은행 육상실업 최기만 선수 금메달... </a><span class="new-icon">N</span></li>
+        <li><a href="https://www.busanbank.co.kr/ib20/mnu/BHPBKI391002001">BNK부산은행, 임직원 재능으로 지역과 함께... </a><span class="new-icon">N</span></li>
       </ul>
     </div>
   </section>
@@ -234,6 +238,12 @@
     border-radius: 50%;
     margin-left: 6px;
   }
+  .info-card {
+      display: block;       /* 전체 클릭 가능 */
+      text-decoration: none;
+      color: inherit;
+  }
+
 </style>
 <header>
     <div th:replace="~{layouts/footer.html}"></div>

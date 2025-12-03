@@ -12,6 +12,8 @@
         SELECT
             EMPID       AS empId,
             NAME        AS name,
+            DEPARTMENT  AS department,
+            POSITION    AS position,
             PLANTYPE    AS planType,
             ACCOUNTNO   AS accountNo,
             STATUS      AS status
@@ -188,6 +190,8 @@
         SELECT
         EMPID       AS empId,
         NAME        AS name,
+        DEPARTMENT  AS department,
+        POSITION    AS position,
         PLANTYPE    AS planType,
         ACCOUNTNO   AS accountNo,
         STATUS      AS status
@@ -236,7 +240,6 @@
             parameterType="kr.co.bnkfirst.dto.corporate.employee.EmployeeCreateDto">
 
         INSERT INTO EMPLOYEE (
-            EMPID,
             NAME,
             PLANTYPE,
             ACCOUNTNO,
@@ -245,7 +248,6 @@
             POSITION,
             HIREDATE
         ) VALUES (
-                     EMP_SEQ.NEXTVAL,
                      #{name},
                      #{planType},
                      #{accountNo},

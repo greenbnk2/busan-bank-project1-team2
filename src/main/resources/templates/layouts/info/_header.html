@@ -4,9 +4,7 @@
     <div class="nav-wrap" style="display:flex; padding-top:20px; padding-bottom: 15px; padding-left: 30px; padding-right: 10px;">
         <!--로고-->
         <a th:href="@{/main/main}">
-            <img th:src="@{/upload/images/bnk_logo.svg}"
-                 alt=""
-                 style="width:200px; height:50px;">
+            <img th:src="@{/images/bnk_logo.png}" alt="BNK" class="logo-img" width="258px">
         </a>
         <div style="flex-grow:1;">
             <ul class="gnb" style="
@@ -45,10 +43,10 @@
                             <div>
                                 <h4>BNK부산은행스토리</h4>
                                 <ul>
-                                    <li><a href="#" style="font-size: 18px;">BNK부산은행뉴스</a></li>
-                                    <li><a href="#" style="font-size: 18px;">홍보센터</a></li>
-                                    <li><a href="#" style="font-size: 18px;">CI/캐릭터소개</a></li>
-                                    <li><a href="#" style="font-size: 18px;">사회공헌(행복한BNK)</a></li>
+                                    <li><a th:href="@{/info/story}" style="font-size: 18px;">BNK부산은행뉴스</a></li>
+                                    <li><a th:href="@{/info/story}" style="font-size: 18px;">홍보센터</a></li>
+                                    <li><a th:href="@{/info/story}" style="font-size: 18px;">CI/캐릭터소개</a></li>
+                                    <li><a th:href="@{/info/story}" style="font-size: 18px;">사회공헌(행복한BNK)</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -62,11 +60,11 @@
                             <div>
                                 <h4>투자자정보</h4>
                                 <ul>
-                                    <li><a href="#" style="font-size: 18px;">경영정보</a></li>
-                                    <li><a href="#" style="font-size: 18px;">공고</a></li>
-                                    <li><a href="#" style="font-size: 18px;">신용등급</a></li>
-                                    <li><a href="#" style="font-size: 18px;">BNK금융지주</a></li>
-                                    <li><a href="#" style="font-size: 18px;">IR정보</a></li>
+                                    <li><a th:href="@{/info/invest}" style="font-size: 18px;">경영정보</a></li>
+                                    <li><a th:href="@{/info/invest}" style="font-size: 18px;">공고</a></li>
+                                    <li><a th:href="@{/info/invest}" style="font-size: 18px;">신용등급</a></li>
+                                    <li><a th:href="@{/info/invest}" style="font-size: 18px;">BNK금융지주</a></li>
+                                    <li><a th:href="@{/info/invest}" style="font-size: 18px;">IR정보</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -138,11 +136,11 @@
     position: fixed;          /* 화면 기준으로 전체폭 */
     left: 0;
     right: 0;
-    top: 68px;                /* 상단바 높이에 맞게 조절(기존보다 조금 여유) */
+    top: 80px;                /* 상단바 높이에 맞게 조절(기존보다 조금 여유) */
     background: #fff;
-    border-top: 1px solid #E5E7EB;
+    border-top: 0px solid #E5E7EB;
     border-bottom: 5px solid #DE0000;
-    box-shadow: 0 10px 24px rgba(0,0,0,.06);
+    box-shadow: 0 0px 0px rgba(0,0,0,.06);
     padding: 40px 48px;       /* 패널 내부 여백 ↑ */
     min-height: 240px;        /* 펼쳐지는 세로 공간 ↑ */
     z-index: 19;
@@ -198,7 +196,7 @@
         display: inline-block;
         text-decoration: none;
         color: #374151;
-        padding-bottom: 4px;
+        padding-bottom: 10px;
         transition: color 0.2s ease;
     }
 
